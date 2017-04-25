@@ -1,0 +1,11 @@
+{
+  "name": "hoffnung3000",
+  "description": "Platform for decentralized, self-curated festivals",
+  "main": "server/index.js",
+  "authors": [
+    "Andreas Dzialocha"
+  ],
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/adzialocha/hoffnung3000",
+  "private": true
+}

@@ -1,0 +1,20 @@
+html {
+  color: $black;
+
+  background-color: $white;
+
+  font-size: $font-size-base;
+  font-family: $font-family;
+}
+
+body {
+  height: 100%;
+}
+
+hr {
+  height: 1px;
+
+  border: zero;
+
+  background-color: $white;
+}

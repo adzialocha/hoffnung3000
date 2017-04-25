@@ -1,0 +1,8 @@
+a {
+  color: $black;
+
+  &:focus,
+  &:visited {
+    color: inherit;
+  }
+}
