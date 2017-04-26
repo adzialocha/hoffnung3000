@@ -1,4 +1,12 @@
+import dotenv from 'dotenv'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import path from 'path'
+
+dotenv.config()
+
+const extractStylesheet = new ExtractTextPlugin({
+  filename: 'styles/app.css',
+})
 
 export default {
   devtool: 'eval',
@@ -6,14 +14,26 @@ export default {
     app: './app/index.js',
   },
   output: {
-    path: path.resolve(__dirname, 'public', 'scripts'),
-    filename: 'app.js',
+    path: path.resolve(__dirname, 'public'),
+    filename: 'scripts/app.js',
   },
   module: {
     rules: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'babel-loader',
+      use: [{
+        loader: 'babel-loader',
+      }],
+    }, {
+      test: /\.scss$/,
+      exclude: /node_modules/,
+      use: extractStylesheet.extract({
+        use: [{
+          loader: 'css-loader',
+        }, {
+          loader: 'sass-loader',
+        }],
+      }),
     }],
   },
   resolve: {
@@ -23,7 +43,7 @@ export default {
       path.resolve(__dirname, 'node_modules'),
     ],
   },
-  devServer: {
-    port: 3000,
-  },
+  plugins: [
+    extractStylesheet,
+  ],
 }

@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "webpack",
-    "watch": "nodemon --watch app --exec webpack",
+    "watch": "nodemon --watch app -e js,scss --exec webpack",
     "serve": "nodemon --watch server --exec babel-node server/index.js",
     "db:migrate": "./node_modules/.bin/sequelize db:migrate",
     "db:migrate:undo": "./node_modules/.bin/sequelize db:migrate:undo",
@@ -23,10 +23,12 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.24.1",
+    "css-loader": "^0.28.0",
     "eslint": "^3.19.0",
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-react": "^6.10.3",
+    "extract-text-webpack-plugin": "^2.1.0",
     "nodemon": "^1.11.0",
     "path": "^0.12.7",
     "prop-types": "^15.5.8",
@@ -57,9 +59,11 @@
     "joi": "^10.4.1",
     "method-override": "^2.3.8",
     "morgan": "^1.8.1",
+    "node-sass": "^4.5.2",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
     "pug": "^2.0.0-beta6",
+    "sass-loader": "^6.0.3",
     "sequelize": "^3.30.4",
     "winston": "^2.3.1"
   }

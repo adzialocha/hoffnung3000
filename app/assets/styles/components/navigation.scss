@@ -1,2 +1,13 @@
-// .navigation {
-// }
+.navigation {
+  padding: 0;
+
+  list-style: none;
+}
+
+.navigation__item {
+  display: inline;
+
+  + .navigation__item {
+    margin-left: 10px;
+  }
+}

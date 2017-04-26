@@ -5,9 +5,17 @@ class Navigation extends Component {
   render() {
     return (
       <nav role="navigation">
-        <Link to="/">Home</Link>
-        <Link to="/test">Test</Link>
-        <Link to="/about">About</Link>
+        <ul className="navigation">
+          <li className="navigation__item">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="navigation__item">
+            <Link to="/test">Test</Link>
+          </li>
+          <li className="navigation__item">
+            <Link to="/about">About</Link>
+          </li>
+        </ul>
       </nav>
     )
   }
