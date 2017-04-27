@@ -181,13 +181,7 @@ gulp.task('assets:scripts', (done) => {
   )
 })
 
-gulp.task('assets:images:favicon', (done) => {
-  gulp.src(`${ASSETS_PATH}/favicon.*`)
-    .pipe(gulp.dest(TMP_PATH))
-    .on('end', done)
-})
-
-gulp.task('assets:images', ['assets:images:favicon'], (done) => {
+gulp.task('assets:images', (done) => {
   gulp.src(`${ASSETS_PATH}/images/**/*.{png,jpg,svg,gif,ico}`)
     .pipe(imagemin())
     .pipe(gulp.dest(`${TMP_PATH}/images/`))
@@ -279,6 +273,11 @@ gulp.task('build:rev:post', (done) => {
 })
 
 gulp.task('build', (done) => {
+  if (!isProduction()) {
+    console.error('Can\'t build app when NODE_ENV is not set to production')
+    process.exit(1)
+  }
+
   runSequence(
     'clean',
     'assets',

@@ -8,9 +8,13 @@ import reducers from './reducers'
 export default function configureStore(initialState, history) {
   const middleware = [
     thunk,
-    createLogger(),
     routerMiddleware(history),
   ]
+
+  if (process.env.NODE_ENV === 'development') {
+    middleware.push(createLogger())
+  }
+
   const store = createStore(
     reducers,
     applyMiddleware(...middleware),
