@@ -36,7 +36,6 @@ const VENDOR_MODULES = [
 ]
 
 const APP_PATH = './app'
-const ASSETS_PATH = './app/assets'
 const DIST_PATH = './public'
 const TMP_PATH = './.tmp'
 
@@ -123,7 +122,7 @@ gulp.task('clean', [
  */
 
 gulp.task('assets:styles', (done) => {
-  gulp.src(`${ASSETS_PATH}/styles/app.scss`)
+  gulp.src(`${APP_PATH}/styles/app.scss`)
     .pipe(sass({
       errLogToConsole: true,
     }))
@@ -137,7 +136,7 @@ gulp.task('assets:styles', (done) => {
 })
 
 gulp.task('assets:scripts:app', (done) => {
-  gulp.src(`${APP_PATH}/index.js`, { read: false })
+  gulp.src(`${APP_PATH}/scripts/index.js`, { read: false })
     .pipe(tap((file) => {
       file.contents = browserify(
         file.path, {
@@ -182,14 +181,14 @@ gulp.task('assets:scripts', (done) => {
 })
 
 gulp.task('assets:images', (done) => {
-  gulp.src(`${ASSETS_PATH}/images/**/*.{png,jpg,svg,gif,ico}`)
+  gulp.src(`${APP_PATH}/images/**/*.{png,jpg,svg,gif,ico}`)
     .pipe(imagemin())
     .pipe(gulp.dest(`${TMP_PATH}/images/`))
     .on('end', done)
 })
 
 gulp.task('assets:fonts', (done) => {
-  gulp.src(`${ASSETS_PATH}/fonts/**/*`)
+  gulp.src(`${APP_PATH}/fonts/**/*`)
     .pipe(gulp.dest(`${TMP_PATH}/fonts/`))
     .on('end', done)
 })
@@ -224,14 +223,14 @@ gulp.task('assets', (done) => {
  */
 
 gulp.task('lint:js', (done) => {
-  gulp.src(['./gulpfile.babel.js', `${APP_PATH}/**/*.js`])
+  gulp.src(['./gulpfile.babel.js', `${APP_PATH}/scripts/**/*.js`])
     .pipe(eslint())
     .pipe(eslint.format())
     .on('end', done)
 })
 
 gulp.task('lint:scss', (done) => {
-  gulp.src(`${ASSETS_PATH}/styles/**/*.scss`)
+  gulp.src(`${APP_PATH}/styles/**/*.scss`)
     .pipe(sasslint())
     .pipe(sasslint.format())
     .on('end', done)
@@ -301,11 +300,12 @@ gulp.task('build', (done) => {
  */
 
 gulp.task('watch', ['clean:tmp', 'assets'], () => {
-  gulp.watch(`${ASSETS_PATH}/styles/**/*.scss`, ['assets:styles', 'lint:scss'])
-  gulp.watch(`${APP_PATH}/**/*.js`, ['assets:scripts:app', 'lint:js'])
-  gulp.watch(`${ASSETS_PATH}/images/**/*`, ['assets:images'])
-  gulp.watch(`${ASSETS_PATH}/fonts/**/*`, ['assets:fonts'])
-  gulp.watch(`${APP_PATH}/*.html`, ['assets:html'])
+  gulp.watch(`${APP_PATH}/styles/**/*.scss`, ['assets:styles', 'lint:scss'])
+  gulp.watch(`${APP_PATH}/scripts/**/*.js`, ['assets:scripts:app', 'lint:js'])
+  gulp.watch(`${APP_PATH}/images/**/*`, ['assets:images'])
+  gulp.watch(`${APP_PATH}/fonts/**/*`, ['assets:fonts'])
+  gulp.watch(`${APP_PATH}/index.html`, ['assets:html'])
+  gulp.watch(`${APP_PATH}/manifest.json`, ['assets:manifest'])
 })
 
 gulp.task('default', ['build'])
