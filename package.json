@@ -6,7 +6,7 @@
   "author": "Andreas Dzialocha",
   "license": "UNLICENSED",
   "scripts": {
-    "postinstall": "gulp build",
+    "postinstall": "bower install && yarn run build",
     "start": "babel-node server/index.js",
     "serve": "nodemon --watch server --exec babel-node server/index.js",
     "watch": "cross-env NODE_ENV=development gulp watch",

@@ -37,3 +37,5 @@ yarn run lint // run all linters
 ```bash
 yarn run build // compile assets for production
 ```
+
+Note that `NPM_CONFIG_PRODUCTION` should be set to `false` for successful [Heroku deployment](https://devcenter.heroku.com/articles/nodejs-support#devdependencies).
