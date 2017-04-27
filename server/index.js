@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
+import fs from 'fs'
 import helmet from 'helmet'
 import logger from 'morgan'
 import methodOverride from 'method-override'
@@ -12,16 +13,37 @@ import winston from 'winston'
 
 const DEFAULT_PORT = 3000
 const ASSETS_MAX_AGE = 31557600000
-const ENV_FILE_PATH = path.join(__dirname, '..', '.env')
-const PUBLIC_DIR_PATH = path.join(__dirname, '..', 'public')
 
 // load environment variables
-const result = dotenv.config({ path: ENV_FILE_PATH })
+const envVariables = dotenv.config({
+  path: path.join(__dirname, '..', '.env'),
+})
 
-if (result.error) {
-  winston.error(result.error)
+if (envVariables.error) {
+  winston.error('".env" file does not exist, please configure the app first')
   process.exit(1)
 }
+
+// check for public assets folder
+const publicDirPath = process.env.NODE_ENV === 'production' ? 'public' : '.tmp'
+
+if (!fs.existsSync(path.join(__dirname, '..', publicDirPath))) {
+  winston.error(
+    'Public folder "%s" does not exist, please bundle assets first',
+    publicDirPath
+  )
+  process.exit(1)
+}
+
+// check database connection
+const db = require('./database')
+
+db.sequelize.authenticate().then(() => {
+  winston.info('Database connection has been established successfully')
+}).catch((err) => {
+  winston.error('Unable to connect to the database: %s', err)
+  process.exit(1)
+})
 
 // initialize express instance
 const app = express()
@@ -31,7 +53,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(logger('tiny'))
 }
 
-// parse body params and attache them to req.body
+// parse body params and attach them to req.body
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -55,28 +77,23 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-// view engine
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'pug')
+// mount all API routes
+app.use('/api', require('./routes'))
 
-// public assets
+// static file hosting
 app.use(express.static(
-  PUBLIC_DIR_PATH, {
+  path.join(__dirname, '..', publicDirPath), {
     index: false,
     redirect: false,
     maxAge: ASSETS_MAX_AGE,
   }
 ))
 
-// mount all API routes
-app.use('/api', require('./routes'))
-
-// main view serving app
 app.use((req, res) => {
-  res.render('app')
+  res.sendFile(path.join(__dirname, '..', publicDirPath, 'index.html'))
 })
 
-// start express server
+// start server
 app.listen(app.get('port'), () => {
   winston.info(
     'App is running at http://localhost:%d in %s mode',

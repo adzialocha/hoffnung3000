@@ -8,8 +8,6 @@ import configureStore from './store'
 import Routes from './routes'
 import { App } from './containers'
 
-require('./assets/styles/app.scss')
-
 const initialState = {}
 const history = createBrowserHistory()
 const store = configureStore(initialState, history)

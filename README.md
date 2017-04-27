@@ -21,5 +21,19 @@ yarn run db:migrate // setup the database
 
 ```bash
 yarn run serve // server runs by default on localhost:3000
-yarn run watch // run webpack process in a second terminal
+yarn run watch // run gulp watch process in a second terminal
+```
+
+## Linting
+
+```bash
+yarn run lint:js
+yarn run lint:scss
+yarn run lint // run all linters
+```
+
+## Deployment
+
+```bash
+yarn run build // compile assets for production
 ```

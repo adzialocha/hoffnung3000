@@ -4,3 +4,7 @@ bower_components
 
 # configuration
 .env
+
+# development
+.tmp
+npm-debug.log

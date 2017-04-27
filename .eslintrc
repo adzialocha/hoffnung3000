@@ -21,11 +21,6 @@
     "browser": true,
     "node": true
   },
-  "globals": {
-    "__CLIENT__": true,
-    "__SERVER__": true,
-    "analytics": true
-  },
   "parser": "babel-eslint",
   "plugins": [
     "react"
