@@ -201,6 +201,12 @@ gulp.task('assets:html', (done) => {
     .on('end', done)
 })
 
+gulp.task('assets:manifest', (done) => {
+  gulp.src(`${APP_PATH}/manifest.json`)
+    .pipe(gulp.dest(TMP_PATH))
+    .on('end', done)
+})
+
 gulp.task('assets', (done) => {
   runSequence(
     'assets:styles',
@@ -208,6 +214,7 @@ gulp.task('assets', (done) => {
     'assets:scripts',
     'assets:images',
     'assets:html',
+    'assets:manifest',
     done
   )
 })
@@ -274,7 +281,7 @@ gulp.task('build:rev:post', (done) => {
 
 gulp.task('build', (done) => {
   if (!isProduction()) {
-    console.error('Can\'t build app when NODE_ENV is not set to production')
+    console.error('Can\'t build app when NODE_ENV is not set to production') // eslint-disable-line no-console
     process.exit(1)
   }
 
