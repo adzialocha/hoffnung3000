@@ -46,7 +46,7 @@ const User = db.sequelize.define('user', {
   },
   classMethods: {
     comparePasswords: (encodedPassword, password) => {
-      return bcrypt.compareSync(password, encodedPassword)
+      return bcrypt.compareSync(encodedPassword, password)
     },
   },
 })

@@ -3,6 +3,7 @@ import expressValidation from 'express-validation'
 import httpStatus from 'http-status'
 import { EmptyResultError } from 'sequelize'
 
+import authRoutes from './auth'
 import userRoutes from './user'
 import { APIError } from '../helpers/errors'
 
@@ -16,6 +17,7 @@ router.get('/health-check', (req, res) =>
 
 // API routes
 
+router.use('/auth', authRoutes)
 router.use('/users', userRoutes)
 
 // API error handling
