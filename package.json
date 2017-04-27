@@ -6,7 +6,7 @@
   "author": "Andreas Dzialocha",
   "license": "UNLICENSED",
   "scripts": {
-    "postinstall": "npm install bower && bower install && ./node_modules/.bin/gulp build",
+    "postinstall": "gulp build",
     "start": "babel-node server/index.js",
     "serve": "nodemon --watch server --exec babel-node server/index.js",
     "watch": "cross-env NODE_ENV=development gulp watch",
@@ -29,6 +29,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.24.1",
     "babelify": "^7.3.0",
+    "bower": "^1.8.0",
     "browserify": "^14.3.0",
     "cross-env": "^4.0.0",
     "del": "^2.2.2",

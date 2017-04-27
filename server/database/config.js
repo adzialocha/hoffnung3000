@@ -3,13 +3,16 @@ const path = require('path')
 
 dotenv.config({ path: path.join(__dirname, '..', '..', '.env') })
 
+const url = process.env.DATABASE_URL
+const dialect = process.env.DATABASE_DIALECT || 'postgres'
+
 module.exports = {
   development: {
-    url: process.env.POSTGRES_URI,
-    dialect: 'postgres',
+    url,
+    dialect,
   },
   production: {
-    url: process.env.POSTGRES_URI,
-    dialect: 'postgres',
+    url,
+    dialect,
   },
 }

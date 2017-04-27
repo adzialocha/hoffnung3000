@@ -12,7 +12,7 @@ Platform for decentralized, self-curated festivals.
 ## Setup
 
 ```bash
-yarn install && bower install
+yarn
 cp ./.env.example ./.env // edit the configuration to your needs
 yarn run db:migrate // setup the database
 ```
