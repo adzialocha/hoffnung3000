@@ -2,9 +2,17 @@
   "name": "hoffnung3000",
   "version": "0.1.0",
   "description": "Platform for decentralized, self-curated festivals",
+  "homepage": "https://hoffnung3000.de",
   "main": "server/index.js",
-  "author": "Andreas Dzialocha",
+  "private": true,
+  "contributors": [
+    "adzialocha"
+  ],
   "license": "UNLICENSED",
+  "engines": {
+    "node": "~6.10.2",
+    "npm": "~4.2.0"
+  },
   "scripts": {
     "postinstall": "bower install && gulp build",
     "start": "babel-node server/index.js",

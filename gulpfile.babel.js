@@ -280,8 +280,8 @@ gulp.task('build:rev:post', (done) => {
 
 gulp.task('build', (done) => {
   if (!isProduction()) {
-    console.error('Can\'t build app when NODE_ENV is not set to production') // eslint-disable-line no-console
-    process.exit(1)
+    console.info('Ignore build task when NODE_ENV is not set to production') // eslint-disable-line no-console
+    return done()
   }
 
   runSequence(
