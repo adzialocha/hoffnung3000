@@ -29,20 +29,23 @@ function login(req, res, next) {
   User.findOne({ email })
     .then(user => {
       if (!user) {
-        return next(new APIError('User does not exist', httpStatus.BAD_REQUEST))
+        return next(
+          new APIError('User does not exist', httpStatus.BAD_REQUEST)
+        )
       }
 
       if (!User.comparePasswords(user.password, password)) {
-        return next(new APIError('Invalid credentials', httpStatus.UNAUTHORIZED))
+        return next(
+          new APIError('Invalid credentials', httpStatus.UNAUTHORIZED)
+        )
       }
 
       const payload = { id: user.id }
       const token = jwt.sign(payload, process.env.JWT_SECRET)
 
-      return res.json({
-        message: 'ok',
-        token,
-      })
+      user.update({ token }).then(() => {
+        res.json({ message: 'ok', token })
+      }).catch(err => next(err))
     })
     .catch(err => next(err))
 }

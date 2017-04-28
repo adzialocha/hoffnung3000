@@ -33,7 +33,9 @@ const User = db.sequelize.define('user', {
     validate: {
       notEmpty: true,
     },
-    scopes: false,
+  },
+  token: {
+    type: db.Sequelize.STRING,
   },
   email: {
     type: db.Sequelize.STRING,
