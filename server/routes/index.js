@@ -5,6 +5,8 @@ import { EmptyResultError } from 'sequelize'
 
 import authRoutes from './auth'
 import userRoutes from './user'
+
+import passport from '../services/passport'
 import { APIError } from '../helpers/errors'
 
 const router = express.Router() // eslint-disable-line new-cap
@@ -18,6 +20,11 @@ router.get('/health-check', (req, res) =>
 // API routes
 
 router.use('/auth', authRoutes)
+
+router.use('/*', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+  next()
+})
+
 router.use('/users', userRoutes)
 
 // API error handling

@@ -1,29 +1,53 @@
+import httpStatus from 'http-status'
 import jwt from 'jsonwebtoken'
 
-import { APIAuthError } from '../helpers/errors'
+import { APIError } from '../helpers/errors'
 import User from '../models/user'
 
-function login(req, res, next) {
-  const { email } = req.body
-  User.findOne({ email })
-    .then(user => {
-      if (user.comparePasswords()) {
-        const payload = { id: user.id }
-        const token = jwt.sign(payload, process.env.JWT_SECRET)
+function signup(req, res, next) {
+  const { firstname, lastname, email, password } = req.body
 
-        res.json({
-          message: 'ok',
-          token,
-        })
-      } else {
-        next(new APIAuthError('Invalid credentials'))
+  User.findOne({ email })
+    .then(existingUser => {
+      if (existingUser) {
+        return next(new APIError('User already exists', httpStatus.BAD_REQUEST))
       }
-    })
-    .catch(() => {
-      next(new APIAuthError('User does not exist'))
+
+      return User.create({
+        firstname,
+        lastname,
+        password,
+        email,
+      })
+        .then(() => { res.json({ message: 'ok' }) })
+        .catch(err => next(err))
     })
 }
 
+function login(req, res, next) {
+  const { email, password } = req.body
+  User.findOne({ email })
+    .then(user => {
+      if (!user) {
+        return next(new APIError('User does not exist', httpStatus.BAD_REQUEST))
+      }
+
+      if (!User.comparePasswords(user.password, password)) {
+        return next(new APIError('Invalid credentials', httpStatus.UNAUTHORIZED))
+      }
+
+      const payload = { id: user.id }
+      const token = jwt.sign(payload, process.env.JWT_SECRET)
+
+      return res.json({
+        message: 'ok',
+        token,
+      })
+    })
+    .catch(err => next(err))
+}
+
 export default {
+  signup,
   login,
 }

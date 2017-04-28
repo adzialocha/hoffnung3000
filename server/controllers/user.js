@@ -6,9 +6,10 @@ const DEFAULT_OFFSET = 0
 function findOne(req, res, next) {
   User.findById(req.params.userId, {
     rejectOnEmpty: true,
+    attributes: { exclude: ['password'] },
   })
     .then(user => res.json(user))
-    .catch(e => next(e))
+    .catch(err => next(err))
 }
 
 function findAll(req, res, next) {
@@ -17,21 +18,13 @@ function findAll(req, res, next) {
     offset = DEFAULT_OFFSET,
   } = req.query
 
-  User.findAll({ limit, offset })
-    .then(users => res.json(users))
-    .catch(e => next(e))
-}
-
-function create(req, res, next) {
-  const { firstname, lastname, email } = req.body
-
-  User.create({
-    firstname,
-    lastname,
-    email,
+  User.findAll({
+    limit,
+    offset,
+    attributes: { exclude: ['password'] },
   })
-    .then(user => res.json(user))
-    .catch(e => next(e))
+    .then(users => res.json(users))
+    .catch(err => next(err))
 }
 
 function update(req, res, next) {
@@ -45,9 +38,10 @@ function update(req, res, next) {
     where: {
       id: req.params.userId,
     },
+    attributes: { exclude: ['password'] },
   })
     .then(user => res.json(user))
-    .catch(e => next(e))
+    .catch(err => next(err))
 }
 
 function destroy(req, res, next) {
@@ -56,14 +50,13 @@ function destroy(req, res, next) {
       id: req.params.userId,
     },
   })
-    .then(user => res.json(user))
-    .catch(e => next(e))
+    .then(() => res.json({ message: 'ok' }))
+    .catch(err => next(err))
 }
 
 export default {
   findOne,
   findAll,
-  create,
   update,
   destroy,
 }

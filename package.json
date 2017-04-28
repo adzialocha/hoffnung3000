@@ -52,6 +52,7 @@
     "gulp-tap": "^0.4.2",
     "gulp-uglify": "^2.1.2",
     "history": "^4.6.1",
+    "node-sass": "^4.5.2",
     "nodemon": "^1.11.0",
     "path": "^0.12.7",
     "prop-types": "^15.5.8",

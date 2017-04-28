@@ -15,3 +15,5 @@ const strategy = new passportJwt.Strategy(options, (payload, next) => {
 })
 
 passport.use(strategy)
+
+export default passport

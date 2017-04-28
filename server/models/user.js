@@ -2,6 +2,11 @@ import bcrypt from 'bcrypt'
 
 import db from '../database'
 
+function generateHash(str) {
+  const salt = bcrypt.genSaltSync()
+  return bcrypt.hashSync(str, salt)
+}
+
 const User = db.sequelize.define('user', {
   id: {
     type: db.Sequelize.INTEGER,
@@ -28,6 +33,7 @@ const User = db.sequelize.define('user', {
     validate: {
       notEmpty: true,
     },
+    scopes: false,
   },
   email: {
     type: db.Sequelize.STRING,
@@ -40,13 +46,12 @@ const User = db.sequelize.define('user', {
 }, {
   hooks: {
     beforeCreate: user => {
-      const salt = bcrypt.genSaltSync()
-      user.password = bcrypt.hashSync(user.password, salt)
+      user.password = generateHash(user.password)
     },
   },
   classMethods: {
     comparePasswords: (encodedPassword, password) => {
-      return bcrypt.compareSync(encodedPassword, password)
+      return bcrypt.compareSync(password, encodedPassword)
     },
   },
 })

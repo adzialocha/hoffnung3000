@@ -8,7 +8,6 @@ const router = express.Router() // eslint-disable-line new-cap
 
 router.route('/')
   .get(userController.findAll)
-  .post(validate(userValidation.createUser), userController.create)
 
 router.route('/:userId')
   .get(userController.findOne)

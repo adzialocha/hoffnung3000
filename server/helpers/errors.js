@@ -19,12 +19,6 @@ class BaseError extends Error {
   }
 }
 
-export class APIAuthError extends BaseError {
-  constructor(message, status = httpStatus.UNAUTHORIZED, isPublic = false) {
-    super(message, status, isPublic)
-  }
-}
-
 export class APIError extends BaseError {
   constructor(message, status = httpStatus.INTERNAL_SERVER_ERROR, isPublic = false) {
     super(message, status, isPublic)
