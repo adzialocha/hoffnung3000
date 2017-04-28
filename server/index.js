@@ -19,7 +19,7 @@ const envVariables = dotenv.config({
   path: path.join(__dirname, '..', '.env'),
 })
 
-if (envVariables.error) {
+if (envVariables.error || process.env.NODE_ENV !== 'production') {
   winston.error('".env" file does not exist, please configure the app first')
   process.exit(1)
 }
