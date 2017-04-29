@@ -7,7 +7,7 @@ import User from '../models/user'
 function signup(req, res, next) {
   const { firstname, lastname, email, password } = req.body
 
-  User.findOne({ email })
+  User.findOne({ where: { email } })
     .then(existingUser => {
       if (existingUser) {
         return next(new APIError('User already exists', httpStatus.BAD_REQUEST))
@@ -19,14 +19,14 @@ function signup(req, res, next) {
         password,
         email,
       })
-        .then(() => { res.json({ message: 'ok' }) })
+        .then((user) => { res.json({ message: 'ok', user }) })
         .catch(err => next(err))
     })
 }
 
 function login(req, res, next) {
   const { email, password } = req.body
-  User.findOne({ email })
+  User.findOne({ where: { email } })
     .then(user => {
       if (!user) {
         return next(
@@ -34,7 +34,7 @@ function login(req, res, next) {
         )
       }
 
-      if (!User.comparePasswords(user.password, password)) {
+      if (!user.comparePasswords(password)) {
         return next(
           new APIError('Invalid credentials', httpStatus.UNAUTHORIZED)
         )
@@ -43,9 +43,7 @@ function login(req, res, next) {
       const payload = { id: user.id }
       const token = jwt.sign(payload, process.env.JWT_SECRET)
 
-      user.update({ token }).then(() => {
-        res.json({ message: 'ok', token })
-      }).catch(err => next(err))
+      res.json({ message: 'ok', token, user })
     })
     .catch(err => next(err))
 }

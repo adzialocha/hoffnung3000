@@ -10,8 +10,14 @@ const options = {
 
 const strategy = new passportJwt.Strategy(options, (payload, next) => {
   User.findById(payload.id)
-    .then((user) => next(null, user))
-    .catch(() => next(null, false))
+    .then((user) => {
+      next(null, user)
+      return null
+    })
+    .catch(() => {
+      next(null, false)
+      return null
+    })
 })
 
 passport.use(strategy)

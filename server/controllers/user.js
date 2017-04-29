@@ -6,7 +6,6 @@ const DEFAULT_OFFSET = 0
 function findOne(req, res, next) {
   User.findById(req.params.userId, {
     rejectOnEmpty: true,
-    attributes: { exclude: ['password'] },
   })
     .then(user => res.json(user))
     .catch(err => next(err))
@@ -21,7 +20,6 @@ function findAll(req, res, next) {
   User.findAll({
     limit,
     offset,
-    attributes: { exclude: ['password'] },
   })
     .then(users => res.json(users))
     .catch(err => next(err))
@@ -38,7 +36,6 @@ function update(req, res, next) {
     where: {
       id: req.params.userId,
     },
-    attributes: { exclude: ['password'] },
   })
     .then(user => res.json(user))
     .catch(err => next(err))

@@ -34,9 +34,6 @@ const User = db.sequelize.define('user', {
       notEmpty: true,
     },
   },
-  token: {
-    type: db.Sequelize.STRING,
-  },
   email: {
     type: db.Sequelize.STRING,
     unique: true,
@@ -51,9 +48,18 @@ const User = db.sequelize.define('user', {
       user.password = generateHash(user.password)
     },
   },
-  classMethods: {
-    comparePasswords: (encodedPassword, password) => {
-      return bcrypt.compareSync(password, encodedPassword)
+  instanceMethods: {
+    comparePasswords(password) {
+      return bcrypt.compareSync(password, this.password)
+    },
+    toJSON() {
+      const { id, firstname, lastname, email } = this.get()
+      return Object.assign({}, {
+        id,
+        firstname,
+        lastname,
+        email,
+      })
     },
   },
 })
