@@ -3,7 +3,11 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { toggleNavigation, toggleSidebar } from '../actions/drawer'
+import {
+  collapseAll,
+  toggleNavigation,
+  toggleSidebar,
+} from '../actions/drawer'
 
 import {
   Drawer,
@@ -13,6 +17,7 @@ import {
 
 class Navigation extends Component {
   static propTypes = {
+    collapseAll: PropTypes.func.isRequired,
     isNavigationExpanded: PropTypes.bool.isRequired,
     isSidebarExpanded: PropTypes.bool.isRequired,
     toggleNavigation: PropTypes.func.isRequired,
@@ -20,6 +25,12 @@ class Navigation extends Component {
   }
 
   render() {
+    const overlayClasses = classnames(
+      'navigation__overlay', {
+        'navigation__overlay--visible': this.props.isSidebarExpanded || this.props.isNavigationExpanded,
+      }
+    )
+
     const hamburgerClasses = classnames(
       'hamburger', {
         'hamburger--active': this.props.isNavigationExpanded,
@@ -34,6 +45,11 @@ class Navigation extends Component {
 
     return (
       <nav className="navigation" role="navigation">
+        <div
+          className={overlayClasses}
+          onClick={this.props.collapseAll}
+        />
+
         <Drawer expanded={this.props.isNavigationExpanded}>
           <NavigationLinks />
         </Drawer>
@@ -76,6 +92,7 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps, {
+    collapseAll,
     toggleNavigation,
     toggleSidebar,
   }

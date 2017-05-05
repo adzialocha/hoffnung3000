@@ -9,7 +9,7 @@ $font-size-lg: 20px;
 $font-size-xl: 24px;
 $font-size-xxl: 58px;
 $font-size-base: 15px;
-$font-size-heading: 22px;
+$font-size-heading: 20px;
 
 $font-weight-bold: 900;
 
@@ -23,8 +23,9 @@ $page-margin-mobile: 18px;
 // z-index
 
 $z-index: (
+  navigation-overlay: 5000,
   drawer: 10000,
-  navigation-toggle: 15000,
+  navigation-toggle: 15000
 );
 
 // media breakpoints
@@ -44,3 +45,5 @@ $gray: #222222;
 $gray-light: #aaaaaa;
 $gray-lighter: #efefef;
 $white: #ffffff;
+
+$transparent: rgba($white, 0);

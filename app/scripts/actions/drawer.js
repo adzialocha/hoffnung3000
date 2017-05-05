@@ -11,3 +11,9 @@ export function toggleSidebar() {
     type: ActionTypes.DRAWER_TOGGLE_SIDEBAR,
   }
 }
+
+export function collapseAll() {
+  return {
+    type: ActionTypes.DRAWER_COLLAPSE_ALL,
+  }
+}

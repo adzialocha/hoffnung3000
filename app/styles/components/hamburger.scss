@@ -17,6 +17,8 @@ $_hamburger-line-size-mobile: 3px;
   height: $_hamburger-line-size;
 
   background-color: $black;
+
+  transition: background .2s ease-in-out;
 }
 
 @include media-breakpoint(xs) {

@@ -1,5 +1,5 @@
 * {
-  -webkit-tap-highlight-color: rgba($white, 0);
+  -webkit-tap-highlight-color: $transparent; // sass-lint:disable-line no-vendor-prefixes
 
   &,
   &::before,

@@ -1,10 +1,10 @@
-$_navigation-links-item-height: 100px;
+$_navigation-links-item-height: 70px;
 $_navigation-links-item-height-mobile: 60px;
 
 .navigation-links {
   display: flex;
 
-  margin-top: 100px;
+  margin-top: 90px;
   padding: 0;
 
   list-style: none;
@@ -14,7 +14,7 @@ $_navigation-links-item-height-mobile: 60px;
 
 @include media-breakpoint(xs) {
   .navigation-links {
-    margin-top: 70px;
+    margin-top: 60px;
   }
 }
 
@@ -33,21 +33,24 @@ $_navigation-links-item-height-mobile: 60px;
     padding-right: $page-margin;
     padding-left: $page-margin;
 
-    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-lg;
 
     line-height: $_navigation-links-item-height;
 
     text-decoration: none;
+    text-transform: uppercase;
   }
 
   &:hover {
     background-color: $black;
   }
 
+  &:focus,
   &:active {
-    background-color: $white;
-
     color: $black;
+
+    background-color: $white;
   }
 }
 

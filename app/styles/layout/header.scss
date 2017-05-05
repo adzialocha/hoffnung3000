@@ -1,3 +1,17 @@
 header {
+  position: fixed;
+
   display: flex;
+
+  width: 100%;
+
+  padding-top: 20px;
+  padding-right: $page-margin;
+  padding-left: $page-margin;
+}
+
+@include media-breakpoint(xs) {
+  header {
+    padding-top: 25px;
+  }
 }

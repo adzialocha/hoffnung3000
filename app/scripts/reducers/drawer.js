@@ -11,6 +11,7 @@ const initialState = {
 export default function modal(state = initialState, action) {
   switch (action.type) {
   case LOCATION_CHANGE:
+  case ActionTypes.DRAWER_COLLAPSE_ALL:
     return update(state, {
       isNavigationExpanded: { $set: false },
       isSidebarExpanded: { $set: false },

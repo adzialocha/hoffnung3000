@@ -1,6 +1,23 @@
 // .navigation {
 // }
 
+.navigation__overlay {
+  position: fixed;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  z-index: map-get($z-index, "navigation-overlay");
+
+  display: none;
+}
+
+.navigation__overlay--visible {
+  display: initial;
+}
+
 .navigation__toggle {
   position: fixed;
 
