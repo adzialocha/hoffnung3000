@@ -1,0 +1,11 @@
+.profile-image {
+  height: 100%;
+
+  border-radius: 50%;
+
+  background-color: $black;
+}
+
+.profile-image--active {
+  background-color: $white;
+}

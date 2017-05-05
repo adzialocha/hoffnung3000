@@ -21,10 +21,13 @@ import tap from 'gulp-tap'
 import uglify from 'gulp-uglify'
 
 const VENDOR_MODULES = [
+  'classnames',
   'history',
+  'keymirror',
   'path',
   'prop-types',
   'react',
+  'react-addons-update',
   'react-dom',
   'react-redux',
   'react-router',
@@ -284,7 +287,7 @@ gulp.task('build', (done) => {
     return done()
   }
 
-  runSequence(
+  return runSequence(
     'clean',
     'assets',
     'build:rev:pre',

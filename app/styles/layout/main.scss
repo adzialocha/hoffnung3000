@@ -1,0 +1,14 @@
+main {
+  display: flex;
+
+  padding-top: 0;
+  padding-right: $page-margin;
+  padding-left: $page-margin;
+}
+
+@include media-breakpoint(xs) {
+  main {
+    padding-right: $page-margin-mobile;
+    padding-left: $page-margin-mobile;
+  }
+}

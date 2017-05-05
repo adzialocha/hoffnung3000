@@ -1,0 +1,40 @@
+$_drawer-background-color: rgba($black, .9);
+
+.drawer {
+  position: fixed;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  z-index: map-get($z-index, "drawer");
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  width: 25%;
+  min-width: 300px;
+
+  background-color: $_drawer-background-color;
+
+  transform: translate3d(-100%, 0, 0);
+
+  transition: transform .2s ease-in-out;
+}
+
+@include media-breakpoint(xs) {
+  .drawer {
+    width: 100%;
+  }
+}
+
+.drawer--right {
+  right: 0;
+  left: initial;
+
+  transform: translate3d(100%, 0, 0);
+}
+
+.drawer--expanded {
+  transform: translate3d(0, 0, 0);
+}

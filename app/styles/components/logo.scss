@@ -1,0 +1,18 @@
+.logo {
+  width: 100%;
+
+  padding: 20px;
+
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xxl;
+
+  text-align: center;
+}
+
+@include media-breakpoint(xs) {
+  .logo {
+    padding-top: 25px;
+
+    font-size: $font-size-md;
+  }
+}

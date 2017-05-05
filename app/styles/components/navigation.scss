@@ -1,13 +1,30 @@
-.navigation {
-  padding: 0;
+// .navigation {
+// }
 
-  list-style: none;
+.navigation__toggle {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  z-index: map-get($z-index, "navigation-toggle");
+
+  width: 40px;
+  height: 40px;
+
+  margin: $page-margin;
 }
 
-.navigation__item {
-  display: inline;
+@include media-breakpoint(xs) {
+  .navigation__toggle {
+    width: 30px;
+    height: 30px;
 
-  + .navigation__item {
-    margin-left: 10px;
+    margin: $page-margin-mobile;
   }
+}
+
+.navigation__toggle--right {
+  right: 0;
+  left: initial;
 }

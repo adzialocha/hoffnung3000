@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Navigation } from '../components'
+import { Header, Footer, Navigation } from '../components'
 
 class App extends Component {
   static propTypes = {
@@ -10,18 +10,13 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <header>
-          <Navigation />
-        </header>
-
-        <main>
+      <div className="wrapper" role="application">
+        <Header />
+        <Navigation />
+        <main role="main">
           { this.props.children }
         </main>
-
-        <footer>
-          <p>Footer</p>
-        </footer>
+        <Footer />
       </div>
     )
   }

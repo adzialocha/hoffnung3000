@@ -1,0 +1,32 @@
+$_hamburger-line-size: 4px;
+$_hamburger-line-size-mobile: 3px;
+
+.hamburger {
+  display: flex;
+
+  height: 100%;
+
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hamburger__line {
+  height: $_hamburger-line-size;
+
+  background-color: $black;
+}
+
+@include media-breakpoint(xs) {
+  .hamburger__line {
+    height: $_hamburger-line-size-mobile;
+  }
+}
+
+.hamburger--active {
+  .hamburger__line {
+    background-color: $white;
+  }
+}

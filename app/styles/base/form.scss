@@ -1,0 +1,18 @@
+button,
+.button {
+  border: 0;
+
+  color: $white;
+
+  background-color: $black;
+
+  outline: 0;
+
+  cursor: pointer;
+}
+
+.button--clear {
+  padding: 0;
+
+  background-color: transparent;
+}
