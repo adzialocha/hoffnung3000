@@ -23,8 +23,6 @@ $_navigation-links-item-height-mobile: 60px;
 }
 
 .navigation-links__item {
-  color: $white;
-
   a {
     display: block;
 
@@ -42,14 +40,14 @@ $_navigation-links-item-height-mobile: 60px;
 
     text-decoration: none;
     text-transform: uppercase;
-  }
 
-  &:active,
-  &:focus,
-  &:hover {
-    color: $black;
+    &:active,
+    &:focus,
+    &:hover {
+      color: $black;
 
-    background-color: $white;
+      background-color: $white;
+    }
   }
 }
 
