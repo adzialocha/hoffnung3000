@@ -130,7 +130,7 @@ gulp.task('assets:styles', (done) => {
     .pipe(sass())
     .on('error', notify.onError({
       message: 'Error: <%= error.message %>',
-      title: 'Error on styles compilation'
+      title: 'Error on styles compilation',
     }))
     .pipe(autoprefixer({
       browsers: ['last 3 versions'],
@@ -154,7 +154,7 @@ gulp.task('assets:scripts:app', (done) => {
     .pipe(buffer())
     .on('error', notify.onError({
       message: 'Error: <%= error.message %>',
-      title: 'Error on scripts compilation'
+      title: 'Error on scripts compilation',
     }))
     .pipe(runIf(isProduction(), uglify({
       enclose: true,
