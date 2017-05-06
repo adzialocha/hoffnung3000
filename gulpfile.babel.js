@@ -10,6 +10,7 @@ import gulp from 'gulp'
 import handlebars from 'gulp-compile-handlebars'
 import htmlmin from 'gulp-htmlmin'
 import imagemin from 'gulp-imagemin'
+import notify from 'gulp-notify'
 import rename from 'gulp-rename'
 import rev from 'gulp-rev'
 import runIf from 'gulp-if'
@@ -129,7 +130,10 @@ gulp.task('assets:styles', (done) => {
     .pipe(sass({
       errLogToConsole: true,
     }))
-    .pipe(sass().on('error', sass.logError))
+    .on('error', notify.onError({
+      message: 'Error: <%= error.message %>',
+      title: 'Error on styles compilation'
+    }))
     .pipe(autoprefixer({
       browsers: ['last 3 versions'],
     }))
@@ -150,6 +154,10 @@ gulp.task('assets:scripts:app', (done) => {
         .bundle()
     }))
     .pipe(buffer())
+    .on('error', notify.onError({
+      message: 'Error: <%= error.message %>',
+      title: 'Error on scripts compilation'
+    }))
     .pipe(runIf(isProduction(), uglify({
       enclose: true,
     })))
