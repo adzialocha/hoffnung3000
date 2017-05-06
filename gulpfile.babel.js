@@ -127,9 +127,7 @@ gulp.task('clean', [
 
 gulp.task('assets:styles', (done) => {
   gulp.src(`${APP_PATH}/styles/app.scss`)
-    .pipe(sass({
-      errLogToConsole: true,
-    }))
+    .pipe(sass())
     .on('error', notify.onError({
       message: 'Error: <%= error.message %>',
       title: 'Error on styles compilation'
