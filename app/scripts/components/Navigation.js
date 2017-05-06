@@ -21,7 +21,6 @@ class Navigation extends Component {
     isNavigationExpanded: PropTypes.bool.isRequired,
     isSidebarExpanded: PropTypes.bool.isRequired,
     toggleNavigation: PropTypes.func.isRequired,
-    toggleSidebar: PropTypes.func.isRequired,
   }
 
   render() {
@@ -34,12 +33,6 @@ class Navigation extends Component {
     const hamburgerClasses = classnames(
       'hamburger', {
         'hamburger--active': this.props.isNavigationExpanded,
-      }
-    )
-
-    const profileImageClasses = classnames(
-      'profile-image', {
-        'profile-image--active': this.props.isSidebarExpanded,
       }
     )
 
@@ -65,16 +58,7 @@ class Navigation extends Component {
           </div>
         </button>
 
-        <button
-          className="button button--clear navigation__toggle navigation__toggle--right"
-          onClick={this.props.toggleSidebar}
-        >
-          <div className={profileImageClasses} />
-        </button>
-
-        <Drawer expanded={this.props.isSidebarExpanded} right={true}>
-          <Sidebar />
-        </Drawer>
+        <Sidebar />
       </nav>
     )
   }

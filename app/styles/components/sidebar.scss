@@ -1,2 +1,31 @@
-// .sidebar {
-// }
+.sidebar {
+  position: relative;
+
+  display: inline-block;
+
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar__content {
+  padding-right: $page-margin;
+  padding-left: $page-margin;
+
+  color: $white;
+}
+
+@include media-breakpoint(xs) {
+  .sidebar__content {
+    padding-right: $page-margin-mobile;
+    padding-left: $page-margin-mobile;
+  }
+}
+
+.sidebar__bottom {
+  position: absolute;
+
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+}

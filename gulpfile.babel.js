@@ -34,6 +34,7 @@ const VENDOR_MODULES = [
   'react-router',
   'react-router-dom',
   'react-router-redux',
+  'redux-auth-wrapper',
   'redux',
   'redux-logger',
   'redux-thunk',
