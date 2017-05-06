@@ -44,12 +44,9 @@ $_navigation-links-item-height-mobile: 60px;
     text-transform: uppercase;
   }
 
-  &:hover {
-    background-color: $black;
-  }
-
+  &:active,
   &:focus,
-  &:active {
+  &:hover {
     color: $black;
 
     background-color: $white;
