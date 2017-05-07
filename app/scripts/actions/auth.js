@@ -3,10 +3,18 @@ import jwtDecode from 'jwt-decode'
 import ActionTypes from '../actionTypes'
 import { getRequest, postRequest } from '../services/api'
 
-export function loginSuccess(token, user) {
-  const decodedToken = jwtDecode(token)
+function successAction(token, user) {
+  return {
+    type: ActionTypes.AUTH_LOGIN_SUCCESS,
+    token,
+    user,
+  }
+}
 
-  if (!decodedToken || !decodedToken.id) {
+export function loginSuccess(token, user) {
+  const jwtPayload = jwtDecode(token)
+
+  if (!jwtPayload || !jwtPayload.id) {
     return {
       type: ActionTypes.AUTH_LOGIN_FAILURE,
       errorMessage: 'Invalid token received',
@@ -15,13 +23,9 @@ export function loginSuccess(token, user) {
 
   if (!user) {
     return (dispatch) => {
-      getRequest(['users', decodedToken.id])
-        .then((response) => {
-          dispatch({
-            type: ActionTypes.AUTH_LOGIN_SUCCESS,
-            user: response,
-            token,
-          })
+      getRequest(['users', jwtPayload.id])
+        .then((userResponse) => {
+          dispatch(successAction(token, userResponse))
         })
         .catch((errorMessage) => {
           dispatch({
@@ -32,11 +36,7 @@ export function loginSuccess(token, user) {
     }
   }
 
-  return {
-    type: ActionTypes.AUTH_LOGIN_SUCCESS,
-    user,
-    token,
-  }
+  return successAction(token, user)
 }
 
 export function login(email, password) {

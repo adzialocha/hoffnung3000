@@ -14,6 +14,7 @@ export default function modal(state = initialState, action) {
   case ActionTypes.AUTH_LOGIN_REQUEST:
     return update(state, {
       isLoading: { $set: true },
+      errorMessage: { $set: '' },
     })
   case ActionTypes.AUTH_LOGIN_SUCCESS:
     setItem('token', action.token)
