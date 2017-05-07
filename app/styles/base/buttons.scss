@@ -20,6 +20,8 @@ button,
   text-decoration: none;
   text-transform: uppercase;
 
+  transition: background .2s ease-in-out;
+
   cursor: pointer;
 
   &:focus,
@@ -28,9 +30,7 @@ button,
   }
 
   &:hover {
-    color: $black;
-
-    background-color: $white;
+    background-color: $gray-light;
   }
 }
 

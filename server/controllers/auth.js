@@ -43,7 +43,7 @@ function login(req, res, next) {
       const payload = { id: user.id }
       const token = jwt.sign(payload, process.env.JWT_SECRET)
 
-      res.json({ message: 'ok', token, user })
+      return res.json({ message: 'ok', token, user })
     })
     .catch(err => next(err))
 }

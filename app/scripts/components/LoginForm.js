@@ -13,18 +13,23 @@ class LoginForm extends Component {
 
   renderErrorMessage() {
     if (this.props.errorMessage) {
-      return (<p>{ this.props.errorMessage }</p>)
+      return (
+        <div className="error-message">
+          { this.props.errorMessage }
+        </div>
+      )
     }
     return null
   }
 
   render() {
     return (
-      <form disabled={this.props.isLoading} onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit}>
         { this.renderErrorMessage() }
         <label>
-          Email address:
+          Email address
           <input
+            disabled={this.props.isLoading}
             name="email"
             type="text"
             value={this.state.email}
@@ -32,15 +37,21 @@ class LoginForm extends Component {
           />
         </label>
         <label>
-          Password:
+          Password
           <input
+            disabled={this.props.isLoading}
             name="password"
             type="password"
             value={this.state.password}
             onChange={this.handleChange}
           />
         </label>
-        <input className="button" type="submit" value="Login" />
+        <input
+          className="button"
+          disabled={this.props.isLoading}
+          type="submit"
+          value="Login"
+        />
       </form>
     )
   }
