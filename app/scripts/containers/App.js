@@ -13,9 +13,7 @@ class App extends Component {
       <div className="wrapper" role="application">
         <Header />
         <Navigation />
-        <main role="main">
-          { this.props.children }
-        </main>
+        { this.props.children }
         <Footer />
       </div>
     )

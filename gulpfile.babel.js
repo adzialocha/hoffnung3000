@@ -24,6 +24,8 @@ import uglify from 'gulp-uglify'
 const VENDOR_MODULES = [
   'classnames',
   'history',
+  'isomorphic-fetch',
+  'jwt-decode',
   'keymirror',
   'path',
   'prop-types',
@@ -34,8 +36,8 @@ const VENDOR_MODULES = [
   'react-router',
   'react-router-dom',
   'react-router-redux',
-  'redux-auth-wrapper',
   'redux',
+  'redux-auth-wrapper',
   'redux-logger',
   'redux-thunk',
 ]

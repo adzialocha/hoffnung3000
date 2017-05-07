@@ -13,13 +13,13 @@ import {
 export default class Routes extends Component {
   render() {
     return (
-      <div>
+      <main role="main">
         <Route component={Home} exact={true} path="/" />
         <Route component={About} path="/about" />
         <Route component={Login} path="/login" />
         <Route component={Register} path="/register" />
         <Route component={isParticipant(Test)} path="/test" />
-      </div>
+      </main>
     )
   }
 }

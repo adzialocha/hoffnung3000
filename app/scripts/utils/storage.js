@@ -11,3 +11,7 @@ export function getItem(key) {
 export function setItem(key, value) {
   return localStorage.setItem(makeKey(key), value)
 }
+
+export function removeItem(key) {
+  return localStorage.removeItem(makeKey(key))
+}

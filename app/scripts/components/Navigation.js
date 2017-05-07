@@ -81,4 +81,3 @@ export default connect(
     toggleSidebar,
   }
 )(Navigation)
-

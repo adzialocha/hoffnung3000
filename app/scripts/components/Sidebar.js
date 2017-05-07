@@ -10,16 +10,23 @@ import { toggleSidebar } from '../actions/drawer'
 
 class Sidebar extends Component {
   static propTypes = {
+    firstname: PropTypes.string,
     isAuthenticated: PropTypes.bool.isRequired,
     isSidebarExpanded: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
     toggleSidebar: PropTypes.func.isRequired,
   }
 
+  static defaultProps = {
+    firstname: '',
+  }
+
   renderSidebarBottom() {
     if (this.props.isAuthenticated) {
       return (
-        <button className="button" onClick={this.props.logout}>Logout</button>
+        <div className="button-group">
+          <button className="button" onClick={this.props.logout}>Logout</button>
+        </div>
       )
     }
 
@@ -31,12 +38,29 @@ class Sidebar extends Component {
     )
   }
 
+  renderSidebarContent() {
+    if (!this.props.isAuthenticated) {
+      return (
+        <section>
+          <p>Welcome dear visitor,</p>
+          <p>please <em>register</em> or <em>login</em> below to use the platform.</p>
+        </section>
+      )
+    }
+
+    return (
+      <section>
+        <p>Hi { this.props.firstname },</p>
+        <p>welcome to the platform.</p>
+      </section>
+    )
+  }
+
   renderSidebar() {
     return (
       <div className="sidebar">
         <div className="sidebar__content">
-          <p>Welcome dear visitor,</p>
-          <p>please <em>register</em> or <em>login</em> below to use the platform.</p>
+          { this.renderSidebarContent() }
         </div>
         <div className="sidebar__bottom">
           { this.renderSidebarBottom() }
@@ -71,9 +95,11 @@ class Sidebar extends Component {
 
 function mapStateToProps(state) {
   const { isAuthenticated } = state.auth
+  const { firstname } = state.user
   return {
     ...state.drawer,
     isAuthenticated,
+    firstname,
   }
 }
 

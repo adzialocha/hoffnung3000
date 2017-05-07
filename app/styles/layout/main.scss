@@ -1,9 +1,9 @@
 main {
-  display: flex;
-
   padding-top: 100px;
   padding-right: $page-margin;
   padding-left: $page-margin;
+
+  text-align: center;
 }
 
 @include media-breakpoint(xs) {

@@ -1,6 +1,7 @@
 export Drawer from './Drawer'
 export Footer from './Footer'
 export Header from './Header'
+export LoginForm from './LoginForm'
 export Navigation from './Navigation'
 export NavigationLinks from './NavigationLinks'
 export Sidebar from './Sidebar'

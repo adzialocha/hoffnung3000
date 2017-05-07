@@ -1,9 +1,9 @@
 button,
 .button {
   padding-top: 10px;
-  padding-right: 5px;
+  padding-right: 15px;
   padding-bottom: 10px;
-  padding-left: 5px;
+  padding-left: 15px;
 
   border: 0;
 
@@ -12,6 +12,7 @@ button,
   background-color: $black;
 
   font-weight: $font-weight-bold;
+  font-size: $font-size-base;
 
   outline: 0;
 
