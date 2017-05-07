@@ -9,6 +9,14 @@ export const isAuthenticated = UserAuthWrapper({
   wrapperDisplayName: 'UserIsAuthenticated',
 })
 
+export const shouldNotBeAuthenticated = UserAuthWrapper({
+  authSelector: state => state.auth,
+  redirectAction: routerActions.replace,
+  failureRedirectPath: '/',
+  predicate: auth => !auth.isAuthenticated,
+  wrapperDisplayName: 'UserIsNotAuthenticated',
+})
+
 export const isParticipant = UserAuthWrapper({
   authSelector: (state) => {
     const { auth, user } = state

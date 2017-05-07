@@ -1,5 +1,5 @@
 export About from './About'
+export Calendar from './Calendar'
 export Home from './Home'
 export Login from './Login'
 export Register from './Register'
-export Test from './Test'

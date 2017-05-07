@@ -15,6 +15,9 @@ class NavigationLinks extends Component {
           <Link to="/">Home</Link>
         </li>
         <li className="navigation-links__item">
+          <Link to="/calendar">Calendar</Link>
+        </li>
+        <li className="navigation-links__item">
           <Link to="/about">About</Link>
         </li>
       </ul>
@@ -26,6 +29,9 @@ class NavigationLinks extends Component {
       <ul className="navigation-links">
         <li className="navigation-links__item">
           <Link to="/">Home</Link>
+        </li>
+        <li className="navigation-links__item">
+          <Link to="/calendar">Calendar</Link>
         </li>
         <li className="navigation-links__item">
           <Link to="/about">About</Link>
