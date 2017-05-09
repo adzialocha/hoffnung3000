@@ -1,12 +1,10 @@
-import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { Drawer } from './'
+import { Drawer, SidebarToggle } from './'
 import { logout } from '../actions/auth'
-import { toggleSidebar } from '../actions/drawer'
 
 class Sidebar extends Component {
   static propTypes = {
@@ -14,7 +12,6 @@ class Sidebar extends Component {
     isAuthenticated: PropTypes.bool.isRequired,
     isSidebarExpanded: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
-    toggleSidebar: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -62,6 +59,7 @@ class Sidebar extends Component {
         <div className="sidebar__content">
           { this.renderSidebarContent() }
         </div>
+
         <div className="sidebar__bottom">
           { this.renderSidebarBottom() }
         </div>
@@ -70,21 +68,9 @@ class Sidebar extends Component {
   }
 
   render() {
-    const profileImageClasses = classnames(
-      'profile-image', {
-        'profile-image--active': this.props.isSidebarExpanded,
-      }
-    )
-
     return (
       <aside role="complementary">
-        <button
-          className="button button--clear navigation__toggle navigation__toggle--right"
-          onClick={this.props.toggleSidebar}
-        >
-          <div className={profileImageClasses} />
-        </button>
-
+        <SidebarToggle />
         <Drawer expanded={this.props.isSidebarExpanded} right={true}>
           { this.renderSidebar() }
         </Drawer>
@@ -105,7 +91,6 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps, {
-    toggleSidebar,
     logout,
   }
 )(Sidebar)

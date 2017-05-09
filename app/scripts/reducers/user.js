@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode'
 import update from 'react-addons-update'
 
 import ActionTypes from '../actionTypes'
@@ -11,13 +12,17 @@ const initialState = {
 
 export default function modal(state = initialState, action) {
   switch (action.type) {
-  case ActionTypes.AUTH_LOGIN_SUCCESS:
+  case ActionTypes.AUTH_LOGIN_SUCCESS: {
+    const jwtPayload = jwtDecode(action.payload.token)
+    const user = jwtPayload.user
+
     return update(state, {
-      id: { $set: action.user.id },
-      firstname: { $set: action.user.firstname },
-      isAdmin: { $set: false },
-      isParticipant: { $set: true },
+      id: { $set: user.id },
+      firstname: { $set: user.firstname },
+      isAdmin: { $set: user.isAdmin },
+      isParticipant: { $set: user.isParticipant },
     })
+  }
   case ActionTypes.AUTH_LOGOUT:
   case ActionTypes.AUTH_LOGIN_FAILURE:
     return update(state, {

@@ -47,7 +47,7 @@ function login(req, res, next) {
         algorithm: JWT_ALGORITHM,
         expiresIn: JWT_EXPIRATION,
       }
-      const payload = { id: user.id }
+      const payload = { user }
       const token = jwt.sign(payload, process.env.JWT_SECRET, options)
 
       return res.json({ message: 'ok', token, user })

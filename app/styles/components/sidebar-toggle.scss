@@ -1,0 +1,84 @@
+@keyframes sidebar-toggle-spinning {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.sidebar-toggle {
+  position: relative;
+
+  height: 100%;
+
+  border-radius: 50%;
+
+  background-color: $black;
+
+  transition: all .2s ease-in-out;
+
+  &::after {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: block;
+
+    margin: 8px;
+
+    border-radius: 50%;
+
+    content: "";
+
+    background-color: $white;
+
+    opacity: 0;
+
+    transition: all .2s ease-in-out;
+  }
+}
+
+.sidebar-toggle--active {
+  background-color: $white;
+
+  &.sidebar-toggle--notified {
+    &::after {
+      background-color: $black;
+    }
+  }
+
+  &.sidebar-toggle--spinning {
+    border-color: $white;
+
+    &.sidebar-toggle--notified {
+      &::after {
+        background-color: $white;
+      }
+    }
+  }
+}
+
+.sidebar-toggle--notified {
+  &::after {
+    opacity: 1;
+  }
+}
+
+.sidebar-toggle--spinning {
+  border: 4px dashed $black;
+
+  background-color: transparent;
+
+  animation-name: sidebar-toggle-spinning;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  animation-timing-function: linear;
+
+  &.sidebar-toggle--notified {
+    &::after {
+      background-color: $black;
+    }
+  }
+}
+

@@ -16,7 +16,7 @@ export default function modal(state = initialState, action) {
       isLoading: { $set: true },
     })
   case ActionTypes.AUTH_LOGIN_SUCCESS:
-    setItem('token', action.token)
+    setItem('token', action.payload.token)
     return update(state, {
       isLoading: { $set: false },
       isAuthenticated: { $set: true },
@@ -29,6 +29,7 @@ export default function modal(state = initialState, action) {
       isAuthenticated: { $set: false },
       errorMessage: { $set: action.errorMessage },
     })
+  case ActionTypes.API_FAILURE:
   case ActionTypes.AUTH_LOGOUT:
     removeItem('token')
     return update(state, {

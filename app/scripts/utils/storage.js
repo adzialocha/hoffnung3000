@@ -8,6 +8,10 @@ export function getItem(key) {
   return localStorage.getItem(makeKey(key))
 }
 
+export function hasItem(key) {
+  return getItem(key) !== undefined
+}
+
 export function setItem(key, value) {
   return localStorage.setItem(makeKey(key), value)
 }

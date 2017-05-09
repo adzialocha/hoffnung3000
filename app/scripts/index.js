@@ -7,16 +7,15 @@ import { createBrowserHistory } from 'history'
 import configureStore from './store'
 import Routes from './routes'
 import { App } from './containers'
-import { getItem } from './utils/storage'
-import { loginSuccess } from './actions/auth'
+import { getItem, hasItem } from './utils/storage'
+import { checkExistingToken } from './actions/auth'
 
 const initialState = {}
 const history = createBrowserHistory()
 const store = configureStore(initialState, history)
 
-const token = getItem('token')
-if (token !== null) {
-  store.dispatch(loginSuccess(token))
+if (hasItem('token') !== null) {
+  store.dispatch(checkExistingToken(getItem('token')))
 }
 
 render(
