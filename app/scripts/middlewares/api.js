@@ -8,11 +8,20 @@ export const API_REQUEST = Symbol('api-request')
 
 function getErrorMessage(error) {
   if (typeof error === 'string') {
-    return error
+    return {
+      message: error,
+      status: 500,
+    }
   } else if (error && error.message) {
-    return error.message
+    return {
+      message: error.message,
+      status: error.status || 500,
+    }
   }
-  return 'An unknown error occured'
+  return {
+    message: 'An unknown error occured',
+    status: 500,
+  }
 }
 
 function request(path, method = 'GET', body = {}) {
@@ -85,14 +94,14 @@ export default store => next => action => {
         store.dispatch({ ...types.success, payload })
       }
     })
-    .catch((errorMessage) => {
+    .catch((error) => {
       store.dispatch({
         type: ActionTypes.API_FAILURE,
-        errorMessage,
+        error,
       })
 
       if (types.failure) {
-        store.dispatch({ ...types.failure, errorMessage })
+        store.dispatch({ ...types.failure, error })
       }
     })
 }

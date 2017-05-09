@@ -8,8 +8,7 @@ export function checkExistingToken(token) {
 
   if (jwtPayload.exp < Date.now() / 1000) {
     return {
-      type: ActionTypes.AUTH_LOGIN_FAILURE,
-      errorMessage: 'Token expired',
+      type: ActionTypes.AUTH_TOKEN_EXPIRED,
     }
   }
 

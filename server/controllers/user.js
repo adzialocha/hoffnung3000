@@ -3,8 +3,20 @@ import User from '../models/user'
 const DEFAULT_LIMIT = 50
 const DEFAULT_OFFSET = 0
 
+function lookup(req, res, next) {
+  User.findById(req.params.resourceId, {
+    rejectOnEmpty: true,
+  })
+    .then(user => {
+      req.ownerId = user.id
+      next()
+      return null
+    })
+    .catch(err => next(err))
+}
+
 function findOne(req, res, next) {
-  User.findById(req.params.userId, {
+  User.findById(req.params.resourceId, {
     rejectOnEmpty: true,
   })
     .then(user => res.json(user))
@@ -34,7 +46,7 @@ function update(req, res, next) {
     email,
   }, {
     where: {
-      id: req.params.userId,
+      id: req.params.resourceId,
     },
   })
     .then(user => res.json(user))
@@ -44,7 +56,7 @@ function update(req, res, next) {
 function destroy(req, res, next) {
   User.destroy({
     where: {
-      id: req.params.userId,
+      id: req.params.resourceId,
     },
   })
     .then(() => res.json({ message: 'ok' }))
@@ -52,6 +64,7 @@ function destroy(req, res, next) {
 }
 
 export default {
+  lookup,
   findOne,
   findAll,
   update,

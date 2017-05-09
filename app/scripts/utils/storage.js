@@ -9,7 +9,7 @@ export function getItem(key) {
 }
 
 export function hasItem(key) {
-  return getItem(key) !== undefined
+  return getItem(key) !== null
 }
 
 export function setItem(key, value) {

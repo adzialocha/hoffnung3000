@@ -1,7 +1,10 @@
 import update from 'react-addons-update'
+import { LOCATION_CHANGE } from 'react-router-redux'
 
 import ActionTypes from '../actionTypes'
 import { setItem, removeItem } from '../utils/storage'
+
+const CRITICAL_API_ERROR_CODES = [401, 403]
 
 const initialState = {
   errorMessage: '',
@@ -9,11 +12,15 @@ const initialState = {
   isAuthenticated: false,
 }
 
-export default function modal(state = initialState, action) {
+export default function auth(state = initialState, action) {
   switch (action.type) {
   case ActionTypes.AUTH_LOGIN_REQUEST:
     return update(state, {
       isLoading: { $set: true },
+    })
+  case LOCATION_CHANGE:
+    return update(state, {
+      errorMessage: { $set: '' },
     })
   case ActionTypes.AUTH_LOGIN_SUCCESS:
     setItem('token', action.payload.token)
@@ -27,9 +34,19 @@ export default function modal(state = initialState, action) {
     return update(state, {
       isLoading: { $set: false },
       isAuthenticated: { $set: false },
-      errorMessage: { $set: action.errorMessage },
+      errorMessage: { $set: action.error.message },
     })
-  case ActionTypes.API_FAILURE:
+  case ActionTypes.API_FAILURE: {
+    if (CRITICAL_API_ERROR_CODES.includes(action.error.status)) {
+      removeItem('token')
+      return update(state, {
+        isLoading: { $set: false },
+        isAuthenticated: { $set: false },
+      })
+    }
+    return state
+  }
+  case ActionTypes.AUTH_TOKEN_EXPIRED:
   case ActionTypes.AUTH_LOGOUT:
     removeItem('token')
     return update(state, {

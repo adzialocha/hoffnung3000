@@ -8,7 +8,7 @@ const initialState = {
   isSidebarExpanded: false,
 }
 
-export default function modal(state = initialState, action) {
+export default function drawer(state = initialState, action) {
   switch (action.type) {
   case LOCATION_CHANGE:
   case ActionTypes.DRAWER_COLLAPSE_ALL:

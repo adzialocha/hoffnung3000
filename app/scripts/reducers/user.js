@@ -10,7 +10,7 @@ const initialState = {
   isParticipant: false,
 }
 
-export default function modal(state = initialState, action) {
+export default function user(state = initialState, action) {
   switch (action.type) {
   case ActionTypes.AUTH_LOGIN_SUCCESS: {
     const jwtPayload = jwtDecode(action.payload.token)

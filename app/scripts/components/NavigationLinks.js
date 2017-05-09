@@ -49,12 +49,11 @@ class NavigationLinks extends Component {
 }
 
 function mapStateToProps(state) {
-  const { isParticipant } = state.user
   return {
-    isParticipant,
+    isParticipant: state.user.isParticipant,
   }
 }
 
 export default connect(
-  mapStateToProps,
+  mapStateToProps
 )(NavigationLinks)

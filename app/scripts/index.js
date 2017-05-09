@@ -14,7 +14,7 @@ const initialState = {}
 const history = createBrowserHistory()
 const store = configureStore(initialState, history)
 
-if (hasItem('token') !== null) {
+if (hasItem('token')) {
   store.dispatch(checkExistingToken(getItem('token')))
 }
 
