@@ -55,15 +55,17 @@ router.use((req, res, next) => {
 })
 
 router.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  res.status(err.status).json({
+  const error = {
     message: err.message || httpStatus[err.status],
     status: err.status,
-    stack: process.env.NODE_ENV === 'development' ? err.stack : {},
-  })
+  }
 
   if (process.env.NODE_ENV === 'development') {
     winston.error(err)
+    error.stack = err.stack
   }
+
+  res.status(err.status).json(error)
 })
 
 export default router
