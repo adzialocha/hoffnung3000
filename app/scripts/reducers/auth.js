@@ -12,7 +12,7 @@ const initialState = {
   isAuthenticated: false,
 }
 
-export default function auth(state = initialState, action) {
+export default (state = initialState, action) => {
   switch (action.type) {
   case ActionTypes.AUTH_LOGIN_REQUEST:
     return update(state, {
@@ -46,7 +46,7 @@ export default function auth(state = initialState, action) {
     }
     return state
   }
-  case ActionTypes.AUTH_TOKEN_EXPIRED:
+  case ActionTypes.AUTH_TOKEN_EXPIRED_OR_INVALID:
   case ActionTypes.AUTH_LOGOUT:
     removeItem('token')
     return update(state, {

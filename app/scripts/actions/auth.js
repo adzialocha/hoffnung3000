@@ -1,14 +1,13 @@
-import jwtDecode from 'jwt-decode'
-
 import ActionTypes from '../actionTypes'
+import { jwtDecode } from '../utils/jwt'
 import { postRequest } from '../services/api'
 
 export function checkExistingToken(token) {
   const jwtPayload = jwtDecode(token)
 
-  if (jwtPayload.exp < Date.now() / 1000) {
+  if (!jwtPayload || jwtPayload.exp < Date.now() / 1000 || !jwtPayload.user) {
     return {
-      type: ActionTypes.AUTH_TOKEN_EXPIRED,
+      type: ActionTypes.AUTH_TOKEN_EXPIRED_OR_INVALID,
     }
   }
 

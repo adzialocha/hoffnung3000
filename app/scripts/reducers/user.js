@@ -1,7 +1,7 @@
-import jwtDecode from 'jwt-decode'
 import update from 'react-addons-update'
 
 import ActionTypes from '../actionTypes'
+import { jwtDecode } from '../utils/jwt'
 
 const initialState = {
   id: undefined,
@@ -10,7 +10,7 @@ const initialState = {
   isParticipant: false,
 }
 
-export default function user(state = initialState, action) {
+export default (state = initialState, action) => {
   switch (action.type) {
   case ActionTypes.AUTH_LOGIN_SUCCESS: {
     const jwtPayload = jwtDecode(action.payload.token)

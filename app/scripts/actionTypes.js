@@ -9,7 +9,7 @@ export default keyMirror({
   AUTH_LOGIN_REQUEST: null,
   AUTH_LOGIN_SUCCESS: null,
   AUTH_LOGOUT: null,
-  AUTH_TOKEN_EXPIRED: null,
+  AUTH_TOKEN_EXPIRED_OR_INVALID: null,
 
   DRAWER_COLLAPSE_ALL: null,
   DRAWER_TOGGLE_NAVIGATION: null,

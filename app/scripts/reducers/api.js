@@ -6,7 +6,7 @@ const initialState = {
   pendingRequests: 0,
 }
 
-export default function api(state = initialState, action) {
+export default (state = initialState, action) => {
   switch (action.type) {
   case ActionTypes.API_REQUEST:
     return update(state, {
