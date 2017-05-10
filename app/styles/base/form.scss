@@ -1,18 +1,58 @@
-button,
-.button {
-  border: 0;
+form {
+  max-width: 400px;
 
-  color: $white;
-
-  background-color: $black;
-
-  outline: 0;
-
-  cursor: pointer;
+  margin: 0 auto;
 }
 
-.button--clear {
-  padding: 0;
+label {
+  display: block;
 
-  background-color: transparent;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-base;
+
+  text-align: left;
+  text-transform: uppercase;
+}
+
+input {
+  &[type="text"],
+  &[type="password"] {
+    display: block;
+
+    width: 100%;
+
+    margin-top: 5px;
+    margin-bottom: 10px;
+
+    padding-top: 10px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+
+    border: 0;
+
+    color: $white;
+
+    background-color: $black;
+
+    font-size: $font-size-base;
+
+    outline: 0;
+
+    transition: background .2s ease-in-out;
+
+    &:focus {
+      background-color: $gray-light;
+    }
+  }
+
+  &[type="submit"] {
+    margin-top: 20px;
+  }
+
+  &[disabled] {
+    background-color: $gray;
+
+    cursor: default;
+  }
 }

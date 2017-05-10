@@ -4,6 +4,9 @@ import jwt from 'jsonwebtoken'
 import { APIError } from '../helpers/errors'
 import User from '../models/user'
 
+const JWT_ALGORITHM = 'HS512'
+const JWT_EXPIRATION = '12 hours'
+
 function signup(req, res, next) {
   const { firstname, lastname, email, password } = req.body
 
@@ -40,10 +43,14 @@ function login(req, res, next) {
         )
       }
 
-      const payload = { id: user.id }
-      const token = jwt.sign(payload, process.env.JWT_SECRET)
+      const options = {
+        algorithm: JWT_ALGORITHM,
+        expiresIn: JWT_EXPIRATION,
+      }
+      const payload = { user }
+      const token = jwt.sign(payload, process.env.JWT_SECRET, options)
 
-      res.json({ message: 'ok', token, user })
+      return res.json({ message: 'ok', token, user })
     })
     .catch(err => next(err))
 }

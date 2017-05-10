@@ -1,0 +1,55 @@
+button,
+.button {
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+
+  border: 0;
+
+  color: $white;
+
+  background-color: $black;
+
+  font-weight: $font-weight-bold;
+  font-size: $font-size-base;
+
+  outline: 0;
+
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  transition: background .2s ease-in-out;
+
+  cursor: pointer;
+
+  &:focus,
+  &:visited {
+    color: $white;
+  }
+
+  &:hover {
+    background-color: $gray-light;
+  }
+}
+
+.button--clear {
+  padding: 0;
+
+  background-color: transparent;
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.button-group {
+  display: flex;
+
+  justify-content: space-between;
+
+  .button {
+    flex: 1;
+  }
+}

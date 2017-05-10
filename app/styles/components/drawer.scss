@@ -15,6 +15,8 @@ $_drawer-background-color: rgba($black, .9);
   width: 25%;
   min-width: 300px;
 
+  padding-top: 90px;
+
   background-color: $_drawer-background-color;
 
   transform: translate3d(-100%, 0, 0);
@@ -25,6 +27,9 @@ $_drawer-background-color: rgba($black, .9);
 @include media-breakpoint(xs) {
   .drawer {
     width: 100%;
+    min-width: auto;
+
+    padding-top: 60px;
   }
 }
 

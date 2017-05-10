@@ -1,15 +1,21 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 class NavigationLinks extends Component {
-  render() {
+  static propTypes = {
+    isParticipant: PropTypes.bool.isRequired,
+  }
+
+  renderParticipantNavigation() {
     return (
       <ul className="navigation-links">
         <li className="navigation-links__item">
           <Link to="/">Home</Link>
         </li>
         <li className="navigation-links__item">
-          <Link to="/test">Test</Link>
+          <Link to="/calendar">Calendar</Link>
         </li>
         <li className="navigation-links__item">
           <Link to="/about">About</Link>
@@ -17,6 +23,37 @@ class NavigationLinks extends Component {
       </ul>
     )
   }
+
+  renderDefaultNavigation() {
+    return (
+      <ul className="navigation-links">
+        <li className="navigation-links__item">
+          <Link to="/">Home</Link>
+        </li>
+        <li className="navigation-links__item">
+          <Link to="/calendar">Calendar</Link>
+        </li>
+        <li className="navigation-links__item">
+          <Link to="/about">About</Link>
+        </li>
+      </ul>
+    )
+  }
+
+  render() {
+    if (this.props.isParticipant) {
+      return this.renderParticipantNavigation()
+    }
+    return this.renderDefaultNavigation()
+  }
 }
 
-export default NavigationLinks
+function mapStateToProps(state) {
+  return {
+    isParticipant: state.user.isParticipant,
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(NavigationLinks)

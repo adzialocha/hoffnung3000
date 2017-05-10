@@ -42,6 +42,14 @@ const User = db.sequelize.define('user', {
       notEmpty: true,
     },
   },
+  isAdmin: {
+    type: db.Sequelize.BOOLEAN,
+    allowNull: false,
+  },
+  isParticipant: {
+    type: db.Sequelize.BOOLEAN,
+    allowNull: false,
+  },
 }, {
   hooks: {
     beforeCreate: user => {
@@ -53,12 +61,22 @@ const User = db.sequelize.define('user', {
       return bcrypt.compareSync(password, this.password)
     },
     toJSON() {
-      const { id, firstname, lastname, email } = this.get()
+      const {
+        id,
+        firstname,
+        lastname,
+        email,
+        isAdmin,
+        isParticipant,
+      } = this.get()
+
       return Object.assign({}, {
         id,
         firstname,
         lastname,
         email,
+        isAdmin,
+        isParticipant,
       })
     },
   },

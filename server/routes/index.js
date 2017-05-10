@@ -2,12 +2,13 @@ import express from 'express'
 import expressValidation from 'express-validation'
 import httpStatus from 'http-status'
 import { EmptyResultError } from 'sequelize'
-
-import authRoutes from './auth'
-import userRoutes from './user'
+import winston from 'winston'
 
 import passport from '../services/passport'
 import { APIError } from '../helpers/errors'
+
+import authRoutes from './auth'
+import userRoutes from './user'
 
 const router = express.Router() // eslint-disable-line new-cap
 
@@ -59,6 +60,10 @@ router.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
     status: err.status,
     stack: process.env.NODE_ENV === 'development' ? err.stack : {},
   })
+
+  if (process.env.NODE_ENV === 'development') {
+    winston.error(err)
+  }
 })
 
 export default router

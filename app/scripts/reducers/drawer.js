@@ -1,4 +1,4 @@
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import { LOCATION_CHANGE } from 'react-router-redux'
 
 import ActionTypes from '../actionTypes'
@@ -8,7 +8,7 @@ const initialState = {
   isSidebarExpanded: false,
 }
 
-export default function modal(state = initialState, action) {
+export default (state = initialState, action) => {
   switch (action.type) {
   case LOCATION_CHANGE:
   case ActionTypes.DRAWER_COLLAPSE_ALL:
