@@ -1,4 +1,4 @@
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import { LOCATION_CHANGE } from 'react-router-redux'
 
 import ActionTypes from '../actionTypes'

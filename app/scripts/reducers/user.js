@@ -1,4 +1,4 @@
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 
 import ActionTypes from '../actionTypes'
 import { jwtDecode } from '../utils/jwt'
