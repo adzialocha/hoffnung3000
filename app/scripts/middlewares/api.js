@@ -1,10 +1,13 @@
 import fetch from 'isomorphic-fetch'
+import { push } from 'react-router-redux'
 
 import ActionTypes from '../actionTypes'
-import { getItem } from '../utils/storage'
+import parameterize from '../utils/parameterize'
+import { getItem } from '../services/storage'
 
 export const API_ENDPOINT = '/api/'
 export const API_REQUEST = Symbol('api-request')
+export const REDIRECT = Symbol('redirect')
 
 function getErrorMessage(error) {
   if (typeof error === 'string') {
@@ -42,12 +45,16 @@ function request(path, method = 'GET', body = {}) {
     credentials: Object.keys(body).includes('password') ? 'include' : 'omit',
   }
 
-  if (method !== 'GET') {
+  let paramsStr = ''
+
+  if (method === 'GET') {
+    paramsStr = parameterize(body)
+  } else {
     options.body = JSON.stringify(body)
   }
 
   return new Promise((resolve, reject) => {
-    fetch(API_ENDPOINT + path.join('/'), options)
+    fetch(`${API_ENDPOINT}${path.join('/')}${paramsStr}`, options)
       .then((response) => {
         const contentType = response.headers.get('content-type')
         if (contentType && contentType.includes('application/json')) {
@@ -80,7 +87,13 @@ export default store => next => action => {
   })
 
   if (types.request) {
-    store.dispatch({ ...types.request })
+    if ('type' in types.request) {
+      store.dispatch({ ...types.request })
+    }
+
+    if (REDIRECT in types.request) {
+      store.dispatch(push(types.request[REDIRECT]))
+    }
   }
 
   return request(path, method, body)
@@ -91,7 +104,13 @@ export default store => next => action => {
       })
 
       if (types.success) {
-        store.dispatch({ ...types.success, payload })
+        if ('type' in types.success) {
+          store.dispatch({ ...types.success, payload })
+        }
+
+        if (REDIRECT in types.success) {
+          store.dispatch(push(types.success[REDIRECT]))
+        }
       }
     })
     .catch((error) => {
@@ -101,7 +120,13 @@ export default store => next => action => {
       })
 
       if (types.failure) {
-        store.dispatch({ ...types.failure, error })
+        if ('type' in types.request) {
+          store.dispatch({ ...types.failure, error })
+        }
+
+        if (REDIRECT in types.failure) {
+          store.dispatch(push(types.failure[REDIRECT]))
+        }
       }
     })
 }

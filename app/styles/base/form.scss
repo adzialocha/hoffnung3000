@@ -14,39 +14,36 @@ label {
   text-transform: uppercase;
 }
 
-input {
-  &[type="text"],
-  &[type="password"] {
-    display: block;
+%form-style {
+  display: block;
 
-    width: 100%;
+  width: 100%;
 
-    margin-top: 5px;
-    margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
 
-    padding-top: 10px;
-    padding-right: 15px;
-    padding-bottom: 10px;
-    padding-left: 15px;
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  padding-left: 15px;
 
-    border: 0;
-    border-radius: 0;
+  border: 0;
+  border-radius: 0;
 
-    color: $white;
+  color: $white;
 
-    background-color: $black;
+  background-color: $black;
 
-    font-size: $font-size-base;
+  font-size: $font-size-base;
 
-    outline: 0;
+  outline: 0;
 
-    transition: background .2s ease-in-out;
+  transition: background .2s ease-in-out;
 
-    -webkit-appearance: none; // sass-lint:disable-line no-vendor-prefixes
+  -webkit-appearance: none; // sass-lint:disable-line no-vendor-prefixes
 
-    &:focus {
-      background-color: $gray-light;
-    }
+  &:focus {
+    background-color: $gray-light;
   }
 
   &[type="submit"] {
@@ -57,5 +54,21 @@ input {
     background-color: $gray;
 
     cursor: default;
+  }
+}
+
+textarea {
+  @extend %form-style;
+
+  max-width: 100%;
+  min-height: 200px;
+
+  padding: 15px;
+}
+
+input {
+  &[type="text"],
+  &[type="password"] {
+    @extend %form-style;
   }
 }

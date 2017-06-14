@@ -2,7 +2,7 @@ import update from 'immutability-helper'
 import { LOCATION_CHANGE } from 'react-router-redux'
 
 import ActionTypes from '../actionTypes'
-import { setItem, removeItem } from '../utils/storage'
+import { setItem, removeItem } from '../services/storage'
 
 const CRITICAL_API_ERROR_CODES = [401, 403]
 
@@ -16,6 +16,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
   case ActionTypes.AUTH_LOGIN_REQUEST:
     return update(state, {
+      errorMessage: { $set: '' },
       isLoading: { $set: true },
     })
   case LOCATION_CHANGE:

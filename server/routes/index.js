@@ -7,7 +7,10 @@ import winston from 'winston'
 import passport from '../services/passport'
 import { APIError } from '../helpers/errors'
 
+import pageController from '../controllers/page'
+
 import authRoutes from './auth'
+import pageRoutes from './page'
 import userRoutes from './user'
 
 const router = express.Router() // eslint-disable-line new-cap
@@ -21,11 +24,14 @@ router.get('/health-check', (req, res) =>
 // API routes
 
 router.use('/auth', authRoutes)
+router.route('/pages/:resourceSlug')
+  .get(pageController.findOne)
 
 router.use('/*', passport.authenticate('jwt', { session: false }), (req, res, next) => {
   next()
 })
 
+router.use('/pages', pageRoutes)
 router.use('/users', userRoutes)
 
 // API error handling

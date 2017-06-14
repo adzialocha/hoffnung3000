@@ -1,14 +1,16 @@
-import User from '../models/user'
+import Page from '../models/page'
 
 const DEFAULT_LIMIT = 25
 const DEFAULT_OFFSET = 0
 
 function lookup(req, res, next) {
-  User.findById(req.params.resourceId, {
+  Page.findOne({
+    where: {
+      slug: req.params.resourceSlug,
+    },
     rejectOnEmpty: true,
   })
-    .then(user => {
-      req.ownerId = user.id
+    .then(() => {
       next()
       return null
     })
@@ -16,10 +18,13 @@ function lookup(req, res, next) {
 }
 
 function findOne(req, res, next) {
-  User.findById(req.params.resourceId, {
+  Page.findOne({
+    where: {
+      slug: req.params.resourceSlug,
+    },
     rejectOnEmpty: true,
   })
-    .then(user => res.json(user))
+    .then(page => res.json(page))
     .catch(err => next(err))
 }
 
@@ -29,7 +34,7 @@ function findAll(req, res, next) {
     offset = DEFAULT_OFFSET,
   } = req.query
 
-  User.findAndCountAll({
+  Page.findAndCountAll({
     limit,
     offset,
   })
@@ -45,25 +50,37 @@ function findAll(req, res, next) {
 }
 
 function update(req, res, next) {
-  const { firstname, lastname, email } = req.body
+  const { title, slug, content } = req.body
 
-  User.update({
-    firstname,
-    lastname,
-    email,
+  Page.update({
+    title,
+    slug,
+    content,
   }, {
     where: {
-      id: req.params.resourceId,
+      slug: req.params.resourceSlug,
     },
   })
-    .then(user => res.json(user))
+    .then(page => res.json(page))
+    .catch(err => next(err))
+}
+
+function create(req, res, next) {
+  const { title, slug, content } = req.body
+
+  Page.create({
+    title,
+    slug,
+    content,
+  })
+    .then((user) => { res.json({ message: 'ok', user }) })
     .catch(err => next(err))
 }
 
 function destroy(req, res, next) {
-  User.destroy({
+  Page.destroy({
     where: {
-      id: req.params.resourceId,
+      slug: req.params.resourceSlug,
     },
   })
     .then(() => res.json({ message: 'ok' }))
@@ -74,6 +91,7 @@ export default {
   lookup,
   findOne,
   findAll,
+  create,
   update,
   destroy,
 }

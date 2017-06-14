@@ -45,10 +45,12 @@ const User = db.sequelize.define('user', {
   isAdmin: {
     type: db.Sequelize.BOOLEAN,
     allowNull: false,
+    defaultValue: false,
   },
   isParticipant: {
     type: db.Sequelize.BOOLEAN,
     allowNull: false,
+    defaultValue: false,
   },
 }, {
   hooks: {
@@ -56,30 +58,31 @@ const User = db.sequelize.define('user', {
       user.password = generateHash(user.password)
     },
   },
-  instanceMethods: {
-    comparePasswords(password) {
-      return bcrypt.compareSync(password, this.password)
-    },
-    toJSON() {
-      const {
-        id,
-        firstname,
-        lastname,
-        email,
-        isAdmin,
-        isParticipant,
-      } = this.get()
-
-      return Object.assign({}, {
-        id,
-        firstname,
-        lastname,
-        email,
-        isAdmin,
-        isParticipant,
-      })
-    },
-  },
 })
+
+// instance methods
+User.prototype.comparePasswords = function compare(password) {
+  return bcrypt.compareSync(password, this.password)
+}
+
+User.prototype.toJSON = function convert() {
+  const {
+    id,
+    firstname,
+    lastname,
+    email,
+    isAdmin,
+    isParticipant,
+  } = this.get()
+
+  return Object.assign({}, {
+    id,
+    firstname,
+    lastname,
+    email,
+    isAdmin,
+    isParticipant,
+  })
+}
 
 export default User

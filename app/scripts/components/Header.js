@@ -8,6 +8,7 @@ class Header extends Component {
         <div className="logo">
           <Link to="/">HOFFNUNG 3000</Link>
         </div>
+
       </header>
     )
   }

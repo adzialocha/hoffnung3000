@@ -1,55 +1,64 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+
+const ADMIN_NAVIGATION = [
+  { label: 'Home', url: '/' },
+  { label: 'Calendar', url: '/calendar' },
+  { label: 'Admin', url: '/admin' },
+  { label: 'About', url: '/pages/about' },
+]
+
+const PARTICIPANT_NAVIGATION = [
+  { label: 'Home', url: '/' },
+  { label: 'Calendar', url: '/calendar' },
+  { label: 'About', url: '/pages/about' },
+]
+
+const DEFAULT_NAVIGATION = [
+  { label: 'Home', url: '/' },
+  { label: 'Calendar', url: '/calendar' },
+  { label: 'About', url: '/pages/about' },
+]
 
 class NavigationLinks extends Component {
   static propTypes = {
+    isAdmin: PropTypes.bool.isRequired,
     isParticipant: PropTypes.bool.isRequired,
   }
 
-  renderParticipantNavigation() {
-    return (
-      <ul className="navigation-links">
-        <li className="navigation-links__item">
-          <Link to="/">Home</Link>
+  renderNavigationItems(navigation) {
+    return navigation.map((navigationItem, index) => {
+      return (
+        <li className="navigation-links__item" key={index}>
+          <NavLink to={navigationItem.url}>{navigationItem.label}</NavLink>
         </li>
-        <li className="navigation-links__item">
-          <Link to="/calendar">Calendar</Link>
-        </li>
-        <li className="navigation-links__item">
-          <Link to="/about">About</Link>
-        </li>
-      </ul>
-    )
+      )
+    })
   }
 
-  renderDefaultNavigation() {
+  renderNavigation(navigation) {
     return (
       <ul className="navigation-links">
-        <li className="navigation-links__item">
-          <Link to="/">Home</Link>
-        </li>
-        <li className="navigation-links__item">
-          <Link to="/calendar">Calendar</Link>
-        </li>
-        <li className="navigation-links__item">
-          <Link to="/about">About</Link>
-        </li>
+        {this.renderNavigationItems(navigation)}
       </ul>
     )
   }
 
   render() {
-    if (this.props.isParticipant) {
-      return this.renderParticipantNavigation()
+    if (this.props.isAdmin) {
+      return this.renderNavigation(ADMIN_NAVIGATION)
+    } else if (this.props.isParticipant) {
+      return this.renderNavigation(PARTICIPANT_NAVIGATION)
     }
-    return this.renderDefaultNavigation()
+    return this.renderNavigation(DEFAULT_NAVIGATION)
   }
 }
 
 function mapStateToProps(state) {
   return {
+    isAdmin: state.user.isAdmin,
     isParticipant: state.user.isParticipant,
   }
 }

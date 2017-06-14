@@ -1,5 +1,7 @@
 button,
 .button {
+  display: inline-block;
+
   padding-top: 10px;
   padding-right: 15px;
   padding-bottom: 10px;
@@ -34,6 +36,12 @@ button,
 
   &:hover {
     background-color: $gray-light;
+  }
+
+  &[disabled] {
+    background-color: $gray;
+
+    cursor: not-allowed;
   }
 }
 
