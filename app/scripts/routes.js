@@ -4,10 +4,6 @@ import { isAdmin, shouldNotBeAuthenticated } from './auth'
 
 import {
   Admin,
-  AdminPages,
-  AdminPagesEditForm,
-  AdminPagesNewForm,
-  AdminUsers,
   Calendar,
   Home,
   Login,
@@ -25,10 +21,6 @@ export default class Routes extends Component {
         <Route component={Calendar} path="/calendar" />
         <Route component={Page} path="/pages/:slug" />
         <Route component={isAdmin(Admin)} path="/admin" />
-        <Route component={isAdmin(AdminUsers)} path="/admin/users/all" />
-        <Route component={isAdmin(AdminPages)} path="/admin/pages/all" />
-        <Route component={isAdmin(AdminPagesNewForm)} path="/admin/pages/new" />
-        <Route component={isAdmin(AdminPagesEditForm)} path="/admin/pages/:pageSlug/edit" />
       </main>
     )
   }
