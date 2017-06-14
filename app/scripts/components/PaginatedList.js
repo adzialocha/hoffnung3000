@@ -19,13 +19,6 @@ class PaginatedList extends Component {
     actions: [],
   }
 
-  renderSpinner() {
-    if (!this.props.isLoading) {
-      return null
-    }
-    return <div className="paginated-list__spinner" />
-  }
-
   renderTableCellString(key, value) {
     return (
       <td className="paginated-list__row-cell" key={key}>
@@ -113,9 +106,12 @@ class PaginatedList extends Component {
   }
 
   render() {
+    if (this.props.isLoading) {
+      return <p>Loading ...</p>
+    }
+
     return (
       <div className="paginated-list">
-        { this.renderSpinner() }
         <table className="paginated-list__table">
           <thead>
             <tr className="paginated-list__header">
