@@ -5,10 +5,10 @@ import { LoginForm } from '../components'
 class Login extends Component {
   render() {
     return (
-      <article>
+      <section>
         <h1>Login</h1>
         <LoginForm />
-      </article>
+      </section>
     )
   }
 }

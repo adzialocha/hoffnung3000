@@ -3,4 +3,5 @@ var path = require('path')
 module.exports = {
   'config': path.resolve('server', 'database', 'config.js'),
   'migrations-path': path.resolve('server', 'database', 'migrations'),
+  'seeders-path': path.resolve('server', 'database', 'seeders'),
 }

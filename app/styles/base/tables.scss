@@ -1,0 +1,38 @@
+table {
+  border-collapse: collapse;
+
+  width: 100%;
+}
+
+td,
+th {
+  padding: 10px;
+
+  text-align: left;
+
+  &:last-child {
+    text-align: right;
+  }
+}
+
+th {
+  text-transform: uppercase;
+}
+
+tbody {
+  tr {
+    &:nth-child(odd) {
+      background-color: $gray-lighter;
+    }
+
+    &:hover {
+      background-color: $gray-light;
+    }
+
+    td {
+      &:first-child {
+        font-weight: $font-weight-bold;
+      }
+    }
+  }
+}

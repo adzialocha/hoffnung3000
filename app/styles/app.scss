@@ -1,6 +1,6 @@
 // vendor
 
-@import "../../bower_components/normalize-css/normalize";
+@import "../../node_modules/normalize.css/normalize";
 
 // common
 
@@ -13,18 +13,24 @@
 
 @import "base/buttons";
 @import "base/form";
+@import "base/hr";
 @import "base/layout";
 @import "base/links";
+@import "base/tables";
 @import "base/typo";
 
 // components
 
+@import "components/bar";
 @import "components/drawer";
-@import "components/error-message";
+@import "components/form";
 @import "components/hamburger";
+@import "components/inline-navigation";
 @import "components/logo";
 @import "components/navigation";
 @import "components/navigation-links";
+@import "components/paginated-list";
+@import "components/paginated-list-navigation";
 @import "components/sidebar";
 @import "components/sidebar-toggle";
 
@@ -33,3 +39,4 @@
 @import "layout/footer";
 @import "layout/header";
 @import "layout/main";
+@import "layout/section";

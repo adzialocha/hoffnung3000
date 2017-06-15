@@ -11,8 +11,8 @@ function request(path, method = 'GET', body = {}, types = {}) {
   }
 }
 
-export function getRequest(path, types) {
-  return request(path, 'GET', {}, types)
+export function getRequest(path, params, types) {
+  return request(path, 'GET', params, types)
 }
 
 export function postRequest(path, body, types) {

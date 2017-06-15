@@ -7,7 +7,7 @@ import { createBrowserHistory } from 'history'
 import configureStore from './store'
 import Routes from './routes'
 import { App } from './containers'
-import { getItem, hasItem } from './utils/storage'
+import { getItem, hasItem } from './services/storage'
 import { checkExistingToken } from './actions/auth'
 
 const initialState = {}

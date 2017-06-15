@@ -1,0 +1,45 @@
+// .form {
+// }
+
+.form__error {
+  margin-bottom: 10px;
+
+  padding: 10px;
+
+  color: $white;
+
+  background-color: $red;
+}
+
+.form__field {
+  margin-bottom: 25px;
+}
+
+.form__field--inline {
+  display: flex;
+
+  align-items: center;
+
+  .form__field-input,
+  .form__field-label {
+    display: inline-block;
+  }
+}
+
+.form__field--has-error,
+.form__field--has-warning {
+  .form__field-input {
+    background-color: $red;
+  }
+}
+
+// .form__field-label {
+// }
+
+// .form__field-input {
+// }
+
+.form__field-error,
+.form__field-warning {
+  color: $red;
+}

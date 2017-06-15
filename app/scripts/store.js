@@ -6,6 +6,8 @@ import { routerMiddleware } from 'react-router-redux'
 import api from './middlewares/api'
 import reducers from './reducers'
 
+let store
+
 export default function configureStore(initialState, history) {
   const middleware = [
     thunk,
@@ -17,10 +19,14 @@ export default function configureStore(initialState, history) {
     middleware.push(createLogger())
   }
 
-  const store = createStore(
+  store = createStore(
     reducers,
     applyMiddleware(...middleware),
   )
 
+  return store
+}
+
+export function getStore() {
   return store
 }

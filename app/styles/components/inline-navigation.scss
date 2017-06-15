@@ -1,0 +1,15 @@
+.inline-navigation {
+  margin: 0;
+
+  padding: 0;
+
+  list-style: none;
+}
+
+.inline-navigation__item {
+  display: inline-block;
+
+  + .inline-navigation__item {
+    margin-left: 10px;
+  }
+}

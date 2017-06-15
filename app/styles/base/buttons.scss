@@ -1,5 +1,7 @@
 button,
 .button {
+  display: inline-block;
+
   padding-top: 10px;
   padding-right: 15px;
   padding-bottom: 10px;
@@ -32,8 +34,15 @@ button,
     color: $white;
   }
 
+  &:focus,
   &:hover {
     background-color: $gray-light;
+  }
+
+  &[disabled] {
+    background-color: $gray-light;
+
+    cursor: not-allowed;
   }
 }
 
@@ -42,8 +51,36 @@ button,
 
   background-color: transparent;
 
+  &:focus,
   &:hover {
     background-color: transparent;
+  }
+}
+
+.button--blue {
+  background-color: $blue;
+
+  &:focus,
+  &:hover {
+    background-color: lighten($blue, 25%);
+  }
+}
+
+.button--green {
+  background-color: $green;
+
+  &:focus,
+  &:hover {
+    background-color: lighten($green, 25%);
+  }
+}
+
+.button--red {
+  background-color: $red;
+
+  &:focus,
+  &:hover {
+    background-color: lighten($red, 25%);
   }
 }
 

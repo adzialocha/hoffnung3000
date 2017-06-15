@@ -1,72 +1,51 @@
+import {
+  create,
+  destroy,
+  findAll,
+  findOne,
+  findOneWithSlug,
+  update,
+} from './base'
+
 import User from '../models/user'
 
-const DEFAULT_LIMIT = 50
-const DEFAULT_OFFSET = 0
-
-function lookup(req, res, next) {
-  User.findById(req.params.resourceId, {
-    rejectOnEmpty: true,
-  })
-    .then(user => {
-      req.ownerId = user.id
-      next()
-      return null
-    })
-    .catch(err => next(err))
-}
-
-function findOne(req, res, next) {
-  User.findById(req.params.resourceId, {
-    rejectOnEmpty: true,
-  })
-    .then(user => res.json(user))
-    .catch(err => next(err))
-}
-
-function findAll(req, res, next) {
-  const {
-    limit = DEFAULT_LIMIT,
-    offset = DEFAULT_OFFSET,
-  } = req.query
-
-  User.findAll({
-    limit,
-    offset,
-  })
-    .then(users => res.json(users))
-    .catch(err => next(err))
-}
-
-function update(req, res, next) {
-  const { firstname, lastname, email } = req.body
-
-  User.update({
-    firstname,
-    lastname,
-    email,
-  }, {
-    where: {
-      id: req.params.resourceId,
-    },
-  })
-    .then(user => res.json(user))
-    .catch(err => next(err))
-}
-
-function destroy(req, res, next) {
-  User.destroy({
-    where: {
-      id: req.params.resourceId,
-    },
-  })
-    .then(() => res.json({ message: 'ok' }))
-    .catch(err => next(err))
-}
+const permittedFields = [
+  'email',
+  'firstname',
+  'isAdmin',
+  'isParticipant',
+  'lastname',
+  'password',
+]
 
 export default {
-  lookup,
-  findOne,
-  findAll,
-  update,
-  destroy,
+  lookup: (req, res, next) => {
+    User.findById(req.params.resourceId, {
+      rejectOnEmpty: true,
+    })
+      .then(user => {
+        req.ownerId = user.id
+        next()
+        return null
+      })
+      .catch(err => next(err))
+  },
+  create: (req, res, next) => {
+    return create(User, permittedFields, req, res, next)
+  },
+  destroy: (req, res, next) => {
+    return destroy(User, req, res, next)
+  },
+  findAll: (req, res, next) => {
+    return findAll(User, req, res, next)
+  },
+  findOne: (req, res, next) => {
+    return findOne(User, req, res, next)
+  },
+  findOneWithSlug: (req, res, next) => {
+    return findOneWithSlug(User, req, res, next)
+  },
+  update: (req, res, next) => {
+    return update(User, permittedFields, req, res, next)
+  },
 }

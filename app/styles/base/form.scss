@@ -1,3 +1,5 @@
+$_form-checkbox-size: 37px;
+
 form {
   max-width: 400px;
 
@@ -14,48 +16,91 @@ label {
   text-transform: uppercase;
 }
 
-input {
-  &[type="text"],
-  &[type="password"] {
-    display: block;
+%form-base-style {
+  border: 0;
+  border-radius: 0;
 
-    width: 100%;
+  color: $white;
 
-    margin-top: 5px;
-    margin-bottom: 10px;
+  background-color: $black;
 
-    padding-top: 10px;
-    padding-right: 15px;
-    padding-bottom: 10px;
-    padding-left: 15px;
+  font-size: $font-size-base;
 
-    border: 0;
-    border-radius: 0;
+  outline: 0;
 
-    color: $white;
+  transition: background .2s ease-in-out;
 
-    background-color: $black;
+  -webkit-appearance: none; // sass-lint:disable-line no-vendor-prefixes
 
-    font-size: $font-size-base;
-
-    outline: 0;
-
-    transition: background .2s ease-in-out;
-
-    -webkit-appearance: none; // sass-lint:disable-line no-vendor-prefixes
-
-    &:focus {
-      background-color: $gray-light;
-    }
-  }
-
-  &[type="submit"] {
-    margin-top: 20px;
+  &:focus {
+    background-color: $gray-light;
   }
 
   &[disabled] {
     background-color: $gray;
 
     cursor: default;
+  }
+}
+
+%form-layout-style {
+  display: block;
+
+  width: 100%;
+
+  margin-top: 5px;
+  margin-bottom: 10px;
+
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+}
+
+textarea {
+  @extend %form-base-style;
+  @extend %form-layout-style;
+
+  max-width: 100%;
+  min-height: 200px;
+
+  padding: 15px;
+}
+
+input {
+  &[type="email"],
+  &[type="password"],
+  &[type="text"] {
+    @extend %form-base-style;
+    @extend %form-layout-style;
+  }
+
+  &[type="submit"] {
+    margin-top: 20px;
+  }
+
+  &[type="checkbox"] {
+    @extend %form-base-style;
+
+    width: $_form-checkbox-size;
+    height: $_form-checkbox-size;
+
+    margin-right: 10px;
+
+    cursor: pointer;
+
+    &:checked {
+      &::after {
+        display: block;
+
+        content: "X";
+
+        color: $white;
+
+        font-size: $_form-checkbox-size;
+
+        text-align: center;
+      }
+    }
   }
 }

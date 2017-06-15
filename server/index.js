@@ -81,7 +81,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use('/api', require('./routes'))
 
 // static file hosting
-app.use(express.static(
+app.use('/static', express.static(
   path.join(__dirname, '..', publicDirPath), {
     index: false,
     redirect: false,
@@ -89,7 +89,11 @@ app.use(express.static(
   }
 ))
 
-app.use((req, res) => {
+app.use((req, res, next) => {
+  if (path.extname(req.url)) {
+    next()
+    return
+  }
   res.sendFile(path.join(__dirname, '..', publicDirPath, 'index.html'))
 })
 
