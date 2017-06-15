@@ -29,6 +29,7 @@ class AdminUsersNewForm extends Component {
       <UserForm
         errorMessage={this.props.errorMessage}
         isLoading={this.props.isLoading}
+        showPasswordField={true}
         onSubmit={this.onSubmit}
       />
     )
@@ -37,7 +38,7 @@ class AdminUsersNewForm extends Component {
   render() {
     return (
       <section>
-        <h1>New Page</h1>
+        <h1>New User</h1>
         <Link className="button" to="/admin/users/all">Back to overview</Link>
         <hr />
         { this.renderForm() }

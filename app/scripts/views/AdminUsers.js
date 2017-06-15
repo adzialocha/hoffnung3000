@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { push } from 'react-router-redux'
 
 import { deleteResource } from '../actions/resources'
@@ -40,6 +41,7 @@ class AdminUsers extends Component {
     return (
       <section>
         <h1>Users</h1>
+        <Link className="button" to="/admin/users/new">New User</Link>
         <PaginatedList
           actions={tableActions}
           columns={tableColumns}

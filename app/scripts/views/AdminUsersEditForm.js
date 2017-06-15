@@ -26,7 +26,6 @@ class AdminUsersEditForm extends Component {
   }
 
   onSubmit(values) {
-    console.log(values)
     this.props.updateResource('users', this.props.resourceId, values)
   }
 

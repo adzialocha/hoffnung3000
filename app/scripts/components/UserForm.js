@@ -9,6 +9,12 @@ const validate = values => {
   if (!values.email) {
     errors.email = 'Required'
   }
+  if (!values.firstname) {
+    errors.firstname = 'Required'
+  }
+  if (!values.lastname) {
+    errors.lastname = 'Required'
+  }
   return errors
 }
 
@@ -17,11 +23,13 @@ class UserForm extends Component {
     errorMessage: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
+    showPasswordField: PropTypes.bool,
   }
 
   static defaultProps = {
     errorMessage: undefined,
     isLoading: false,
+    showPasswordField: false,
   }
 
   renderErrorMessage() {
@@ -33,6 +41,22 @@ class UserForm extends Component {
       )
     }
     return null
+  }
+
+  renderPasswordField() {
+    if (!this.props.showPasswordField) {
+      return null
+    }
+
+    return (
+      <Field
+        component={FormField}
+        disabled={this.props.isLoading}
+        label="Password (plaintext)"
+        name="password"
+        type="text"
+      />
+    )
   }
 
   render() {
@@ -53,6 +77,7 @@ class UserForm extends Component {
           name="lastname"
           type="text"
         />
+        <hr />
         <Field
           component={FormField}
           disabled={this.props.isLoading}
@@ -60,6 +85,7 @@ class UserForm extends Component {
           name="email"
           type="email"
         />
+        { this.renderPasswordField() }
         <hr />
         <Field
           component={FormCheckbox}
