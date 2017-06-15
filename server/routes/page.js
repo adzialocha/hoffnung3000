@@ -11,13 +11,12 @@ router.route('/')
   .get(onlyAdmin, pageController.findAll)
   .post(onlyAdmin, validate(pageValidation.createPage), pageController.create)
 
-router.route('/:resourceSlug')
+router.route('/:resourceId')
   .put(
-    pageController.lookup,
     onlyAdmin,
     validate(pageValidation.updatePage),
     pageController.update
   )
-  .delete(pageController.lookup, onlyAdmin, pageController.destroy)
+  .delete(onlyAdmin, pageController.destroy)
 
 export default router

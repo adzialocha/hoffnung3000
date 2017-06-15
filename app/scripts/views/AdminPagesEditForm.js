@@ -3,26 +3,30 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { fetchPage, updatePage } from '../actions/pages'
+import { cachedResource } from '../services/resources'
+import { fetchResource, updateResource } from '../actions/resources'
 import { PageForm } from '../components'
 
 class AdminPagesEditForm extends Component {
   static propTypes = {
-    errorMessage: PropTypes.string.isRequired,
-    fetchPage: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string,
+    fetchResource: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    pageData: PropTypes.object.isRequired,
-    slug: PropTypes.string.isRequired,
-    updatePage: PropTypes.func.isRequired,
+    resourceData: PropTypes.object.isRequired,
+    resourceId: PropTypes.string.isRequired,
+    updateResource: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    errorMessage: '',
   }
 
   componentDidMount() {
-    this.props.fetchPage(this.props.slug)
+    this.props.fetchResource('pages', this.props.resourceId)
   }
 
   onSubmit(values) {
-    const { title, slug, content } = values
-    this.props.updatePage(title, slug, content)
+    this.props.updateResource('pages', this.props.resourceId, values)
   }
 
   renderForm() {
@@ -33,7 +37,7 @@ class AdminPagesEditForm extends Component {
     return (
       <PageForm
         errorMessage={this.props.errorMessage}
-        initialValues={this.props.pageData}
+        initialValues={this.props.resourceData}
         onSubmit={this.onSubmit}
       />
     )
@@ -51,7 +55,12 @@ class AdminPagesEditForm extends Component {
   }
 
   title() {
-    return (!this.props.isLoading) ? `"${this.props.pageData.title}"` : ''
+    const { title } = this.props.resourceData
+    if (!(title && title.length > 0)) {
+      return ''
+    }
+
+    return `"${this.props.resourceData.title}"`
   }
 
   constructor(props) {
@@ -62,19 +71,22 @@ class AdminPagesEditForm extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { isLoading, pageData, errorMessage } = state.adminPage
+  const { errorMessage } = state.resources
+  const { resourceId } = ownProps.match.params
+  const resource = cachedResource('pages', resourceId)
+  const { isLoading, object } = resource
 
   return {
     errorMessage,
     isLoading,
-    pageData,
-    slug: ownProps.match.params.pageSlug,
+    resourceData: object,
+    resourceId,
   }
 }
 
 export default connect(
   mapStateToProps, {
-    fetchPage,
-    updatePage,
+    fetchResource,
+    updateResource,
   }
 )(AdminPagesEditForm)

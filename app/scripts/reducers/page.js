@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
     })
   case ActionTypes.PAGE_SUCCESS:
     return update(state, {
-      content: { $set: action.payload.content_html },
+      content: { $set: action.payload.contentHtml },
       isLoading: { $set: false },
       title: { $set: action.payload.title },
     })

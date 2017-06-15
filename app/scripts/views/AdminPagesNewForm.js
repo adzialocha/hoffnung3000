@@ -3,19 +3,25 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { createNewPage } from '../actions/pages'
+import { cachedResource } from '../services/resources'
+import { createResource } from '../actions/resources'
 import { PageForm } from '../components'
 
 class AdminPagesNewForm extends Component {
   static propTypes = {
-    createNewPage: PropTypes.func.isRequired,
+    createResource: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    nextRandomId: PropTypes.string.isRequired,
   }
 
   onSubmit(values) {
-    const { title, slug, content } = values
-    this.props.createNewPage(title, slug, content)
+    this.props.createResource(
+      'pages',
+      this.props.nextRandomId,
+      values,
+      '/admin/pages/all'
+    )
   }
 
   renderForm() {
@@ -47,16 +53,18 @@ class AdminPagesNewForm extends Component {
 }
 
 function mapStateToProps(state) {
-  const { isLoading, errorMessage } = state.adminPage
+  const { errorMessage, nextRandomId } = state.resources
+  const { isLoading } = cachedResource('pages', nextRandomId)
 
   return {
     errorMessage,
     isLoading,
+    nextRandomId,
   }
 }
 
 export default connect(
   mapStateToProps, {
-    createNewPage,
+    createResource,
   }
 )(AdminPagesNewForm)

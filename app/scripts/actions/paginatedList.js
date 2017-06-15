@@ -27,3 +27,10 @@ export function fetchList(resourceName, page = 0) {
     },
   })
 }
+
+export function removeFromList(resourceId) {
+  return {
+    type: ActionTypes.PAGINATED_LIST_REMOVE_ITEM,
+    resourceId,
+  }
+}

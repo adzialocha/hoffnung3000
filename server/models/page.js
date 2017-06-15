@@ -31,19 +31,11 @@ const Page = db.sequelize.define('page', {
 
 // instance methods
 Page.prototype.toJSON = function convert() {
-  const {
-    id,
-    slug,
-    title,
-    content,
-  } = this.get()
+  const data = this.get()
 
   return Object.assign({}, {
-    id,
-    slug,
-    title,
-    content,
-    content_html: marked(content),
+    ...data,
+    contentHtml: marked(data.content),
   })
 }
 

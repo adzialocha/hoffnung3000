@@ -20,7 +20,7 @@ class Admin extends Component {
         <Route component={AdminUsers} path="/admin/users/all" />
         <Route component={AdminPages} path="/admin/pages/all" />
         <Route component={AdminPagesNewForm} path="/admin/pages/new" />
-        <Route component={AdminPagesEditForm} path="/admin/pages/:pageSlug/edit" />
+        <Route component={AdminPagesEditForm} path="/admin/pages/:resourceId/edit" />
       </div>
     )
   }

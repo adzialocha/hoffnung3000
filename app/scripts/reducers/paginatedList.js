@@ -15,6 +15,12 @@ function sortItems(list) {
   })
 }
 
+function remoteItem(state, resourceId) {
+  return state.listItems.filter((listItem) => {
+    return listItem.id !== resourceId
+  })
+}
+
 export default (state = initialState, action) => {
   switch (action.type) {
   case ActionTypes.PAGINATED_LIST_REQUEST:
@@ -33,6 +39,10 @@ export default (state = initialState, action) => {
   case ActionTypes.PAGINATED_LIST_FAILURE:
     return update(state, {
       isLoading: { $set: false },
+    })
+  case ActionTypes.PAGINATED_LIST_REMOVE_ITEM:
+    return update(state, {
+      listItems: { $set: remoteItem(state, action.resourceId) },
     })
   default:
     return state

@@ -1,23 +1,23 @@
 import { combineReducers } from 'redux'
-import { reducer as formReducer } from 'redux-form'
+import { reducer as form } from 'redux-form'
 import { routerReducer as routing } from 'react-router-redux'
 
-import adminPage from './adminPage'
 import api from './api'
 import auth from './auth'
 import drawer from './drawer'
 import page from './page'
 import paginatedList from './paginatedList'
+import resources from './resources'
 import user from './user'
 
 const rootReducer = combineReducers({
-  adminPage,
   api,
   auth,
   drawer,
-  form: formReducer,
+  form,
   page,
   paginatedList,
+  resources,
   routing,
   user,
 })

@@ -15,7 +15,7 @@ export default {
       content: Joi.string().required(),
     },
     params: {
-      resourceSlug: Joi.string().required(),
+      resourceId: Joi.string().required(),
     },
   },
 }

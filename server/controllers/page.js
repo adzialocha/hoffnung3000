@@ -3,21 +3,15 @@ import Page from '../models/page'
 const DEFAULT_LIMIT = 25
 const DEFAULT_OFFSET = 0
 
-function lookup(req, res, next) {
-  Page.findOne({
-    where: {
-      slug: req.params.resourceSlug,
-    },
+function findOne(req, res, next) {
+  Page.findById(req.params.resourceId, {
     rejectOnEmpty: true,
   })
-    .then(() => {
-      next()
-      return null
-    })
+    .then(page => res.json(page))
     .catch(err => next(err))
 }
 
-function findOne(req, res, next) {
+function findOneWithSlug(req, res, next) {
   Page.findOne({
     where: {
       slug: req.params.resourceSlug,
@@ -58,10 +52,12 @@ function update(req, res, next) {
     content,
   }, {
     where: {
-      slug: req.params.resourceSlug,
+      id: req.params.resourceId,
     },
+    limit: 1,
+    returning: true,
   })
-    .then(page => res.json(page))
+    .then(result => res.json(result[1][0]))
     .catch(err => next(err))
 }
 
@@ -72,24 +68,27 @@ function create(req, res, next) {
     title,
     slug,
     content,
+  }, {
+    returning: true,
   })
-    .then((user) => { res.json({ message: 'ok', user }) })
+    .then((page) => { res.json(page) })
     .catch(err => next(err))
 }
 
 function destroy(req, res, next) {
   Page.destroy({
     where: {
-      slug: req.params.resourceSlug,
+      id: req.params.resourceId,
     },
+    limit: 1,
   })
     .then(() => res.json({ message: 'ok' }))
     .catch(err => next(err))
 }
 
 export default {
-  lookup,
   findOne,
+  findOneWithSlug,
   findAll,
   create,
   update,

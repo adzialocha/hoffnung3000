@@ -4,21 +4,24 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { push } from 'react-router-redux'
 
-import { deletePage } from '../actions/pages'
+import { deleteResource } from '../actions/resources'
 import { PaginatedList, PaginatedListNavigation } from '../components'
+import { removeFromList } from '../actions/paginatedList'
 
 class AdminPages extends Component {
   static propTypes = {
-    deletePage: PropTypes.func.isRequired,
+    deleteResource: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
+    removeFromList: PropTypes.func.isRequired,
   }
 
   onEditClick(page) {
-    this.props.push(`/admin/pages/${page.slug}/edit`)
+    this.props.push(`/admin/pages/${page.id}/edit`)
   }
 
   onDeleteClick(page) {
-    this.props.deletePage(page.slug)
+    this.props.deleteResource('pages', page.id)
+    this.props.removeFromList(page.id)
   }
 
   render() {
@@ -57,7 +60,8 @@ class AdminPages extends Component {
 
 export default connect(
   null, {
-    deletePage,
+    deleteResource,
     push,
+    removeFromList,
   }
 )(AdminPages)

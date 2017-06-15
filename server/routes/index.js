@@ -24,8 +24,11 @@ router.get('/health-check', (req, res) =>
 // API routes
 
 router.use('/auth', authRoutes)
-router.route('/pages/:resourceSlug')
+
+router.route('/pages/:resourceId(\\d+)/')
   .get(pageController.findOne)
+router.route('/pages/:resourceSlug')
+  .get(pageController.findOneWithSlug)
 
 router.use('/*', passport.authenticate('jwt', { session: false }), (req, res, next) => {
   next()
