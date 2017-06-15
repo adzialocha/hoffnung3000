@@ -1,3 +1,24 @@
 .paginated-list-navigation {
-  margin-top: 20px;
+  display: flex;
+
+  align-items: center;
+}
+
+.paginated-list-navigation__button {
+  width: 50px;
+  height: 37px;
+}
+
+.paginated-list-navigation__indicator {
+  display: flex;
+
+  width: 50px;
+  height: 37px;
+
+  background-color: $gray-lighter;
+
+  text-align: center;
+
+  align-items: center;
+  justify-content: center;
 }

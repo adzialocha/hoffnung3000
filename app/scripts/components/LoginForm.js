@@ -47,7 +47,7 @@ class LoginForm extends Component {
           />
         </label>
         <input
-          className="button"
+          className="button button--blue"
           disabled={this.props.isLoading}
           type="submit"
           value="Login"

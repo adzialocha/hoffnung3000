@@ -67,7 +67,7 @@ class PageForm extends Component {
           type="text"
         />
         <button
-          className="form__submit"
+          className="form__submit button button--blue"
           disabled={this.props.isLoading}
           type="submit"
         >

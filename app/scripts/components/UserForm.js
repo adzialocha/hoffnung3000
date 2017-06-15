@@ -101,7 +101,7 @@ class UserForm extends Component {
         />
         <hr />
         <button
-          className="form__submit"
+          className="form__submit button button--blue"
           disabled={this.props.isLoading}
           type="submit"
         >

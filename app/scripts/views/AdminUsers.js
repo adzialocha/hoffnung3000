@@ -27,6 +27,8 @@ class AdminUsers extends Component {
 
     this.props.deleteResource('users', user.id)
     this.props.removeFromList(user.id)
+
+    return true
   }
 
   render() {
@@ -39,20 +41,35 @@ class AdminUsers extends Component {
     ]
 
     const tableActions = [
-      { title: 'Edit', isAdmin: true, onClick: this.onEditClick },
-      { title: 'Delete', isAdmin: true, onClick: this.onDeleteClick },
+      {
+        title: 'Edit',
+        isAdmin: true,
+        onClick: this.onEditClick,
+      },
+      {
+        title: 'Delete',
+        isAdmin: true,
+        classNameModifier: 'button--red',
+        onClick: this.onDeleteClick,
+      },
     ]
 
     return (
       <section>
         <h1>Users</h1>
-        <Link className="button" to="/admin/users/new">New User</Link>
         <PaginatedList
           actions={tableActions}
           columns={tableColumns}
           onSelect={this.onEditClick}
         />
-        <PaginatedListNavigation resourceName="users" />
+        <div className="bar">
+          <div className="bar__cell bar__cell--align-left">
+            <PaginatedListNavigation resourceName="users" />
+          </div>
+          <div className="bar__cell bar__cell--align-right">
+            <Link className="button button--blue" to="/admin/users/new">New User</Link>
+          </div>
+        </div>
       </section>
     )
   }

@@ -72,6 +72,7 @@ class PaginatedList extends Component {
 
             return (
               <PaginatedListActionButton
+                classNameModifier={action.classNameModifier}
                 item={item}
                 key={key}
                 label={action.title}

@@ -1,0 +1,20 @@
+.bar {
+  display: flex;
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  padding: 10px;
+}
+
+.bar__cell {
+  flex: 0 100%;
+}
+
+.bar__cell--align-left {
+  text-align: left;
+}
+
+.bar__cell--align-right {
+  text-align: right;
+}

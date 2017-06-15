@@ -26,9 +26,13 @@ tbody {
     }
 
     &:hover {
-      color: $white;
+      background-color: $gray-light;
+    }
 
-      background-color: $black;
+    td {
+      &:first-child {
+        font-weight: $font-weight-bold;
+      }
     }
   }
 }

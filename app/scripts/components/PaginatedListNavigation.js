@@ -41,6 +41,9 @@ class PaginatedListNavigation extends Component {
         >
           &lt;
         </button>
+        <div className="paginated-list-navigation__indicator">
+          { this.props.currentPageIndex + 1 }
+        </div>
         <button
           className="paginated-list-navigation__button"
           disabled={this.props.isLoading || !this.hasNextPage()}

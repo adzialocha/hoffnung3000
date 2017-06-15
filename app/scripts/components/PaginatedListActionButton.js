@@ -1,11 +1,17 @@
+import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 class PaginatedListActionButton extends Component {
   static propTypes = {
+    classNameModifier: PropTypes.string,
     item: PropTypes.object.isRequired,
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    classNameModifier: '',
   }
 
   onClick() {
@@ -15,9 +21,15 @@ class PaginatedListActionButton extends Component {
   }
 
   render() {
+    const buttonClasses = classnames([
+      'button',
+      'paginated-list__action-button',
+      this.props.classNameModifier,
+    ])
+
     return (
       <button
-        className="paginated-list__action-button"
+        className={buttonClasses}
         disabled={this.state.isDisabled}
         onClick={this.onClick}
       >

@@ -40,7 +40,7 @@ button,
   }
 
   &[disabled] {
-    background-color: $gray;
+    background-color: $gray-light;
 
     cursor: not-allowed;
   }
@@ -54,6 +54,33 @@ button,
   &:focus,
   &:hover {
     background-color: transparent;
+  }
+}
+
+.button--blue {
+  background-color: $blue;
+
+  &:focus,
+  &:hover {
+    background-color: lighten($blue, 25%);
+  }
+}
+
+.button--green {
+  background-color: $green;
+
+  &:focus,
+  &:hover {
+    background-color: lighten($green, 25%);
+  }
+}
+
+.button--red {
+  background-color: $red;
+
+  &:focus,
+  &:hover {
+    background-color: lighten($red, 25%);
   }
 }
 
