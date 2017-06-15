@@ -83,7 +83,7 @@ function getRevisioningManifest() {
 const handlebarOptions = {
   helpers: {
     assets: (path, context) => {
-      return context.data.root[path]
+      return `/static/${context.data.root[path.replace('/static/', '')]}`
     },
   },
 }
@@ -160,9 +160,7 @@ gulp.task('assets:scripts:app', (done) => {
       message: 'Error: <%= error.message %>',
       title: 'Error on scripts compilation',
     }))
-    .pipe(runIf(isProduction(), uglify({
-      enclose: true,
-    })))
+    .pipe(runIf(isProduction(), uglify()))
     .pipe(rename('app.js'))
     .pipe(gulp.dest(`${TMP_PATH}/scripts/`))
     .on('end', done)
@@ -178,9 +176,7 @@ gulp.task('assets:scripts:vendor', (done) => {
   dependencies.bundle()
     .pipe(source('lib.js'))
     .pipe(buffer())
-    .pipe(runIf(isProduction(), uglify({
-      enclose: true,
-    })))
+    .pipe(runIf(isProduction(), uglify()))
     .pipe(gulp.dest(`${TMP_PATH}/scripts/`))
     .on('end', done)
 })
