@@ -20,6 +20,11 @@ class AdminPages extends Component {
   }
 
   onDeleteClick(page) {
+    const userIsSure = window.confirm('Are you sure?') // eslint-disable-line no-alert
+    if (!userIsSure) {
+      return
+    }
+
     this.props.deleteResource('pages', page.id)
     this.props.removeFromList(page.id)
   }

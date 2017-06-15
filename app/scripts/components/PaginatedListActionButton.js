@@ -10,10 +10,8 @@ class PaginatedListActionButton extends Component {
 
   onClick() {
     this.setState({
-      isDisabled: true,
+      isDisabled: this.props.onClick(this.props.item),
     })
-
-    this.props.onClick(this.props.item)
   }
 
   render() {

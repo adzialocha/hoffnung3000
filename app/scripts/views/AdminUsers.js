@@ -20,6 +20,11 @@ class AdminUsers extends Component {
   }
 
   onDeleteClick(user) {
+    const userIsSure = window.confirm('Are you sure?') // eslint-disable-line no-alert
+    if (!userIsSure) {
+      return false
+    }
+
     this.props.deleteResource('users', user.id)
     this.props.removeFromList(user.id)
   }
