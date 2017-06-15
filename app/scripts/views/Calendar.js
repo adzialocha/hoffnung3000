@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 
+import { StaticPage } from '../components'
+
 class Calendar extends Component {
   render() {
     return (
-      <div>
-        <h1>Calendar</h1>
-      </div>
+      <section>
+        <StaticPage slug="calendar" />
+      </section>
     )
   }
 }

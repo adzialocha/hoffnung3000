@@ -22,6 +22,15 @@ class Footer extends Component {
             <NavLink to="/pages/imprint">Imprint</NavLink>
           </li>
         </ul>
+
+        <div className="sponsors">
+          <p className="sponsors__text">Supported by</p>
+          <img
+            className="sponsors__item"
+            src="/static/images/logo-senatsverwaltung-berlin.png"
+            title="Senatsverwaltung für Kultur und Europa - Berlin"
+          />
+        </div>
       </footer>
     )
   }
