@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 
+import { StaticPage } from '../components'
+
 class Home extends Component {
   render() {
     return (
       <section>
-        <h1>Home</h1>
+        <StaticPage slug="home" />
       </section>
     )
   }
