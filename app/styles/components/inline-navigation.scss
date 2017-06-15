@@ -9,6 +9,8 @@
 .inline-navigation__item {
   display: inline-block;
 
+  text-transform: uppercase;
+
   + .inline-navigation__item {
     margin-left: 10px;
   }
