@@ -7,6 +7,8 @@ import {
   AdminPagesEditForm,
   AdminPagesNewForm,
   AdminUsers,
+  AdminUsersEditForm,
+  AdminUsersNewForm,
 } from './'
 
 class Admin extends Component {
@@ -18,6 +20,8 @@ class Admin extends Component {
           <NavLink className="button" to="/admin/pages/all">Pages</NavLink>
         </section>
         <Route component={AdminUsers} path="/admin/users/all" />
+        <Route component={AdminUsersNewForm} path="/admin/users/new" />
+        <Route component={AdminUsersEditForm} path="/admin/users/:resourceId/edit" />
         <Route component={AdminPages} path="/admin/pages/all" />
         <Route component={AdminPagesNewForm} path="/admin/pages/new" />
         <Route component={AdminPagesEditForm} path="/admin/pages/:resourceId/edit" />

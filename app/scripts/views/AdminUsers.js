@@ -1,15 +1,26 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 
+import { deleteResource } from '../actions/resources'
 import { PaginatedList, PaginatedListNavigation } from '../components'
+import { removeFromList } from '../actions/paginatedList'
 
 class AdminUsers extends Component {
+  static propTypes = {
+    deleteResource: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
+    removeFromList: PropTypes.func.isRequired,
+  }
+
   onEditClick(user) {
     this.props.push(`/admin/users/${user.id}/edit`)
   }
 
   onDeleteClick(user) {
-    console.log('delete', user)
+    this.props.deleteResource('users', user.id)
+    this.props.removeFromList(user.id)
   }
 
   render() {
@@ -49,5 +60,8 @@ class AdminUsers extends Component {
 
 export default connect(
   null, {
+    deleteResource,
+    push,
+    removeFromList,
   }
 )(AdminUsers)

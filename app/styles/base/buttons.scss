@@ -34,6 +34,7 @@ button,
     color: $white;
   }
 
+  &:focus,
   &:hover {
     background-color: $gray-light;
   }
@@ -50,6 +51,7 @@ button,
 
   background-color: transparent;
 
+  &:focus,
   &:hover {
     background-color: transparent;
   }

@@ -66,22 +66,11 @@ User.prototype.comparePasswords = function compare(password) {
 }
 
 User.prototype.toJSON = function convert() {
-  const {
-    id,
-    firstname,
-    lastname,
-    email,
-    isAdmin,
-    isParticipant,
-  } = this.get()
+  const data = this.get()
+  delete data.password
 
   return Object.assign({}, {
-    id,
-    firstname,
-    lastname,
-    email,
-    isAdmin,
-    isParticipant,
+    ...data,
   })
 }
 

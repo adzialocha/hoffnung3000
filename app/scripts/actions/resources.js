@@ -60,6 +60,10 @@ export function createResource(resourceType, resourceId, data, redirect) {
 }
 
 export function updateResource(resourceType, resourceId, data, redirect) {
+  delete data.createdAt
+  delete data.id
+  delete data.updatedAt
+
   const meta = {
     data,
     resourceId,

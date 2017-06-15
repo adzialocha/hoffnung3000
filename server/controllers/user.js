@@ -45,18 +45,28 @@ function findAll(req, res, next) {
 }
 
 function update(req, res, next) {
-  const { firstname, lastname, email } = req.body
+  const {
+    email,
+    firstname,
+    isAdmin,
+    isParticipant,
+    lastname,
+  } = req.body
 
   User.update({
-    firstname,
-    lastname,
     email,
+    firstname,
+    isAdmin,
+    isParticipant,
+    lastname,
   }, {
     where: {
       id: req.params.resourceId,
     },
+    limit: 1,
+    returning: true,
   })
-    .then(user => res.json(user))
+    .then(result => res.json(result[1][0]))
     .catch(err => next(err))
 }
 

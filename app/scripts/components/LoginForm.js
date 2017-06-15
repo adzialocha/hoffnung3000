@@ -14,7 +14,7 @@ class LoginForm extends Component {
   renderErrorMessage() {
     if (this.props.errorMessage) {
       return (
-        <div className="error-message">
+        <div className="form__error">
           { this.props.errorMessage }
         </div>
       )
@@ -24,7 +24,7 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className="form" onSubmit={this.handleSubmit}>
         { this.renderErrorMessage() }
         <label>
           Email address

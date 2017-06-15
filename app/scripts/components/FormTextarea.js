@@ -8,7 +8,6 @@ class FormTextarea extends Component {
     input: PropTypes.object.isRequired,
     label: PropTypes.string.isRequired,
     meta: PropTypes.object.isRequired,
-    type: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -27,13 +26,13 @@ class FormTextarea extends Component {
   }
 
   render() {
-    const { disabled, label, input, type } = this.props
-    const { error, warning } = this.props.meta
+    const { error, touched, warning } = this.props.meta
+    const { disabled, label, input } = this.props
 
     const formFieldClasses = classnames(
       'form__field', {
-        'form__field--has-error': error,
-        'form__field--has-warning': warning,
+        'form__field--has-error': error && touched,
+        'form__field--has-warning': warning && touched,
       }
     )
 
@@ -44,7 +43,6 @@ class FormTextarea extends Component {
           {...input}
           className="form__field-input"
           disabled={disabled}
-          type={type}
         />
         { this.renderError() }
       </div>
