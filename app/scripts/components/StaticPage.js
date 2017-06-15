@@ -18,6 +18,12 @@ class StaticPage extends Component {
     this.props.fetchHtmlPage(this.props.slug)
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.slug !== prevProps.slug) {
+      this.props.fetchHtmlPage(this.props.slug)
+    }
+  }
+
   renderPageContent() {
     if (this.props.isLoading) {
       return (
