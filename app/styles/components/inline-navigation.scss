@@ -6,22 +6,12 @@
   list-style: none;
 }
 
-.inline-navigation--centered {
-  margin: 0 auto;
-
-  text-align: center;
-}
-
 .inline-navigation__item {
   display: inline-block;
 
+  text-transform: uppercase;
+
   + .inline-navigation__item {
     margin-left: 10px;
-  }
-}
-
-.inline-navigation--uppercase {
-  .inline-navigation__item {
-    text-transform: uppercase;
   }
 }

@@ -5,7 +5,7 @@ class Footer extends Component {
   render() {
     return (
       <footer role="contentinfo">
-        <ul className="inline-navigation inline-navigation--uppercase inline-navigation--centered">
+        <ul className="inline-navigation">
           <li className="inline-navigation__item">
             <NavLink to="/">Home</NavLink>
           </li>
