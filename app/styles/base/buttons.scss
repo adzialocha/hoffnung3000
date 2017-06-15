@@ -49,10 +49,14 @@ button,
 .button--clear {
   padding: 0;
 
+  color: $black;
+
   background-color: transparent;
 
   &:focus,
   &:hover {
+    color: $gray-light;
+
     background-color: transparent;
   }
 }
