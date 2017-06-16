@@ -1,0 +1,15 @@
+.flash-message-stage {
+  position: fixed;
+
+  top: 90px;
+  right: 0;
+  left: 0;
+
+  z-index: map-get($z-index, "flash-message-stage");
+}
+
+@include media-breakpoint(xs) {
+  .flash-message-stage {
+    top: 60px;
+  }
+}

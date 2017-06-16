@@ -16,10 +16,15 @@ class AdminUsersNewForm extends Component {
   }
 
   onSubmit(values) {
+    const flash = {
+      text: 'Successfully created new user',
+    }
+
     this.props.createResource(
       'users',
       this.props.nextRandomId,
       values,
+      flash,
       '/admin/users/all'
     )
   }

@@ -5,12 +5,14 @@ import { Link } from 'react-router-dom'
 import { push } from 'react-router-redux'
 
 import { deleteResource } from '../actions/resources'
+import { notification } from '../actions/flash'
 import { PaginatedList, PaginatedListNavigation } from '../components'
 import { removeFromList } from '../actions/paginatedList'
 
 class AdminPages extends Component {
   static propTypes = {
     deleteResource: PropTypes.func.isRequired,
+    notification: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
     removeFromList: PropTypes.func.isRequired,
   }
@@ -27,6 +29,7 @@ class AdminPages extends Component {
 
     this.props.deleteResource('pages', page.id)
     this.props.removeFromList(page.id)
+    this.props.notification('Page was deleted successfully')
 
     return true
   }
@@ -83,6 +86,7 @@ class AdminPages extends Component {
 export default connect(
   null, {
     deleteResource,
+    notification,
     push,
     removeFromList,
   }

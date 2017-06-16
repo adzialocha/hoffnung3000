@@ -18,6 +18,10 @@ export default keyMirror({
   DRAWER_TOGGLE_NAVIGATION: null,
   DRAWER_TOGGLE_SIDEBAR: null,
 
+  FLASH_ADD_MESSAGE: null,
+  FLASH_REMOVE_ALL_MESSAGES: null,
+  FLASH_REMOVE_MESSAGE: null,
+
   PAGE_FAILURE: null,
   PAGE_REQUEST: null,
   PAGE_SUCCESS: null,

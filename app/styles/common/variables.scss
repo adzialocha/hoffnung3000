@@ -23,6 +23,7 @@ $page-margin-mobile: 18px;
 // z-index
 
 $z-index: (
+  flash-message-stage: 4000,
   navigation-overlay: 5000,
   drawer: 10000,
   navigation-toggle: 15000
@@ -49,5 +50,6 @@ $white: #ffffff;
 $red: #ff0000;
 $green: #00ff00;
 $blue: #0000ff;
+$yellow: #ffff00;
 
 $transparent: rgba($white, 0);

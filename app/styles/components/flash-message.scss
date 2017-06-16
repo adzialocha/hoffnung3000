@@ -1,0 +1,65 @@
+.flash-message {
+  overflow: hidden;
+
+  max-width: 700px;
+
+  margin: 20px auto;
+
+  transition: opacity 350ms linear;
+
+  cursor: pointer;
+}
+
+.flash-message__content {
+  margin-right: $page-margin;
+  margin-left: $page-margin;
+
+  padding: 15px;
+
+  color: $white;
+
+  line-height: 1.5;
+
+  text-align: center;
+}
+
+@include media-breakpoint(xs) {
+  .flash-message__content {
+    margin-right: $page-margin-mobile;
+    margin-left: $page-margin-mobile;
+  }
+}
+
+.flash-message--notification {
+  .flash-message__content {
+    background-color: $blue;
+  }
+}
+
+.flash-message--warning {
+  .flash-message__content {
+    background-color: $yellow;
+  }
+}
+
+.flash-message--error {
+  .flash-message__content {
+    background-color: $red;
+  }
+}
+
+.flash-message--enter {
+  opacity: 0;
+}
+
+.flash-message--enter-active {
+  opacity: 1;
+}
+
+.flash-message--leave {
+  opacity: 1;
+}
+
+.flash-message--leave-active {
+  opacity: 0;
+}

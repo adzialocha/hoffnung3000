@@ -6,7 +6,8 @@ import {
   putRequest,
 } from '../services/api'
 
-import { REDIRECT } from '../middlewares/api'
+import { FLASH } from '../middlewares/flash'
+import { REDIRECT } from '../middlewares/redirect'
 
 export function fetchResource(resourceType, resourceId) {
   const meta = {
@@ -30,7 +31,7 @@ export function fetchResource(resourceType, resourceId) {
   })
 }
 
-export function createResource(resourceType, resourceId, data, redirect) {
+export function createResource(resourceType, resourceId, data, flash, redirect) {
   const meta = {
     data,
     resourceId,
@@ -46,6 +47,10 @@ export function createResource(resourceType, resourceId, data, redirect) {
     success[REDIRECT] = redirect
   }
 
+  if (flash) {
+    success[FLASH] = flash
+  }
+
   return postRequest([resourceType], data, {
     request: {
       type: ActionTypes.RESOURCE_CREATE_REQUEST,
@@ -59,7 +64,7 @@ export function createResource(resourceType, resourceId, data, redirect) {
   })
 }
 
-export function updateResource(resourceType, resourceId, data, redirect) {
+export function updateResource(resourceType, resourceId, data, flash, redirect) {
   delete data.createdAt
   delete data.id
   delete data.updatedAt
@@ -79,6 +84,10 @@ export function updateResource(resourceType, resourceId, data, redirect) {
     success[REDIRECT] = redirect
   }
 
+  if (flash) {
+    success[FLASH] = flash
+  }
+
   return putRequest([resourceType, resourceId], data, {
     request: {
       type: ActionTypes.RESOURCE_UPDATE_REQUEST,
@@ -92,7 +101,7 @@ export function updateResource(resourceType, resourceId, data, redirect) {
   })
 }
 
-export function deleteResource(resourceType, resourceId, redirect) {
+export function deleteResource(resourceType, resourceId, flash, redirect) {
   const meta = {
     resourceId,
     resourceType,
@@ -105,6 +114,10 @@ export function deleteResource(resourceType, resourceId, redirect) {
 
   if (redirect) {
     success[REDIRECT] = redirect
+  }
+
+  if (flash) {
+    success[FLASH] = flash
   }
 
   return deleteRequest([resourceType, resourceId], {}, {
