@@ -49,10 +49,20 @@ button,
 .button--clear {
   padding: 0;
 
+  color: $black;
+
   background-color: transparent;
 
   &:focus,
   &:hover {
+    color: $gray-light;
+
+    background-color: transparent;
+  }
+
+  &[disabled] {
+    color: $gray-light;
+
     background-color: transparent;
   }
 }
@@ -81,6 +91,21 @@ button,
   &:focus,
   &:hover {
     background-color: lighten($red, 25%);
+  }
+}
+
+.button--rainbow {
+  @include rainbow-animation();
+
+  &:focus,
+  &:hover {
+    opacity: .9;
+  }
+
+  &[disabled] {
+    background-color: $gray-light;
+
+    animation: none;
   }
 }
 

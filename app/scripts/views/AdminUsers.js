@@ -5,12 +5,14 @@ import { Link } from 'react-router-dom'
 import { push } from 'react-router-redux'
 
 import { deleteResource } from '../actions/resources'
+import { notification } from '../actions/flash'
 import { PaginatedList, PaginatedListNavigation } from '../components'
 import { removeFromList } from '../actions/paginatedList'
 
 class AdminUsers extends Component {
   static propTypes = {
     deleteResource: PropTypes.func.isRequired,
+    notification: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
     removeFromList: PropTypes.func.isRequired,
   }
@@ -27,6 +29,7 @@ class AdminUsers extends Component {
 
     this.props.deleteResource('users', user.id)
     this.props.removeFromList(user.id)
+    this.props.notification('User was deleted successfully')
 
     return true
   }
@@ -38,6 +41,7 @@ class AdminUsers extends Component {
       { key: 'email', title: 'Email' },
       { key: 'isParticipant', title: 'Participant' },
       { key: 'isAdmin', title: 'Admin' },
+      { key: 'isActive', title: 'Active' },
     ]
 
     const tableActions = [
@@ -85,6 +89,7 @@ class AdminUsers extends Component {
 export default connect(
   null, {
     deleteResource,
+    notification,
     push,
     removeFromList,
   }

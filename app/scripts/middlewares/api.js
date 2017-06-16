@@ -1,13 +1,11 @@
 import fetch from 'isomorphic-fetch'
-import { push } from 'react-router-redux'
 
 import ActionTypes from '../actionTypes'
 import parameterize from '../utils/parameterize'
 import { getItem } from '../services/storage'
 
 export const API_ENDPOINT = '/api/'
-export const API_REQUEST = Symbol('api-request')
-export const REDIRECT = Symbol('redirect')
+export const API_REQUEST = Symbol('app-api-request')
 
 function getErrorMessage(error) {
   if (typeof error === 'string') {
@@ -90,10 +88,6 @@ export default store => next => action => {
     if ('type' in types.request) {
       store.dispatch({ ...types.request })
     }
-
-    if (REDIRECT in types.request) {
-      store.dispatch(push(types.request[REDIRECT]))
-    }
   }
 
   return request(path, method, body)
@@ -107,10 +101,6 @@ export default store => next => action => {
         if ('type' in types.success) {
           store.dispatch({ ...types.success, payload })
         }
-
-        if (REDIRECT in types.success) {
-          store.dispatch(push(types.success[REDIRECT]))
-        }
       }
     })
     .catch((error) => {
@@ -122,10 +112,6 @@ export default store => next => action => {
       if (types.failure) {
         if ('type' in types.request) {
           store.dispatch({ ...types.failure, error })
-        }
-
-        if (REDIRECT in types.failure) {
-          store.dispatch(push(types.failure[REDIRECT]))
         }
       }
     })

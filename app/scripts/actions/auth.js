@@ -1,4 +1,5 @@
 import ActionTypes from '../actionTypes'
+import { FLASH } from '../middlewares/flash'
 import { jwtDecode } from '../utils/jwt'
 import { postRequest } from '../services/api'
 
@@ -26,6 +27,9 @@ export function login(email, password) {
     },
     success: {
       type: ActionTypes.AUTH_LOGIN_SUCCESS,
+      [FLASH]: {
+        text: 'Welcome!',
+      },
     },
     failure: {
       type: ActionTypes.AUTH_LOGIN_FAILURE,
@@ -36,5 +40,37 @@ export function login(email, password) {
 export function logout() {
   return {
     type: ActionTypes.AUTH_LOGOUT,
+    [FLASH]: {
+      text: 'Goodbye! See you soon!',
+    },
   }
+}
+
+export function register(paymentMethod = 'paypal', data) {
+  const meta = {
+    paymentMethod,
+  }
+
+  const payload = {
+    ...data,
+    paymentMethod,
+  }
+
+  return postRequest(['auth', 'signup'], payload, {
+    request: {
+      type: ActionTypes.AUTH_REGISTER_REQUEST,
+      meta,
+    },
+    success: {
+      type: ActionTypes.AUTH_REGISTER_SUCCESS,
+      meta,
+    },
+    failure: {
+      type: ActionTypes.AUTH_REGISTER_FAILURE,
+      meta,
+      [FLASH]: {
+        text: 'Something with the registration went wrong',
+      },
+    },
+  })
 }

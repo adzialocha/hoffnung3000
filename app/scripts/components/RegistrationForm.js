@@ -2,40 +2,52 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormField, FormCheckbox } from './'
+import { FormField } from './'
 
 const validate = values => {
   const errors = {}
   if (!values.email) {
-    errors.email = 'Required'
+    errors.email = 'Please enter your email address'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address'
   }
   if (!values.firstname) {
-    errors.firstname = 'Required'
+    errors.firstname = 'Please enter your firstname'
   }
   if (!values.lastname) {
-    errors.lastname = 'Required'
+    errors.lastname = 'Please enter your lastname'
+  }
+  if (!values.password) {
+    errors.password = 'Please enter your password'
+  } else if (values.password.length < 8) {
+    errors.password = 'Must be 8 characters or more'
+  }
+  if (!values.passwordRepeat) {
+    errors.passwordRepeat = 'Please repeat your password'
+  }
+  if (values.passwordRepeat !== values.password) {
+    errors.passwordRepeat = 'The given passwords do not match'
   }
   if (!values.street) {
-    errors.street = 'Required'
-  }
-  if (!values.city) {
-    errors.city = 'Required'
+    errors.street = 'Please enter your street and number'
   }
   if (!values.cityCode) {
-    errors.cityCode = 'Required'
+    errors.cityCode = 'Please enter your city code'
+  }
+  if (!values.city) {
+    errors.city = 'Please enter your city'
   }
   if (!values.country) {
-    errors.country = 'Required'
+    errors.country = 'Please enter your country'
   }
   return errors
 }
 
-class UserForm extends Component {
+class RegistrationForm extends Component {
   static propTypes = {
     errorMessage: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
-    showPasswordField: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -55,26 +67,11 @@ class UserForm extends Component {
     return null
   }
 
-  renderPasswordField() {
-    if (!this.props.showPasswordField) {
-      return null
-    }
-
-    return (
-      <Field
-        component={FormField}
-        disabled={this.props.isLoading}
-        label="Password (plaintext)"
-        name="password"
-        type="text"
-      />
-    )
-  }
-
   render() {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
+        <h2>Basic Information</h2>
         <Field
           component={FormField}
           disabled={this.props.isLoading}
@@ -89,16 +86,33 @@ class UserForm extends Component {
           name="lastname"
           type="text"
         />
-        <hr />
         <Field
           component={FormField}
           disabled={this.props.isLoading}
-          label="E-Mail-Address"
+          label="Email-Address"
           name="email"
           type="email"
         />
-        { this.renderPasswordField() }
         <hr />
+
+        <h2>Your Password</h2>
+        <Field
+          component={FormField}
+          disabled={this.props.isLoading}
+          label="Password"
+          name="password"
+          type="password"
+        />
+        <Field
+          component={FormField}
+          disabled={this.props.isLoading}
+          label="Repeat password"
+          name="passwordRepeat"
+          type="password"
+        />
+        <hr />
+
+        <h2>Your Address</h2>
         <Field
           component={FormField}
           disabled={this.props.isLoading}
@@ -128,32 +142,13 @@ class UserForm extends Component {
           type="text"
         />
         <hr />
-        <Field
-          component={FormCheckbox}
-          disabled={this.props.isLoading}
-          label="Administrator"
-          name="isAdmin"
-        />
-        <Field
-          component={FormCheckbox}
-          disabled={this.props.isLoading}
-          label="Participates at festival"
-          name="isParticipant"
-        />
-        <hr />
-        <Field
-          component={FormCheckbox}
-          disabled={this.props.isLoading}
-          label="Account is enabled (Payment accepted)"
-          name="isActive"
-        />
-        <hr />
+
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}
           type="submit"
         >
-          Save
+          Go to Payment
         </button>
       </form>
     )
@@ -161,7 +156,8 @@ class UserForm extends Component {
 }
 
 export default reduxForm({
-  enableReinitialize: true,
-  form: 'user',
+  destroyOnUnmount: false,
+  forceUnregisterOnUnmount: true,
+  form: 'registration',
   validate,
-})(UserForm)
+})(RegistrationForm)

@@ -16,10 +16,15 @@ class AdminPagesNewForm extends Component {
   }
 
   onSubmit(values) {
+    const flash = {
+      text: 'Successfully created new page',
+    }
+
     this.props.createResource(
       'pages',
       this.props.nextRandomId,
       values,
+      flash,
       '/admin/pages/all'
     )
   }

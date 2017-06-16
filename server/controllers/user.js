@@ -10,12 +10,17 @@ import {
 import User from '../models/user'
 
 const permittedFields = [
+  'city',
+  'cityCode',
+  'country',
   'email',
   'firstname',
+  'isActive',
   'isAdmin',
   'isParticipant',
   'lastname',
   'password',
+  'street',
 ]
 
 export default {

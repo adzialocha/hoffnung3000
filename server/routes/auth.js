@@ -12,6 +12,16 @@ router.route('/signup')
     authController.signup
   )
 
+router.route('/signup/paypal/success')
+  .get(
+    authController.paypalCheckoutSuccess
+  )
+
+router.route('/signup/paypal/cancel')
+  .get(
+    authController.paypalCheckoutCancel
+  )
+
 router.route('/login')
   .post(
     validate(authValidation.login),

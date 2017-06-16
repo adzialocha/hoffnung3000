@@ -6,6 +6,7 @@ import { EmptyResultError, ValidationError } from 'sequelize'
 
 import passport from '../services/passport'
 import { APIError } from '../helpers/errors'
+import { onlyAdmin } from '../middlewares/roles'
 
 import pageController from '../controllers/page'
 
@@ -35,6 +36,10 @@ router.route('/pages/:resourceSlug')
 router.use('/*', passport.authenticate('jwt', { session: false }), (req, res, next) => {
   next()
 })
+
+// admin API routes
+
+router.use(onlyAdmin)
 
 router.use('/pages', pageRoutes)
 router.use('/users', userRoutes)

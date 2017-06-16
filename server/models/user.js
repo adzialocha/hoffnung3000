@@ -42,6 +42,47 @@ const User = db.sequelize.define('user', {
       notEmpty: true,
     },
   },
+  street: {
+    type: db.Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  cityCode: {
+    type: db.Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  city: {
+    type: db.Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  country: {
+    type: db.Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  paymentId: {
+    type: db.Sequelize.STRING,
+    allowNull: true,
+  },
+  paymentMethod: {
+    type: db.Sequelize.STRING,
+    allowNull: true,
+  },
+  isActive: {
+    type: db.Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
   isAdmin: {
     type: db.Sequelize.BOOLEAN,
     allowNull: false,

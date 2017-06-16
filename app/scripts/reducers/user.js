@@ -12,6 +12,15 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+  case ActionTypes.AUTH_REGISTER_SUCCESS: {
+    const jwtPayload = jwtDecode(action.payload.token)
+    const user = jwtPayload.user
+
+    return update(state, {
+      id: { $set: user.id },
+      firstname: { $set: user.firstname },
+    })
+  }
   case ActionTypes.AUTH_LOGIN_SUCCESS: {
     const jwtPayload = jwtDecode(action.payload.token)
     const user = jwtPayload.user

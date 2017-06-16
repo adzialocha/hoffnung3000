@@ -4,6 +4,8 @@ import { createLogger } from 'redux-logger'
 import { routerMiddleware } from 'react-router-redux'
 
 import api from './middlewares/api'
+import flash from './middlewares/flash'
+import redirect from './middlewares/redirect'
 import reducers from './reducers'
 
 let store
@@ -13,6 +15,8 @@ export default function configureStore(initialState, history) {
     thunk,
     routerMiddleware(history),
     api,
+    flash,
+    redirect,
   ]
 
   if (process.env.NODE_ENV === 'development') {

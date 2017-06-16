@@ -3,17 +3,25 @@ import Joi from 'joi'
 export default {
   createUser: {
     body: {
-      firstname: Joi.string().required(),
-      lastname: Joi.string().required(),
+      city: Joi.string().required(),
+      cityCode: Joi.string().required(),
+      country: Joi.string().required(),
       email: Joi.string().email().required(),
+      firstname: Joi.string().alphanum().min(3).max(30).required(),
+      lastname: Joi.string().alphanum().min(3).max(30).required(),
       password: Joi.string().min(8).required(),
+      street: Joi.string().required(),
     },
   },
   updateUser: {
     body: {
-      firstname: Joi.string().required(),
-      lastname: Joi.string().required(),
+      city: Joi.string().required(),
+      cityCode: Joi.string().required(),
+      country: Joi.string().required(),
       email: Joi.string().email().required(),
+      firstname: Joi.string().alphanum().min(3).max(30).required(),
+      lastname: Joi.string().alphanum().min(3).max(30).required(),
+      street: Joi.string().required(),
     },
     params: {
       resourceId: Joi.string().hex().required(),
