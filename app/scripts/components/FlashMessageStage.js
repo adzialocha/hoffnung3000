@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import FlashMessage from './FlashMessage'
 
-const FLASH_DEFAULT_LIFETIME = 30000
+const FLASH_DEFAULT_LIFETIME = 3000
 const FLASH_TRANSITION_DURATION = 300
 
 class FlashMessageStage extends Component {

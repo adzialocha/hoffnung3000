@@ -1,3 +1,10 @@
+@keyframes rainbow-animation {
+  0% { background-color: $red; }
+  33% { background-color: $green; }
+  66% { background-color: $blue; }
+  100% { background-color: $yellow; }
+}
+
 button,
 .button {
   display: inline-block;
@@ -91,6 +98,27 @@ button,
   &:focus,
   &:hover {
     background-color: lighten($red, 25%);
+  }
+}
+
+.button--rainbow {
+  background-color: $red;
+
+  animation-name: rainbow-animation;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+
+  &:focus,
+  &:hover {
+    opacity: .9;
+  }
+
+  &[disabled] {
+    background-color: $gray-light;
+
+    animation: none;
   }
 }
 

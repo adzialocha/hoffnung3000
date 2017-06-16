@@ -95,14 +95,14 @@ class RegistrationWizard extends Component {
     return (
       <div className="button-group">
         <button
-          className="button button--blue"
+          className="button button--rainbow"
           disabled={!this.state.isTermsAccepted || this.props.isLoading}
           onClick={this.onPayPalCheckout}
         >
           Pay via PayPal
         </button>
         <button
-          className="button button--blue"
+          className="button button--rainbow"
           disabled={!this.state.isTermsAccepted || this.props.isLoading}
           onClick={this.onTransferCheckout}
         >
