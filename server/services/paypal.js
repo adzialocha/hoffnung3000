@@ -15,7 +15,8 @@ export function createPayment(product) {
   const { name, description, price } = product
 
   paypal.configure({
-    mode: process.env.NODE_ENV === 'production' ? 'live' : 'sandbox',
+    // mode: process.env.NODE_ENV === 'production' ? 'live' : 'sandbox',
+    mode: 'sandbox',
     client_id: process.env.PAYPAL_ID,
     client_secret: process.env.PAYPAL_SECRET,
   })
