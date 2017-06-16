@@ -101,6 +101,12 @@ input {
 
         text-align: center;
       }
+
+      &[disabled] {
+        background-color: $gray;
+
+        cursor: default;
+      }
     }
   }
 }

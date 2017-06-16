@@ -15,12 +15,26 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
   case ActionTypes.AUTH_LOGIN_REQUEST:
+  case ActionTypes.AUTH_REGISTER_REQUEST:
     return update(state, {
       errorMessage: { $set: '' },
       isLoading: { $set: true },
     })
   case LOCATION_CHANGE:
     return update(state, {
+      errorMessage: { $set: '' },
+    })
+  case ActionTypes.AUTH_REGISTER_SUCCESS:
+    setItem('token', action.payload.token)
+    if (action.meta.paymentMethod === 'paypal') {
+      window.setTimeout(() => {
+        window.location.assign(action.payload.redirect)
+      })
+      return state
+    }
+    return update(state, {
+      isLoading: { $set: false },
+      isAuthenticated: { $set: true },
       errorMessage: { $set: '' },
     })
   case ActionTypes.AUTH_LOGIN_SUCCESS:
@@ -30,6 +44,7 @@ export default (state = initialState, action) => {
       isAuthenticated: { $set: true },
       errorMessage: { $set: '' },
     })
+  case ActionTypes.AUTH_REGISTER_FAILURE:
   case ActionTypes.AUTH_LOGIN_FAILURE:
     removeItem('token')
     return update(state, {

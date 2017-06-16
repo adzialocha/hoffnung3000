@@ -29,7 +29,7 @@ const validate = values => {
     errors.passwordRepeat = 'The given passwords do not match'
   }
   if (!values.street) {
-    errors.street = 'Please enter your street'
+    errors.street = 'Please enter your street and number'
   }
   if (!values.cityCode) {
     errors.cityCode = 'Please enter your city code'

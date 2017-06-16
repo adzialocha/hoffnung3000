@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import Scroll from 'react-scroll'
 import YouTube from 'react-youtube'
 import { connect } from 'react-redux'
 
-import { StaticPage, RegistrationForm } from './'
+import { register } from '../actions/auth'
+import { RegistrationForm } from './'
 
 const videoOptions = {
   playerVars: {
@@ -25,25 +27,29 @@ const videoId = 'QILiHiTD3uc'
 class RegistrationWizard extends Component {
   static propTypes = {
     errorMessage: PropTypes.string.isRequired,
+    form: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
+    register: PropTypes.func.isRequired,
   }
 
-  onNextStep() {
-    this.setState({
-      registrationStep: this.state.registrationStep + 1,
-    })
-  }
-
-  onPreviousStep() {
-    this.setState({
-      registrationStep: this.state.registrationStep - 1,
-    })
+  static defaultProps = {
+    form: {},
   }
 
   onPayPalCheckout() {
+    this.setState({
+      isCheckoutClicked: true,
+    })
+
+    this.props.register('paypal', this.props.form.values)
   }
 
   onTransferCheckout() {
+    this.setState({
+      isCheckoutClicked: true,
+    })
+
+    this.props.register('transfer', this.props.form.values)
   }
 
   onTermsAcceptedChanged() {
@@ -58,13 +64,63 @@ class RegistrationWizard extends Component {
     })
   }
 
+  renderSuccess() {
+    return (
+      <div className="form left">
+        <h1>Hurra!</h1>
+      </div>
+    )
+  }
+
+  renderErrorMessage() {
+    if (this.props.errorMessage) {
+      Scroll.animateScroll.scrollToTop()
+
+      return (
+        <div className="form__error">
+          { this.props.errorMessage }
+        </div>
+      )
+    }
+    return null
+  }
+
+  renderPaymentButtons() {
+    if (this.state.isCheckoutClicked && this.props.isLoading) {
+      return (
+        <p>Loading ...</p>
+      )
+    }
+
+    return (
+      <div className="button-group">
+        <button
+          className="button button--blue"
+          disabled={!this.state.isTermsAccepted || this.props.isLoading}
+          onClick={this.onPayPalCheckout}
+        >
+          Pay via PayPal
+        </button>
+        <button
+          className="button button--blue"
+          disabled={!this.state.isTermsAccepted || this.props.isLoading}
+          onClick={this.onTransferCheckout}
+        >
+          Pay via Transfer
+        </button>
+      </div>
+    )
+  }
+
   renderPaymentGateway() {
     return (
       <div className="form left">
+        <h1>Registration (Step 3/3)</h1>
+        { this.renderErrorMessage() }
         <h2>Payment</h2>
         <p>Last step!</p>
         <p>
-          The participantion fee is <strong>25,00 Euro</strong>. We will provide you with daily breakfast and the tools to organize yourself during HOFFNUNG 3000.
+          The participation fee is <strong>25,00 Euro</strong>. We will provide you with daily breakfast and the tools to organize yourself during HOFFNUNG 3000.
         </p>
         <p>
           You can pay via PayPal to get direct access or choose to transfer the money via wire-transfer if you prefer this. We will enable your account after your money arrived on our bank-account.
@@ -98,27 +154,13 @@ class RegistrationWizard extends Component {
         </div>
         <hr />
 
-        <div className="button-group">
-          <button
-            className="button button--blue"
-            disabled={!this.state.isTermsAccepted}
-            onClick={this.onPayPalCheckout}
-          >
-            Pay via PayPal
-          </button>
-          <button
-            className="button button--blue"
-            disabled={!this.state.isTermsAccepted}
-            onClick={this.onTransferCheckout}
-          >
-            Pay via Transfer
-          </button>
-        </div>
+        { this.renderPaymentButtons() }
         <hr />
 
         <button
           className="button button--clear"
-          onClick={this.onPreviousStep}
+          disabled={this.props.isLoading}
+          onClick={this.previousStep}
         >
           Previous step
         </button>
@@ -129,10 +171,11 @@ class RegistrationWizard extends Component {
   renderRegistrationForm() {
     return (
       <div>
+        <h1>Registration (Step 2 of 3)</h1>
         <RegistrationForm
           errorMessage={this.props.errorMessage}
           isLoading={this.props.isLoading}
-          onSubmit={this.onNextStep}
+          onSubmit={this.nextStep}
         />
       </div>
     )
@@ -140,8 +183,11 @@ class RegistrationWizard extends Component {
 
   renderVideo() {
     return (
-      <div>
-        <StaticPage slug="registration" />
+      <div className="form">
+        <h1>Registration (Step 1 of 3)</h1>
+        <p>
+          This is a small text about the registration for participants
+        </p>
         <div className="youtube">
           <YouTube
             className="youtube__container"
@@ -154,7 +200,7 @@ class RegistrationWizard extends Component {
         <button
           className="button button--blue"
           disabled={!this.state.isVideoFinished}
-          onClick={this.onNextStep}
+          onClick={this.nextStep}
         >
           Next Step
         </button>
@@ -162,36 +208,46 @@ class RegistrationWizard extends Component {
     )
   }
 
-  renderStep() {
+  render() {
     if (this.state.registrationStep === 0) {
       return this.renderVideo()
     } else if (this.state.registrationStep === 1) {
       return this.renderRegistrationForm()
+    } else if (this.state.registrationStep === 2) {
+      return this.renderPaymentGateway()
     }
-    return this.renderPaymentGateway()
+    return this.renderSuccess()
   }
 
-  render() {
-    return (
-      <div>
-        <h1>Registration (Step {this.state.registrationStep + 1} of 3)</h1>
-        { this.renderStep() }
-      </div>
-    )
+  nextStep() {
+    this.setState({
+      registrationStep: this.state.registrationStep + 1,
+    })
+
+    Scroll.animateScroll.scrollToTop({ duration: 0, smooth: false })
+  }
+
+  previousStep() {
+    this.setState({
+      registrationStep: this.state.registrationStep - 1,
+    })
+
+    Scroll.animateScroll.scrollToTop({ duration: 0, smooth: false })
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
+      isCheckoutClicked: false,
       isTermsAccepted: false,
       isVideoFinished: false,
       registrationStep: 0,
     }
 
-    this.onNextStep = this.onNextStep.bind(this)
+    this.nextStep = this.nextStep.bind(this)
     this.onPayPalCheckout = this.onPayPalCheckout.bind(this)
-    this.onPreviousStep = this.onPreviousStep.bind(this)
+    this.previousStep = this.previousStep.bind(this)
     this.onTermsAcceptedChanged = this.onTermsAcceptedChanged.bind(this)
     this.onTransferCheckout = this.onTransferCheckout.bind(this)
     this.onVideoEnd = this.onVideoEnd.bind(this)
@@ -203,10 +259,13 @@ function mapStateToProps(state) {
 
   return {
     errorMessage,
+    form: state.form.registration,
     isLoading,
   }
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps, {
+    register,
+  }
 )(RegistrationWizard)

@@ -38,3 +38,29 @@ export function logout() {
     type: ActionTypes.AUTH_LOGOUT,
   }
 }
+
+export function register(paymentMethod = 'paypal', data) {
+  const meta = {
+    paymentMethod,
+  }
+
+  const payload = {
+    ...data,
+    paymentMethod,
+  }
+
+  return postRequest(['auth', 'signup'], payload, {
+    request: {
+      type: ActionTypes.AUTH_REGISTER_REQUEST,
+      meta,
+    },
+    success: {
+      type: ActionTypes.AUTH_REGISTER_SUCCESS,
+      meta,
+    },
+    failure: {
+      type: ActionTypes.AUTH_REGISTER_FAILURE,
+      meta,
+    },
+  })
+}

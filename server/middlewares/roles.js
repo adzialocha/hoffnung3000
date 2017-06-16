@@ -15,11 +15,9 @@ function checkRole(checkParticipant, checkOwner, req, res, next) {
     return next()
   }
 
-  return next(new APIError(
-    'Access forbidden',
-    httpStatus.FORBIDDEN,
-    true
-  ))
+  return next(
+    new APIError('Access forbidden', httpStatus.FORBIDDEN, true)
+  )
 }
 
 export function canRead(req, res, next) {

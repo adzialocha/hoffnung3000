@@ -1,14 +1,7 @@
+import pick from '../utils/pick'
+
 const DEFAULT_LIMIT = 25
 const DEFAULT_OFFSET = 0
-
-function pickFields(fields, body) {
-  return fields.reduce((result, fieldName) => {
-    if (typeof body[fieldName] !== 'undefined') {
-      result[fieldName] = body[fieldName]
-    }
-    return result
-  }, {})
-}
 
 export function lookup(model, req, res, next) {
   model.findById(req.params.resourceId, {
@@ -65,8 +58,7 @@ export function findAll(model, req, res, next) {
 }
 
 export function update(model, fields, req, res, next) {
-  const fieldss = pickFields(fields, req.body)
-  model.update(fieldss, {
+  model.update(pick(fields, req.body), {
     where: {
       id: req.params.resourceId,
     },
@@ -78,7 +70,7 @@ export function update(model, fields, req, res, next) {
 }
 
 export function create(model, fields, req, res, next) {
-  model.create(pickFields(fields, req.body), {
+  model.create(pick(fields, req.body), {
     returning: true,
   })
     .then((data) => { res.json(data) })
