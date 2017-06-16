@@ -41,6 +41,7 @@ class AdminUsers extends Component {
       { key: 'email', title: 'Email' },
       { key: 'isParticipant', title: 'Participant' },
       { key: 'isAdmin', title: 'Admin' },
+      { key: 'isActive', title: 'Active' },
     ]
 
     const tableActions = [

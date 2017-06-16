@@ -29,6 +29,25 @@ class AdminUsersEditForm extends Component {
     this.props.updateResource('users', this.props.resourceId, values)
   }
 
+  renderMeta() {
+    if (this.props.isLoading) {
+      return null
+    }
+
+    return (
+      <div className="left">
+        <hr />
+        <code>
+          ID: { this.props.resourceData.id }<br />
+          Created at: { this.props.resourceData.createdAt }<br />
+          Updated at: { this.props.resourceData.updatedAt }<br />
+          Payment Method: { this.props.resourceData.paymentMethod }<br />
+          Payment ID: { this.props.resourceData.paymentId }
+        </code>
+      </div>
+    )
+  }
+
   renderForm() {
     if (this.props.isLoading) {
       return <p>Loading ...</p>
@@ -45,9 +64,10 @@ class AdminUsersEditForm extends Component {
 
   render() {
     return (
-      <section>
+      <section className="form">
         <h1>Edit User { this.title() }</h1>
         <Link className="button" to="/admin/users/all">Back to overview</Link>
+        { this.renderMeta() }
         <hr />
         { this.renderForm() }
       </section>

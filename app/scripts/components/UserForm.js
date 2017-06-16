@@ -15,6 +15,18 @@ const validate = values => {
   if (!values.lastname) {
     errors.lastname = 'Required'
   }
+  if (!values.street) {
+    errors.street = 'Required'
+  }
+  if (!values.city) {
+    errors.city = 'Required'
+  }
+  if (!values.cityCode) {
+    errors.cityCode = 'Required'
+  }
+  if (!values.country) {
+    errors.country = 'Required'
+  }
   return errors
 }
 
@@ -88,6 +100,35 @@ class UserForm extends Component {
         { this.renderPasswordField() }
         <hr />
         <Field
+          component={FormField}
+          disabled={this.props.isLoading}
+          label="Street and number"
+          name="street"
+          type="text"
+        />
+        <Field
+          component={FormField}
+          disabled={this.props.isLoading}
+          label="City code"
+          name="cityCode"
+          type="text"
+        />
+        <Field
+          component={FormField}
+          disabled={this.props.isLoading}
+          label="City"
+          name="city"
+          type="text"
+        />
+        <Field
+          component={FormField}
+          disabled={this.props.isLoading}
+          label="Country"
+          name="country"
+          type="text"
+        />
+        <hr />
+        <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
           label="Administrator"
@@ -98,6 +139,13 @@ class UserForm extends Component {
           disabled={this.props.isLoading}
           label="Participates at festival"
           name="isParticipant"
+        />
+        <hr />
+        <Field
+          component={FormCheckbox}
+          disabled={this.props.isLoading}
+          label="Account is enabled (Payment accepted)"
+          name="isActive"
         />
         <hr />
         <button
