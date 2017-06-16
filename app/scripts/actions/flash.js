@@ -40,3 +40,7 @@ export function warning(text, lifetime) {
 export function error(text, lifetime) {
   return flash(text, 'error', lifetime)
 }
+
+export function rainbow(text, lifetime) {
+  return flash(text, 'rainbow', lifetime)
+}

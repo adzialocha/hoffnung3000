@@ -48,6 +48,12 @@
   }
 }
 
+.flash-message--rainbow {
+  .flash-message__content {
+    @include rainbow-animation();
+  }
+}
+
 .flash-message--enter {
   opacity: 0;
 }

@@ -7,8 +7,9 @@ import { createBrowserHistory } from 'history'
 import configureStore from './store'
 import Routes from './routes'
 import { App } from './containers'
-import { getItem, hasItem } from './services/storage'
 import { checkExistingToken } from './actions/auth'
+import { getItem, hasItem } from './services/storage'
+import flash from './actions/flash'
 
 const initialState = {}
 const history = createBrowserHistory()
@@ -16,6 +17,16 @@ const store = configureStore(initialState, history)
 
 if (hasItem('token')) {
   store.dispatch(checkExistingToken(getItem('token')))
+}
+
+if (window.location.href.includes('?paypalSuccess')) {
+  store.dispatch(
+    flash(
+      'Thank you and welcome to HOFFNUNG 3000! You successfully created your participant account!',
+      'rainbow',
+      30000
+    )
+  )
 }
 
 render(

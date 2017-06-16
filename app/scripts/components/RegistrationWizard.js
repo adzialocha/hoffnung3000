@@ -186,7 +186,7 @@ class RegistrationWizard extends Component {
       <div className="form">
         <h1>Registration (Step 1 of 3)</h1>
         <p>
-          This is a small text about the registration for participants
+          This is a small text about the registration for participants. You have to watch the whole video to proceed.
         </p>
         <div className="youtube">
           <YouTube
