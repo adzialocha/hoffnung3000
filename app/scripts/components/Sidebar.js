@@ -48,7 +48,7 @@ class Sidebar extends Component {
     return (
       <section>
         <p>Hi { this.props.firstname },</p>
-        <p>welcome to the platform.</p>
+        <p>Big massive welcome to the platform.</p>
       </section>
     )
   }
