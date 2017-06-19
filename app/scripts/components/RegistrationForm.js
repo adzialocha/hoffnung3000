@@ -12,10 +12,10 @@ const validate = values => {
     errors.email = 'Invalid email address'
   }
   if (!values.firstname) {
-    errors.firstname = 'Please enter your firstname'
+    errors.firstname = 'Please enter your first name'
   }
   if (!values.lastname) {
-    errors.lastname = 'Please enter your lastname'
+    errors.lastname = 'Please enter your last name'
   }
   if (!values.phone) {
     errors.phone = 'Please enter your mobile number'
