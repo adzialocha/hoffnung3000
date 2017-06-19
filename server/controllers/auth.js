@@ -124,18 +124,18 @@ function signup(req, res, next) {
       User.create(fields, { returning: true })
         .then((newUser) => {
           if (paymentMethod === 'paypal') {
-            paypalCheckout(newUser)
+            return paypalCheckout(newUser)
               .then((data) => res.json(data))
               .catch(err => next(err))
           } else if (paymentMethod === 'transfer') {
-            transferCheckout(newUser)
+            return transferCheckout(newUser)
               .then((data) => res.json(data))
               .catch(err => next(err))
-          } else {
-            next(
-              new APIError('Unknown payment method', httpStatus.BAD_REQUEST)
-            )
           }
+
+          return next(
+            new APIError('Unknown payment method', httpStatus.BAD_REQUEST)
+          )
         })
         .catch(err => next(err))
     })
@@ -156,7 +156,7 @@ function paypalCheckoutSuccess(req, res, next) {
     .then((user) => {
       executePayment(paymentId, PayerID)
         .then(() => {
-          User.update({ isActive: true }, queryParams)
+          return User.update({ isActive: true }, queryParams)
             .then(() => {
               sendRegistrationComplete({
                 firstname: user.firstname,
