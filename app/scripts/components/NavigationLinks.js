@@ -8,18 +8,25 @@ const ADMIN_NAVIGATION = [
   { label: 'About', url: '/pages/about' },
   { label: 'Calendar', url: '/calendar' },
   { label: 'Admin', url: '/admin' },
+  { label: 'Information', url: '/pages/information' },
+  { label: 'Contact', url: '/pages/contact' },
 ]
 
 const PARTICIPANT_NAVIGATION = [
   { label: 'Home', url: '/' },
   { label: 'About', url: '/pages/about' },
   { label: 'Calendar', url: '/calendar' },
+  { label: 'Information', url: '/pages/information' },
+  { label: 'Contact', url: '/pages/contact' },
 ]
 
 const DEFAULT_NAVIGATION = [
   { label: 'Home', url: '/' },
   { label: 'About', url: '/pages/about' },
+  { label: 'Registration', url: '/register' },
   { label: 'Calendar', url: '/calendar' },
+  { label: 'Information', url: '/pages/information' },
+  { label: 'Contact', url: '/pages/contact' },
 ]
 
 class NavigationLinks extends Component {
