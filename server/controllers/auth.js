@@ -5,6 +5,10 @@ import pick from '../utils/pick'
 import User from '../models/user'
 import { APIError } from '../helpers/errors'
 import { createPayment, executePayment } from '../services/paypal'
+import {
+  sendRegistrationComplete,
+  sendWireTransferDetails,
+} from '../helpers/mailTemplate'
 
 const permittedFields = [
   'city',
@@ -33,6 +37,10 @@ function generateToken(user) {
   return jwt.sign({ user }, process.env.JWT_SECRET, jwtOptions)
 }
 
+function generateRandomPaymentId() {
+  return Math.random().toString(36).substr(2, 5)
+}
+
 function paypalCheckout(user) {
   return new Promise((resolve, reject) => {
     createPayment(participantProduct)
@@ -55,20 +63,44 @@ function paypalCheckout(user) {
           })
           .catch(userUpdateError => reject(userUpdateError))
       })
-      .catch(err => {
+      .catch(() => {
         User.destroy({ where: { id: user.id }, limit: 1 })
-          .then(() => reject(err))
+          .then(() => {
+            reject(
+              new APIError('Payment error', httpStatus.INTERNAL_SERVER_ERROR)
+            )
+          })
           .catch(userDestroyError => reject(userDestroyError))
       })
   })
 }
 
 function transferCheckout(user) {
-  return {
-    data: user,
-    message: 'ok',
-    token: generateToken(user),
-  }
+  return new Promise((resolve, reject) => {
+    const paymentId = generateRandomPaymentId()
+
+    User.update({
+      paymentId,
+    }, {
+      where: { id: user.id },
+      limit: 1,
+      returning: true,
+    })
+      .then((data) => {
+        const updatedUser = data[1][0]
+        sendWireTransferDetails({
+          firstname: updatedUser.firstname,
+          paymentId,
+        }, updatedUser.email)
+
+        resolve({
+          data: updatedUser,
+          message: 'ok',
+          token: generateToken(updatedUser),
+        })
+      })
+      .catch(userUpdateError => reject(userUpdateError))
+  })
 }
 
 function signup(req, res, next) {
@@ -80,22 +112,25 @@ function signup(req, res, next) {
   User.findOne({ where: { email } })
     .then(existingUser => {
       if (existingUser) {
-        return next(
+        next(
           new APIError(
             'A user with this email address already exists',
             httpStatus.BAD_REQUEST
           )
         )
+        return
       }
 
-      return User.create(fields, { returning: true })
+      User.create(fields, { returning: true })
         .then((newUser) => {
           if (paymentMethod === 'paypal') {
             paypalCheckout(newUser)
               .then((data) => res.json(data))
               .catch(err => next(err))
           } else if (paymentMethod === 'transfer') {
-            res.json(transferCheckout(newUser))
+            transferCheckout(newUser)
+              .then((data) => res.json(data))
+              .catch(err => next(err))
           } else {
             next(
               new APIError('Unknown payment method', httpStatus.BAD_REQUEST)
@@ -118,16 +153,25 @@ function paypalCheckoutSuccess(req, res, next) {
   }
 
   User.findOne(queryParams)
-    .then(() => {
+    .then((user) => {
       executePayment(paymentId, PayerID)
         .then(() => {
           User.update({ isActive: true }, queryParams)
-            .then(() => res.redirect('/?paypalSuccess'))
+            .then(() => {
+              sendRegistrationComplete({
+                firstname: user.firstname,
+              }, user.email)
+              res.redirect('/?paypalSuccess')
+            })
             .catch(err => next(err))
         })
-        .catch(err => next(err))
+        .catch(() => next(
+          new APIError('Payment error', httpStatus.INTERNAL_SERVER_ERROR)
+        ))
     })
-    .catch(err => next(err))
+    .catch(() => next(
+      new APIError('Invalid payment error', httpStatus.BAD_REQUEST)
+    ))
 }
 
 function paypalCheckoutCancel(req, res) {

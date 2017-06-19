@@ -106,6 +106,7 @@
     "marked": "^0.3.6",
     "method-override": "^2.3.8",
     "morgan": "^1.8.1",
+    "nodemailer": "^4.0.1",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
     "paypal-rest-sdk": "^1.7.1",

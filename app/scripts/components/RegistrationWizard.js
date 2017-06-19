@@ -199,7 +199,7 @@ class RegistrationWizard extends Component {
         <hr />
         <button
           className="button button--blue"
-          disabled={!this.state.isVideoFinished}
+          //disabled={!this.state.isVideoFinished}
           onClick={this.nextStep}
         >
           Next Step

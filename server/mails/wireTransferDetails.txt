@@ -1,0 +1,17 @@
+Hello ${firstname}!
+
+Thank you so much for signing up as a participant for HOFFNUNG 3000!
+
+Please transfer the 25,00 Euro participation cost to the following bank account as soon as possible so we can confirm your account :-)
+
+Receiver name: "HOFFNUNG 3000"
+Description: "Registration id: ${paymentId}"
+Bank: EthikBank eG - Eisenberg
+IBAN: DE16830944950003378420
+BIC: GENODEF1ETK
+
+Thank you!
+
+And please write us if you have any questions!
+
+HOFFNUNG 3000
