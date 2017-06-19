@@ -45,6 +45,9 @@ export function findAll(model, req, res, next) {
   model.findAndCountAll({
     limit,
     offset,
+    order: [
+      ['id', 'ASC']
+    ],
   })
     .then(result => {
       res.json({
