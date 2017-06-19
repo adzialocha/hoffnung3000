@@ -5,7 +5,10 @@ import pick from '../utils/pick'
 import User from '../models/user'
 import { APIError } from '../helpers/errors'
 import { createPayment, executePayment } from '../services/paypal'
-import { sendWireTransferDetails } from '../helpers/mailTemplate'
+import {
+  sendRegistrationComplete,
+  sendWireTransferDetails,
+} from '../helpers/mailTemplate'
 
 const permittedFields = [
   'city',
@@ -150,11 +153,16 @@ function paypalCheckoutSuccess(req, res, next) {
   }
 
   User.findOne(queryParams)
-    .then(() => {
+    .then((user) => {
       executePayment(paymentId, PayerID)
         .then(() => {
           User.update({ isActive: true }, queryParams)
-            .then(() => res.redirect('/?paypalSuccess'))
+            .then(() => {
+              sendRegistrationComplete({
+                firstname: user.firstname,
+              }, user.email)
+              res.redirect('/?paypalSuccess')
+            })
             .catch(err => next(err))
         })
         .catch(() => next(

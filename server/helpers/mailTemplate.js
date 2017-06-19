@@ -56,3 +56,8 @@ export function sendWireTransferDetails(locals, receiver) {
   const subject = 'HOFFNUNG 3000 TRANSFER DETAILS'
   return sendMail(locals, subject, receiver, 'wireTransferDetails')
 }
+
+export function sendRegistrationComplete(locals, receiver) {
+  const subject = 'WELCOME TO HOFFNUNG 3000'
+  return sendMail(locals, subject, receiver, 'registrationComplete')
+}
