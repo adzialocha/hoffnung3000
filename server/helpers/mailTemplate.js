@@ -31,12 +31,11 @@ function textTemplate(url, locals) {
   })
 }
 
-export default function send(locals, subject, receiver, sender, templateName) {
+function sendMail(locals, subject, receiver, templateName) {
   return new Promise((resolve, reject) => {
     textTemplate(`${TEMPLATES_PATH}/${templateName}.txt`, locals)
       .then((text) => {
         const mailOptions = {
-          from: sender,
           subject,
           text,
           to: receiver,
@@ -51,4 +50,9 @@ export default function send(locals, subject, receiver, sender, templateName) {
       })
       .catch(reject)
   })
+}
+
+export function sendWireTransferDetails(locals, receiver) {
+  const subject = 'HOFFNUNG 3000 TRANSFER DETAILS'
+  return sendMail(locals, subject, receiver, 'wireTransferDetails')
 }
