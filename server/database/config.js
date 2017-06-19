@@ -11,6 +11,10 @@ module.exports = {
     url,
     dialect,
   },
+  staging: {
+    url,
+    dialect,
+  },
   production: {
     url,
     dialect,
