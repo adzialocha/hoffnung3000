@@ -56,15 +56,24 @@ export function register(paymentMethod = 'paypal', data) {
     paymentMethod,
   }
 
+  const success = {
+    type: ActionTypes.AUTH_REGISTER_SUCCESS,
+    meta,
+  }
+
+  if (paymentMethod === 'transfer') {
+    success[FLASH] = {
+      text: 'Thank you for your registration! We just sent you an email with our bank account details! Please contact us if you didn\'t receive the mail in the next minutes or you have any questions.',
+      lifetime: 30000,
+    }
+  }
+
   return postRequest(['auth', 'signup'], payload, {
     request: {
       type: ActionTypes.AUTH_REGISTER_REQUEST,
       meta,
     },
-    success: {
-      type: ActionTypes.AUTH_REGISTER_SUCCESS,
-      meta,
-    },
+    success,
     failure: {
       type: ActionTypes.AUTH_REGISTER_FAILURE,
       meta,
