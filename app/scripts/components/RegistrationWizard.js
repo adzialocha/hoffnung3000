@@ -120,23 +120,23 @@ class RegistrationWizard extends Component {
         <h2>Payment</h2>
         <p>Last step!</p>
         <p>
-          The participation fee is <strong>25,00 Euro</strong>. We will provide you with daily breakfast and the tools to organize yourself during HOFFNUNG 3000.
+          The participation fee is <strong>25,00 Euro</strong>. As a participant at the festival we will provide you with a daily breakfast and the tools to organise yourself during HOFFNUNG 3000 (these features will be available on the 23rd of July).
         </p>
         <p>
-          You can pay via PayPal to get direct access or choose to transfer the money via wire-transfer if you prefer this. We will enable your account after your money arrived on our bank-account.
+          You can pay via PayPal to get direct access or choose to transfer the money via wire-transfer if you prefer this. We will enable your account after your money arrived in our bank-account. You will get an email when this happens.
         </p>
         <hr />
 
         <h2>Agreements</h2>
         <p>
-          We want to make sure you read our terms before you sign up.
+          We want to make sure you read our terms before you sign up:
         </p>
         <ul>
           <li>
-            As a participant you are liable for your own gear and instruments. As the host we dont take any responsibily for possible damage through accidents or usage of other participants.
+            As a participant you are liable for your own gear and instruments. As hosts we don't take any responsibility for possible damage through accidents or usage by other participants.
           </li>
           <li>
-            With a cancellation until the 01.08. we will pay you the full participation fee. After this date this is not anymore possible anymore.
+            If you cancel before the 1st of August we will refund your full participation fee. After this date we can no longer give refunds.
           </li>
         </ul>
         <div className="form__field form__field--inline">
