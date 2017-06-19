@@ -159,7 +159,7 @@ class RegistrationForm extends Component {
           disabled={this.props.isLoading}
           type="submit"
         >
-          Go to Payment
+          Next Step
         </button>
       </form>
     )

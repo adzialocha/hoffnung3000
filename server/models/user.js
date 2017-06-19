@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 
 import db from '../database'
 
-function generateHash(str) {
+export function generateHash(str) {
   const salt = bcrypt.genSaltSync()
   return bcrypt.hashSync(str, salt)
 }
@@ -32,6 +32,9 @@ const User = db.sequelize.define('user', {
     allowNull: false,
     validate: {
       notEmpty: true,
+    },
+    set(val) {
+      this.setDataValue('password', generateHash(val))
     },
   },
   phone: {
@@ -99,12 +102,6 @@ const User = db.sequelize.define('user', {
     type: db.Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
-  },
-}, {
-  hooks: {
-    beforeCreate: user => {
-      user.password = generateHash(user.password)
-    },
   },
 })
 

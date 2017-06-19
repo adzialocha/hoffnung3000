@@ -12,6 +12,7 @@ import pageController from '../controllers/page'
 
 import authRoutes from './auth'
 import pageRoutes from './page'
+import profileRoutes from './profile'
 import userRoutes from './user'
 
 const router = express.Router() // eslint-disable-line new-cap
@@ -37,6 +38,8 @@ router.use('/*', passport.authenticate('jwt', { session: false }), (req, res, ne
   next()
 })
 
+router.use('/profile', profileRoutes)
+
 // admin API routes
 
 router.use(onlyAdmin)
@@ -47,6 +50,10 @@ router.use('/users', userRoutes)
 // API error handling
 
 router.use((err, req, res, next) => {
+  if (err && process.env.NODE_ENV === 'development') {
+    winston.error(err)
+  }
+
   if (err instanceof expressValidation.ValidationError) {
     // validation error contains errors which is an array of error each containing message[]
     const unifiedErrorMessage = err.errors.map(
@@ -80,11 +87,6 @@ router.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   const error = {
     message: err.message || httpStatus[err.status],
     status: err.status,
-  }
-
-  if (process.env.NODE_ENV === 'development') {
-    winston.error(err)
-    error.stack = err.stack
   }
 
   res.status(err.status).json(error)

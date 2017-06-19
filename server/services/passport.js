@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken'
 import passport from 'passport'
 import passportJwt from 'passport-jwt'
 
@@ -6,6 +7,11 @@ import User from '../models/user'
 const options = {
   jwtFromRequest: passportJwt.ExtractJwt.fromAuthHeader(),
   secretOrKey: process.env.JWT_SECRET,
+}
+
+const tokenOptions = {
+  algorithm: 'HS512',
+  expiresIn: '12 hours',
 }
 
 const strategy = new passportJwt.Strategy(options, (payload, next) => {
@@ -23,3 +29,7 @@ const strategy = new passportJwt.Strategy(options, (payload, next) => {
 passport.use(strategy)
 
 export default passport
+
+export function generateToken(user) {
+  return jwt.sign({ user }, process.env.JWT_SECRET, tokenOptions)
+}

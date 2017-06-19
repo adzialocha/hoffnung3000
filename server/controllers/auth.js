@@ -1,10 +1,10 @@
 import httpStatus from 'http-status'
-import jwt from 'jsonwebtoken'
 
 import pick from '../utils/pick'
 import User from '../models/user'
 import { APIError } from '../helpers/errors'
 import { createPayment, executePayment } from '../services/paypal'
+import { generateToken } from '../services/passport'
 import {
   sendRegistrationComplete,
   sendWireTransferDetails,
@@ -27,15 +27,6 @@ const participantProduct = {
   name: 'HOFFNUNG 3000',
   description: 'Participation fee',
   price: 25.00,
-}
-
-const jwtOptions = {
-  algorithm: 'HS512',
-  expiresIn: '12 hours',
-}
-
-function generateToken(user) {
-  return jwt.sign({ user }, process.env.JWT_SECRET, jwtOptions)
 }
 
 function generateRandomPaymentId() {

@@ -5,7 +5,6 @@ import {
   postRequest,
   putRequest,
 } from '../services/api'
-
 import { FLASH } from '../middlewares/flash'
 import { REDIRECT } from '../middlewares/redirect'
 
