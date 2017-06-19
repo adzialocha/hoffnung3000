@@ -34,6 +34,13 @@ const User = db.sequelize.define('user', {
       notEmpty: true,
     },
   },
+  phone: {
+    type: db.Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
   email: {
     type: db.Sequelize.STRING,
     unique: true,

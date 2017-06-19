@@ -9,6 +9,7 @@ module.exports = {
       email: 'admin@admin.com',
       isAdmin: true,
       isParticipant: false,
+      isActive: true,
     }], {})
   },
   down: (queryInterface) => {

@@ -3,6 +3,10 @@ import httpStatus from 'http-status'
 import { APIError } from '../helpers/errors'
 
 function checkRole(checkParticipant, checkOwner, req, res, next) {
+  if (!req.user.isActive) {
+    return next()
+  }
+
   if (req.user.isAdmin) {
     return next()
   }

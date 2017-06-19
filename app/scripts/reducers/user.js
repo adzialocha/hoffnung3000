@@ -4,8 +4,9 @@ import ActionTypes from '../actionTypes'
 import { jwtDecode } from '../utils/jwt'
 
 const initialState = {
-  id: undefined,
   firstname: undefined,
+  id: undefined,
+  isActive: false,
   isAdmin: false,
   isParticipant: false,
 }
@@ -19,6 +20,8 @@ export default (state = initialState, action) => {
     return update(state, {
       id: { $set: user.id },
       firstname: { $set: user.firstname },
+      isActive: { $set: user.isActive },
+      isParticipant: { $set: user.isParticipant },
     })
   }
   case ActionTypes.AUTH_LOGIN_SUCCESS: {
@@ -26,8 +29,9 @@ export default (state = initialState, action) => {
     const user = jwtPayload.user
 
     return update(state, {
-      id: { $set: user.id },
       firstname: { $set: user.firstname },
+      id: { $set: user.id },
+      isActive: { $set: user.isActive },
       isAdmin: { $set: user.isAdmin },
       isParticipant: { $set: user.isParticipant },
     })
@@ -35,8 +39,9 @@ export default (state = initialState, action) => {
   case ActionTypes.AUTH_LOGOUT:
   case ActionTypes.AUTH_LOGIN_FAILURE:
     return update(state, {
-      id: { $set: undefined },
       firstname: { $set: undefined },
+      id: { $set: undefined },
+      isActive: { $set: false },
       isAdmin: { $set: false },
       isParticipant: { $set: false },
     })

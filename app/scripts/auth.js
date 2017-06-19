@@ -34,7 +34,11 @@ export const isParticipant = UserAuthWrapper({
   redirectAction,
   failureRedirectPath,
   predicate: (state) => {
-    return state.auth.isAuthenticated && state.user.isParticipant
+    return (
+      state.auth.isAuthenticated &&
+      (state.user.isParticipant || state.user.isAdmin) &&
+      state.user.isActive
+    )
   },
   wrapperDisplayName: 'UserIsParticipant',
 })
@@ -44,7 +48,11 @@ export const isAdmin = UserAuthWrapper({
   redirectAction,
   failureRedirectPath,
   predicate: (state) => {
-    return state.auth.isAuthenticated && state.user.isAdmin
+    return (
+      state.auth.isAuthenticated &&
+      state.user.isAdmin &&
+      state.user.isActive
+    )
   },
   wrapperDisplayName: 'UserIsAdmin',
 })

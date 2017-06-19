@@ -16,7 +16,7 @@ const validate = values => {
     errors.lastname = 'Required'
   }
   if (!values.phone) {
-    errors.city = 'Required'
+    errors.phone = 'Required'
   }
   if (!values.street) {
     errors.street = 'Required'
@@ -92,15 +92,14 @@ class UserForm extends Component {
           name="lastname"
           type="text"
         />
+        <hr />
         <Field
           component={FormField}
           disabled={this.props.isLoading}
-          label="Your mobile number"
+          label="Mobile phone number"
           name="phone"
           type="text"
         />
-        <hr />
-        <hr />
         <Field
           component={FormField}
           disabled={this.props.isLoading}
