@@ -7,8 +7,10 @@ const ADMIN_NAVIGATION = [
   { label: 'Home', url: '/' },
   { label: 'About', url: '/pages/about' },
   { label: 'Calendar', url: '/calendar' },
+  { label: 'Places', url: '/places' },
+  { label: 'Performers', url: '/performers' },
+  { label: 'Items', url: '/items' },
   { label: 'Admin', url: '/admin' },
-  { label: 'Information', url: '/pages/information' },
   { label: 'Contact', url: '/pages/contact' },
 ]
 
@@ -16,6 +18,9 @@ const PARTICIPANT_NAVIGATION = [
   { label: 'Home', url: '/' },
   { label: 'About', url: '/pages/about' },
   { label: 'Calendar', url: '/calendar' },
+  { label: 'Places', url: '/places' },
+  { label: 'Performers', url: '/performers' },
+  { label: 'Items', url: '/items' },
   { label: 'Information', url: '/pages/information' },
   { label: 'Contact', url: '/pages/contact' },
 ]

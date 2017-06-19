@@ -6,8 +6,11 @@ import {
   Admin,
   Calendar,
   Home,
+  Items,
   Login,
   Page,
+  Performers,
+  Places,
   Register,
 } from './views'
 
@@ -19,6 +22,9 @@ export default class Routes extends Component {
         <Route component={shouldNotBeAuthenticated(Login)} path="/login" />
         <Route component={shouldNotBeAuthenticated(Register)} path="/register" />
         <Route component={Calendar} path="/calendar" />
+        <Route component={Places} path="/places" />
+        <Route component={Performers} path="/performers" />
+        <Route component={Items} path="/items" />
         <Route component={Page} path="/pages/:slug" />
         <Route component={isAdmin(Admin)} path="/admin" />
       </main>
