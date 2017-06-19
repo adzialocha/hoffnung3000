@@ -5,21 +5,21 @@ import { NavLink } from 'react-router-dom'
 
 const ADMIN_NAVIGATION = [
   { label: 'Home', url: '/' },
+  { label: 'About', url: '/pages/about' },
   { label: 'Calendar', url: '/calendar' },
   { label: 'Admin', url: '/admin' },
-  { label: 'About', url: '/pages/about' },
 ]
 
 const PARTICIPANT_NAVIGATION = [
   { label: 'Home', url: '/' },
-  { label: 'Calendar', url: '/calendar' },
   { label: 'About', url: '/pages/about' },
+  { label: 'Calendar', url: '/calendar' },
 ]
 
 const DEFAULT_NAVIGATION = [
   { label: 'Home', url: '/' },
-  { label: 'Calendar', url: '/calendar' },
   { label: 'About', url: '/pages/about' },
+  { label: 'Calendar', url: '/calendar' },
 ]
 
 class NavigationLinks extends Component {
