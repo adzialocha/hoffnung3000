@@ -29,6 +29,7 @@ export default (state = initialState, action) => {
       window.setTimeout(() => {
         window.location.assign(action.payload.redirect)
       })
+      return state
     }
     return update(state, {
       isLoading: { $set: false },
