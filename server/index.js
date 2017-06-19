@@ -25,7 +25,7 @@ if (envVariables.error && process.env.NODE_ENV !== 'production') {
 }
 
 // check for public assets folder
-const publicDirPath = process.env.NODE_ENV === 'production' ? 'public' : '.tmp'
+const publicDirPath = process.env.NODE_ENV === 'development' ? '.tmp' : 'public'
 
 if (!fs.existsSync(path.join(__dirname, '..', publicDirPath))) {
   winston.error(
@@ -68,7 +68,7 @@ app.use(helmet())
 app.use(cors())
 
 // enforce https on production
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'development') {
   app.use((req, res, next) => {
     if (req.headers['x-forwarded-proto'] !== 'https') {
       return res.redirect(['https://', req.get('Host'), req.url].join(''))

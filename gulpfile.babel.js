@@ -55,8 +55,8 @@ const TMP_PATH = './.tmp'
  * is for a production environment
  */
 
-function isProduction() {
-  return process.env.NODE_ENV === 'production'
+function isDevelopment() {
+  return process.env.NODE_ENV === 'development'
 }
 
 /**
@@ -142,7 +142,7 @@ gulp.task('assets:styles', (done) => {
     .pipe(autoprefixer({
       browsers: ['last 3 versions'],
     }))
-    .pipe(runIf(isProduction(), cleancss()))
+    .pipe(runIf(!isDevelopment(), cleancss()))
     .pipe(gulp.dest(`${TMP_PATH}/styles/`))
     .on('end', done)
 })
@@ -152,7 +152,7 @@ gulp.task('assets:scripts:app', (done) => {
     .pipe(tap((file) => {
       file.contents = browserify(
         file.path, {
-          debug: !isProduction(),
+          debug: isDevelopment(),
           bundleExternal: false,
         })
         .transform(babelify.configure(getBabelConfiguration()))
@@ -163,7 +163,7 @@ gulp.task('assets:scripts:app', (done) => {
       message: 'Error: <%= error.message %>',
       title: 'Error on scripts compilation',
     }))
-    .pipe(runIf(isProduction(), uglify()))
+    .pipe(runIf(!isDevelopment(), uglify()))
     .pipe(rename('app.js'))
     .pipe(gulp.dest(`${TMP_PATH}/scripts/`))
     .on('end', done)
@@ -179,7 +179,7 @@ gulp.task('assets:scripts:vendor', (done) => {
   dependencies.bundle()
     .pipe(source('lib.js'))
     .pipe(buffer())
-    .pipe(runIf(isProduction(), uglify()))
+    .pipe(runIf(!isDevelopment(), uglify()))
     .pipe(gulp.dest(`${TMP_PATH}/scripts/`))
     .on('end', done)
 })
@@ -291,7 +291,7 @@ gulp.task('build:rev:post', (done) => {
 })
 
 gulp.task('build', (done) => {
-  if (!isProduction()) {
+  if (isDevelopment()) {
     console.info('Ignore build task when NODE_ENV is not set to production') // eslint-disable-line no-console
     return done()
   }
