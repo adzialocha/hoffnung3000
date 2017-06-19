@@ -71,7 +71,7 @@ class NavigationLinks extends Component {
 function mapStateToProps(state) {
   return {
     isAdmin: state.user.isAdmin,
-    isParticipant: state.user.isParticipant,
+    isParticipant: state.user.isParticipant && state.user.isActive,
   }
 }
 
