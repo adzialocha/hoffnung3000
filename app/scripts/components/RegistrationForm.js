@@ -17,6 +17,9 @@ const validate = values => {
   if (!values.lastname) {
     errors.lastname = 'Please enter your lastname'
   }
+  if (!values.phone) {
+    errors.phone = 'Please enter your mobile number'
+  }
   if (!values.password) {
     errors.password = 'Please enter your password'
   } else if (values.password.length < 8) {
@@ -93,6 +96,14 @@ class RegistrationForm extends Component {
           name="email"
           type="email"
         />
+        <Field
+          component={FormField}
+          disabled={this.props.isLoading}
+          label="Your phone number"
+          name="phone"
+          type="text"
+        />
+        <small>We need your mobile number only in case we need to reach you during the festival.</small>
         <hr />
 
         <h2>Your Password</h2>

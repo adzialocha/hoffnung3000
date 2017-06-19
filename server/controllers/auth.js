@@ -19,6 +19,7 @@ const permittedFields = [
   'lastname',
   'password',
   'paymentMethod',
+  'phone',
   'street',
 ]
 

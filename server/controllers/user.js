@@ -20,6 +20,7 @@ const permittedFields = [
   'isParticipant',
   'lastname',
   'password',
+  'phone',
   'street',
 ]
 

@@ -10,6 +10,7 @@ export default {
       firstname: Joi.string().alphanum().min(3).max(30).required(),
       lastname: Joi.string().alphanum().min(3).max(30).required(),
       password: Joi.string().min(8).required(),
+      phone: Joi.string().required(),
       street: Joi.string().required(),
     },
   },
@@ -21,6 +22,7 @@ export default {
       email: Joi.string().email().required(),
       firstname: Joi.string().alphanum().min(3).max(30).required(),
       lastname: Joi.string().alphanum().min(3).max(30).required(),
+      phone: Joi.string().required(),
       street: Joi.string().required(),
     },
     params: {
