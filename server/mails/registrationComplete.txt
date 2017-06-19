@@ -2,10 +2,11 @@ Hello ${firstname}!
 
 Welcome to HOFFNUNG 3000!
 
-Thank you so much for signing up as a participant! You are officially registrated now!
+Thank you so much for signing up as a participant! You are officially registered now!
 
-You can now log in and start using the platform :-) it will be ready with curatorial tools for you on 23/07!
+You can now log in and start using the platform :-) it will be ready with curatorial tools for you on 23/07! Then you can start registering equipment/skills/tools etc. and programming events.
 
 And please write us if you have any questions!
 
+Love,
 HOFFNUNG 3000
