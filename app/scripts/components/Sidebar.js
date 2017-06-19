@@ -48,7 +48,7 @@ class Sidebar extends Component {
     return (
       <section>
         <p>Hi { this.props.firstname },</p>
-        <p>Big massive welcome to the platform.</p>
+        <p>Big massive welcome to the platform! The tools for organising the festival will go live on the 29th of July, then you will be able to register equipment / spaces / skills / tools etc. and begin programming events. To help collaboration between participants we encourage you to start using the platform before the festival period starts. All events at HOFFNUNG 3000 are created by you, the participants ;-)</p>
       </section>
     )
   }
