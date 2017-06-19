@@ -30,7 +30,9 @@ export default (state = initialState, action) => {
         window.location.assign(action.payload.redirect)
       })
     }
-    return state
+    return update(state, {
+      isLoading: { $set: false },
+    })
   case ActionTypes.AUTH_LOGIN_SUCCESS:
     setItem('token', action.payload.token)
     return update(state, {

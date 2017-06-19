@@ -186,7 +186,7 @@ class RegistrationWizard extends Component {
       <div className="form">
         <h1>Registration (Step 1 of 3)</h1>
         <p>
-          This is your way to registering as a participant to HOFFNUNG 3000. First, you have to watch the whole video to proceed. Afterwards you'll be asked to supply your information and pay the participation fee of 25 EUR. See you on the other side. :)
+          This is your way to registering as a participant to HOFFNUNG 3000. First, you have to watch the whole video to proceed. Afterwards you'll be asked to supply your information and pay the participation fee of 25 EUR. See you on the other side!
         </p>
         <div className="youtube">
           <YouTube

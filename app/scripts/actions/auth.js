@@ -2,6 +2,7 @@ import ActionTypes from '../actionTypes'
 import { FLASH } from '../middlewares/flash'
 import { jwtDecode } from '../utils/jwt'
 import { postRequest } from '../services/api'
+import { REDIRECT } from '../middlewares/redirect'
 
 export function checkExistingToken(token) {
   const jwtPayload = jwtDecode(token)
@@ -66,6 +67,7 @@ export function register(paymentMethod = 'paypal', data) {
       text: 'Thank you for your registration! We just sent you an email with our bank account details! Please contact us if you didn\'t receive the mail in the next minutes or you have any questions.',
       lifetime: 30000,
     }
+    success[REDIRECT] = '/'
   }
 
   return postRequest(['auth', 'signup'], payload, {
