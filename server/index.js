@@ -7,6 +7,7 @@ import express from 'express'
 import fs from 'fs'
 import helmet from 'helmet'
 import logger from 'morgan'
+import marked from 'marked'
 import methodOverride from 'method-override'
 import path from 'path'
 import winston from 'winston'
@@ -34,6 +35,13 @@ if (!fs.existsSync(path.join(__dirname, '..', publicDirPath))) {
   )
   process.exit(1)
 }
+
+// markdown settings
+marked.setOptions({
+  gfm: true,
+  breaks: true,
+  tables: false,
+})
 
 // check database connection
 const db = require('./database')
