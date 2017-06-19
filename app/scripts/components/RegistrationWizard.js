@@ -22,7 +22,7 @@ const videoOptions = {
   },
 }
 
-const videoId = 'QILiHiTD3uc'
+const videoId = 'KRYVH7fGa68'
 
 class RegistrationWizard extends Component {
   static propTypes = {
@@ -199,7 +199,7 @@ class RegistrationWizard extends Component {
         <hr />
         <button
           className="button button--blue"
-          //disabled={!this.state.isVideoFinished}
+          disabled={!this.state.isVideoFinished}
           onClick={this.nextStep}
         >
           Next Step
