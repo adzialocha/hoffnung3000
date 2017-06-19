@@ -20,19 +20,6 @@ export default (state = initialState, action) => {
       errorMessage: { $set: '' },
       isLoading: { $set: true },
     })
-  case ActionTypes.AUTH_REGISTER_SUCCESS: {
-    const jwtPayload = jwtDecode(action.payload.token)
-    const user = jwtPayload.user
-
-    return update(state, {
-      errorMessage: { $set: '' },
-      firstname: { $set: user.firstname },
-      id: { $set: user.id },
-      isActive: { $set: user.isActive },
-      isLoading: { $set: false },
-      isParticipant: { $set: user.isParticipant },
-    })
-  }
   case ActionTypes.CHANGE_PROFILE_SUCCESS:
   case ActionTypes.AUTH_LOGIN_SUCCESS:
     const jwtPayload = jwtDecode(action.payload.token)

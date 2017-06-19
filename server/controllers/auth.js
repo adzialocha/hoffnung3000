@@ -42,15 +42,11 @@ function paypalCheckout(user) {
         }, {
           where: { id: user.id },
           limit: 1,
-          returning: true,
         })
-          .then((data) => {
-            const updatedUser = data[1][0]
+          .then(() => {
             resolve({
-              data: updatedUser,
               message: 'ok',
               redirect: paypalResponse.redirect,
-              token: generateToken(updatedUser),
             })
           })
           .catch(userUpdateError => reject(userUpdateError))
@@ -86,9 +82,7 @@ function transferCheckout(user) {
         }, updatedUser.email)
 
         resolve({
-          data: updatedUser,
           message: 'ok',
-          token: generateToken(updatedUser),
         })
       })
       .catch(userUpdateError => reject(userUpdateError))

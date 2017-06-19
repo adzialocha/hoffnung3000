@@ -25,18 +25,12 @@ export default (state = initialState, action) => {
       errorMessage: { $set: '' },
     })
   case ActionTypes.AUTH_REGISTER_SUCCESS:
-    setItem('token', action.payload.token)
     if (action.meta.paymentMethod === 'paypal') {
       window.setTimeout(() => {
         window.location.assign(action.payload.redirect)
       })
-      return state
     }
-    return update(state, {
-      isLoading: { $set: false },
-      isAuthenticated: { $set: true },
-      errorMessage: { $set: '' },
-    })
+    return state
   case ActionTypes.AUTH_LOGIN_SUCCESS:
     setItem('token', action.payload.token)
     return update(state, {
