@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 
 import { register } from '../actions/auth'
 import { RegistrationForm } from './'
+import { updateMetaInformation } from '../actions/meta'
 
 const videoOptions = {
   playerVars: {
@@ -29,11 +30,18 @@ class RegistrationWizard extends Component {
     errorMessage: PropTypes.string.isRequired,
     form: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
+    isMetaLoading: PropTypes.bool.isRequired,
+    isRegistrationFull: PropTypes.bool.isRequired,
     register: PropTypes.func.isRequired,
+    updateMetaInformation: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
     form: {},
+  }
+
+  componentDidMount() {
+    this.props.updateMetaInformation()
   }
 
   onPayPalCheckout() {
@@ -208,7 +216,23 @@ class RegistrationWizard extends Component {
     )
   }
 
+  renderLimitExceeded() {
+    return (
+      <div className="form">
+        <h1>Registration</h1>
+        <p>Sorry, but it looks like we already reached the limit of possible registrations :-(</p>
+        <p>Please write us via <a href="mailto:kontakt@hoffnung3000.de">kontakt@hoffnung3000.de</a>. We will put you on our waiting list and contact you as soon as there are available spaces again.</p>
+      </div>
+    )
+  }
+
   render() {
+    if (this.props.isMetaLoading) {
+      return <p>Loading ...</p>
+    }
+    if (this.props.isRegistrationFull) {
+      return this.renderLimitExceeded()
+    }
     if (this.state.registrationStep === 0) {
       return this.renderVideo()
     } else if (this.state.registrationStep === 1) {
@@ -261,11 +285,14 @@ function mapStateToProps(state) {
     errorMessage,
     form: state.form.registration,
     isLoading,
+    isMetaLoading: state.meta.isLoading,
+    isRegistrationFull: state.meta.isRegistrationFull,
   }
 }
 
 export default connect(
   mapStateToProps, {
     register,
+    updateMetaInformation,
   }
 )(RegistrationWizard)
