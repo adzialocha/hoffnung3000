@@ -9,6 +9,7 @@ import {
   sendRegistrationComplete,
   sendWireTransferDetails,
 } from '../helpers/mailTemplate'
+import { MAXIMUM_PARTICIPANTS } from '../controllers/meta'
 
 const permittedFields = [
   'city',
@@ -95,35 +96,48 @@ function signup(req, res, next) {
 
   const { email, paymentMethod } = fields
 
-  User.findOne({ where: { email } })
-    .then(existingUser => {
-      if (existingUser) {
+  User.count({ where: { isParticipant: true } })
+    .then(count => {
+      if (count >= MAXIMUM_PARTICIPANTS) {
         next(
           new APIError(
-            'A user with this email address already exists',
-            httpStatus.BAD_REQUEST
+            'Registration limit was exceeded',
+            httpStatus.LOCKED
           )
         )
         return
       }
 
-      User.create(fields, { returning: true })
-        .then((newUser) => {
-          if (paymentMethod === 'paypal') {
-            return paypalCheckout(newUser)
-              .then((data) => res.json(data))
-              .catch(err => next(err))
-          } else if (paymentMethod === 'transfer') {
-            return transferCheckout(newUser)
-              .then((data) => res.json(data))
-              .catch(err => next(err))
+      User.findOne({ where: { email } })
+        .then(existingUser => {
+          if (existingUser) {
+            next(
+              new APIError(
+                'A user with this email address already exists',
+                httpStatus.BAD_REQUEST
+              )
+            )
+            return
           }
 
-          return next(
-            new APIError('Unknown payment method', httpStatus.BAD_REQUEST)
-          )
+          User.create(fields, { returning: true })
+            .then((newUser) => {
+              if (paymentMethod === 'paypal') {
+                return paypalCheckout(newUser)
+                  .then((data) => res.json(data))
+                  .catch(err => next(err))
+              } else if (paymentMethod === 'transfer') {
+                return transferCheckout(newUser)
+                  .then((data) => res.json(data))
+                  .catch(err => next(err))
+              }
+
+              return next(
+                new APIError('Unknown payment method', httpStatus.BAD_REQUEST)
+              )
+            })
+            .catch(err => next(err))
         })
-        .catch(err => next(err))
     })
 }
 

@@ -46,7 +46,7 @@ export function findAll(model, req, res, next) {
     limit,
     offset,
     order: [
-      ['id', 'ASC']
+      ['id', 'ASC'],
     ],
   })
     .then(result => {

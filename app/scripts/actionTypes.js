@@ -26,6 +26,10 @@ export default keyMirror({
   FLASH_REMOVE_ALL_MESSAGES: null,
   FLASH_REMOVE_MESSAGE: null,
 
+  META_FAILURE: null,
+  META_REQUEST: null,
+  META_SUCCESS: null,
+
   PAGE_FAILURE: null,
   PAGE_REQUEST: null,
   PAGE_SUCCESS: null,
