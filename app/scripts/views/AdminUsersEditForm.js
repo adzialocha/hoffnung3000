@@ -26,7 +26,11 @@ class AdminUsersEditForm extends Component {
   }
 
   onSubmit(values) {
-    this.props.updateResource('users', this.props.resourceId, values)
+    const flash = {
+      text: 'Successfully updated user',
+    }
+
+    this.props.updateResource('users', this.props.resourceId, values, flash)
   }
 
   renderMeta() {

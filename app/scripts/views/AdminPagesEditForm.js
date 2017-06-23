@@ -26,7 +26,11 @@ class AdminPagesEditForm extends Component {
   }
 
   onSubmit(values) {
-    this.props.updateResource('pages', this.props.resourceId, values)
+    const flash = {
+      text: 'Successfully updated page',
+    }
+
+    this.props.updateResource('pages', this.props.resourceId, values, flash)
   }
 
   renderForm() {
