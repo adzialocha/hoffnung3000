@@ -10,9 +10,9 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-  case LOCATION_CHANGE:
   case ActionTypes.AUTH_LOGOUT:
   case ActionTypes.DRAWER_COLLAPSE_ALL:
+  case LOCATION_CHANGE:
     return update(state, {
       isNavigationExpanded: { $set: false },
       isSidebarExpanded: { $set: false },

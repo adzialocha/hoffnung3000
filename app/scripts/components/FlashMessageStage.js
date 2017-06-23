@@ -1,4 +1,3 @@
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -6,7 +5,6 @@ import { connect } from 'react-redux'
 import FlashMessage from './FlashMessage'
 
 const FLASH_DEFAULT_LIFETIME = 3000
-const FLASH_TRANSITION_DURATION = 300
 
 class FlashMessageStage extends Component {
   static propTypes = {
@@ -30,17 +28,7 @@ class FlashMessageStage extends Component {
   render() {
     return (
       <div className="flash-message-stage">
-        <CSSTransitionGroup
-          transitionEnter={true}
-          transitionEnterTimeout={FLASH_TRANSITION_DURATION}
-          transitionLeaveTimeout={FLASH_TRANSITION_DURATION}
-          transitionName={ {
-            enter: 'flash-message--enter',
-            leave: 'flash-message--leave',
-          } }
-        >
-          { this.renderFlashMessages() }
-        </CSSTransitionGroup>
+        { this.renderFlashMessages() }
       </div>
     )
   }

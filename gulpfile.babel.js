@@ -37,7 +37,6 @@ const VENDOR_MODULES = [
   'react-router-dom',
   'react-router-redux',
   'react-scroll',
-  'react-transition-group/CSSTransitionGroup',
   'react-youtube',
   'redux',
   'redux-auth-wrapper',
