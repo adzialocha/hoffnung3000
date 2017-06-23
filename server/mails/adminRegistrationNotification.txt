@@ -1,0 +1,9 @@
+Woho! New registration!
+
+Firstname: ${firstname}
+Lastname: ${lastname}
+Email: ${email}
+Payment method: ${paymentMethod}
+
+Love,
+HOFFNUNG 3000 BOT
