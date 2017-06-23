@@ -2,55 +2,43 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormField } from './'
+import { FormField, FormCheckbox } from '../components'
 
 const validate = values => {
   const errors = {}
   if (!values.email) {
-    errors.email = 'Please enter your email address'
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address'
+    errors.email = 'Required'
   }
   if (!values.firstname) {
-    errors.firstname = 'Please enter your first name'
+    errors.firstname = 'Required'
   }
   if (!values.lastname) {
-    errors.lastname = 'Please enter your last name'
+    errors.lastname = 'Required'
   }
   if (!values.phone) {
-    errors.phone = 'Please enter your mobile number'
-  }
-  if (!values.password) {
-    errors.password = 'Please enter your password'
-  } else if (values.password.length < 8) {
-    errors.password = 'Must be 8 characters or more'
-  }
-  if (!values.passwordRepeat) {
-    errors.passwordRepeat = 'Please repeat your password'
-  }
-  if (values.passwordRepeat !== values.password) {
-    errors.passwordRepeat = 'The given passwords do not match'
+    errors.phone = 'Required'
   }
   if (!values.street) {
-    errors.street = 'Please enter your street and number'
-  }
-  if (!values.cityCode) {
-    errors.cityCode = 'Please enter your city code'
+    errors.street = 'Required'
   }
   if (!values.city) {
-    errors.city = 'Please enter your city'
+    errors.city = 'Required'
+  }
+  if (!values.cityCode) {
+    errors.cityCode = 'Required'
   }
   if (!values.country) {
-    errors.country = 'Please enter your country'
+    errors.country = 'Required'
   }
   return errors
 }
 
-class RegistrationForm extends Component {
+class UserForm extends Component {
   static propTypes = {
     errorMessage: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
+    showPasswordField: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -70,11 +58,26 @@ class RegistrationForm extends Component {
     return null
   }
 
+  renderPasswordField() {
+    if (!this.props.showPasswordField) {
+      return null
+    }
+
+    return (
+      <Field
+        component={FormField}
+        disabled={this.props.isLoading}
+        label="Password (plaintext)"
+        name="password"
+        type="text"
+      />
+    )
+  }
+
   render() {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
-        <h2>Basic Information</h2>
         <Field
           component={FormField}
           disabled={this.props.isLoading}
@@ -89,41 +92,23 @@ class RegistrationForm extends Component {
           name="lastname"
           type="text"
         />
+        <hr />
         <Field
           component={FormField}
           disabled={this.props.isLoading}
-          label="Email-Address"
-          name="email"
-          type="email"
-        />
-        <Field
-          component={FormField}
-          disabled={this.props.isLoading}
-          label="Your phone number"
+          label="Mobile phone number"
           name="phone"
           type="text"
         />
-        <small>We need your mobile number only in case we need to reach you during the festival.</small>
-        <hr />
-
-        <h2>Your Password</h2>
         <Field
           component={FormField}
           disabled={this.props.isLoading}
-          label="Password"
-          name="password"
-          type="password"
+          label="E-Mail-Address"
+          name="email"
+          type="email"
         />
-        <Field
-          component={FormField}
-          disabled={this.props.isLoading}
-          label="Repeat password"
-          name="passwordRepeat"
-          type="password"
-        />
+        { this.renderPasswordField() }
         <hr />
-
-        <h2>Your Address</h2>
         <Field
           component={FormField}
           disabled={this.props.isLoading}
@@ -153,13 +138,32 @@ class RegistrationForm extends Component {
           type="text"
         />
         <hr />
-
+        <Field
+          component={FormCheckbox}
+          disabled={this.props.isLoading}
+          label="Administrator"
+          name="isAdmin"
+        />
+        <Field
+          component={FormCheckbox}
+          disabled={this.props.isLoading}
+          label="Participates at festival"
+          name="isParticipant"
+        />
+        <hr />
+        <Field
+          component={FormCheckbox}
+          disabled={this.props.isLoading}
+          label="Account is enabled (Payment accepted)"
+          name="isActive"
+        />
+        <hr />
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}
           type="submit"
         >
-          Next Step
+          Save
         </button>
       </form>
     )
@@ -167,8 +171,7 @@ class RegistrationForm extends Component {
 }
 
 export default reduxForm({
-  destroyOnUnmount: false,
-  forceUnregisterOnUnmount: true,
-  form: 'registration',
+  enableReinitialize: true,
+  form: 'user',
   validate,
-})(RegistrationForm)
+})(UserForm)

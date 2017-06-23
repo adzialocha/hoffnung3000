@@ -2,28 +2,23 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormField } from './'
+import { FormField, FormTextarea } from '../components'
 
 const validate = values => {
   const errors = {}
-  if (!values.password) {
-    errors.password = 'Please enter your current password'
+  if (!values.title) {
+    errors.title = 'Required'
   }
-  if (!values.newPassword) {
-    errors.newPassword = 'Please enter your password'
-  } else if (values.newPassword.length < 8) {
-    errors.newPassword = 'Must be 8 characters or more'
+  if (!values.slug) {
+    errors.slug = 'Required'
   }
-  if (!values.newPasswordRepeat) {
-    errors.newPasswordRepeat = 'Please repeat your password'
-  }
-  if (values.newPasswordRepeat !== values.newPassword) {
-    errors.newPasswordRepeat = 'The given passwords do not match'
+  if (!values.content) {
+    errors.content = 'Required'
   }
   return errors
 }
 
-class ProfileForm extends Component {
+class PageForm extends Component {
   static propTypes = {
     errorMessage: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
@@ -33,7 +28,6 @@ class ProfileForm extends Component {
   static defaultProps = {
     errorMessage: undefined,
     isLoading: false,
-    showPasswordField: false,
   }
 
   renderErrorMessage() {
@@ -51,36 +45,33 @@ class ProfileForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
-        <h2>Change your password</h2>
         <Field
           component={FormField}
           disabled={this.props.isLoading}
-          label="Your current password"
-          name="password"
-          type="password"
+          label="Title"
+          name="title"
+          type="text"
         />
         <Field
           component={FormField}
           disabled={this.props.isLoading}
-          label="New Password"
-          name="newPassword"
-          type="password"
+          label="Slug"
+          name="slug"
+          type="text"
         />
         <Field
-          component={FormField}
+          component={FormTextarea}
           disabled={this.props.isLoading}
-          label="Repeat new password"
-          name="newPasswordRepeat"
-          type="password"
+          label="Content"
+          name="content"
+          type="text"
         />
-        <hr />
-
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}
           type="submit"
         >
-          Update
+          Save
         </button>
       </form>
     )
@@ -88,6 +79,7 @@ class ProfileForm extends Component {
 }
 
 export default reduxForm({
-  form: 'profile',
+  enableReinitialize: true,
+  form: 'page',
   validate,
-})(ProfileForm)
+})(PageForm)

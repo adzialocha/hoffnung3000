@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { changeProfile } from '../actions/user'
-import { ProfileForm } from '../components'
+import { ProfileForm } from '../forms'
 
 class Profile extends Component {
   static propTypes = {

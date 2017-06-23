@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
-import { UserForm } from '../components'
+import { UserForm } from '../forms'
 
 class AdminUsersNewForm extends Component {
   static propTypes = {
