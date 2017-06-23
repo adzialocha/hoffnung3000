@@ -2,7 +2,9 @@ import ActionTypes from '../actionTypes'
 
 let counter = 0
 
-export default function flash(text, type = 'notification', lifetime) {
+export default function flash(options) {
+  const { text, type = 'notification', lifetime } = options
+
   return {
     type: ActionTypes.FLASH_ADD_MESSAGE,
     message: {
@@ -30,17 +32,17 @@ export function removeAllMessages() {
 }
 
 export function notification(text, lifetime) {
-  return flash(text, 'notification', lifetime)
+  return flash({ text, type: 'notification', lifetime })
 }
 
 export function warning(text, lifetime) {
-  return flash(text, 'warning', lifetime)
+  return flash({ text, type: 'warning', lifetime })
 }
 
 export function error(text, lifetime) {
-  return flash(text, 'error', lifetime)
+  return flash({ text, type: 'error', lifetime })
 }
 
 export function rainbow(text, lifetime) {
-  return flash(text, 'rainbow', lifetime)
+  return flash({ text, type: 'rainbow', lifetime })
 }
