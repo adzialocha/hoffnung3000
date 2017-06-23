@@ -5,7 +5,7 @@ import YouTube from 'react-youtube'
 import { connect } from 'react-redux'
 
 import { register } from '../actions/auth'
-import { RegistrationForm } from './'
+import { RegistrationForm } from '../forms'
 import { updateMetaInformation } from '../actions/meta'
 
 const videoOptions = {

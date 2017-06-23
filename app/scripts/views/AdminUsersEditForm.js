@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { cachedResource } from '../services/resources'
 import { fetchResource, updateResource } from '../actions/resources'
-import { UserForm } from '../components'
+import { UserForm } from '../forms'
 
 class AdminUsersEditForm extends Component {
   static propTypes = {
@@ -26,7 +26,11 @@ class AdminUsersEditForm extends Component {
   }
 
   onSubmit(values) {
-    this.props.updateResource('users', this.props.resourceId, values)
+    const flash = {
+      text: 'Successfully updated user',
+    }
+
+    this.props.updateResource('users', this.props.resourceId, values, flash)
   }
 
   renderMeta() {

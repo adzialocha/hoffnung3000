@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
-import { PageForm } from '../components'
+import { PageForm } from '../forms'
 
 class AdminPagesNewForm extends Component {
   static propTypes = {

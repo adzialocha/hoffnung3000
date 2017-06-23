@@ -6,6 +6,7 @@ import { APIError } from '../helpers/errors'
 import { createPayment, executePayment } from '../services/paypal'
 import { generateToken } from '../services/passport'
 import {
+  sendAdminRegistrationNotification,
   sendRegistrationComplete,
   sendWireTransferDetails,
 } from '../helpers/mailTemplate'
@@ -131,6 +132,8 @@ function signup(req, res, next) {
                   .then((data) => res.json(data))
                   .catch(err => next(err))
               }
+
+              sendAdminRegistrationNotification({ ...newUser })
 
               return next(
                 new APIError('Unknown payment method', httpStatus.BAD_REQUEST)

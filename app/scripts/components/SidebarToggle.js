@@ -5,19 +5,40 @@ import { connect } from 'react-redux'
 
 import { toggleSidebar } from '../actions/drawer'
 
+const SPINNER_TRESHOLD = 100
+
+let timeout
+
 class SidebarToggle extends Component {
   static propTypes = {
     isSidebarExpanded: PropTypes.bool.isRequired,
-    pendingRequests: PropTypes.number.isRequired,
+    pendingRequests: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
     toggleSidebar: PropTypes.func.isRequired,
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    const isPending = nextProps.pendingRequests > 0
+
+    if (isPending && !nextState.hasPendingRequests) {
+      timeout = setTimeout(() => {
+        this.setState({
+          hasPendingRequests: true,
+        })
+      }, SPINNER_TRESHOLD)
+    } else if (!isPending && nextState.hasPendingRequests) {
+      clearTimeout(timeout)
+
+      this.setState({
+        hasPendingRequests: false,
+      })
+    }
+  }
+
   render() {
-    const hasPendingRequests = this.props.pendingRequests > 0
     const sidebarToggleClasses = classnames(
       'sidebar-toggle', {
         'sidebar-toggle--active': this.props.isSidebarExpanded,
-        'sidebar-toggle--spinning': hasPendingRequests,
+        'sidebar-toggle--spinning': this.state.hasPendingRequests,
         'sidebar-toggle--notified': false,
       }
     )
@@ -30,6 +51,14 @@ class SidebarToggle extends Component {
         <div className={sidebarToggleClasses} />
       </button>
     )
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      hasPendingRequests: false,
+    }
   }
 }
 

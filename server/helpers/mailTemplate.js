@@ -4,6 +4,7 @@ import path from 'path'
 import mail from '../services/mail'
 
 const TEMPLATES_PATH = 'mails'
+const MAIN_EMAIL = 'kontakt@hoffnung3000.de'
 
 function generateTemplateString(template) {
   const sanitized = template
@@ -60,4 +61,9 @@ export function sendWireTransferDetails(locals, receiver) {
 export function sendRegistrationComplete(locals, receiver) {
   const subject = 'WELCOME TO HOFFNUNG 3000'
   return sendMail(locals, subject, receiver, 'registrationComplete')
+}
+
+export function sendAdminRegistrationNotification(locals) {
+  const subject = 'NEW REGISTRATION'
+  return sendMail(locals, subject, MAIN_EMAIL, 'adminRegistrationNotification')
 }

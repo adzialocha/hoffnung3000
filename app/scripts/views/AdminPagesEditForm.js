@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { cachedResource } from '../services/resources'
 import { fetchResource, updateResource } from '../actions/resources'
-import { PageForm } from '../components'
+import { PageForm } from '../forms'
 
 class AdminPagesEditForm extends Component {
   static propTypes = {
@@ -26,7 +26,11 @@ class AdminPagesEditForm extends Component {
   }
 
   onSubmit(values) {
-    this.props.updateResource('pages', this.props.resourceId, values)
+    const flash = {
+      text: 'Successfully updated page',
+    }
+
+    this.props.updateResource('pages', this.props.resourceId, values, flash)
   }
 
   renderForm() {

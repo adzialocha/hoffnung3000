@@ -7,8 +7,7 @@ export default store => next => action => {
     return next(action)
   }
 
-  const { text, type, lifetime } = action[FLASH]
-  store.dispatch(flash(text, type, lifetime))
+  store.dispatch(flash(action[FLASH]))
 
   return next(action)
 }

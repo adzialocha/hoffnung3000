@@ -1,0 +1,5 @@
+export LoginForm from './LoginForm'
+export PageForm from './PageForm'
+export ProfileForm from './ProfileForm'
+export RegistrationForm from './RegistrationForm'
+export UserForm from './UserForm'
