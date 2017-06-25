@@ -16,7 +16,7 @@
   "scripts": {
     "postinstall": "gulp build",
     "start": "babel-node server/index.js",
-    "serve": "nodemon --watch server --exec babel-node server/index.js",
+    "serve": "nodemon --watch server --exec NODE_ENV=development babel-node server/index.js",
     "watch": "cross-env NODE_ENV=development gulp watch",
     "build": "cross-env NODE_ENV=production gulp build",
     "lint": "gulp lint",
