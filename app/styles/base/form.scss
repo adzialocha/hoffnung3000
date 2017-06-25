@@ -83,6 +83,7 @@ input {
     @extend %form-base-style;
 
     width: $_form-checkbox-size;
+    min-width: $_form-checkbox-size;
     height: $_form-checkbox-size;
 
     margin-right: 10px;

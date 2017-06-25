@@ -7,3 +7,14 @@
 .paginated-list__row-cell--boolean-active {
   background-color: $green;
 }
+
+@include media-breakpoint(xs) {
+  .paginated-list__action-button {
+    padding-top: 8px;
+    padding-right: 8px;
+    padding-bottom: 6px;
+    padding-left: 8px;
+
+    font-size: $font-size-sm;
+  }
+}
