@@ -18,6 +18,7 @@ import {
   Places,
   Profile,
   Register,
+  Tickets,
 } from './views'
 
 export default class Routes extends Component {
@@ -28,6 +29,7 @@ export default class Routes extends Component {
         <Route component={shouldNotBeAuthenticated(Login)} path="/login" />
         <Route component={shouldNotBeAuthenticated(Register)} path="/register" />
         <Route component={Calendar} path="/calendar" />
+        <Route component={Tickets} path="/tickets" />
         <Route component={Page} path="/pages/:slug" />
         <Route component={isAuthenticated(Profile)} path="/profile" />
         <Route component={isParticipant(Places)} path="/places" />

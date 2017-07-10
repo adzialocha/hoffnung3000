@@ -1,8 +1,18 @@
+.link,
 a {
   color: $black;
 
   &:focus,
   &:visited {
     color: $black;
+  }
+}
+
+.link--white {
+  color: $white;
+
+  &:focus,
+  &:visited {
+    color: $white;
   }
 }

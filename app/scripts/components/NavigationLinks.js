@@ -28,8 +28,8 @@ const PARTICIPANT_NAVIGATION = [
 const DEFAULT_NAVIGATION = [
   { label: 'Home', url: '/' },
   { label: 'About', url: '/pages/about' },
-  { label: 'Registration', url: '/register' },
   { label: 'Calendar', url: '/calendar' },
+  { label: 'Tickets', url: '/tickets' },
   { label: 'Information', url: '/pages/information' },
   { label: 'Contact', url: '/pages/contact' },
 ]
