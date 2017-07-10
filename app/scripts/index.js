@@ -22,9 +22,9 @@ if (hasItem('token')) {
 if (window.location.href.includes('?paypalSuccess')) {
   store.dispatch(
     flash({
-      text: 'Thank you and welcome to HOFFNUNG 3000! You successfully created your participant account!',
-      type: 'rainbow',
       lifetime: 30000,
+      text: 'Thank you and welcome to HOFFNUNG 3000! You successfully created your account!',
+      type: 'rainbow',
     })
   )
 }

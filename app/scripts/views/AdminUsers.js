@@ -40,6 +40,7 @@ class AdminUsers extends Component {
       { key: 'firstname', title: 'Firstname' },
       { key: 'email', title: 'Email' },
       { key: 'isParticipant', title: 'Participant' },
+      { key: 'isVisitor', title: 'Visitor' },
       { key: 'isAdmin', title: 'Admin' },
       { key: 'isActive', title: 'Active' },
     ]

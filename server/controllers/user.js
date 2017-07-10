@@ -18,6 +18,7 @@ const permittedFields = [
   'isActive',
   'isAdmin',
   'isParticipant',
+  'isVisitor',
   'lastname',
   'password',
   'phone',

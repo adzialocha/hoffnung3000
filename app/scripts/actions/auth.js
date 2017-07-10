@@ -55,7 +55,6 @@ export function register(paymentMethod = 'paypal', data) {
   const payload = {
     ...data,
     paymentMethod,
-    paymentProduct: 'participation',
   }
 
   const success = {

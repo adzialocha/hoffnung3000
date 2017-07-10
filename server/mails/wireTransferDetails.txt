@@ -1,8 +1,8 @@
-Hello ${firstname}!
+Hello ${user.firstname}!
 
-Thank you so much for signing up as a participant for HOFFNUNG 3000!
+Thank you so much for signing up for HOFFNUNG 3000!
 
-Please transfer the 25,00 Euro participation cost to the following bank account as soon as possible so we can confirm your account :-)
+Please transfer ${product.price} € for the ${product.description} to the following bank account as soon as possible so we can confirm your account :-)
 
 Receiver name: "HOFFNUNG 3000"
 Description: "Registration id: ${paymentId}"

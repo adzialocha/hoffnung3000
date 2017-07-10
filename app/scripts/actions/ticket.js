@@ -11,7 +11,6 @@ export function buyTicket(paymentMethod = 'paypal', data) {
   const payload = {
     ...data,
     paymentMethod,
-    paymentProduct: 'ticket',
   }
 
   const success = {
@@ -27,7 +26,7 @@ export function buyTicket(paymentMethod = 'paypal', data) {
     success[REDIRECT] = '/'
   }
 
-  return postRequest(['auth', 'signup'], payload, {
+  return postRequest(['auth', 'signup', 'ticket'], payload, {
     request: {
       type: ActionTypes.TICKET_REQUEST,
       meta,

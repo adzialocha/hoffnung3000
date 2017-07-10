@@ -3,8 +3,9 @@ import path from 'path'
 
 import mail from '../services/mail'
 
-const TEMPLATES_PATH = 'mails'
+const BOT_MAIL = 'roboter@hoffnung3000.de'
 const MAIN_EMAIL = 'kontakt@hoffnung3000.de'
+const TEMPLATES_PATH = 'mails'
 
 function generateTemplateString(template) {
   const sanitized = template
@@ -32,7 +33,7 @@ function textTemplate(url, locals) {
   })
 }
 
-function sendMail(locals, subject, receiver, templateName) {
+function sendMail(locals, subject, receiver, templateName, sender) {
   return new Promise((resolve, reject) => {
     textTemplate(`${TEMPLATES_PATH}/${templateName}.txt`, locals)
       .then((text) => {
@@ -40,6 +41,10 @@ function sendMail(locals, subject, receiver, templateName) {
           subject,
           text,
           to: receiver,
+        }
+
+        if (sender) {
+          mailOptions.from = sender
         }
 
         mail.sendMail(mailOptions, (err) => {
@@ -65,5 +70,11 @@ export function sendRegistrationComplete(locals, receiver) {
 
 export function sendAdminRegistrationNotification(locals) {
   const subject = 'NEW REGISTRATION'
-  return sendMail(locals, subject, MAIN_EMAIL, 'adminRegistrationNotification')
+  return sendMail(
+    locals,
+    subject,
+    MAIN_EMAIL,
+    'adminRegistrationNotification',
+    BOT_MAIL
+  )
 }

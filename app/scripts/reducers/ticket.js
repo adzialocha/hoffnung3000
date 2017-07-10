@@ -20,11 +20,16 @@ export default (state = initialState, action) => {
       isLoading: { $set: true },
     })
   case ActionTypes.TICKET_SUCCESS:
+    if (action.meta.paymentMethod === 'paypal') {
+      window.setTimeout(() => {
+        window.location.assign(action.payload.redirect)
+      })
+      return state
+    }
     return update(state, {
       isLoading: { $set: false },
     })
   case ActionTypes.TICKET_FAILURE:
-    removeItem('token')
     return update(state, {
       isLoading: { $set: false },
       errorMessage: { $set: action.error.message },

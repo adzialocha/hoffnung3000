@@ -37,13 +37,6 @@ const User = db.sequelize.define('user', {
       this.setDataValue('password', generateHash(val))
     },
   },
-  phone: {
-    type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
   email: {
     type: db.Sequelize.STRING,
     unique: true,
@@ -52,33 +45,20 @@ const User = db.sequelize.define('user', {
       notEmpty: true,
     },
   },
+  phone: {
+    type: db.Sequelize.STRING,
+  },
   street: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   cityCode: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   city: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   country: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   paymentId: {
     type: db.Sequelize.STRING,
@@ -99,6 +79,11 @@ const User = db.sequelize.define('user', {
     defaultValue: false,
   },
   isParticipant: {
+    type: db.Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  isVisitor: {
     type: db.Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,

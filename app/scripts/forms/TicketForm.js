@@ -28,18 +28,6 @@ const validate = values => {
   if (values.passwordRepeat !== values.password) {
     errors.passwordRepeat = 'The given passwords do not match'
   }
-  if (!values.street) {
-    errors.street = 'Please enter your street and number'
-  }
-  if (!values.cityCode) {
-    errors.cityCode = 'Please enter your city code'
-  }
-  if (!values.city) {
-    errors.city = 'Please enter your city'
-  }
-  if (!values.country) {
-    errors.country = 'Please enter your country'
-  }
   return errors
 }
 
@@ -109,38 +97,6 @@ class TicketForm extends Component {
           name="passwordRepeat"
           type="password"
         />
-        <hr />
-
-        <h2>Your Address</h2>
-        <Field
-          component={FormField}
-          disabled={this.props.isLoading}
-          label="Street and number"
-          name="street"
-          type="text"
-        />
-        <Field
-          component={FormField}
-          disabled={this.props.isLoading}
-          label="City code"
-          name="cityCode"
-          type="text"
-        />
-        <Field
-          component={FormField}
-          disabled={this.props.isLoading}
-          label="City"
-          name="city"
-          type="text"
-        />
-        <Field
-          component={FormField}
-          disabled={this.props.isLoading}
-          label="Country"
-          name="country"
-          type="text"
-        />
-        <small>We need your address only to send you an invoice.</small>
         <hr />
 
         <button

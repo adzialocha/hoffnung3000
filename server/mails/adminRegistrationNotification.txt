@@ -1,9 +1,13 @@
 Woho! New registration!
 
-Firstname: ${firstname}
-Lastname: ${lastname}
-Email: ${email}
+Firstname: ${user.firstname}
+Lastname: ${user.lastname}
+Email: ${user.email}
+
+Payment product: ${product.name} - ${product.description}
+Payment price: ${product.price} €
 Payment method: ${paymentMethod}
 
-Love,
+<3
+
 HOFFNUNG 3000 BOT
