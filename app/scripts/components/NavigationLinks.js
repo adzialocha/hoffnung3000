@@ -25,6 +25,15 @@ const PARTICIPANT_NAVIGATION = [
   { label: 'Contact', url: '/pages/contact' },
 ]
 
+const VISITOR_NAVIGATION = [
+  { label: 'Home', url: '/' },
+  { label: 'About', url: '/pages/about' },
+  { label: 'Calendar', url: '/calendar' },
+  { label: 'Places', url: '/places' },
+  { label: 'Information', url: '/pages/information' },
+  { label: 'Contact', url: '/pages/contact' },
+]
+
 const DEFAULT_NAVIGATION = [
   { label: 'Home', url: '/' },
   { label: 'About', url: '/pages/about' },
@@ -38,6 +47,7 @@ class NavigationLinks extends Component {
   static propTypes = {
     isAdmin: PropTypes.bool.isRequired,
     isParticipant: PropTypes.bool.isRequired,
+    isVisitor: PropTypes.bool.isRequired,
   }
 
   renderNavigationItems(navigation) {
@@ -63,6 +73,8 @@ class NavigationLinks extends Component {
       return this.renderNavigation(ADMIN_NAVIGATION)
     } else if (this.props.isParticipant) {
       return this.renderNavigation(PARTICIPANT_NAVIGATION)
+    } else if (this.props.isVisitor) {
+      return this.renderNavigation(VISITOR_NAVIGATION)
     }
     return this.renderNavigation(DEFAULT_NAVIGATION)
   }
@@ -72,6 +84,7 @@ function mapStateToProps(state) {
   return {
     isAdmin: state.user.isAdmin,
     isParticipant: state.user.isParticipant && state.user.isActive,
+    isVisitor: state.user.isVisitor && state.user.isActive,
   }
 }
 
