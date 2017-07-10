@@ -20,4 +20,15 @@ export default {
       password: Joi.string().required(),
     },
   },
+  requestResetToken: {
+    body: {
+      email: Joi.string().email().required(),
+    },
+  },
+  resetPassword: {
+    body: {
+      password: Joi.string().min(8).required(),
+      token: Joi.string().required(),
+    },
+  },
 }

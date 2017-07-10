@@ -7,23 +7,20 @@ import { FormField } from '../components'
 const validate = values => {
   const errors = {}
   if (!values.password) {
-    errors.password = 'Please enter your current password'
+    errors.password = 'Please enter your password'
+  } else if (values.password.length < 8) {
+    errors.password = 'Must be 8 characters or more'
   }
-  if (!values.newPassword) {
-    errors.newPassword = 'Please enter your password'
-  } else if (values.newPassword.length < 8) {
-    errors.newPassword = 'Must be 8 characters or more'
+  if (!values.passwordRepeat) {
+    errors.passwordRepeat = 'Please repeat your password'
   }
-  if (!values.newPasswordRepeat) {
-    errors.newPasswordRepeat = 'Please repeat your password'
-  }
-  if (values.newPasswordRepeat !== values.newPassword) {
-    errors.newPasswordRepeat = 'The given passwords do not match'
+  if (values.passwordRepeat !== values.password) {
+    errors.passwordRepeat = 'The given passwords do not match'
   }
   return errors
 }
 
-class ProfileForm extends Component {
+class ResetPasswordForm extends Component {
   static propTypes = {
     errorMessage: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
@@ -50,26 +47,18 @@ class ProfileForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
-        <h2>Change your password</h2>
         <Field
           component={FormField}
           disabled={this.props.isLoading}
-          label="Your current password"
+          label="New Password"
           name="password"
           type="password"
         />
         <Field
           component={FormField}
           disabled={this.props.isLoading}
-          label="New Password"
-          name="newPassword"
-          type="password"
-        />
-        <Field
-          component={FormField}
-          disabled={this.props.isLoading}
           label="Repeat new password"
-          name="newPasswordRepeat"
+          name="passwordRepeat"
           type="password"
         />
         <hr />
@@ -87,6 +76,6 @@ class ProfileForm extends Component {
 }
 
 export default reduxForm({
-  form: 'profile',
+  form: 'resetPassword',
   validate,
-})(ProfileForm)
+})(ResetPasswordForm)

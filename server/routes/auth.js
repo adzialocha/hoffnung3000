@@ -36,4 +36,16 @@ router.route('/login')
     authController.login
   )
 
+router.route('/reset/request')
+  .post(
+    validate(authValidation.requestResetToken),
+    authController.requestResetToken
+  )
+
+router.route('/reset')
+  .post(
+    validate(authValidation.resetPassword),
+    authController.resetPassword
+  )
+
 export default router

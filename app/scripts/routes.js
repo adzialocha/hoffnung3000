@@ -10,6 +10,7 @@ import {
 import {
   Admin,
   Calendar,
+  ForgotPassword,
   Home,
   Items,
   Login,
@@ -18,6 +19,7 @@ import {
   Places,
   Profile,
   Register,
+  ResetPassword,
   Tickets,
 } from './views'
 
@@ -28,8 +30,10 @@ export default class Routes extends Component {
         <Route component={Home} exact={true} path="/" />
         <Route component={shouldNotBeAuthenticated(Login)} path="/login" />
         <Route component={shouldNotBeAuthenticated(Register)} path="/register" />
+        <Route component={shouldNotBeAuthenticated(Tickets)} path="/tickets" />
+        <Route component={shouldNotBeAuthenticated(ForgotPassword)} path="/forgot" />
+        <Route component={shouldNotBeAuthenticated(ResetPassword)} path="/reset/:token" />
         <Route component={Calendar} path="/calendar" />
-        <Route component={Tickets} path="/tickets" />
         <Route component={Page} path="/pages/:slug" />
         <Route component={isAuthenticated(Profile)} path="/profile" />
         <Route component={isParticipant(Places)} path="/places" />

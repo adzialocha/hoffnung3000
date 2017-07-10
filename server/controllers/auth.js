@@ -1,6 +1,8 @@
 import httpStatus from 'http-status'
 
 import checkout from '../services/checkout'
+import db from '../database'
+import generateRandomHash from '../utils/randomHash'
 import pick from '../utils/pick'
 import User from '../models/user'
 import { APIError } from '../helpers/errors'
@@ -9,8 +11,11 @@ import { generateToken } from '../services/passport'
 import { MAXIMUM_PARTICIPANTS } from '../controllers/meta'
 import {
   sendAdminRegistrationNotification,
+  sendPasswordReset,
   sendRegistrationComplete,
 } from '../helpers/mailTemplate'
+
+const PASSWORD_RESET_EXPIRY = 60 // min
 
 const permittedFields = [
   'city',
@@ -144,9 +149,78 @@ function login(req, res, next) {
     .catch(err => next(err))
 }
 
+function requestResetToken(req, res, next) {
+  const { email } = req.body
+  const queryParams = {
+    where: {
+      email,
+    },
+    limit: 1,
+    returning: true,
+  }
+
+  const passwordResetAt = db.sequelize.fn('NOW')
+  const passwordResetToken = generateRandomHash(32)
+
+  User.update({ passwordResetAt, passwordResetToken }, queryParams)
+    .then((data) => {
+      if (data[0] === 0) {
+        return next(
+          new APIError('User does not exist', httpStatus.BAD_REQUEST)
+        )
+      }
+
+      const user = data[1][0]
+      const passwordResetUrl = `${process.env.URL}/reset/${passwordResetToken}`
+
+      sendPasswordReset({
+        passwordResetUrl,
+        user,
+      }, user.email)
+
+      return res.json({
+        message: 'ok',
+      })
+    })
+    .catch(err => next(err))
+}
+
+function resetPassword(req, res, next) {
+  const { token, password } = req.body
+  const queryParams = {
+    where: {
+      passwordResetAt: {
+        $lt: new Date(),
+        $gt: new Date(new Date() - PASSWORD_RESET_EXPIRY * 60000),
+      },
+      passwordResetToken: token,
+    },
+    limit: 1,
+    returning: true,
+  }
+
+  const passwordResetToken = null
+
+  User.update({ password, passwordResetToken }, queryParams)
+    .then((data) => {
+      if (data[0] === 0) {
+        return next(
+          new APIError('Expired or invalid token', httpStatus.BAD_REQUEST)
+        )
+      }
+
+      return res.json({
+        message: 'ok',
+      })
+    })
+    .catch(err => next(err))
+}
+
 export default {
   login,
   paypalCheckoutCancel,
   paypalCheckoutSuccess,
+  requestResetToken,
+  resetPassword,
   signup,
 }

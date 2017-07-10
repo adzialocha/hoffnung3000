@@ -21,6 +21,8 @@ const permittedFields = [
   'isVisitor',
   'lastname',
   'password',
+  'passwordResetAt',
+  'passwordResetToken',
   'phone',
   'street',
 ]

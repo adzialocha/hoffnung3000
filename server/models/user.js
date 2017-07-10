@@ -37,6 +37,12 @@ const User = db.sequelize.define('user', {
       this.setDataValue('password', generateHash(val))
     },
   },
+  passwordResetAt: {
+    type: db.Sequelize.DATE,
+  },
+  passwordResetToken: {
+    type: db.Sequelize.STRING,
+  },
   email: {
     type: db.Sequelize.STRING,
     unique: true,
@@ -98,6 +104,8 @@ User.prototype.comparePasswords = function compare(password) {
 User.prototype.toJSON = function convert() {
   const data = this.get()
   delete data.password
+  delete data.passwordResetAt
+  delete data.passwordResetToken
 
   return Object.assign({}, {
     ...data,

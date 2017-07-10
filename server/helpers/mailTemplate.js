@@ -78,3 +78,8 @@ export function sendAdminRegistrationNotification(locals) {
     BOT_MAIL
   )
 }
+
+export function sendPasswordReset(locals, receiver) {
+  const subject = 'PASSWORD RESET'
+  return sendMail(locals, subject, receiver, 'passwordReset')
+}

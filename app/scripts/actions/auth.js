@@ -64,8 +64,8 @@ export function register(paymentMethod = 'paypal', data) {
 
   if (paymentMethod === 'transfer') {
     success[FLASH] = {
-      text: 'Thank you for your registration! We just sent you an email with our bank account details! Please contact us if you didn\'t receive the mail in the next minutes or you have any questions.',
       lifetime: 30000,
+      text: 'Thank you for your registration! We just sent you an email with our bank account details! Please contact us if you didn\'t receive the mail in the next minutes or you have any questions.',
     }
     success[REDIRECT] = '/'
   }
@@ -82,6 +82,43 @@ export function register(paymentMethod = 'paypal', data) {
       [FLASH]: {
         text: 'Something with the registration went wrong',
       },
+    },
+  })
+}
+
+export function requestPasswordToken(email) {
+  return postRequest(['auth', 'reset', 'request'], { email }, {
+    request: {
+      type: ActionTypes.RESET_PASSWORD_REQUEST,
+    },
+    success: {
+      type: ActionTypes.RESET_PASSWORD_SUCCESS,
+      [FLASH]: {
+        lifetime: 30000,
+        text: 'We just sent you an email with a link to reset your password. Check your spam folder if you can\'t find it.',
+      },
+      [REDIRECT]: '/',
+    },
+    failure: {
+      type: ActionTypes.RESET_PASSWORD_FAILURE,
+    },
+  })
+}
+
+export function resetPassword(password, token) {
+  return postRequest(['auth', 'reset'], { password, token }, {
+    request: {
+      type: ActionTypes.RESET_PASSWORD_REQUEST,
+    },
+    success: {
+      type: ActionTypes.RESET_PASSWORD_SUCCESS,
+      [FLASH]: {
+        text: 'Yes! Your password has been reset!',
+      },
+      [REDIRECT]: '/',
+    },
+    failure: {
+      type: ActionTypes.RESET_PASSWORD_FAILURE,
     },
   })
 }
