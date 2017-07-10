@@ -35,7 +35,7 @@ class Login extends Component {
             <Link to="/register">Register as participant</Link>
           </li>
           <li className="inline-navigation__item">
-            <Link to="/forgotpassword">Forgot password?</Link>
+            <Link to="/forgot">Forgot password?</Link>
           </li>
         </ul>
       </section>

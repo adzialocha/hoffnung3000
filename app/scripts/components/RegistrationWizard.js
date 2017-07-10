@@ -123,7 +123,7 @@ class RegistrationWizard extends Component {
   renderPaymentGateway() {
     return (
       <div className="form left">
-        <h1>Registration (Step 3/3)</h1>
+        <h1>Registration (Step 3 of 3)</h1>
         { this.renderErrorMessage() }
         <h2>Payment</h2>
         <p>Last step!</p>
@@ -271,10 +271,10 @@ class RegistrationWizard extends Component {
 
     this.nextStep = this.nextStep.bind(this)
     this.onPayPalCheckout = this.onPayPalCheckout.bind(this)
-    this.previousStep = this.previousStep.bind(this)
     this.onTermsAcceptedChanged = this.onTermsAcceptedChanged.bind(this)
     this.onTransferCheckout = this.onTransferCheckout.bind(this)
     this.onVideoEnd = this.onVideoEnd.bind(this)
+    this.previousStep = this.previousStep.bind(this)
   }
 }
 

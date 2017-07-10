@@ -51,4 +51,8 @@ export default keyMirror({
   RESOURCE_UPDATE_FAILURE: null,
   RESOURCE_UPDATE_REQUEST: null,
   RESOURCE_UPDATE_SUCCESS: null,
+
+  TICKET_FAILURE: null,
+  TICKET_REQUEST: null,
+  TICKET_SUCCESS: null,
 })
