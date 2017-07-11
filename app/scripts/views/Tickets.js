@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import Scroll from 'react-scroll'
 import { connect } from 'react-redux'
 
-import { buyTicket } from '../actions/ticket'
+import { buyTicket } from '../actions/auth'
 import { TicketForm } from '../forms'
 
 class Tickets extends Component {

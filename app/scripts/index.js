@@ -5,11 +5,12 @@ import { ConnectedRouter  } from 'react-router-redux'
 import { createBrowserHistory } from 'history'
 
 import configureStore from './store'
+import flash from './actions/flash'
 import Routes from './routes'
 import { App } from './containers'
 import { checkExistingToken } from './actions/auth'
 import { getItem, hasItem } from './services/storage'
-import flash from './actions/flash'
+import { translate } from './services/i18n'
 
 const initialState = {}
 const history = createBrowserHistory()
@@ -23,7 +24,7 @@ if (window.location.href.includes('?paypalSuccess')) {
   store.dispatch(
     flash({
       lifetime: 30000,
-      text: 'Thank you and welcome to HOFFNUNG 3000! You successfully created your account!',
+      text: translate('flash.signUpPaypalSuccess'),
       type: 'rainbow',
     })
   )

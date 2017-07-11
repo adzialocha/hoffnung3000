@@ -3,44 +3,35 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
-const ADMIN_NAVIGATION = [
-  { label: 'Home', url: '/' },
-  { label: 'About', url: '/pages/about' },
-  { label: 'Calendar', url: '/calendar' },
-  { label: 'Places', url: '/places' },
-  { label: 'Performers', url: '/performers' },
-  { label: 'Items', url: '/items' },
-  { label: 'Admin', url: '/admin' },
-  { label: 'Contact', url: '/pages/contact' },
+import { translate } from '../services/i18n'
+
+const PRIMARY_NAVIGATION = [
+  { key: 'home', url: '/' },
+  { key: 'about', url: '/pages/about' },
+  { key: 'calendar', url: '/calendar' },
 ]
 
-const PARTICIPANT_NAVIGATION = [
-  { label: 'Home', url: '/' },
-  { label: 'About', url: '/pages/about' },
-  { label: 'Calendar', url: '/calendar' },
-  { label: 'Places', url: '/places' },
-  { label: 'Performers', url: '/performers' },
-  { label: 'Items', url: '/items' },
-  { label: 'Information', url: '/pages/information' },
-  { label: 'Contact', url: '/pages/contact' },
+const SECONDARY_NAVIGATION = [
+  { key: 'information', url: '/pages/information' },
+  { key: 'contact', url: '/pages/contact' },
 ]
 
-const VISITOR_NAVIGATION = [
-  { label: 'Home', url: '/' },
-  { label: 'About', url: '/pages/about' },
-  { label: 'Calendar', url: '/calendar' },
-  { label: 'Places', url: '/places' },
-  { label: 'Information', url: '/pages/information' },
-  { label: 'Contact', url: '/pages/contact' },
+const CURATION_NAVIGATION = [
+  { key: 'places', url: '/places' },
+  { key: 'performers', url: '/performers' },
+  { key: 'items', url: '/items' },
 ]
+
+const ADMIN_NAVIGATION = CURATION_NAVIGATION.concat([
+  { key: 'admin', url: '/admin' },
+])
+
+const PARTICIPANT_NAVIGATION = CURATION_NAVIGATION
+
+const VISITOR_NAVIGATION = []
 
 const DEFAULT_NAVIGATION = [
-  { label: 'Home', url: '/' },
-  { label: 'About', url: '/pages/about' },
-  { label: 'Calendar', url: '/calendar' },
-  { label: 'Tickets', url: '/tickets' },
-  { label: 'Information', url: '/pages/information' },
-  { label: 'Contact', url: '/pages/contact' },
+  { key: 'tickets', url: '/tickets' },
 ]
 
 class NavigationLinks extends Component {
@@ -54,7 +45,9 @@ class NavigationLinks extends Component {
     return navigation.map((navigationItem, index) => {
       return (
         <li className="navigation-links__item" key={index}>
-          <NavLink to={navigationItem.url}>{navigationItem.label}</NavLink>
+          <NavLink to={navigationItem.url}>
+            {translate(`components.navigationLinks.${navigationItem.key}`)}
+          </NavLink>
         </li>
       )
     })
@@ -63,7 +56,13 @@ class NavigationLinks extends Component {
   renderNavigation(navigation) {
     return (
       <ul className="navigation-links">
-        {this.renderNavigationItems(navigation)}
+        {
+          this.renderNavigationItems(
+            PRIMARY_NAVIGATION
+              .concat(navigation)
+              .concat(SECONDARY_NAVIGATION)
+          )
+        }
       </ul>
     )
   }
