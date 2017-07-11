@@ -3,7 +3,7 @@ import httpStatus from 'http-status'
 import User from '../models/user'
 import { APIError } from '../helpers/errors'
 import { generateRandomHash } from '../utils/randomHash'
-import { createPayment, executePayment } from '../services/paypal'
+import { createPayment } from '../services/paypal'
 import { sendWireTransferDetails } from '../helpers/mailTemplate'
 
 function generateRandomPaymentId() {

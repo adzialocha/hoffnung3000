@@ -6,7 +6,7 @@ import generateRandomHash from '../utils/randomHash'
 import pick from '../utils/pick'
 import User from '../models/user'
 import { APIError } from '../helpers/errors'
-import { createPayment, executePayment } from '../services/paypal'
+import { executePayment } from '../services/paypal'
 import { generateToken } from '../services/passport'
 import { MAXIMUM_PARTICIPANTS } from '../controllers/meta'
 import {
@@ -83,7 +83,6 @@ function signup(req, res, next) {
         })
     })
 }
-
 
 function paypalCheckoutSuccess(req, res, next) {
   const { paymentId, PayerID } = req.query

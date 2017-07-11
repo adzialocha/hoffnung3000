@@ -26,7 +26,7 @@ class Login extends Component {
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
         />
-        <hr/>
+        <hr />
         <ul className="inline-navigation inline-navigation--vertical">
           <li className="inline-navigation__item">
             <Link to="/tickets">Register as visitor</Link>

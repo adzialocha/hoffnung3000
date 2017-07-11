@@ -8,10 +8,10 @@ import { TicketForm } from '../forms'
 
 class Tickets extends Component {
   static propTypes = {
-    errorMessage: PropTypes.string.isRequired,
-    form: PropTypes.object,
-    isLoading: PropTypes.bool.isRequired,
     buyTicket: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string.isRequired,
+    form: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired,
   }
 
   onPayPalCheckout() {

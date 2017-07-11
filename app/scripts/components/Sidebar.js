@@ -40,9 +40,10 @@ class Sidebar extends Component {
     const { firstname } = this.props
 
     return (
-      <section dangerouslySetInnerHTML={
-        { __html: translate('components.sidebar.welcomeUser', { firstname }) }
-      } />
+      <section dangerouslySetInnerHTML={ { __html: translate(
+          'components.sidebar.welcomeUser', { firstname }
+        ) } }
+      />
     )
   }
 
@@ -50,10 +51,11 @@ class Sidebar extends Component {
     if (!this.props.isAuthenticated) {
       return (
         <section>
-          <div dangerouslySetInnerHTML={
-            { __html: translate('components.sidebar.defaultHeader') }
-          } />
-          <br/>
+          <div dangerouslySetInnerHTML={ { __html: translate(
+              'components.sidebar.defaultHeader'
+            ) } }
+          />
+          <br />
           <p>{translate('components.sidebar.signUpHeader')}</p>
           <div className="button-group">
             <Link className="button" to="/register">

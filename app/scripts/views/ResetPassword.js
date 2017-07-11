@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 
 import { resetPassword } from '../actions/auth'
 import { ResetPasswordForm } from '../forms'
