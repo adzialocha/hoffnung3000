@@ -1,6 +1,5 @@
 import {
   create,
-  destroy,
   findAll,
   findOne,
   findOneWithSlug,
@@ -20,7 +19,14 @@ export default {
     return create(Page, permittedFields, req, res, next)
   },
   destroy: (req, res, next) => {
-    return destroy(Page, req, res, next)
+    model.destroy({
+      where: {
+        id: req.params.resourceId,
+        isRemovable: true,
+      },
+    })
+      .then(() => res.json({ message: 'ok' }))
+      .catch(err => next(err))
   },
   findAll: (req, res, next) => {
     return findAll(Page, req, res, next)

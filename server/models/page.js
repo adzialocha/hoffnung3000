@@ -27,6 +27,11 @@ const Page = db.sequelize.define('page', {
     allowNull: false,
     defaultValue: '',
   },
+  isRemovable: {
+    type: db.Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  },
 })
 
 // instance methods
