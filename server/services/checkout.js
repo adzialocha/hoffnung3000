@@ -2,12 +2,12 @@ import httpStatus from 'http-status'
 
 import User from '../models/user'
 import { APIError } from '../helpers/errors'
-import { generateRandomHash } from '../utils/randomHash'
 import { createPayment } from '../services/paypal'
+import { generateRandomString } from '../utils/randomHash'
 import { sendWireTransferDetails } from '../helpers/mailTemplate'
 
 function generateRandomPaymentId() {
-  return generateRandomHash(5).toUpperCase()
+  return generateRandomString(5).toUpperCase()
 }
 
 function paypalCheckout(user, product) {

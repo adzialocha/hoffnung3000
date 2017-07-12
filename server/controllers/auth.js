@@ -2,11 +2,11 @@ import httpStatus from 'http-status'
 
 import checkout from '../services/checkout'
 import db from '../database'
-import generateRandomHash from '../utils/randomHash'
 import pick from '../utils/pick'
 import User from '../models/user'
 import { APIError } from '../helpers/errors'
 import { executePayment } from '../services/paypal'
+import { generateRandomHash } from '../utils/randomHash'
 import { generateToken } from '../services/passport'
 import { MAXIMUM_PARTICIPANTS } from '../controllers/meta'
 import {
@@ -15,7 +15,7 @@ import {
   sendRegistrationComplete,
 } from '../helpers/mailTemplate'
 
-const PASSWORD_RESET_EXPIRY = 60 // min
+const PASSWORD_RESET_EXPIRY = 15 // min
 
 const permittedFields = [
   'city',
@@ -158,30 +158,30 @@ function requestResetToken(req, res, next) {
     returning: true,
   }
 
-  const passwordResetAt = db.sequelize.fn('NOW')
-  const passwordResetToken = generateRandomHash(32)
+  generateRandomHash().then((passwordResetToken) => {
+    const passwordResetAt = db.sequelize.fn('NOW')
+    User.update({ passwordResetAt, passwordResetToken }, queryParams)
+      .then((data) => {
+        if (data[0] === 0) {
+          return next(
+            new APIError('User does not exist', httpStatus.BAD_REQUEST)
+          )
+        }
 
-  User.update({ passwordResetAt, passwordResetToken }, queryParams)
-    .then((data) => {
-      if (data[0] === 0) {
-        return next(
-          new APIError('User does not exist', httpStatus.BAD_REQUEST)
-        )
-      }
+        const user = data[1][0]
+        const passwordResetUrl = `${process.env.URL}/reset/${passwordResetToken}`
 
-      const user = data[1][0]
-      const passwordResetUrl = `${process.env.URL}/reset/${passwordResetToken}`
+        sendPasswordReset({
+          passwordResetUrl,
+          user,
+        }, user.email)
 
-      sendPasswordReset({
-        passwordResetUrl,
-        user,
-      }, user.email)
-
-      return res.json({
-        message: 'ok',
+        return res.json({
+          message: 'ok',
+        })
       })
-    })
-    .catch(err => next(err))
+      .catch(err => next(err))
+  })
 }
 
 function resetPassword(req, res, next) {
