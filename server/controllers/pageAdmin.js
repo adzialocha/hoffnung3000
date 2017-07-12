@@ -1,11 +1,13 @@
+import httpStatus from 'http-status'
+
 import {
   create,
   findAll,
   findOne,
   update,
 } from './base'
-
 import Page from '../models/page'
+import { APIError } from '../helpers/errors'
 
 const permittedFields = [
   'content',
@@ -24,7 +26,13 @@ export default {
         isRemovable: true,
       },
     })
-      .then(() => res.json({ message: 'ok' }))
+      .then((isSuccess) => {
+        if (!isSuccess) {
+          next(new APIError('Resource is not removable', httpStatus.LOCKED))
+          return
+        }
+        res.json({ message: 'ok' })
+      })
       .catch(err => next(err))
   },
   findAll: (req, res, next) => {

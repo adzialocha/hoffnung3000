@@ -24,6 +24,7 @@ class AdminPages extends Component {
   onDeleteClick(page) {
     if (!page.isRemovable) {
       window.alert('Sorry, this page is not removable.') // eslint-disable-line no-alert
+      return true
     }
 
     const userIsSure = window.confirm('Are you sure?') // eslint-disable-line no-alert
