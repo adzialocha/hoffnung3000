@@ -33,7 +33,6 @@ class ProfileForm extends Component {
   static defaultProps = {
     errorMessage: undefined,
     isLoading: false,
-    showPasswordField: false,
   }
 
   renderErrorMessage() {

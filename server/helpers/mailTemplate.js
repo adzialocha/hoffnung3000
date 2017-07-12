@@ -1,10 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 
+import config from '../../config'
 import mail from '../services/mail'
 
 const TEMPLATES_PATH = 'mails'
-const MAIN_EMAIL = 'kontakt@hoffnung3000.de'
 
 function generateTemplateString(template) {
   const sanitized = template
@@ -32,14 +32,19 @@ function textTemplate(url, locals) {
   })
 }
 
-function sendMail(locals, subject, receiver, templateName) {
+function sendMail(locals, subject, receiver, templateName, sender) {
   return new Promise((resolve, reject) => {
-    textTemplate(`${TEMPLATES_PATH}/${templateName}.txt`, locals)
+    const mergedLocals = Object.assign({}, locals, { config })
+    textTemplate(`${TEMPLATES_PATH}/${templateName}.txt`, mergedLocals)
       .then((text) => {
         const mailOptions = {
           subject,
           text,
           to: receiver,
+        }
+
+        if (sender) {
+          mailOptions.from = sender
         }
 
         mail.sendMail(mailOptions, (err) => {
@@ -54,16 +59,27 @@ function sendMail(locals, subject, receiver, templateName) {
 }
 
 export function sendWireTransferDetails(locals, receiver) {
-  const subject = 'HOFFNUNG 3000 TRANSFER DETAILS'
+  const subject = `${config.title} TRANSFER DETAILS`
   return sendMail(locals, subject, receiver, 'wireTransferDetails')
 }
 
 export function sendRegistrationComplete(locals, receiver) {
-  const subject = 'WELCOME TO HOFFNUNG 3000'
+  const subject = `WELCOME TO ${config.title}`
   return sendMail(locals, subject, receiver, 'registrationComplete')
 }
 
 export function sendAdminRegistrationNotification(locals) {
   const subject = 'NEW REGISTRATION'
-  return sendMail(locals, subject, MAIN_EMAIL, 'adminRegistrationNotification')
+  return sendMail(
+    locals,
+    subject,
+    config.mailAddressAdmin,
+    'adminRegistrationNotification',
+    config.mailAddressRobot
+  )
+}
+
+export function sendPasswordReset(locals, receiver) {
+  const subject = 'PASSWORD RESET'
+  return sendMail(locals, subject, receiver, 'passwordReset')
 }

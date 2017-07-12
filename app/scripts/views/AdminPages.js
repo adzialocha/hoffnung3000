@@ -11,6 +11,7 @@ import { removeFromList } from '../actions/paginatedList'
 
 class AdminPages extends Component {
   static propTypes = {
+    currentPageIndex: PropTypes.number.isRequired,
     deleteResource: PropTypes.func.isRequired,
     notification: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
@@ -36,22 +37,23 @@ class AdminPages extends Component {
 
   render() {
     const tableColumns = [
-      { key: 'id', title: '#' },
+      { key: '$index', title: '#' },
       { key: 'title', title: 'Title' },
       { key: 'slug', title: 'slug' },
     ]
 
     const tableActions = [
       {
-        title: 'Edit',
         isAdmin: true,
         onClick: this.onEditClick,
+        title: 'Edit',
       },
       {
-        title: 'Delete',
-        isAdmin: true,
         classNameModifier: 'button--red',
+        isAdmin: true,
+        isDeleteAction: true,
         onClick: this.onDeleteClick,
+        title: 'Delete',
       },
     ]
 
@@ -65,7 +67,10 @@ class AdminPages extends Component {
         />
         <div className="bar">
           <div className="bar__cell bar__cell--align-left">
-            <PaginatedListNavigation resourceName="pages" />
+            <PaginatedListNavigation
+              currentPageIndex={this.props.currentPageIndex}
+              resourceName="pages"
+            />
           </div>
           <div className="bar__cell bar__cell--align-right">
             <Link className="button button--blue" to="/admin/pages/new">New Page</Link>
@@ -83,8 +88,16 @@ class AdminPages extends Component {
   }
 }
 
+function mapStateToProps(state, ownProps) {
+  const currentPageIndex = 'currentPageIndex' in ownProps.match.params ? parseInt(ownProps.match.params.currentPageIndex, 10) : 0
+
+  return {
+    currentPageIndex,
+  }
+}
+
 export default connect(
-  null, {
+  mapStateToProps, {
     deleteResource,
     notification,
     push,

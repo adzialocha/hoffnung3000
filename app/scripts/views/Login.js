@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { login } from '../actions/auth'
 import { LoginForm } from '../forms'
@@ -25,6 +26,18 @@ class Login extends Component {
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
         />
+        <hr />
+        <ul className="inline-navigation inline-navigation--vertical">
+          <li className="inline-navigation__item">
+            <Link to="/tickets">Register as visitor</Link>
+          </li>
+          <li className="inline-navigation__item">
+            <Link to="/register">Register as participant</Link>
+          </li>
+          <li className="inline-navigation__item">
+            <Link to="/forgot">Forgot password?</Link>
+          </li>
+        </ul>
       </section>
     )
   }

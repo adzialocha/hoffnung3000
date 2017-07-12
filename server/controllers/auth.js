@@ -1,16 +1,21 @@
 import httpStatus from 'http-status'
 
+import checkout from '../services/checkout'
+import config from '../../config'
+import db from '../database'
 import pick from '../utils/pick'
 import User from '../models/user'
 import { APIError } from '../helpers/errors'
-import { createPayment, executePayment } from '../services/paypal'
+import { executePayment } from '../services/paypal'
+import { generateRandomHash } from '../utils/randomHash'
 import { generateToken } from '../services/passport'
 import {
   sendAdminRegistrationNotification,
+  sendPasswordReset,
   sendRegistrationComplete,
-  sendWireTransferDetails,
 } from '../helpers/mailTemplate'
-import { MAXIMUM_PARTICIPANTS } from '../controllers/meta'
+
+const PASSWORD_RESET_EXPIRY = 15 // min
 
 const permittedFields = [
   'city',
@@ -25,70 +30,10 @@ const permittedFields = [
   'street',
 ]
 
-const participantProduct = {
-  name: 'HOFFNUNG 3000',
+const product = {
+  name: config.title,
   description: 'Participation fee',
-  price: 25.00,
-}
-
-function generateRandomPaymentId() {
-  return Math.random().toString(36).substr(2, 5).toUpperCase()
-}
-
-function paypalCheckout(user) {
-  return new Promise((resolve, reject) => {
-    createPayment(participantProduct)
-      .then((paypalResponse) => {
-        User.update({
-          paymentId: paypalResponse.payment.id,
-        }, {
-          where: { id: user.id },
-          limit: 1,
-        })
-          .then(() => {
-            resolve({
-              message: 'ok',
-              redirect: paypalResponse.redirect,
-            })
-          })
-          .catch(userUpdateError => reject(userUpdateError))
-      })
-      .catch(() => {
-        User.destroy({ where: { id: user.id }, limit: 1 })
-          .then(() => {
-            reject(
-              new APIError('Payment error', httpStatus.INTERNAL_SERVER_ERROR)
-            )
-          })
-          .catch(userDestroyError => reject(userDestroyError))
-      })
-  })
-}
-
-function transferCheckout(user) {
-  return new Promise((resolve, reject) => {
-    const paymentId = generateRandomPaymentId()
-
-    User.update({
-      paymentId,
-    }, {
-      where: { id: user.id },
-      limit: 1,
-      returning: true,
-    })
-      .then((data) => {
-        const updatedUser = data[1][0]
-        sendWireTransferDetails({
-          firstname: updatedUser.firstname,
-          paymentId,
-        }, updatedUser.email)
-
-        resolve({
-          message: 'ok',
-        })
-      })
-      .catch(userUpdateError => reject(userUpdateError))
-  })
+  price: config.participationPrice,
 }
 
 function signup(req, res, next) {
@@ -99,7 +44,7 @@ function signup(req, res, next) {
 
   User.count({ where: { isParticipant: true } })
     .then(count => {
-      if (count >= MAXIMUM_PARTICIPANTS) {
+      if (count >= config.maximumParticipantsCount) {
         next(
           new APIError(
             'Registration limit was exceeded',
@@ -122,22 +67,17 @@ function signup(req, res, next) {
           }
 
           User.create(fields, { returning: true })
-            .then((newUser) => {
-              if (paymentMethod === 'paypal') {
-                return paypalCheckout(newUser)
-                  .then((data) => res.json(data))
-                  .catch(err => next(err))
-              } else if (paymentMethod === 'transfer') {
-                return transferCheckout(newUser)
-                  .then((data) => res.json(data))
-                  .catch(err => next(err))
-              }
-
-              sendAdminRegistrationNotification({ ...newUser })
-
-              return next(
-                new APIError('Unknown payment method', httpStatus.BAD_REQUEST)
-              )
+            .then((user) => {
+              return checkout(paymentMethod, user, product)
+                .then((data) => {
+                  sendAdminRegistrationNotification({
+                    paymentMethod,
+                    product,
+                    user,
+                  })
+                  res.json(data)
+                })
+                .catch(err => next(err))
             })
             .catch(err => next(err))
         })
@@ -162,7 +102,8 @@ function paypalCheckoutSuccess(req, res, next) {
           return User.update({ isActive: true }, queryParams)
             .then(() => {
               sendRegistrationComplete({
-                firstname: user.firstname,
+                product,
+                user,
               }, user.email)
               res.redirect('/?paypalSuccess')
             })
@@ -207,9 +148,78 @@ function login(req, res, next) {
     .catch(err => next(err))
 }
 
+function requestResetToken(req, res, next) {
+  const { email } = req.body
+  const queryParams = {
+    where: {
+      email,
+    },
+    limit: 1,
+    returning: true,
+  }
+
+  generateRandomHash().then((passwordResetToken) => {
+    const passwordResetAt = db.sequelize.fn('NOW')
+    User.update({ passwordResetAt, passwordResetToken }, queryParams)
+      .then((data) => {
+        if (data[0] === 0) {
+          return next(
+            new APIError('User does not exist', httpStatus.BAD_REQUEST)
+          )
+        }
+
+        const user = data[1][0]
+        const passwordResetUrl = `${config.basePath}/reset/${passwordResetToken}`
+
+        sendPasswordReset({
+          passwordResetUrl,
+          user,
+        }, user.email)
+
+        return res.json({
+          message: 'ok',
+        })
+      })
+      .catch(err => next(err))
+  })
+}
+
+function resetPassword(req, res, next) {
+  const { token, password } = req.body
+  const queryParams = {
+    where: {
+      passwordResetAt: {
+        $lt: new Date(),
+        $gt: new Date(new Date() - PASSWORD_RESET_EXPIRY * 60000),
+      },
+      passwordResetToken: token,
+    },
+    limit: 1,
+    returning: true,
+  }
+
+  const passwordResetToken = null
+
+  User.update({ password, passwordResetToken }, queryParams)
+    .then((data) => {
+      if (data[0] === 0) {
+        return next(
+          new APIError('Expired or invalid token', httpStatus.BAD_REQUEST)
+        )
+      }
+
+      return res.json({
+        message: 'ok',
+      })
+    })
+    .catch(err => next(err))
+}
+
 export default {
   login,
   paypalCheckoutCancel,
   paypalCheckoutSuccess,
+  requestResetToken,
+  resetPassword,
   signup,
 }

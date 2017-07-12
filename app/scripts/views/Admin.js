@@ -15,10 +15,10 @@ class Admin extends Component {
   render() {
     return (
       <div>
-        <Route component={AdminUsers} path="/admin/users/all" />
+        <Route component={AdminUsers} path="/admin/users/all/:currentPageIndex" />
         <Route component={AdminUsersNewForm} path="/admin/users/new" />
         <Route component={AdminUsersEditForm} path="/admin/users/:resourceId/edit" />
-        <Route component={AdminPages} path="/admin/pages/all" />
+        <Route component={AdminPages} path="/admin/pages/all/:currentPageIndex" />
         <Route component={AdminPagesNewForm} path="/admin/pages/new" />
         <Route component={AdminPagesEditForm} path="/admin/pages/:resourceId/edit" />
         <section>
@@ -28,10 +28,10 @@ class Admin extends Component {
               <strong>Admin</strong>
             </li>
             <li className="inline-navigation__item">
-              <NavLink to="/admin/users/all">Users</NavLink>
+              <NavLink to="/admin/users/all/1">Users</NavLink>
             </li>
             <li className="inline-navigation__item">
-              <NavLink to="/admin/pages/all">Pages</NavLink>
+              <NavLink to="/admin/pages/all/1">Pages</NavLink>
             </li>
           </ul>
         </section>

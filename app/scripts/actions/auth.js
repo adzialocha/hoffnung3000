@@ -3,6 +3,7 @@ import { FLASH } from '../middlewares/flash'
 import { jwtDecode } from '../utils/jwt'
 import { postRequest } from '../services/api'
 import { REDIRECT } from '../middlewares/redirect'
+import { translate } from '../services/i18n'
 
 export function checkExistingToken(token) {
   const jwtPayload = jwtDecode(token)
@@ -29,7 +30,7 @@ export function login(email, password) {
     success: {
       type: ActionTypes.AUTH_LOGIN_SUCCESS,
       [FLASH]: {
-        text: 'Welcome!',
+        text: translate('flash.loginSuccess'),
       },
     },
     failure: {
@@ -42,7 +43,7 @@ export function logout() {
   return {
     type: ActionTypes.AUTH_LOGOUT,
     [FLASH]: {
-      text: 'Goodbye! See you soon!',
+      text: translate('flash.logout'),
     },
   }
 }
@@ -64,8 +65,8 @@ export function register(paymentMethod = 'paypal', data) {
 
   if (paymentMethod === 'transfer') {
     success[FLASH] = {
-      text: 'Thank you for your registration! We just sent you an email with our bank account details! Please contact us if you didn\'t receive the mail in the next minutes or you have any questions.',
       lifetime: 30000,
+      text: translate('flash.signUpTransferSuccess'),
     }
     success[REDIRECT] = '/'
   }
@@ -80,8 +81,84 @@ export function register(paymentMethod = 'paypal', data) {
       type: ActionTypes.AUTH_REGISTER_FAILURE,
       meta,
       [FLASH]: {
-        text: 'Something with the registration went wrong',
+        text: translate('flash.signUpTransferFailure'),
       },
+    },
+  })
+}
+
+export function buyTicket(paymentMethod = 'paypal', data) {
+  const meta = {
+    paymentMethod,
+  }
+
+  const payload = {
+    ...data,
+    paymentMethod,
+  }
+
+  const success = {
+    type: ActionTypes.TICKET_SUCCESS,
+    meta,
+  }
+
+  if (paymentMethod === 'transfer') {
+    success[FLASH] = {
+      lifetime: 30000,
+      text: translate('flash.signUpTransferTicketSuccess'),
+    }
+    success[REDIRECT] = '/'
+  }
+
+  return postRequest(['auth', 'signup', 'ticket'], payload, {
+    request: {
+      type: ActionTypes.TICKET_REQUEST,
+      meta,
+    },
+    success,
+    failure: {
+      type: ActionTypes.TICKET_FAILURE,
+      meta,
+      [FLASH]: {
+        text: translate('flash.signUpTransferFailure'),
+      },
+    },
+  })
+}
+
+export function requestPasswordToken(email) {
+  return postRequest(['auth', 'reset', 'request'], { email }, {
+    request: {
+      type: ActionTypes.RESET_PASSWORD_REQUEST,
+    },
+    success: {
+      type: ActionTypes.RESET_PASSWORD_SUCCESS,
+      [FLASH]: {
+        lifetime: 30000,
+        text: translate('flash.requestPasswordToken'),
+      },
+      [REDIRECT]: '/',
+    },
+    failure: {
+      type: ActionTypes.RESET_PASSWORD_FAILURE,
+    },
+  })
+}
+
+export function resetPassword(password, token) {
+  return postRequest(['auth', 'reset'], { password, token }, {
+    request: {
+      type: ActionTypes.RESET_PASSWORD_REQUEST,
+    },
+    success: {
+      type: ActionTypes.RESET_PASSWORD_SUCCESS,
+      [FLASH]: {
+        text: translate('flash.resetPassword'),
+      },
+      [REDIRECT]: '/',
+    },
+    failure: {
+      type: ActionTypes.RESET_PASSWORD_FAILURE,
     },
   })
 }

@@ -1,7 +1,14 @@
+.separator,
 hr {
   margin-top: 25px;
   margin-bottom: 25px;
 
   border: 0;
   border-top: 2px solid $black;
+
+  background-color: transparent;
+}
+
+.separator--white {
+  border-top-color: $white;
 }

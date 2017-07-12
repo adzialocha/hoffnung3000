@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
+import config from '../../../config'
+
 class Header extends Component {
   render() {
     return (
       <header role="banner">
         <div className="logo">
-          <Link to="/">HOFFNUNG 3000</Link>
+          <Link to="/">{ config.title }</Link>
         </div>
       </header>
     )

@@ -3,17 +3,8 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import {
-  collapseAll,
-  toggleNavigation,
-  toggleSidebar,
-} from '../actions/drawer'
-
-import {
-  Drawer,
-  NavigationLinks,
-  Sidebar,
-} from './'
+import { collapseAll, toggleNavigation, toggleSidebar } from '../actions/drawer'
+import { Drawer, NavigationLinks, Sidebar } from './'
 
 class Navigation extends Component {
   static propTypes = {
@@ -26,7 +17,9 @@ class Navigation extends Component {
   render() {
     const overlayClasses = classnames(
       'navigation__overlay', {
-        'navigation__overlay--visible': this.props.isSidebarExpanded || this.props.isNavigationExpanded,
+        'navigation__overlay--visible': (
+          this.props.isSidebarExpanded || this.props.isNavigationExpanded
+        ),
       }
     )
 

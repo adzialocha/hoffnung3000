@@ -11,6 +11,7 @@ const initialState = {
   isAdmin: false,
   isLoading: false,
   isParticipant: false,
+  isVisitor: false,
 }
 
 export default (state = initialState, action) => {
@@ -33,6 +34,7 @@ export default (state = initialState, action) => {
       isAdmin: { $set: user.isAdmin },
       isLoading: { $set: false },
       isParticipant: { $set: user.isParticipant },
+      isVisitor: { $set: user.isVisitor },
     })
   case ActionTypes.CHANGE_PROFILE_FAILURE:
     return update(state, {
@@ -49,6 +51,7 @@ export default (state = initialState, action) => {
       isAdmin: { $set: false },
       isLoading: { $set: false },
       isParticipant: { $set: false },
+      isVisitor: { $set: false },
     })
   default:
     return state

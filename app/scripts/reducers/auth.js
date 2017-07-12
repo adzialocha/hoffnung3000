@@ -15,6 +15,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
   case ActionTypes.AUTH_LOGIN_REQUEST:
+  case ActionTypes.RESET_PASSWORD_REQUEST:
   case ActionTypes.AUTH_REGISTER_REQUEST:
     return update(state, {
       errorMessage: { $set: '' },
@@ -41,12 +42,22 @@ export default (state = initialState, action) => {
       isAuthenticated: { $set: true },
       errorMessage: { $set: '' },
     })
+  case ActionTypes.RESET_PASSWORD_SUCCESS:
+    return update(state, {
+      isLoading: { $set: false },
+      errorMessage: { $set: '' },
+    })
   case ActionTypes.AUTH_REGISTER_FAILURE:
   case ActionTypes.AUTH_LOGIN_FAILURE:
     removeItem('token')
     return update(state, {
       isLoading: { $set: false },
       isAuthenticated: { $set: false },
+      errorMessage: { $set: action.error.message },
+    })
+  case ActionTypes.RESET_PASSWORD_FAILURE:
+    return update(state, {
+      isLoading: { $set: false },
       errorMessage: { $set: action.error.message },
     })
   case ActionTypes.API_FAILURE: {

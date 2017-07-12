@@ -37,12 +37,11 @@ const User = db.sequelize.define('user', {
       this.setDataValue('password', generateHash(val))
     },
   },
-  phone: {
+  passwordResetAt: {
+    type: db.Sequelize.DATE,
+  },
+  passwordResetToken: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   email: {
     type: db.Sequelize.STRING,
@@ -52,33 +51,20 @@ const User = db.sequelize.define('user', {
       notEmpty: true,
     },
   },
+  phone: {
+    type: db.Sequelize.STRING,
+  },
   street: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   cityCode: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   city: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   country: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   paymentId: {
     type: db.Sequelize.STRING,
@@ -103,6 +89,11 @@ const User = db.sequelize.define('user', {
     allowNull: false,
     defaultValue: false,
   },
+  isVisitor: {
+    type: db.Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 })
 
 // instance methods
@@ -113,6 +104,8 @@ User.prototype.comparePasswords = function compare(password) {
 User.prototype.toJSON = function convert() {
   const data = this.get()
   delete data.password
+  delete data.passwordResetAt
+  delete data.passwordResetToken
 
   return Object.assign({}, {
     ...data,

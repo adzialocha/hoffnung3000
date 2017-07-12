@@ -6,6 +6,16 @@
   list-style: none;
 }
 
+.inline-navigation--vertical {
+  .inline-navigation__item {
+    display: block;
+
+    + .inline-navigation__item {
+      margin-left: 0;
+    }
+  }
+}
+
 .inline-navigation__item {
   display: inline-block;
 

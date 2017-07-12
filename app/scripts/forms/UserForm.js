@@ -15,21 +15,6 @@ const validate = values => {
   if (!values.lastname) {
     errors.lastname = 'Required'
   }
-  if (!values.phone) {
-    errors.phone = 'Required'
-  }
-  if (!values.street) {
-    errors.street = 'Required'
-  }
-  if (!values.city) {
-    errors.city = 'Required'
-  }
-  if (!values.cityCode) {
-    errors.cityCode = 'Required'
-  }
-  if (!values.country) {
-    errors.country = 'Required'
-  }
   return errors
 }
 
@@ -149,6 +134,12 @@ class UserForm extends Component {
           disabled={this.props.isLoading}
           label="Participates at festival"
           name="isParticipant"
+        />
+        <Field
+          component={FormCheckbox}
+          disabled={this.props.isLoading}
+          label="Visitor"
+          name="isVisitor"
         />
         <hr />
         <Field

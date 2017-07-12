@@ -18,8 +18,11 @@ const permittedFields = [
   'isActive',
   'isAdmin',
   'isParticipant',
+  'isVisitor',
   'lastname',
   'password',
+  'passwordResetAt',
+  'passwordResetToken',
   'phone',
   'street',
 ]

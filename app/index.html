@@ -7,14 +7,15 @@
   <meta name="msapplication-starturl" content="/">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="theme-color" content="#ffffff">
-  <meta property="og:title" content="HOFFNUNG 3000">
-  <meta property="og:description" content="HOFFNUNG 3000 is a festival for music, art and theory. It is an experiment in social, artistic and theoretical collaboration.">
-  <meta property="og:url" content="https://hoffnung3000.de/">
-  <meta property="og:image" content="https://hoffnung3000.de/static/images/hoffnung3000.jpg">
+  <meta property="og:title" content="{{ env 'CONFIG_TITLE' }}">
+  <meta property="og:description" content="{{ env 'CONFIG_DESCRIPTION' }}">
+  <meta property="og:url" content="{{ env 'CONFIG_URL' }}">
+  <meta property="og:image" content="{{ env 'CONFIG_URL' }}/static/images/hoffnung3000.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1920">
   <meta property="og:image:height" content="1080">
-  <title>HOFFNUNG 3000</title>
+  <meta name="description" content="{{ env 'CONFIG_DESCRIPTION' }}">
+  <title>{{ env 'CONFIG_TITLE' }}</title>
   <link rel="stylesheet" type="text/css" href="{{ assets '/static/styles/app.css' }}">
   <link rel="manifest" href="/static/manifest.json">
   <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { Drawer, SidebarToggle } from './'
 import { logout } from '../actions/auth'
+import { translate } from '../services/i18n'
 
 class Sidebar extends Component {
   static propTypes = {
@@ -19,20 +20,30 @@ class Sidebar extends Component {
   }
 
   renderSidebarBottom() {
-    if (this.props.isAuthenticated) {
-      return (
-        <div className="button-group">
-          <Link className="button" to="/profile">Profile</Link>
-          <button className="button" onClick={this.props.logout}>Logout</button>
-        </div>
-      )
+    if (!this.props.isAuthenticated) {
+      return null
     }
 
     return (
       <div className="button-group">
-        <Link className="button" to="/login">Login</Link>
-        <Link className="button" to="/register">Register</Link>
+        <Link className="button" to="/profile">
+          { translate('components.sidebar.profileButton' )}
+        </Link>
+        <button className="button" onClick={this.props.logout}>
+          { translate('components.sidebar.logoutButton' )}
+        </button>
       </div>
+    )
+  }
+
+  renderAuthenticatedContent() {
+    const { firstname } = this.props
+
+    return (
+      <section dangerouslySetInnerHTML={ { __html: translate(
+          'components.sidebar.welcomeUser', { firstname }
+        ) } }
+      />
     )
   }
 
@@ -40,18 +51,36 @@ class Sidebar extends Component {
     if (!this.props.isAuthenticated) {
       return (
         <section>
-          <p>Welcome dear visitor,</p>
-          <p>please <em>register</em> or <em>login</em> below to use the platform.</p>
+          <div dangerouslySetInnerHTML={ { __html: translate(
+              'components.sidebar.defaultHeader'
+            ) } }
+          />
+          <br />
+          <p>{ translate('components.sidebar.signUpHeader' )}</p>
+          <div className="button-group">
+            <Link className="button" to="/register">
+              { translate('components.sidebar.signUpButton' )}
+            </Link>
+          </div>
+          <hr className="separator separator--white" />
+          <p>{ translate('components.sidebar.visitorHeader' )}</p>
+          <div className="button-group">
+            <Link className="button" to="/tickets">
+              { translate('components.sidebar.visitorButton' )}
+            </Link>
+          </div>
+          <hr className="separator separator--white" />
+          <p>{ translate('components.sidebar.loginHeader' )}</p>
+          <div className="button-group">
+            <Link className="button" to="/login">
+              { translate('components.sidebar.loginButton' )}
+            </Link>
+          </div>
         </section>
       )
     }
 
-    return (
-      <section>
-        <p>Hi { this.props.firstname },</p>
-        <p>Big massive welcome to the platform!</p>
-      </section>
-    )
+    return this.renderAuthenticatedContent()
   }
 
   renderSidebar() {
@@ -83,6 +112,7 @@ class Sidebar extends Component {
 function mapStateToProps(state) {
   const { isAuthenticated } = state.auth
   const { firstname } = state.user
+
   return {
     ...state.drawer,
     isAuthenticated,
