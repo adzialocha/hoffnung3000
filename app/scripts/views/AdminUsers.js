@@ -37,7 +37,7 @@ class AdminUsers extends Component {
 
   render() {
     const tableColumns = [
-      { key: 'id', title: '#' },
+      { key: '$index', title: '#' },
       { key: 'firstname', title: 'Firstname' },
       { key: 'email', title: 'Email' },
       { key: 'isParticipant', title: 'Participant' },

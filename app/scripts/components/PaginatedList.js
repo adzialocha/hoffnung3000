@@ -41,10 +41,13 @@ class PaginatedList extends Component {
     )
   }
 
-  renderTableCells(item) {
+  renderTableCells(item, index) {
     return this.props.columns.map((cell) => {
       const key = `${item.id}${cell.key}`
       const value = item[cell.key]
+      if (cell.key === '$index') {
+        return this.renderTableCellString(key, index + 1)
+      }
       if (typeof value === 'boolean') {
         return this.renderTableCellBoolean(key, value)
       }
@@ -87,10 +90,10 @@ class PaginatedList extends Component {
   }
 
   renderTableRows() {
-    return this.props.listItems.map((item) => {
+    return this.props.listItems.map((item, index) => {
       return (
         <tr className="paginated-list__row" key={item.id}>
-          { this.renderTableCells(item) }
+          { this.renderTableCells(item, index) }
           { this.renderTableActions(item) }
         </tr>
       )

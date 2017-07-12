@@ -42,7 +42,7 @@ class AdminPages extends Component {
 
   render() {
     const tableColumns = [
-      { key: 'id', title: '#' },
+      { key: '$index', title: '#' },
       { key: 'title', title: 'Title' },
       { key: 'slug', title: 'slug' },
     ]
