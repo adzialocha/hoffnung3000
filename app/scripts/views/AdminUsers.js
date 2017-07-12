@@ -11,6 +11,7 @@ import { removeFromList } from '../actions/paginatedList'
 
 class AdminUsers extends Component {
   static propTypes = {
+    currentPageIndex: PropTypes.number.isRequired,
     deleteResource: PropTypes.func.isRequired,
     notification: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
@@ -69,7 +70,10 @@ class AdminUsers extends Component {
         />
         <div className="bar">
           <div className="bar__cell bar__cell--align-left">
-            <PaginatedListNavigation resourceName="users" />
+            <PaginatedListNavigation
+              currentPageIndex={this.props.currentPageIndex}
+              resourceName="users"
+            />
           </div>
           <div className="bar__cell bar__cell--align-right">
             <Link className="button button--blue" to="/admin/users/new">New User</Link>
@@ -87,8 +91,16 @@ class AdminUsers extends Component {
   }
 }
 
+function mapStateToProps(state, ownProps) {
+  const currentPageIndex = 'currentPageIndex' in ownProps.match.params ? parseInt(ownProps.match.params.currentPageIndex, 10) : 0
+
+  return {
+    currentPageIndex,
+  }
+}
+
 export default connect(
-  null, {
+  mapStateToProps, {
     deleteResource,
     notification,
     push,

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 
 import { fetchList } from '../actions/paginatedList'
 
@@ -9,26 +10,26 @@ class PaginatedListNavigation extends Component {
     currentPageIndex: PropTypes.number.isRequired,
     fetchList: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    push: PropTypes.func.isRequired,
     resourceName: PropTypes.string.isRequired,
     totalPageCount: PropTypes.number.isRequired,
   }
 
   componentDidMount() {
-    this.props.fetchList(this.props.resourceName)
-  }
-
-  onPreviousPageClick() {
     this.props.fetchList(
       this.props.resourceName,
       this.props.currentPageIndex - 1
     )
   }
 
+  onPreviousPageClick() {
+    const previousPage = this.props.currentPageIndex - 1
+    this.props.push(`/admin/${this.props.resourceName}/all/${previousPage}`)
+  }
+
   onNextPageClick() {
-    this.props.fetchList(
-      this.props.resourceName,
-      this.props.currentPageIndex + 1
-    )
+    const nextPage = this.props.currentPageIndex + 1
+    this.props.push(`/admin/${this.props.resourceName}/all/${nextPage}`)
   }
 
   render() {
@@ -42,7 +43,7 @@ class PaginatedListNavigation extends Component {
           &lt;
         </button>
         <div className="paginated-list-navigation__indicator">
-          { this.props.currentPageIndex + 1 }
+          { this.props.currentPageIndex }
         </div>
         <button
           className="paginated-list-navigation__button"
@@ -56,11 +57,11 @@ class PaginatedListNavigation extends Component {
   }
 
   hasNextPage() {
-    return this.props.currentPageIndex < this.props.totalPageCount
+    return this.props.currentPageIndex < this.props.totalPageCount + 1
   }
 
   hasPreviousPage() {
-    return this.props.currentPageIndex > 0
+    return this.props.currentPageIndex > 1
   }
 
   constructor(props) {
@@ -72,9 +73,9 @@ class PaginatedListNavigation extends Component {
 }
 
 function mapStateToProps(state) {
-  const { currentPageIndex, isLoading, totalPageCount } = state.paginatedList
+  const { isLoading, totalPageCount } = state.paginatedList
+
   return {
-    currentPageIndex,
     isLoading,
     totalPageCount,
   }
@@ -83,5 +84,6 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps, {
     fetchList,
+    push,
   }
 )(PaginatedListNavigation)
