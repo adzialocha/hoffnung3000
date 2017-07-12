@@ -1,6 +1,7 @@
 import httpStatus from 'http-status'
 
 import checkout from '../services/checkout'
+import config from '../../config'
 import db from '../database'
 import pick from '../utils/pick'
 import User from '../models/user'
@@ -8,7 +9,6 @@ import { APIError } from '../helpers/errors'
 import { executePayment } from '../services/paypal'
 import { generateRandomHash } from '../utils/randomHash'
 import { generateToken } from '../services/passport'
-import { MAXIMUM_PARTICIPANTS } from '../controllers/meta'
 import {
   sendAdminRegistrationNotification,
   sendPasswordReset,
@@ -31,9 +31,9 @@ const permittedFields = [
 ]
 
 const product = {
-  name: 'HOFFNUNG 3000',
+  name: config.title,
   description: 'Participation fee',
-  price: 25.00,
+  price: config.participationPrice,
 }
 
 function signup(req, res, next) {
@@ -44,7 +44,7 @@ function signup(req, res, next) {
 
   User.count({ where: { isParticipant: true } })
     .then(count => {
-      if (count >= MAXIMUM_PARTICIPANTS) {
+      if (count >= config.maximumParticipantsCount) {
         next(
           new APIError(
             'Registration limit was exceeded',

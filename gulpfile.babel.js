@@ -21,6 +21,8 @@ import source from 'vinyl-source-stream'
 import tap from 'gulp-tap'
 import uglify from 'gulp-uglify'
 
+import config from './config'
+
 const VENDOR_MODULES = [
   'classnames',
   'history',
@@ -82,11 +84,16 @@ function getRevisioningManifest() {
  * .html files
  */
 
+function getConfigValue(key) {
+  return key in config ? config[key] : ''
+}
+
 const handlebarOptions = {
   helpers: {
     assets: (path, context) => {
       return `/static/${context.data.root[path.replace('/static/', '')]}`
     },
+    config: getConfigValue,
   },
 }
 
@@ -95,6 +102,7 @@ const handlebarOptionsDevelopment = {
     assets: (path) => {
       return path
     },
+    config: getConfigValue,
   },
 }
 

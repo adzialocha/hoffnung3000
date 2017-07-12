@@ -1,6 +1,7 @@
 import httpStatus from 'http-status'
 
 import checkout from '../services/checkout'
+import config from '../../config'
 import pick from '../utils/pick'
 import User from '../models/user'
 import { APIError } from '../helpers/errors'
@@ -15,9 +16,9 @@ const permittedFields = [
 ]
 
 const product = {
-  name: 'HOFFNUNG 3000',
+  name: config.title,
   description: 'Festival ticket',
-  price: 10.00,
+  price: config.festivalTicketPrice,
 }
 
 function signup(req, res, next) {

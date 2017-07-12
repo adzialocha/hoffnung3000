@@ -1,6 +1,6 @@
 import paypal from 'paypal-rest-sdk'
 
-const CURRENCY_EURO = 'EUR'
+import config from '../../config'
 
 function extractLink(links, key) {
   for (let i = 0; i < links.length; i += 1) {
@@ -25,7 +25,7 @@ export function createPayment(product) {
     description,
     price,
     quantity: 1,
-    currency: CURRENCY_EURO,
+    currency: config.currency,
   }]
 
   const paymentDetails = {

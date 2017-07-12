@@ -1,6 +1,6 @@
 Hello ${user.firstname}!
 
-Welcome to HOFFNUNG 3000!
+Welcome to ${config.title}!
 
 Thank you so much for signing up! You are officially registered now!
 You can now log in and start using the platform :-)
@@ -8,4 +8,4 @@ You can now log in and start using the platform :-)
 And please write us if you have any questions!
 
 Love,
-HOFFNUNG 3000
+${config.title}

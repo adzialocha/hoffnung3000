@@ -10,4 +10,4 @@ Payment method: ${paymentMethod}
 
 <3
 
-HOFFNUNG 3000 BOT
+${config.title} BOT

@@ -1,6 +1,5 @@
+import config from '../../config'
 import User from '../models/user'
-
-export const MAXIMUM_PARTICIPANTS = 30
 
 function information(req, res, next) {
   User.count({
@@ -10,7 +9,7 @@ function information(req, res, next) {
   })
     .then(count => {
       res.json({
-        isRegistrationFull: count >= MAXIMUM_PARTICIPANTS,
+        isRegistrationFull: count >= config.maximumParticipantsCount,
       })
     })
     .catch(err => next(err))
