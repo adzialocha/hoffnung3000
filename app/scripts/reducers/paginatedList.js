@@ -3,6 +3,7 @@ import update from 'immutability-helper'
 import ActionTypes from '../actionTypes'
 
 const initialState = {
+  currentPageIndex: 0,
   isLoading: false,
   listItems: [],
   totalPageCount: 0,
@@ -24,6 +25,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
   case ActionTypes.PAGINATED_LIST_REQUEST:
     return update(state, {
+      currentPageIndex: { $set: action.meta.page },
       isLoading: { $set: true },
     })
   case ActionTypes.PAGINATED_LIST_SUCCESS:

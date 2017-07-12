@@ -70,7 +70,7 @@ class AdminUsersEditForm extends Component {
     return (
       <section className="form">
         <h1>Edit User { this.title() }</h1>
-        <Link className="button" to="/admin/users/all">Back to overview</Link>
+        <Link className="button" to="/admin/users/all/1">Back to overview</Link>
         { this.renderMeta() }
         <hr />
         { this.renderForm() }

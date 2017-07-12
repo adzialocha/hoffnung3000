@@ -48,15 +48,16 @@ class AdminUsers extends Component {
 
     const tableActions = [
       {
-        title: 'Edit',
         isAdmin: true,
         onClick: this.onEditClick,
+        title: 'Edit',
       },
       {
-        title: 'Delete',
-        isAdmin: true,
         classNameModifier: 'button--red',
+        isAdmin: true,
+        isDeleteAction: true,
         onClick: this.onDeleteClick,
+        title: 'Delete',
       },
     ]
 

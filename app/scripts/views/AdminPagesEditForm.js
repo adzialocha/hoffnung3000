@@ -51,7 +51,7 @@ class AdminPagesEditForm extends Component {
     return (
       <section>
         <h1>Edit Page { this.title() }</h1>
-        <Link className="button" to="/admin/pages/all">Back to overview</Link>
+        <Link className="button" to="/admin/pages/all/1">Back to overview</Link>
         <hr />
         { this.renderForm() }
       </section>

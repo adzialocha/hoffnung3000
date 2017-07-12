@@ -1,7 +1,7 @@
 import ActionTypes from '../actionTypes'
 import { getRequest } from '../services/api'
 
-const ITEMS_PER_PAGE = 10
+export const ITEMS_PER_PAGE = 10
 
 export function fetchList(resourceName, page = 0) {
   const offset = page * ITEMS_PER_PAGE

@@ -44,7 +44,7 @@ class AdminUsersNewForm extends Component {
     return (
       <section>
         <h1>New User</h1>
-        <Link className="button" to="/admin/users/all">Back to overview</Link>
+        <Link className="button" to="/admin/users/all/1">Back to overview</Link>
         <hr />
         { this.renderForm() }
       </section>

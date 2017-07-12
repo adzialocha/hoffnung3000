@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import { ITEMS_PER_PAGE } from '../actions/paginatedList'
 import { PaginatedListActionButton } from './'
 import { translate } from '../services/i18n'
 
@@ -10,6 +11,7 @@ class PaginatedList extends Component {
   static propTypes = {
     actions: PropTypes.array,
     columns: PropTypes.array.isRequired,
+    currentPageIndex: PropTypes.number.isRequired,
     isLoading: PropTypes.bool.isRequired,
     listItems: PropTypes.array.isRequired,
     userId: PropTypes.number.isRequired,
@@ -46,7 +48,9 @@ class PaginatedList extends Component {
       const key = `${item.id}${cell.key}`
       const value = item[cell.key]
       if (cell.key === '$index') {
-        return this.renderTableCellString(key, index + 1)
+        return this.renderTableCellString(key,
+          (index + 1) + (this.props.currentPageIndex * ITEMS_PER_PAGE)
+        )
       }
       if (typeof value === 'boolean') {
         return this.renderTableCellBoolean(key, value)
@@ -71,6 +75,10 @@ class PaginatedList extends Component {
             }
 
             if (action.isOwner && !item.ownerId === this.props.userId) {
+              return null
+            }
+
+            if (!this.isItemRemovable(item) && action.isDeleteAction) {
               return null
             }
 
@@ -131,13 +139,21 @@ class PaginatedList extends Component {
       </div>
     )
   }
+
+  isItemRemovable(item) {
+    if (typeof item.isRemovable === 'boolean') {
+      return item.isRemovable
+    }
+    return true
+  }
 }
 
 function mapStateToProps(state) {
-  const { listItems, isLoading } = state.paginatedList
+  const { currentPageIndex, listItems, isLoading } = state.paginatedList
   const { isAdmin, id } = state.user
 
   return {
+    currentPageIndex,
     isLoading,
     listItems,
     userId: id,
