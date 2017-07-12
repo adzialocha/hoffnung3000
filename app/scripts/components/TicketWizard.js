@@ -4,7 +4,11 @@ import Scroll from 'react-scroll'
 import { connect } from 'react-redux'
 
 import { buyTicket } from '../actions/auth'
+import { StaticPage } from './'
 import { TicketForm } from '../forms'
+import { translate } from '../services/i18n'
+
+const totalSteps = 2
 
 class TicketWizard extends Component {
   static propTypes = {
@@ -56,7 +60,7 @@ class TicketWizard extends Component {
   renderPaymentButtons() {
     if (this.state.isCheckoutClicked && this.props.isLoading) {
       return (
-        <p>Loading ...</p>
+        <p>{ translate('components.common.loading') }</p>
       )
     }
 
@@ -67,46 +71,30 @@ class TicketWizard extends Component {
           disabled={!this.state.isTermsAccepted || this.props.isLoading}
           onClick={this.onPayPalCheckout}
         >
-          Pay via PayPal
+          { translate('components.common.payViaPayPal') }
         </button>
         <button
           className="button button--rainbow"
           disabled={!this.state.isTermsAccepted || this.props.isLoading}
           onClick={this.onTransferCheckout}
         >
-          Pay via Transfer
+          { translate('components.common.payViaTransfer') }
         </button>
       </div>
     )
   }
 
   renderPaymentGateway() {
+    const title = translate('components.ticketWizard.stepTitle', {
+      currentStep: 2,
+      totalSteps,
+    })
+
     return (
       <div className="form left">
-        <h1>Get a festival ticket  (Step 2 of 2)</h1>
+        <h1>{ title }</h1>
         { this.renderErrorMessage() }
-        <h2>Payment</h2>
-        <p>Last step!</p>
-        <p>
-          The festival ticket costs <strong>10,00 Euro</strong>. You will get access to all public events and get the opportunity to registrate your own places.
-        </p>
-        <p>
-          You can pay via PayPal to get direct access or choose to transfer the money via wire-transfer if you prefer this. We will enable your account after your money arrived in our bank-account. You will get an email when this happens.
-        </p>
-        <hr />
-
-        <h2>Agreements</h2>
-        <p>
-          We want to make sure you read our terms before you sign up:
-        </p>
-        <ul>
-          <li>
-            As a participant you are liable for your own gear and instruments. As hosts we don't take any responsibility for possible damage through accidents or usage by other participants.
-          </li>
-          <li>
-            If you cancel before the 1st of August we will refund your full participation fee. After this date we can no longer give refunds.
-          </li>
-        </ul>
+        <StaticPage hideTitle={true} slug="ticket-payment" />
         <div className="form__field form__field--inline">
           <input
             checked={this.state.isTermsAccepted}
@@ -117,30 +105,33 @@ class TicketWizard extends Component {
             onChange={this.onTermsAcceptedChanged}
           />
           <label className="form__field-label">
-            I agree with the terms
+            { translate('components.common.agreeWithTerms') }
           </label>
         </div>
         <hr />
-
         { this.renderPaymentButtons() }
         <hr />
-
         <button
           className="button button--clear"
           disabled={this.props.isLoading}
           onClick={this.previousStep}
         >
-          Previous step
+          { translate('components.common.previousStep') }
         </button>
       </div>
     )
   }
 
   renderTicketForm() {
+    const title = translate('components.ticketWizard.stepTitle', {
+      currentStep: 1,
+      totalSteps,
+    })
+
     return (
       <div className="form">
-        <h1>Get a festival ticket (Step 1 of 2)</h1>
-        <p>This is a text about festival tickets. This is a text about festival tickets. This is a text about festival tickets. This is a text about festival tickets.</p>
+        <h1>{ title }</h1>
+        <StaticPage hideTitle={true} slug="ticket-intro" />
         <TicketForm
           errorMessage={this.props.errorMessage}
           isLoading={this.props.isLoading}

@@ -9,10 +9,15 @@ class StaticPage extends Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
     fetchHtmlPage: PropTypes.func.isRequired,
+    hideTitle: PropTypes.bool,
     isError: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     slug: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    hideTitle: false,
   }
 
   componentDidMount() {
@@ -23,6 +28,13 @@ class StaticPage extends Component {
     if (this.props.slug !== prevProps.slug) {
       this.props.fetchHtmlPage(this.props.slug)
     }
+  }
+
+  renderPageTitle() {
+    if (this.props.hideTitle) {
+      return null
+    }
+    return <h1>{ this.props.title }</h1>
   }
 
   renderPageContent() {
@@ -45,7 +57,7 @@ class StaticPage extends Component {
 
     return (
       <div className="page__content">
-        <h1>{ this.props.title }</h1>
+        { this.renderPageTitle() }
         <div
           className="page__content-text"
           dangerouslySetInnerHTML={ { __html: this.props.content } }

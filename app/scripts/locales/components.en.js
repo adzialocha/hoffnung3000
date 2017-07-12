@@ -1,6 +1,11 @@
 export default {
   common: {
     loading: 'Loading ...',
+    payViaPayPal: 'Pay via PayPal',
+    payViaTransfer: 'Pay via transfer',
+    agreeWithTerms: 'I agree with the terms',
+    nextStep: 'Next step',
+    previousStep: 'Previous step',
   },
   navigationLinks: {
     about: 'About',
@@ -17,6 +22,12 @@ export default {
   staticPage: {
     errorTitle: '404',
     errorText: 'Oups. The requested page does not exist. Please check the url again or contact us.',
+  },
+  ticketWizard: {
+    stepTitle: 'Get a festival ticket (Step {currentStep} of {totalSteps})',
+  },
+  registrationWizard: {
+    stepTitle: 'Registration (Step {currentStep} of {totalSteps})',
   },
   sidebar: {
     defaultHeader: '<p>Welcome dear visitor,</p><p>please <em>register</em> or <em>login</em> below to use the platform.</p>',

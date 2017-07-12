@@ -26,6 +26,9 @@ const config = {
     IBAN: process.env.CONFIG_TRANSFER_IBAN,
     BIC: process.env.CONFIG_TRANSFER_BIC,
   },
+  video: {
+    registration: process.env.CONFIG_VIDEO_REGISTRATION || 'KRYVH7fGa68',
+  },
 }
 
 export default config

@@ -10,9 +10,13 @@ module.exports = {
       isAdmin: true,
       isParticipant: false,
       isActive: true,
-    }], {})
+    }])
   },
   down: (queryInterface) => {
-    queryInterface.bulkDelete('users', null, {})
+    return queryInterface.bulkDelete('users', [{
+      email: [
+        'admin@admin.com',
+      ],
+    }])
   },
 }

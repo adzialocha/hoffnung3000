@@ -4,11 +4,11 @@ Thank you so much for signing up for ${config.title}!
 
 Please transfer ${product.price} ${config.currency} for the ${product.description} to the following bank account as soon as possible so we can confirm your account :-)
 
-Receiver name: "{config.transferDetails.receiverName}"
+Receiver name: "${config.transferDetails.receiverName}"
 Description: "Registration id: ${paymentId}"
-Bank: {config.transferDetails.bankName}
-IBAN: {config.transferDetails.IBAN}
-BIC: {config.transferDetails.BIC}
+Bank: ${config.transferDetails.bankName}
+IBAN: ${config.transferDetails.IBAN}
+BIC: ${config.transferDetails.BIC}
 
 Thank you!
 

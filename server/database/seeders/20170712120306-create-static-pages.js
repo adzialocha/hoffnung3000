@@ -1,57 +1,42 @@
+function makePage(title, slug) {
+  return {
+    createdAt: new Date,
+    isRemovable: false,
+    slug,
+    title,
+    updatedAt: new Date,
+  }
+}
+
 module.exports = {
   up: (queryInterface) => {
     return queryInterface.bulkInsert('pages', [
-      {
-        createdAt: new Date,
-        updatedAt: new Date,
-        title: 'Information',
-        slug: 'information',
-        content: 'Information',
-        isRemovable: false,
-      },
-      {
-        createdAt: new Date,
-        updatedAt: new Date,
-        title: 'Home',
-        slug: 'home',
-        content: 'Home',
-        isRemovable: false,
-      },
-      {
-        createdAt: new Date,
-        updatedAt: new Date,
-        title: 'Contact',
-        slug: 'contact',
-        content: 'Contact',
-        isRemovable: false,
-      },
-      {
-        createdAt: new Date,
-        updatedAt: new Date,
-        title: 'Imprint',
-        slug: 'imprint',
-        content: 'Imprint',
-        isRemovable: false,
-      },
-      {
-        createdAt: new Date,
-        updatedAt: new Date,
-        title: 'About',
-        slug: 'about',
-        content: 'About',
-        isRemovable: false,
-      },
-      {
-        createdAt: new Date,
-        updatedAt: new Date,
-        title: 'Registration',
-        slug: 'waitinglist',
-        content: 'Waiting list',
-        isRemovable: false,
-      },
-    ], {})
+      makePage('About', 'about'),
+      makePage('Contact', 'contact'),
+      makePage('Home', 'home'),
+      makePage('Imprint', 'imprint'),
+      makePage('Information', 'information'),
+      makePage('Registration', 'registration-full'),
+      makePage('Registration', 'registration-intro'),
+      makePage('Registration', 'registration-payment'),
+      makePage('Ticket', 'ticket-intro'),
+      makePage('Ticket', 'ticket-payment'),
+    ])
   },
   down: (queryInterface) => {
-    queryInterface.bulkDelete('pages', null, {})
+    return queryInterface.bulkDelete('pages', [{
+      slug: [
+        'about',
+        'contact',
+        'home',
+        'imprint',
+        'information',
+        'registration-full',
+        'registration-intro',
+        'registration-payment',
+        'ticket-intro',
+        'ticket-payment',
+      ],
+    }])
   },
 }
