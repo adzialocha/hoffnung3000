@@ -1,30 +1,30 @@
 import express from 'express'
 import validate from 'express-validation'
 
-import pageController from '../controllers/page'
+import pageAdminController from '../controllers/pageAdmin'
 import pageValidation from '../validation/page'
 
 const router = express.Router() // eslint-disable-line new-cap
 
 router.route('/')
   .get(
-    pageController.findAll
+    pageAdminController.findAll
   )
   .post(
     validate(pageValidation.createPage),
-    pageController.create
+    pageAdminController.create
   )
 
-router.route('/:resourceId')
+router.route('/:resourceId(\\d+)/')
   .get(
-    pageController.findOne
+    pageAdminController.findOne
   )
   .put(
     validate(pageValidation.updatePage),
-    pageController.update
+    pageAdminController.update
   )
   .delete(
-    pageController.destroy
+    pageAdminController.destroy
   )
 
 export default router

@@ -1,5 +1,3 @@
-import marked from 'marked'
-
 import db from '../database'
 
 const Page = db.sequelize.define('page', {
@@ -33,15 +31,5 @@ const Page = db.sequelize.define('page', {
     defaultValue: true,
   },
 })
-
-// instance methods
-Page.prototype.toJSON = function convert() {
-  const data = this.get()
-
-  return Object.assign({}, {
-    ...data,
-    contentHtml: marked(data.content),
-  })
-}
 
 export default Page

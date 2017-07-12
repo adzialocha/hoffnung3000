@@ -21,16 +21,14 @@ const router = express.Router() // eslint-disable-line new-cap
 // API health check route
 
 router.get('/health-check', (req, res) =>
-  res.send('OK')
+  res.send('ok')
 )
 
 // public API routes
 
 router.use('/auth', authRoutes)
 
-router.route('/pages/:resourceId(\\d+)/')
-  .get(pageController.findOne)
-router.route('/pages/:resourceSlug')
+router.route('/pages/:resourceSlug(\\D+)/')
   .get(pageController.findOneWithSlug)
 
 router.route('/meta')
@@ -38,9 +36,13 @@ router.route('/meta')
 
 // private API routes
 
-router.use('/*', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-  next()
-})
+router.use(
+  '/*',
+  passport.authenticate('jwt', { session: false }),
+  (req, res, next) => {
+    next()
+  }
+)
 
 router.use('/profile', profileRoutes)
 
@@ -59,20 +61,21 @@ router.use((err, req, res, next) => {
   }
 
   if (err instanceof expressValidation.ValidationError) {
-    // validation error contains errors which is an array of error each containing message[]
-    const unifiedErrorMessage = err.errors.map(
+    // validation error contains errors which is an
+    // array of error each containing message[]
+    const unifiedMessage = err.errors.map(
       error => error.messages.join('. ')
     ).join(' and ')
-    const error = new APIError(unifiedErrorMessage, httpStatus.BAD_REQUEST, true)
+    const error = new APIError(unifiedMessage, httpStatus.BAD_REQUEST, true)
     return next(error)
   } else if (err instanceof EmptyResultError) {
     const apiError = new APIError(err.message, httpStatus.NOT_FOUND, true)
     return next(apiError)
   } else if (err instanceof ValidationError) {
-    const unifiedErrorMessage = err.errors.map(
+    const unifiedMessage = err.errors.map(
       error => error.message
     ).join(' and ')
-    const apiError = new APIError(unifiedErrorMessage, httpStatus.BAD_REQUEST, true)
+    const apiError = new APIError(unifiedMessage, httpStatus.BAD_REQUEST, true)
     return next(apiError)
   } else if (!(err instanceof APIError)) {
     const apiError = new APIError(err.message, err.status, err.isPublic)
