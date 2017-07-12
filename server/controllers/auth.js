@@ -169,7 +169,7 @@ function requestResetToken(req, res, next) {
         }
 
         const user = data[1][0]
-        const passwordResetUrl = `${process.env.URL}/reset/${passwordResetToken}`
+        const passwordResetUrl = `${config.basePath}/reset/${passwordResetToken}`
 
         sendPasswordReset({
           passwordResetUrl,

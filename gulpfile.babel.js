@@ -4,6 +4,7 @@ import browserify from 'browserify'
 import buffer from 'vinyl-buffer'
 import cleancss from 'gulp-clean-css'
 import del from 'del'
+import dotenv from 'dotenv'
 import eslint from 'gulp-eslint'
 import fs from 'fs'
 import gulp from 'gulp'
@@ -11,6 +12,7 @@ import handlebars from 'gulp-compile-handlebars'
 import htmlmin from 'gulp-htmlmin'
 import imagemin from 'gulp-imagemin'
 import notify from 'gulp-notify'
+import path from 'path'
 import rename from 'gulp-rename'
 import rev from 'gulp-rev'
 import runIf from 'gulp-if'
@@ -20,8 +22,6 @@ import sasslint from 'gulp-sass-lint'
 import source from 'vinyl-source-stream'
 import tap from 'gulp-tap'
 import uglify from 'gulp-uglify'
-
-import config from './config'
 
 const VENDOR_MODULES = [
   'classnames',
@@ -50,6 +50,19 @@ const VENDOR_MODULES = [
 const APP_PATH = './app'
 const DIST_PATH = './public'
 const TMP_PATH = './.tmp'
+
+/**
+ * Load environment variables and configuration from file
+ */
+
+const envVariables = dotenv.config({
+  path: path.join(__dirname, '.env'),
+})
+
+if (envVariables.error && process.env.NODE_ENV === 'development') {
+  console.error('".env" file does not exist, please configure the app first')
+  process.exit(1)
+}
 
 /**
  * Helper method for checking if build
@@ -84,8 +97,8 @@ function getRevisioningManifest() {
  * .html files
  */
 
-function getConfigValue(key) {
-  return key in config ? config[key] : ''
+function getEnvironmentVariable(key) {
+  return key in process.env ? process.env[key] : ''
 }
 
 const handlebarOptions = {
@@ -93,16 +106,14 @@ const handlebarOptions = {
     assets: (path, context) => {
       return `/static/${context.data.root[path.replace('/static/', '')]}`
     },
-    config: getConfigValue,
+    env: getEnvironmentVariable,
   },
 }
 
 const handlebarOptionsDevelopment = {
   helpers: {
-    assets: (path) => {
-      return path
-    },
-    config: getConfigValue,
+    assets: (path) => path,
+    env: getEnvironmentVariable,
   },
 }
 
