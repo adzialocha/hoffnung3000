@@ -27,10 +27,10 @@ class Sidebar extends Component {
     return (
       <div className="button-group">
         <Link className="button" to="/profile">
-          {translate('components.sidebar.profileButton')}
+          { translate('components.sidebar.profileButton' )}
         </Link>
         <button className="button" onClick={this.props.logout}>
-          {translate('components.sidebar.logoutButton')}
+          { translate('components.sidebar.logoutButton' )}
         </button>
       </div>
     )
@@ -56,24 +56,24 @@ class Sidebar extends Component {
             ) } }
           />
           <br />
-          <p>{translate('components.sidebar.signUpHeader')}</p>
+          <p>{ translate('components.sidebar.signUpHeader' )}</p>
           <div className="button-group">
             <Link className="button" to="/register">
-              {translate('components.sidebar.signUpButton')}
+              { translate('components.sidebar.signUpButton' )}
             </Link>
           </div>
           <hr className="separator separator--white" />
-          <p>{translate('components.sidebar.visitorHeader')}</p>
+          <p>{ translate('components.sidebar.visitorHeader' )}</p>
           <div className="button-group">
             <Link className="button" to="/tickets">
-              {translate('components.sidebar.visitorButton')}
+              { translate('components.sidebar.visitorButton' )}
             </Link>
           </div>
           <hr className="separator separator--white" />
-          <p>{translate('components.sidebar.loginHeader')}</p>
+          <p>{ translate('components.sidebar.loginHeader' )}</p>
           <div className="button-group">
             <Link className="button" to="/login">
-              {translate('components.sidebar.loginButton')}
+              { translate('components.sidebar.loginButton' )}
             </Link>
           </div>
         </section>

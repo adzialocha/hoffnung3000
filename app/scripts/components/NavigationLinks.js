@@ -6,24 +6,24 @@ import { NavLink } from 'react-router-dom'
 import { translate } from '../services/i18n'
 
 const PRIMARY_NAVIGATION = [
-  { key: 'home', url: '/' },
-  { key: 'about', url: '/pages/about' },
-  { key: 'calendar', url: '/calendar' },
+  { localeKey: 'home', url: '/' },
+  { localeKey: 'about', url: '/pages/about' },
+  { localeKey: 'calendar', url: '/calendar' },
 ]
 
 const SECONDARY_NAVIGATION = [
-  { key: 'information', url: '/pages/information' },
-  { key: 'contact', url: '/pages/contact' },
+  { localeKey: 'information', url: '/pages/information' },
+  { localeKey: 'contact', url: '/pages/contact' },
 ]
 
 const CURATION_NAVIGATION = [
-  { key: 'places', url: '/places' },
-  { key: 'performers', url: '/performers' },
-  { key: 'items', url: '/items' },
+  { localeKey: 'places', url: '/places' },
+  { localeKey: 'performers', url: '/performers' },
+  { localeKey: 'items', url: '/items' },
 ]
 
 const ADMIN_NAVIGATION = CURATION_NAVIGATION.concat([
-  { key: 'admin', url: '/admin' },
+  { localeKey: 'admin', url: '/admin' },
 ])
 
 const PARTICIPANT_NAVIGATION = CURATION_NAVIGATION
@@ -31,7 +31,7 @@ const PARTICIPANT_NAVIGATION = CURATION_NAVIGATION
 const VISITOR_NAVIGATION = []
 
 const DEFAULT_NAVIGATION = [
-  { key: 'tickets', url: '/tickets' },
+  { localeKey: 'tickets', url: '/tickets' },
 ]
 
 class NavigationLinks extends Component {
@@ -46,7 +46,9 @@ class NavigationLinks extends Component {
       return (
         <li className="navigation-links__item" key={index}>
           <NavLink to={navigationItem.url}>
-            {translate(`components.navigationLinks.${navigationItem.key}`)}
+            { translate(
+              `components.navigationLinks.${navigationItem.localeKey}`
+            ) }
           </NavLink>
         </li>
       )

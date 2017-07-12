@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { fetchHtmlPage } from '../actions/pages'
+import { translate } from '../services/i18n'
 
 class StaticPage extends Component {
   static propTypes = {
@@ -28,7 +29,7 @@ class StaticPage extends Component {
     if (this.props.isLoading) {
       return (
         <div className="page__spinner">
-          <p>Loading ...</p>
+          <p>{ translate('components.common.loading') }</p>
         </div>
       )
     }
@@ -36,8 +37,8 @@ class StaticPage extends Component {
     if (this.props.isError) {
       return (
         <div className="page__content">
-          <h1>Error</h1>
-          <p>The requested page could not be found.</p>
+          <h1>{ translate('components.staticPage.errorTitle') }</h1>
+          <p>{ translate('components.staticPage.errorText') }</p>
         </div>
       )
     }
@@ -55,9 +56,9 @@ class StaticPage extends Component {
 
   render() {
     return (
-      <section className="page">
+      <div className="page">
         { this.renderPageContent() }
-      </section>
+      </div>
     )
   }
 }

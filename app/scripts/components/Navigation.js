@@ -17,7 +17,9 @@ class Navigation extends Component {
   render() {
     const overlayClasses = classnames(
       'navigation__overlay', {
-        'navigation__overlay--visible': this.props.isSidebarExpanded || this.props.isNavigationExpanded,
+        'navigation__overlay--visible': (
+          this.props.isSidebarExpanded || this.props.isNavigationExpanded
+        ),
       }
     )
 

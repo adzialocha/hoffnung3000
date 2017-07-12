@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { PaginatedListActionButton } from './'
+import { translate } from '../services/i18n'
 
 class PaginatedList extends Component {
   static propTypes = {
@@ -108,7 +109,7 @@ class PaginatedList extends Component {
 
   render() {
     if (this.props.isLoading) {
-      return <p>Loading ...</p>
+      return <p>{ translate('components.common.loading') }</p>
     }
 
     return (
