@@ -40,7 +40,7 @@ export function createPayment(product) {
     transactions: [{
       description: name,
       amount: {
-        currency: CURRENCY_EURO,
+        currency: config.currency,
         total: price,
       },
       item_list: {
