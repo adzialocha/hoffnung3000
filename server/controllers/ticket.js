@@ -8,11 +8,15 @@ import { APIError } from '../helpers/errors'
 import { sendAdminRegistrationNotification } from '../helpers/mailTemplate'
 
 const permittedFields = [
+  'city',
+  'cityCode',
+  'country',
   'email',
   'firstname',
   'lastname',
   'password',
   'paymentMethod',
+  'street',
 ]
 
 const product = {
