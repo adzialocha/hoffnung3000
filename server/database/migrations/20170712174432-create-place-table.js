@@ -33,10 +33,10 @@ module.exports = {
           notEmpty: true,
         },
       },
-      isPrivate: {
+      isPublic: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: false,
+        defaultValue: true,
       },
       slotSize: {
         type: Sequelize.INTEGER,

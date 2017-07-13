@@ -2,7 +2,13 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormField, FormTextarea, FormLocationSelector } from '../components'
+import {
+  FormCheckbox,
+  FormInput,
+  FormLocationSelector,
+  FormSlotEditor,
+  FormTextarea,
+} from '../components'
 import { translate } from '../services/i18n'
 
 const validate = values => {
@@ -44,7 +50,7 @@ class PlaceForm extends Component {
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Title"
           name="title"
@@ -64,7 +70,30 @@ class PlaceForm extends Component {
           label="Location"
           name="location"
         />
-
+        <hr />
+        <Field
+          component={FormCheckbox}
+          disabled={this.props.isLoading}
+          inline={true}
+          label="Are events in this place visible in the calendar?"
+          name="isPublic"
+        />
+        <hr />
+        <Field
+          component={FormInput}
+          disabled={this.props.isLoading}
+          label="Slot-size (mm:ss)"
+          name="slotSize"
+          type="text"
+        />
+        <small>{ translate('forms.place.slotSizeNote') }</small>
+        <br />
+        <Field
+          component={FormSlotEditor}
+          disabled={this.props.isLoading}
+          label="Blocked slots"
+          name="blockedSlots"
+        />
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}

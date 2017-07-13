@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { asFormField } from '../forms'
-import { LocationSelector } from './'
+import { SlotEditor } from './'
 
-class FormLocationSelector extends Component {
+class FormSlotEditor extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
@@ -15,7 +15,7 @@ class FormLocationSelector extends Component {
 
     return (
       <div className="form__field-input">
-        <LocationSelector
+        <SlotEditor
           disabled={disabled}
           {...input}
         />
@@ -24,4 +24,4 @@ class FormLocationSelector extends Component {
   }
 }
 
-export default asFormField(FormLocationSelector)
+export default asFormField(FormSlotEditor)

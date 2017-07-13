@@ -37,10 +37,10 @@ const Place = db.sequelize.define('place', {
       notEmpty: true,
     },
   },
-  isPrivate: {
+  isPublic: {
     type: db.Sequelize.BOOLEAN,
     allowNull: false,
-    defaultValue: false,
+    defaultValue: true,
   },
   slotSize: {
     type: db.Sequelize.INTEGER,

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormField } from '../components'
+import { FormInput } from '../components'
 
 const validate = values => {
   const errors = {}
@@ -45,14 +45,14 @@ class LoginForm extends Component {
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Email-Address"
           name="email"
           type="email"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Password"
           name="password"

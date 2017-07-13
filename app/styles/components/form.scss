@@ -42,6 +42,14 @@
 // .form__field-input {
 // }
 
+.form__field-label {
+  order: 1;
+
+  & + .form__field-checkbox {
+    order: 0;
+  }
+}
+
 .form__field-error,
 .form__field-warning {
   color: $red;

@@ -1,23 +1,27 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-class FormTextarea extends Component {
+import { asFormField } from '../forms'
+
+class FormInput extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
+    type: PropTypes.string.isRequired,
   }
 
   render() {
-    const { disabled, input } = this.props
+    const { input, disabled, type } = this.props
 
     return (
-      <textarea
+      <input
         className="form__field-input"
         disabled={disabled}
+        type={type}
         {...input}
       />
     )
   }
 }
 
-export default FormTextarea
+export default asFormField(FormInput)

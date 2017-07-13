@@ -1,3 +1,4 @@
+export asFormField from './asFormField'
 export ForgotPasswordForm from './ForgotPasswordForm'
 export LoginForm from './LoginForm'
 export PageForm from './PageForm'
