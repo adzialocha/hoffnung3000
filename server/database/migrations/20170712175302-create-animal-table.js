@@ -16,14 +16,6 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      resourceType: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      resourceId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
       name: {
         type: Sequelize.STRING,
         allowNull: false,

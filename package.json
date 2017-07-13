@@ -10,7 +10,7 @@
   ],
   "license": "UNLICENSED",
   "engines": {
-    "node": "~8.1.1",
+    "node": "~8.1.4",
     "npm": "~5.2.0"
   },
   "scripts": {
@@ -115,6 +115,7 @@
     "random-animal-name-generator": "^0.1.0",
     "save-dev": "^2.0.0",
     "sequelize": "^4.3.1",
+    "sequelize-slugify": "https://github.com/gleuch/sequelize-slugify#master",
     "winston": "^2.3.1"
   }
 }

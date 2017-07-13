@@ -1,6 +1,7 @@
 export ForgotPasswordForm from './ForgotPasswordForm'
 export LoginForm from './LoginForm'
 export PageForm from './PageForm'
+export PlaceForm from './PlaceForm'
 export ProfileForm from './ProfileForm'
 export RegistrationForm from './RegistrationForm'
 export ResetPasswordForm from './ResetPasswordForm'

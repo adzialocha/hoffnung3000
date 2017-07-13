@@ -3,15 +3,23 @@ import httpStatus from 'http-status'
 import { APIError } from '../helpers/errors'
 
 function checkRole(checkParticipant, checkOwner, req, res, next) {
+  if (!req.user) {
+    return next(
+      new APIError('Access forbidden', httpStatus.FORBIDDEN, true)
+    )
+  }
+
   if (!req.user.isActive) {
-    return next()
+    return next(
+      new APIError('Access forbidden', httpStatus.FORBIDDEN, true)
+    )
   }
 
   if (req.user.isAdmin) {
     return next()
   }
 
-  if (checkOwner && req.user.id === req.ownerId) {
+  if (checkOwner && ('ownerId' in req) && req.user.id === req.ownerId) {
     return next()
   }
 

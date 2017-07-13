@@ -3,48 +3,37 @@ import generateRandomAnimalName from 'random-animal-name-generator'
 import db from '../database'
 
 import Place from './place'
-import User from './user'
 
 const Animal = db.sequelize.define('animal', {
   id: {
-    type: Sequelize.INTEGER,
+    type: db.Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   createdAt: {
-    type: Sequelize.DATE,
+    type: db.Sequelize.DATE,
   },
   updatedAt: {
-    type: Sequelize.DATE,
+    type: db.Sequelize.DATE,
   },
   userId: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  resourceType: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  resourceId: {
-    type: Sequelize.INTEGER,
+    type: db.Sequelize.INTEGER,
     allowNull: false,
   },
   name: {
-    type: Sequelize.STRING,
+    type: db.Sequelize.STRING,
     allowNull: false,
   },
 })
 
-Animal.hook('beforeCreate', (animal) => {
+Animal.beforeValidate(animal => {
   animal.name = generateRandomAnimalName()
 })
 
-Animal.belongsTo(User)
-
-Animal.belongsTo(Place, {
-  as: 'place',
+export const PlaceHasOneAnimal = Place.belongsTo(Animal, {
+  foreignKey: 'animalId',
   constraints: false,
-  foreignKey: 'resourceId',
+  as: 'animal',
 })
 
 export default Animal

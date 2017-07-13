@@ -14,7 +14,6 @@ module.exports = {
       },
       animalId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
       },
       title: {
         type: Sequelize.STRING,

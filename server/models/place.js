@@ -1,92 +1,85 @@
+import slugify from 'sequelize-slugify'
+
 import db from '../database'
 
-import Animal from './animal'
-import Slot from './slot'
+// import Slot from './slot'
 
 const Place = db.sequelize.define('place', {
   id: {
-    type: Sequelize.INTEGER,
+    type: db.Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   createdAt: {
-    type: Sequelize.DATE,
+    type: db.Sequelize.DATE,
   },
   updatedAt: {
-    type: Sequelize.DATE,
+    type: db.Sequelize.DATE,
   },
   animalId: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
+    type: db.Sequelize.INTEGER,
   },
   title: {
-    type: Sequelize.STRING,
+    type: db.Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   slug: {
-    type: Sequelize.STRING,
+    type: db.Sequelize.STRING,
     unique: true,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   description: {
-    type: Sequelize.TEXT,
+    type: db.Sequelize.TEXT,
     allowNull: false,
     defaultValue: '',
   },
   isPrivate: {
-    type: Sequelize.BOOLEAN,
+    type: db.Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
   slotSize: {
-    type: Sequelize.INTEGER,
+    type: db.Sequelize.INTEGER,
     allowNull: false,
     defaultValue: 10,
   },
   latitude: {
-    type: Sequelize.FLOAT,
+    type: db.Sequelize.FLOAT,
     allowNull: true,
   },
   longitude: {
-    type: Sequelize.FLOAT,
+    type: db.Sequelize.FLOAT,
     allowNull: true,
   },
   street: {
-    type: Sequelize.STRING,
+    type: db.Sequelize.STRING,
     allowNull: false,
     defaultValue: '',
   },
   cityCode: {
-    type: Sequelize.STRING,
+    type: db.Sequelize.STRING,
     allowNull: false,
     defaultValue: '',
   },
   city: {
-    type: Sequelize.STRING,
+    type: db.Sequelize.STRING,
     allowNull: false,
     defaultValue: '',
   },
   country: {
-    type: Sequelize.STRING,
+    type: db.Sequelize.STRING,
     allowNull: false,
     defaultValue: '',
   },
 })
 
-Place.hasMany(Slot)
-
-Place.hasOne(Animal, {
-  foreignKey: 'resourceId',
-  constraints: false,
-  scope: {
-    resourceType: 'place',
-  },
+slugify.slugifyModel(Place, {
+  source: ['title'],
 })
+
+// Place.hasMany(Slot)
+// Slot.belongsTo(Place)
 
 export default Place

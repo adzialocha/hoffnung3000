@@ -1,38 +1,34 @@
 import db from '../database'
 
-import Place from './place'
-
 const Slot = db.sequelize.define('slot', {
   id: {
-    type: Sequelize.INTEGER,
+    type: db.Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   createdAt: {
-    type: Sequelize.DATE,
+    type: db.Sequelize.DATE,
   },
   updatedAt: {
-    type: Sequelize.DATE,
+    type: db.Sequelize.DATE,
   },
   placeId: {
-    type: Sequelize.INTEGER,
+    type: db.Sequelize.INTEGER,
     allowNull: false,
   },
   isDisabled: {
-    type: Sequelize.BOOLEAN,
+    type: db.Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
   from: {
-    type: Sequelize.DATE,
+    type: db.Sequelize.DATE,
     allowNull: false,
   },
   to: {
-    type: Sequelize.DATE,
+    type: db.Sequelize.DATE,
     allowNull: false,
   },
 })
-
-Slot.belongsTo(Place)
 
 export default Slot

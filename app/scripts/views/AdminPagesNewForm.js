@@ -29,23 +29,17 @@ class AdminPagesNewForm extends Component {
     )
   }
 
-  renderForm() {
-    return (
-      <PageForm
-        errorMessage={this.props.errorMessage}
-        isLoading={this.props.isLoading}
-        onSubmit={this.onSubmit}
-      />
-    )
-  }
-
   render() {
     return (
       <section>
         <h1>New Page</h1>
         <Link className="button" to="/admin/pages/all/1">Back to overview</Link>
         <hr />
-        { this.renderForm() }
+        <PageForm
+          errorMessage={this.props.errorMessage}
+          isLoading={this.props.isLoading}
+          onSubmit={this.onSubmit}
+        />
       </section>
     )
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router'
+import { Route, Switch } from 'react-router'
 import {
   isAdmin,
   isAuthenticated,
@@ -13,6 +13,7 @@ import {
   Home,
   Items,
   Login,
+  NotFound,
   Page,
   Performers,
   PlacesIndex,
@@ -29,21 +30,23 @@ export default class Routes extends Component {
   render() {
     return (
       <main role="main">
-        <Route component={Home} exact={true} path="/" />
-
-        <Route component={shouldNotBeAuthenticated(Login)} path="/login" />
-        <Route component={shouldNotBeAuthenticated(Register)} path="/register" />
-        <Route component={shouldNotBeAuthenticated(Tickets)} path="/tickets" />
-        <Route component={shouldNotBeAuthenticated(ForgotPassword)} path="/forgot" />
-        <Route component={shouldNotBeAuthenticated(ResetPassword)} path="/reset/:token" />
-        <Route component={Calendar} path="/calendar" />
-        <Route component={Page} path="/pages/:slug" />
-        <Route component={isAuthenticated(Profile)} path="/profile" />
-        <Route component={PlacesIndex} path="/places" />
-        <Route component={PlacesNew} path="/places/new" />
-        <Route component={isParticipant(Performers)} path="/performers" />
-        <Route component={isParticipant(Items)} path="/items" />
-        <Route component={isAdmin(Admin)} path="/admin" />
+        <Switch>
+          <Route component={Home} exact={true} path="/" />
+          <Route component={shouldNotBeAuthenticated(Login)} path="/login" />
+          <Route component={shouldNotBeAuthenticated(Register)} path="/register" />
+          <Route component={shouldNotBeAuthenticated(Tickets)} path="/tickets" />
+          <Route component={shouldNotBeAuthenticated(ForgotPassword)} path="/forgot" />
+          <Route component={shouldNotBeAuthenticated(ResetPassword)} path="/reset/:token" />
+          <Route component={Calendar} path="/calendar" />
+          <Route component={Page} path="/pages/:slug" />
+          <Route component={isAuthenticated(Profile)} path="/profile" />
+          <Route component={PlacesNew} path="/places/new" />
+          <Route component={PlacesIndex} path="/places" />
+          <Route component={isParticipant(Performers)} path="/performers" />
+          <Route component={isParticipant(Items)} path="/items" />
+          <Route component={isAdmin(Admin)} path="/admin" />
+          <Route component={NotFound} />
+        </Switch>
       </main>
     )
   }
