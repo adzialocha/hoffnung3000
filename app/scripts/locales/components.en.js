@@ -26,6 +26,19 @@ export default {
   ticketWizard: {
     stepTitle: 'Get a festival ticket (Step {currentStep} of {totalSteps})',
   },
+  locationSelector: {
+    addressMode: 'Regular address',
+    city: 'City',
+    cityCode: 'City code',
+    clickMap: 'Click on the map to mark a position for your place.',
+    country: 'Country',
+    currentGpsPosition: 'Selected position (latitude and longitude)',
+    gpsPositionMode: 'GPS position',
+    selectAMode: 'How do you want to describe the position of your place?',
+    street: 'Street + Number',
+    virtualMode: 'Virtual space',
+    yourPlacePosition: 'The position of your place',
+  },
   registrationWizard: {
     stepTitle: 'Registration (Step {currentStep} of {totalSteps})',
   },

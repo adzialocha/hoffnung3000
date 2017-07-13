@@ -34,6 +34,8 @@ const VENDOR_MODULES = [
   'prop-types',
   'react',
   'react-dom',
+  'react-google-maps',
+  'react-google-maps/lib/async/withScriptjs',
   'react-redux',
   'react-router',
   'react-router-dom',

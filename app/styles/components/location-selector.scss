@@ -1,0 +1,22 @@
+$_location-selector-height: 300px;
+
+.location-selector {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.location-selector__view {
+  margin-top: 20px;
+}
+
+.location-selector__container {
+  height: $_location-selector-height;
+}
+
+.location-selector__map {
+  height: $_location-selector-height;
+}
+
+.location-selector__kitty-future {
+  width: 100%;
+}

@@ -74,6 +74,7 @@
     "prop-types": "^15.5.8",
     "react": "^15.6.0",
     "react-dom": "^15.6.0",
+    "react-google-maps": "^7.1.0",
     "react-redux": "^5.0.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
