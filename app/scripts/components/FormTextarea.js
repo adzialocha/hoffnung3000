@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import { asFormField } from '../forms'
+
 class FormTextarea extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
@@ -20,4 +22,4 @@ class FormTextarea extends Component {
   }
 }
 
-export default FormTextarea
+export default asFormField(FormTextarea)

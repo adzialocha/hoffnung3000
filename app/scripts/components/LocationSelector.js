@@ -200,24 +200,23 @@ class LocationSelector extends Component {
   render() {
     return (
       <div className="location-selector">
-        <p>{ translate('components.locationSelector.selectAMode') }</p>
         <div className="button-group">
           <button
-            className="button"
+            className="button button--green"
             disabled={this.state.mode === 'gps' || this.props.disabled}
             onClick={this.onGpsSelect}
           >
             { translate('components.locationSelector.gpsPositionMode') }
           </button>
           <button
-            className="button"
+            className="button button--green"
             disabled={this.state.mode === 'address' || this.props.disabled}
             onClick={this.onAddressSelect}
           >
             { translate('components.locationSelector.addressMode') }
           </button>
           <button
-            className="button"
+            className="button button--green"
             disabled={this.state.mode === 'virtual' || this.props.disabled}
             onClick={this.onVirtualSelect}
           >

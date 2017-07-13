@@ -19,6 +19,9 @@ class FormSlotEditor extends Component {
           disabled={disabled}
           {...input}
         />
+        <div className="button-group">
+          <button className="button button--green">Edit slots</button>
+        </div>
       </div>
     )
   }

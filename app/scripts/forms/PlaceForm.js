@@ -49,6 +49,7 @@ class PlaceForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
+        <h2>Basic information</h2>
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -64,13 +65,15 @@ class PlaceForm extends Component {
           type="text"
         />
         <hr />
+        <h2>Where?</h2>
         <Field
           component={FormLocationSelector}
           disabled={this.props.isLoading}
-          label="Location"
+          label={translate('components.locationSelector.selectAMode')}
           name="location"
         />
         <hr />
+        <h2>Public or private?</h2>
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
@@ -79,6 +82,7 @@ class PlaceForm extends Component {
           name="isPublic"
         />
         <hr />
+        <h2>Slots</h2>
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -86,14 +90,14 @@ class PlaceForm extends Component {
           name="slotSize"
           type="text"
         />
-        <small>{ translate('forms.place.slotSizeNote') }</small>
-        <br />
+        <p>{ translate('forms.place.slotSizeNote') }</p>
         <Field
           component={FormSlotEditor}
           disabled={this.props.isLoading}
           label="Blocked slots"
           name="blockedSlots"
         />
+        <hr />
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}
