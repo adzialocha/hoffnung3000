@@ -2,7 +2,7 @@ import slugify from 'sequelize-slugify'
 
 import db from '../database'
 
-// import Slot from './slot'
+import Animal from './animal'
 
 const Place = db.sequelize.define('place', {
   id: {
@@ -33,7 +33,9 @@ const Place = db.sequelize.define('place', {
   description: {
     type: db.Sequelize.TEXT,
     allowNull: false,
-    defaultValue: '',
+    validate: {
+      notEmpty: true,
+    },
   },
   isPrivate: {
     type: db.Sequelize.BOOLEAN,
@@ -47,31 +49,21 @@ const Place = db.sequelize.define('place', {
   },
   latitude: {
     type: db.Sequelize.FLOAT,
-    allowNull: true,
   },
   longitude: {
     type: db.Sequelize.FLOAT,
-    allowNull: true,
   },
   street: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    defaultValue: '',
   },
   cityCode: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    defaultValue: '',
   },
   city: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    defaultValue: '',
   },
   country: {
     type: db.Sequelize.STRING,
-    allowNull: false,
-    defaultValue: '',
   },
 })
 
@@ -79,7 +71,10 @@ slugify.slugifyModel(Place, {
   source: ['title'],
 })
 
-// Place.hasMany(Slot)
-// Slot.belongsTo(Place)
+export const PlaceBelongsToAnimal = Place.belongsTo(Animal, {
+  as: 'animal',
+  constraints: false,
+  foreignKey: 'animalId',
+})
 
 export default Place

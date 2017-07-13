@@ -25,15 +25,13 @@ module.exports = {
       slug: {
         type: Sequelize.STRING,
         unique: true,
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
       },
       description: {
         type: Sequelize.TEXT,
         allowNull: false,
-        defaultValue: '',
+        validate: {
+          notEmpty: true,
+        },
       },
       isPrivate: {
         type: Sequelize.BOOLEAN,
@@ -47,31 +45,21 @@ module.exports = {
       },
       latitude: {
         type: Sequelize.FLOAT,
-        allowNull: true,
       },
       longitude: {
         type: Sequelize.FLOAT,
-        allowNull: true,
       },
       street: {
         type: Sequelize.STRING,
-        allowNull: false,
-        defaultValue: '',
       },
       cityCode: {
         type: Sequelize.STRING,
-        allowNull: false,
-        defaultValue: '',
       },
       city: {
         type: Sequelize.STRING,
-        allowNull: false,
-        defaultValue: '',
       },
       country: {
         type: Sequelize.STRING,
-        allowNull: false,
-        defaultValue: '',
       },
     })
   },

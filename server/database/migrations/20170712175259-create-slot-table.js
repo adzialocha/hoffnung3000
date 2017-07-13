@@ -16,18 +16,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      slotIndex: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       isDisabled: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
-      },
-      from: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      to: {
-        type: Sequelize.DATE,
-        allowNull: false,
       },
     })
   },

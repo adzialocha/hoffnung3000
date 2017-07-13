@@ -2,8 +2,6 @@ import generateRandomAnimalName from 'random-animal-name-generator'
 
 import db from '../database'
 
-import Place from './place'
-
 const Animal = db.sequelize.define('animal', {
   id: {
     type: db.Sequelize.INTEGER,
@@ -28,12 +26,6 @@ const Animal = db.sequelize.define('animal', {
 
 Animal.beforeValidate(animal => {
   animal.name = generateRandomAnimalName()
-})
-
-export const PlaceHasOneAnimal = Place.belongsTo(Animal, {
-  foreignKey: 'animalId',
-  constraints: false,
-  as: 'animal',
 })
 
 export default Animal

@@ -19,7 +19,14 @@ router.route('/')
     placeController.create
   )
 
-router.route('/:resourceId')
+router.route('/:resourceSlug(\\D+)/')
+  .get(
+    placeController.lookup,
+    canRead,
+    placeController.findOneWithSlug
+  )
+
+router.route('/:resourceId(\\d+)/')
   .get(
     placeController.lookup,
     canRead,
