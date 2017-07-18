@@ -13,17 +13,25 @@ const DEFAULT_MODE = 'address'
 
 const DEFAULT_ZOOM = 17
 const GOOGLE_MAP_SCRIPT_URL = 'https://maps.googleapis.com/maps/api/js?v=3.exp'
+const MAP_STYLES = [{
+  featureType: 'poi',
+  elementType: 'labels',
+  stylers: [
+    { visibility: 'off' },
+  ],
+}]
 const MAP_OPTIONS = {
   disableDefaultUI: true,
   zoomControl: true,
+  styles: MAP_STYLES,
 }
 
 const LocationSelectorMap = withScriptjs(withGoogleMap(props => {
   return (
     <GoogleMap
-      center={ { lat: DEFAULT_LATITUDE, lng: DEFAULT_LONGITUDE } }
-      options={MAP_OPTIONS}
-      zoom={DEFAULT_ZOOM}
+      defaultCenter={ { lat: DEFAULT_LATITUDE, lng: DEFAULT_LONGITUDE } }
+      defaultOptions={MAP_OPTIONS}
+      defaultZoom={DEFAULT_ZOOM}
       onClick={props.onMapClick}
     >
       <Marker

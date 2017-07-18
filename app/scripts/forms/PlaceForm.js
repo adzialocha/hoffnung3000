@@ -19,6 +19,43 @@ const validate = values => {
   if (!values.description) {
     errors.description = translate('forms.place.errors.descriptionRequired')
   }
+  if (values.location) {
+    if (values.location.mode === 'gps') {
+      if (!values.location.latitude || !values.location.longitude) {
+        errors.location = translate('forms.place.errors.gpsCoordinatesRequired')
+      }
+    } else if (values.location.mode === 'address') {
+      if (!values.location.city) {
+        errors.location = translate('forms.place.errors.cityRequired')
+      } else if (!values.location.cityCode) {
+        errors.location = translate('forms.place.errors.cityCodeRequired')
+      } else if (!values.location.street) {
+        errors.location = translate('forms.place.errors.streetRequired')
+      } else if (!values.location.country) {
+        errors.location = translate('forms.place.errors.countryRequired')
+      }
+    }
+  }
+  if (!values.slotSize) {
+    errors.slotSize = translate('forms.place.errors.slotSizeRequired')
+  } else if (!/\d\d:\d\d:\d\d/i.test(values.slotSize)) {
+    errors.slotSize = translate('forms.place.errors.slotSizeWrongFormat')
+  } else {
+    const slotSizeValues = values.slotSize.split(':').map(val => parseInt(val, 10))
+    console.log(slotSizeValues)
+    if (slotSizeValues[0] > 24) {
+      errors.slotSize = translate('forms.place.errors.slotSizeWrongFormat')
+    } else if (slotSizeValues[1] > 59) {
+      errors.slotSize = translate('forms.place.errors.slotSizeWrongFormat')
+    } else if (slotSizeValues[2] > 59) {
+      errors.slotSize = translate('forms.place.errors.slotSizeWrongFormat')
+    } else if (slotSizeValues[0] === 24 && (slotSizeValues[1] > 0 || slotSizeValues[2] > 0)) {
+      errors.slotSize = translate('forms.place.errors.slotSizeMaximum')
+    } else if (slotSizeValues[0] === 0 && slotSizeValues[1] === 0 && slotSizeValues[2] === 0) {
+      errors.slotSize = translate('forms.place.errors.slotSizeMinimum')
+    }
+  }
+
   return errors
 }
 
@@ -86,7 +123,7 @@ class PlaceForm extends Component {
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Slot-size (mm:ss)"
+          label="Slot-size (hh:mm:ss)"
           name="slotSize"
           type="text"
         />

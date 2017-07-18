@@ -14,7 +14,7 @@ class FormLocationSelector extends Component {
     const { disabled, input } = this.props
 
     return (
-      <div className="form__field-input">
+      <div>
         <LocationSelector
           disabled={disabled}
           {...input}
