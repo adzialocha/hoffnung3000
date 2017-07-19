@@ -6,14 +6,10 @@ import { Link } from 'react-router-dom'
 import flash from '../actions/flash'
 import { cachedResource } from '../services/resources'
 import { fetchResource, updateResource } from '../actions/resources'
-import { PlaceForm } from '../forms'
-import {
-  generateNewSlotItems,
-  prepareSlotIds,
-} from '../utils/slots'
+import { ItemForm } from '../forms'
 import { translate } from '../services/i18n'
 
-class PlacesEdit extends Component {
+class PerformersEdit extends Component {
   static propTypes = {
     errorMessage: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
@@ -25,32 +21,20 @@ class PlacesEdit extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchResource('places', this.props.resourceSlug)
+    this.props.fetchResource('performers', this.props.resourceSlug)
   }
 
   onSubmit(values) {
-    const { title, description, isPublic } = values
-    const { slots } = values.slots
-    const disabledSlots = slots ? prepareSlotIds(slots) : []
-
     const successFlash = {
-      text: translate('flash.updatePlaceSuccess'),
-    }
-
-    const requestParams = {
-      ...values.location,
-      description,
-      disabledSlots,
-      isPublic,
-      title,
+      text: translate('flash.updatePerformerSuccess'),
     }
 
     this.props.updateResource(
-      'places',
+      'performers',
       this.props.resourceSlug,
-      requestParams,
+      values,
       successFlash,
-      '/places'
+      '/performers'
     )
   }
 
@@ -67,45 +51,10 @@ class PlacesEdit extends Component {
       })
     }
 
-    const {
-      description,
-      isPublic,
-      mode,
-      slots: slotData,
-      title,
-    } = this.props.resourceData
-
-    const location = {
-      mode,
-    }
-
-    if (mode === 'gps') {
-      location.latitude = this.props.resourceData.latitude
-      location.longitude = this.props.resourceData.longitude
-    } else if (mode === 'address') {
-      location.street = this.props.resourceData.street
-      location.cityCode = this.props.resourceData.cityCode
-      location.city = this.props.resourceData.city
-      location.country = this.props.resourceData.country
-    }
-
-    const slotSize = this.props.resourceData.slotSize
-    const slots = {
-      slots: generateNewSlotItems(slotSize, slotData),
-      slotSize,
-    }
-    const initialValues = {
-      description,
-      isPublic,
-      location,
-      slots,
-      title,
-    }
-
     return (
-      <PlaceForm
+      <ItemForm
         errorMessage={this.props.errorMessage}
-        initialValues={initialValues}
+        initialValues={this.props.resourceData}
         isSlotSizeVisible={false}
         onSubmit={this.onSubmit}
       />
@@ -114,7 +63,7 @@ class PlacesEdit extends Component {
 
   renderTitle() {
     if (this.props.isLoading) {
-      return <h1>{ translate('views.places.titlePlaceholder') }</h1>
+      return <h1>{ translate('views.performers.titlePlaceholder') }</h1>
     }
     return <h1>{ this.props.resourceData.title }</h1>
   }
@@ -123,7 +72,7 @@ class PlacesEdit extends Component {
     return (
       <section>
         { this.renderTitle() }
-        <Link className="button" to="/places">
+        <Link className="button" to="/performers">
           { translate('common.backToOverview') }
         </Link>
         <hr />
@@ -142,7 +91,7 @@ class PlacesEdit extends Component {
 function mapStateToProps(state, ownProps) {
   const resourceSlug = ownProps.match.params.slug
   const { errorMessage } = state.resources
-  const resource = cachedResource('places', resourceSlug)
+  const resource = cachedResource('performers', resourceSlug)
   const { isLoading, object: resourceData } = resource
 
   return {
@@ -159,4 +108,4 @@ export default connect(
     flash,
     updateResource,
   }
-)(PlacesEdit)
+)(PerformersEdit)

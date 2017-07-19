@@ -48,7 +48,7 @@ class PlaceListItem extends Component {
         className="list-item__cover-image-button button button--green"
         onClick={this.onEditClick}
       >
-        { translate('components.placeListItem.editButton') }
+        { translate('common.editButton') }
       </button>
     )
   }
@@ -74,7 +74,7 @@ class PlaceListItem extends Component {
   }
 
   renderOwner() {
-    return translate('components.placeListItem.owner', {
+    return translate('common.ownedBy', {
       name: this.props.animalName,
     })
   }

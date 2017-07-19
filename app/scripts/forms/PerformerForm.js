@@ -8,29 +8,29 @@ import { translate } from '../services/i18n'
 const validate = values => {
   const errors = {}
   if (!values.title) {
-    errors.title = translate('forms.item.errors.titleRequired')
+    errors.title = translate('forms.performer.errors.titleRequired')
   } else if (values.title.length < 3) {
     errors.title = translate(
-      'forms.item.errors.titleMinLength', { len: 3 }
+      'forms.performer.errors.titleMinLength', { len: 3 }
     )
   }
 
   if (!values.description) {
-    errors.description = translate('forms.item.errors.descriptionRequired')
+    errors.description = translate('forms.performer.errors.descriptionRequired')
   } else if (values.description.length < 10) {
     errors.description = translate(
-      'forms.item.errors.descriptionMinLength', { len: 10 }
+      'forms.performer.errors.descriptionMinLength', { len: 10 }
     )
   } else if (values.description.length > 60) {
     errors.description = translate(
-      'forms.item.errors.descriptionMaxLength', { len: 60 }
+      'forms.performer.errors.descriptionMaxLength', { len: 60 }
     )
   }
 
   return errors
 }
 
-class ItemForm extends Component {
+class PerformerForm extends Component {
   static propTypes = {
     errorMessage: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
@@ -61,14 +61,14 @@ class ItemForm extends Component {
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label={translate('forms.item.title')}
+          label={translate('forms.performer.title')}
           name="title"
           type="text"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label={translate('forms.item.description')}
+          label={translate('forms.performer.description')}
           name="description"
           type="text"
         />
@@ -77,7 +77,7 @@ class ItemForm extends Component {
           disabled={this.props.isLoading}
           type="submit"
         >
-          { translate('forms.item.submit') }
+          { translate('forms.performer.submit') }
         </button>
       </form>
     )
@@ -86,6 +86,6 @@ class ItemForm extends Component {
 
 export default reduxForm({
   enableReinitialize: true,
-  form: 'item',
+  form: 'performer',
   validate,
-})(ItemForm)
+})(PerformerForm)

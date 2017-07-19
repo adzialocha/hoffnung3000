@@ -121,7 +121,7 @@ class LocationSelector extends Component {
           googleMapURL={GOOGLE_MAP_SCRIPT_URL}
           loadingElement={
             <div className="location-selector__loading">
-              { translate('components.common.loading') }
+              { translate('common.loading') }
             </div>
           }
           mapElement={<div className="location-selector__map" />}

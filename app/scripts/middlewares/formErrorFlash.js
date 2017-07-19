@@ -9,7 +9,7 @@ export default store => next => action => {
   }
 
   store.dispatch(flash({
-    text: translate('forms.common.submitError'),
+    text: translate('flash.formSubmitError'),
     type: 'error',
   }))
 

@@ -23,7 +23,7 @@ class PlacesNew extends Component {
     const disabledSlots = slots ? prepareSlotIds(slots) : []
 
     const flash = {
-      text: translate('views.places.createSuccess'),
+      text: translate('flash.createPlaceSuccess'),
     }
 
     const requestParams = {
@@ -47,9 +47,9 @@ class PlacesNew extends Component {
   render() {
     return (
       <section>
-        <h1>{ translate('views.places.createNewPlaceTitle') }</h1>
+        <h1>{ translate('views.places.createNewTitle') }</h1>
         <Link className="button" to="/places">
-          { translate('views.places.backToOverview') }
+          { translate('common.backToOverview') }
         </Link>
         <hr />
         <PlaceForm

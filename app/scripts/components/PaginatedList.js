@@ -120,7 +120,7 @@ class PaginatedList extends Component {
 
   render() {
     if (this.props.isLoading) {
-      return <p>{ translate('components.common.loading') }</p>
+      return <p>{ translate('common.loading') }</p>
     }
 
     return (
