@@ -5,6 +5,9 @@ const DEFAULT_LIMIT = 25
 const DEFAULT_OFFSET = 0
 
 const include = [{
+  attributes: {
+    exclude: ['userId', 'createdAt', 'updatedAt'],
+  },
   as: 'animal',
   foreignKey: 'animalId',
   model: Animal,
@@ -78,8 +81,8 @@ export function findAll(model, req, res, next) {
     .then(result => {
       res.json({
         data: result.rows,
-        limit,
-        offset,
+        limit: parseInt(limit, 10),
+        offset: parseInt(offset, 10),
         total: result.count,
       })
     })
@@ -103,8 +106,8 @@ export function findAllCurated(model, req, res, next) {
     .then(result => {
       res.json({
         data: result.rows,
-        limit,
-        offset,
+        limit: parseInt(limit, 10),
+        offset: parseInt(offset, 10),
         total: result.count,
       })
     })
