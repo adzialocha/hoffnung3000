@@ -90,8 +90,7 @@ class PlacesEdit extends Component {
       location.country = this.props.resourceData.country
     }
 
-    const slotSize = numberToSlotSizeStr(this.props.resourceData.slotSize)
-
+    const slotSize = this.props.resourceData.slotSize
     const slots = {
       slots: generateNewSlotItems(slotSize, slotData),
       slotSize,

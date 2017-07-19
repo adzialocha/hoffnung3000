@@ -1,0 +1,21 @@
+$_react-slider-height: 50px;
+
+.react-slider {
+  width: 100%;
+  height: $_react-slider-height;
+
+  background-color: $gray-lighter;
+}
+
+.react-slider__handle {
+  width: $_react-slider-height;
+  height: $_react-slider-height;
+
+  background-color: $gray-light;
+
+  cursor: pointer;
+}
+
+.react-slider__handle--active {
+  background-color: $green;
+}

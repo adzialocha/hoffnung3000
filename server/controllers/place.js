@@ -80,11 +80,7 @@ function preparePlaceValues(body, placeId) {
   })
 
   if (body.slotSize) {
-    const splittedSlotSize = body.slotSize.split(':')
-    values.slotSize = (
-      (parseInt(splittedSlotSize[0], 10) * 60) +
-      parseInt(splittedSlotSize[1], 10)
-    )
+    values.slotSize = body.slotSize
   }
 
   return {

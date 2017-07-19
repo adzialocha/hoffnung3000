@@ -13,7 +13,7 @@ export default {
       slotSizeMaximum: 'The slot-size is too large',
       slotSizeMinimum: 'The slot-size is too small',
       slotSizeRequired: 'Please specify a slot size',
-      slotSizeWrongFormat: 'The slot-size has a wrong format, please use the format hh:mm',
+      slotSizeWrongFormat: 'The slot-size has a wrong format',
       streetRequired: 'The given address is incomplete. Please fill in the street field',
       titleMinLength: 'The title has to have a minimum of {len} characters',
       titleRequired: 'Please give your place a title',

@@ -6,17 +6,8 @@ const FESTIVAL_DATE_START = '2017-08-24T00:00:00.000+02:00'
 const FESTIVAL_DATE_END = '2017-08-27T00:00:00.000+02:00'
 const TIME_FORMAT = 'HH:mm'
 
-function convertSlotSize(slotSizeStr) {
-  const slotSize = slotSizeStr.split(':').map(val => parseInt(val, 10))
-  return {
-    hours: slotSize[0],
-    minutes: slotSize[1],
-  }
-}
-
-function addSlotDuration(date, slotSizeObj) {
-  const { hours, minutes } = slotSizeObj
-  return dateFns.addMinutes(dateFns.addHours(date, hours), minutes)
+function addSlotDuration(date, slotSize) {
+  return dateFns.addMinutes(date, slotSize)
 }
 
 function isInFestivalRange(date) {
@@ -27,24 +18,16 @@ function isInFestivalRange(date) {
   )
 }
 
-export function checkSlotSize(slotSizeStr) {
+export function checkSlotSize(slotSize) {
   let errorMessage
 
-  if (!slotSizeStr || slotSizeStr.length === 0) {
+  if (!slotSize) {
     errorMessage = translate('forms.place.errors.slotSizeRequired')
   }
 
-  if (!(/^\d\d:\d\d$/i.test(slotSizeStr))) {
-    errorMessage = translate('forms.place.errors.slotSizeWrongFormat')
-  }
-
-  const { hours, minutes } = convertSlotSize(slotSizeStr)
-
-  if (minutes > 59) {
-    errorMessage = translate('forms.place.errors.slotSizeWrongFormat')
-  } else if ((hours === 24 && minutes > 0) || (hours > 24 && minutes === 0)) {
+  if (slotSize > 1440) {
     errorMessage = translate('forms.place.errors.slotSizeMaximum')
-  } else if (hours === 0 && minutes < 1) {
+  } else if (slotSize < 1) {
     errorMessage = translate('forms.place.errors.slotSizeMinimum')
   }
 
@@ -52,17 +35,6 @@ export function checkSlotSize(slotSizeStr) {
     errorMessage,
     isValid: (errorMessage === undefined),
   }
-}
-
-function stringPad(num) {
-  return num < 10 ? `0${num}` : num
-}
-
-export function numberToSlotSizeStr(num) {
-  const hours = Math.floor(num / 60)
-  const minutes = num - (hours * 60)
-
-  return `${stringPad(hours)}:${stringPad(minutes)}`
 }
 
 export function numberToSlotSizeStrHuman(num) {
@@ -98,10 +70,10 @@ export function prepareSlotIds(slots) {
   }, [])
 }
 
-export function generateNewSlotItems(slotSizeStr, existingSlots) {
+export function generateNewSlotItems(slotSize, existingSlots) {
   const slotItems = []
 
-  if (!checkSlotSize(slotSizeStr).isValid) {
+  if (!checkSlotSize(slotSize).isValid) {
     return slotItems
   }
 
@@ -116,11 +88,9 @@ export function generateNewSlotItems(slotSizeStr, existingSlots) {
     }, {})
   }
 
-  const slotSizeObj = convertSlotSize(slotSizeStr)
-
   let id = 0
   let from = dateFns.parse(FESTIVAL_DATE_START)
-  let to = addSlotDuration(from, slotSizeObj)
+  let to = addSlotDuration(from, slotSize)
 
   while (isInFestivalRange(to)) {
     slotItems.push({
@@ -133,8 +103,8 @@ export function generateNewSlotItems(slotSizeStr, existingSlots) {
     })
 
     id += 1
-    from = addSlotDuration(from, slotSizeObj)
-    to = addSlotDuration(from, slotSizeObj)
+    from = addSlotDuration(from, slotSize)
+    to = addSlotDuration(from, slotSize)
   }
 
   return slotItems

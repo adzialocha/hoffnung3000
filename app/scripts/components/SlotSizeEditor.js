@@ -1,18 +1,20 @@
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import ReactSlider from 'react-slider'
 
-import { generateNewSlotItems, checkSlotSize } from '../utils/slots'
+import {
+  checkSlotSize,
+  generateNewSlotItems,
+  numberToSlotSizeStrHuman,
+} from '../utils/slots'
 import { SlotEditor } from './'
 import { translate } from '../services/i18n'
-
-const DEFAULT_SLOT_SIZE = '00:10'
 
 class FormSlotSizeEditor extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     isSlotSizeVisible: PropTypes.bool.isRequired,
-    onBlur: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,
     value: PropTypes.any.isRequired,
@@ -28,13 +30,6 @@ class FormSlotSizeEditor extends Component {
 
   componentDidUpdate() {
     this.props.onChange({
-      slots: this.state.slots,
-      slotSize: this.state.slotSize,
-    })
-  }
-
-  onBlur() {
-    this.props.onBlur({
       slots: this.state.slots,
       slotSize: this.state.slotSize,
     })
@@ -61,10 +56,16 @@ class FormSlotSizeEditor extends Component {
     })
   }
 
-  onSlotSizeChange(event) {
+  onChange(slotSize) {
     this.setState({
-      slots: generateNewSlotItems(event.target.value),
-      slotSize: event.target.value,
+      slotSize,
+    })
+  }
+
+  onAfterChange(slotSize) {
+    this.setState({
+      slots: generateNewSlotItems(slotSize),
+      slotSize,
     })
   }
 
@@ -84,16 +85,23 @@ class FormSlotSizeEditor extends Component {
         <label className="form__field-label">
           { translate('components.slotSizeEditor.slotSizeLabel') }
         </label>
-        <input
-          className="form__field-input"
-          disabled={this.props.disabled}
-          type="text"
-          value={this.state.slotSize}
-          onBlur={this.onBlur}
-          onChange={this.onSlotSizeChange}
-          onFocus={this.onFocus}
-        />
-
+        <div className="form__field-input">
+          <ReactSlider
+            className="react-slider"
+            disabled={this.props.disabled}
+            handleActiveClassName="react-slider__handle--active"
+            handleClassName="react-slider__handle"
+            max={1440}
+            min={0}
+            orientation="horizontal"
+            step={5}
+            value={this.state.slotSize}
+            onAfterChange={this.onAfterChange}
+            onChange={this.onChange}
+            onSliderClick={this.onFocus}
+          />
+          <p>{ numberToSlotSizeStrHuman(this.state.slotSize) }</p>
+        </div>
       </div>
     )
   }
@@ -144,7 +152,7 @@ class FormSlotSizeEditor extends Component {
   constructor(props) {
     super(props)
 
-    const slotSize = props.value.slotSize || DEFAULT_SLOT_SIZE
+    const slotSize = props.value.slotSize
 
     this.state = {
       isModalOpen: false,
@@ -152,11 +160,11 @@ class FormSlotSizeEditor extends Component {
       slotSize,
     }
 
-    this.onBlur = this.onBlur.bind(this)
+    this.onChange = this.onChange.bind(this)
     this.onCloseClick = this.onCloseClick.bind(this)
     this.onFocus = this.onFocus.bind(this)
     this.onOpenClick = this.onOpenClick.bind(this)
-    this.onSlotSizeChange = this.onSlotSizeChange.bind(this)
+    this.onAfterChange = this.onAfterChange.bind(this)
     this.onSlotStatusChange = this.onSlotStatusChange.bind(this)
   }
 }

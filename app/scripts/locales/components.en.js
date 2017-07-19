@@ -60,7 +60,7 @@ export default {
   slotSizeEditor: {
     editSlotsLabel: 'Enable / disable slots',
     editSlotsButton: 'Edit slots',
-    slotSizeLabel: 'Slot-size (hh:mm)',
+    slotSizeLabel: 'How long is one slot?',
   },
   placeListItem: {
     editButton: 'Edit',
