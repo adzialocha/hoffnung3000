@@ -28,4 +28,17 @@ export default {
     submit: 'Save it!',
     slotSizeNote: 'Other participants will be able to reserve so called slots in your place. Here you can define how long one slot is.',
   },
+  item: {
+    errors: {
+      descriptionMinLength: 'The description needs a minimum of {len} characters',
+      descriptionMaxLength: 'The description can\'t be longer than {len} characters',
+      descriptionRequired: 'Describe your place a little',
+      titleMinLength: 'The title has to have a minimum of {len} characters',
+      titleRequired: 'Please give your place a title',
+    },
+    basicInformation: 'Basic information',
+    title: 'Title of your item',
+    description: 'Describe your item briefly',
+    submit: 'Save it!',
+  },
 }
