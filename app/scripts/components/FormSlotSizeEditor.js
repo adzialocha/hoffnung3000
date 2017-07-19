@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { asFormField } from '../forms'
-import { SlotEditor } from './'
+import { SlotSizeEditor } from './'
 
-class FormSlotEditor extends Component {
+class FormSlotSizeEditor extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
@@ -14,17 +14,14 @@ class FormSlotEditor extends Component {
     const { disabled, input } = this.props
 
     return (
-      <div className="form__field-input">
-        <SlotEditor
+      <div>
+        <SlotSizeEditor
           disabled={disabled}
           {...input}
         />
-        <div className="button-group">
-          <button className="button button--green">Edit slots</button>
-        </div>
       </div>
     )
   }
 }
 
-export default asFormField(FormSlotEditor)
+export default asFormField(FormSlotSizeEditor)

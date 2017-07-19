@@ -25,6 +25,7 @@ import uglify from 'gulp-uglify'
 
 const VENDOR_MODULES = [
   'classnames',
+  'date-fns',
   'history',
   'immutability-helper',
   'isomorphic-fetch',
@@ -36,6 +37,7 @@ const VENDOR_MODULES = [
   'react-dom',
   'react-google-maps',
   'react-google-maps/lib/async/withScriptjs',
+  'react-modal',
   'react-redux',
   'react-router',
   'react-router-dom',

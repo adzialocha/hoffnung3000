@@ -8,13 +8,14 @@ export default function asFormField(WrappedComponent) {
       disabled: PropTypes.bool,
       inline: PropTypes.bool,
       input: PropTypes.object.isRequired,
-      label: PropTypes.string.isRequired,
+      label: PropTypes.string,
       meta: PropTypes.object.isRequired,
     }
 
     static defaultProps = {
       disabled: false,
       inline: false,
+      label: undefined,
     }
 
     renderError() {
@@ -28,8 +29,15 @@ export default function asFormField(WrappedComponent) {
       )
     }
 
+    renderLabel() {
+      if (!this.props.label) {
+        return null
+      }
+      return <label className="form__field-label">{this.props.label}</label>
+    }
+
     render() {
-      const { meta, label, inline, ...restProps } = this.props
+      const { meta, inline, ...restProps } = this.props
       const { error, touched, warning } = meta
 
       const formFieldClasses = classnames(
@@ -42,7 +50,7 @@ export default function asFormField(WrappedComponent) {
 
       return (
         <div className={formFieldClasses}>
-          <label className="form__field-label">{label}</label>
+          { this.renderLabel() }
           <WrappedComponent {...restProps} />
           { this.renderError() }
         </div>

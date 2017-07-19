@@ -34,7 +34,6 @@ export default {
     country: 'Country',
     currentGpsPosition: 'Selected position (latitude and longitude)',
     gpsPositionMode: 'GPS position',
-    selectAMode: 'How do you want to describe the position of your place?',
     street: 'Street + Number',
     virtualMode: 'Virtual space',
     yourPlacePosition: 'The position of your place',
@@ -53,6 +52,15 @@ export default {
     visitorButton: 'Buy a visitor ticket',
     visitorHeader: 'Or buy a visitor ticket to visit the festival.',
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
+  },
+  slotEditor: {
+    submitButton: 'Okay',
+    title: 'Slot editor',
+  },
+  slotSizeEditor: {
+    editSlotsLabel: 'Enable / disable slots',
+    editSlotsButton: 'Edit slots',
+    slotSizeLabel: 'Slot-size (hh:mm)',
   },
   footer: {
     about: 'About',

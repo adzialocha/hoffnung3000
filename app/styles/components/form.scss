@@ -27,6 +27,10 @@
   .form__field-label {
     display: inline-block;
   }
+
+  .form__field-input {
+    margin-bottom: 5px;
+  }
 }
 
 .form__field--has-error,

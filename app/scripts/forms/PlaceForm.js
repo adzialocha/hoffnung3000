@@ -2,11 +2,12 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
+import { checkSlotSize } from '../utils/slots'
 import {
   FormCheckbox,
   FormInput,
   FormLocationSelector,
-  FormSlotEditor,
+  FormSlotSizeEditor,
   FormTextarea,
 } from '../components'
 import { translate } from '../services/i18n'
@@ -16,9 +17,11 @@ const validate = values => {
   if (!values.title) {
     errors.title = translate('forms.place.errors.titleRequired')
   }
+
   if (!values.description) {
     errors.description = translate('forms.place.errors.descriptionRequired')
   }
+
   if (values.location) {
     if (values.location.mode === 'gps') {
       if (!values.location.latitude || !values.location.longitude) {
@@ -36,23 +39,11 @@ const validate = values => {
       }
     }
   }
-  if (!values.slotSize) {
-    errors.slotSize = translate('forms.place.errors.slotSizeRequired')
-  } else if (!/\d\d:\d\d:\d\d/i.test(values.slotSize)) {
-    errors.slotSize = translate('forms.place.errors.slotSizeWrongFormat')
-  } else {
-    const slotSizeValues = values.slotSize.split(':').map(val => parseInt(val, 10))
-    console.log(slotSizeValues)
-    if (slotSizeValues[0] > 24) {
-      errors.slotSize = translate('forms.place.errors.slotSizeWrongFormat')
-    } else if (slotSizeValues[1] > 59) {
-      errors.slotSize = translate('forms.place.errors.slotSizeWrongFormat')
-    } else if (slotSizeValues[2] > 59) {
-      errors.slotSize = translate('forms.place.errors.slotSizeWrongFormat')
-    } else if (slotSizeValues[0] === 24 && (slotSizeValues[1] > 0 || slotSizeValues[2] > 0)) {
-      errors.slotSize = translate('forms.place.errors.slotSizeMaximum')
-    } else if (slotSizeValues[0] === 0 && slotSizeValues[1] === 0 && slotSizeValues[2] === 0) {
-      errors.slotSize = translate('forms.place.errors.slotSizeMinimum')
+
+  if (values.slots) {
+    const slotSize = checkSlotSize(values.slots.slotSize)
+    if (!slotSize.isValid) {
+      errors.slots = slotSize.errorMessage
     }
   }
 
@@ -86,53 +77,43 @@ class PlaceForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
-        <h2>Basic information</h2>
+        <h2>{ translate('forms.place.basicInformation') }</h2>
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Title"
+          label={translate('forms.place.title')}
           name="title"
           type="text"
         />
         <Field
           component={FormTextarea}
           disabled={this.props.isLoading}
-          label="Description"
+          label={translate('forms.place.description')}
           name="description"
           type="text"
         />
         <hr />
-        <h2>Where?</h2>
+        <h2>{ translate('forms.place.where') }</h2>
         <Field
           component={FormLocationSelector}
           disabled={this.props.isLoading}
-          label={translate('components.locationSelector.selectAMode')}
           name="location"
         />
         <hr />
-        <h2>Public or private?</h2>
+        <h2>{ translate('forms.place.publicOrPrivate') }</h2>
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
           inline={true}
-          label="Are events in this place visible in the calendar?"
+          label={translate('forms.place.areEventsPublic')}
           name="isPublic"
         />
         <hr />
-        <h2>Slots</h2>
+        <h2>{ translate('forms.place.slots') }</h2>
         <Field
-          component={FormInput}
+          component={FormSlotSizeEditor}
           disabled={this.props.isLoading}
-          label="Slot-size (hh:mm:ss)"
-          name="slotSize"
-          type="text"
-        />
-        <p>{ translate('forms.place.slotSizeNote') }</p>
-        <Field
-          component={FormSlotEditor}
-          disabled={this.props.isLoading}
-          label="Blocked slots"
-          name="blockedSlots"
+          name="slots"
         />
         <hr />
         <button

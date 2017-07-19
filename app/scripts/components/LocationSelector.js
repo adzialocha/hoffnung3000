@@ -45,16 +45,22 @@ const LocationSelectorMap = withScriptjs(withGoogleMap(props => {
 class LocationSelector extends Component {
   static propTypes = {
     disabled: PropTypes.bool,
+    onBlur: PropTypes.func,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.any.isRequired,
   }
 
   static defaultProps = {
     disabled: false,
+    onBlur: () => true,
   }
 
   componentWillUpdate(nextProps, nextState) {
     this.props.onChange(nextState)
+  }
+
+  onBlur() {
+    this.props.onBlur(this.state)
   }
 
   onMapClick(event) {
@@ -138,6 +144,7 @@ class LocationSelector extends Component {
               name="street"
               type="text"
               value={this.state.street}
+              onBlur={this.onBlur}
               onChange={this.onAddressChange}
             />
           </div>
@@ -151,6 +158,7 @@ class LocationSelector extends Component {
               name="cityCode"
               type="text"
               value={this.state.cityCode}
+              onBlur={this.onBlur}
               onChange={this.onAddressChange}
             />
           </div>
@@ -164,6 +172,7 @@ class LocationSelector extends Component {
               name="city"
               type="text"
               value={this.state.city}
+              onBlur={this.onBlur}
               onChange={this.onAddressChange}
             />
           </div>
@@ -177,6 +186,7 @@ class LocationSelector extends Component {
               name="country"
               type="text"
               value={this.state.country}
+              onBlur={this.onBlur}
               onChange={this.onAddressChange}
             />
           </div>
@@ -253,11 +263,12 @@ class LocationSelector extends Component {
       street: this.props.value.street || '',
     }
 
+    this.onAddressChange = this.onAddressChange.bind(this)
     this.onAddressSelect = this.onAddressSelect.bind(this)
+    this.onBlur = this.onBlur.bind(this)
     this.onGpsSelect = this.onGpsSelect.bind(this)
     this.onMapClick = this.onMapClick.bind(this)
     this.onVirtualSelect = this.onVirtualSelect.bind(this)
-    this.onAddressChange = this.onAddressChange.bind(this)
   }
 }
 
