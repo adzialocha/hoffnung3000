@@ -22,9 +22,12 @@ const MAP_OPTIONS = {
 }
 
 const LocationSelectorMap = withScriptjs(withGoogleMap(props => {
+  const defaultCenter = { lat: DEFAULT_LATITUDE, lng: DEFAULT_LONGITUDE }
+  const center = props.markerPosition ? props.markerPosition : defaultCenter
+
   return (
     <GoogleMap
-      defaultCenter={ { lat: DEFAULT_LATITUDE, lng: DEFAULT_LONGITUDE } }
+      defaultCenter={center}
       defaultOptions={MAP_OPTIONS}
       defaultZoom={DEFAULT_ZOOM}
       onClick={props.onMapClick}

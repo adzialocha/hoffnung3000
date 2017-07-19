@@ -25,7 +25,7 @@ export default {
     publicOrPrivate: 'Is it public or private?',
     areEventsPublic: 'Events in this place are visible in the calendar',
     slots: 'When is it bookable?',
-    submit: 'Create new place',
+    submit: 'Save it!',
     slotSizeNote: 'Other participants will be able to reserve so called slots in your place. Here you can define how long one slot is.',
   },
 }

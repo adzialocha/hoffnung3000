@@ -63,11 +63,13 @@ class PlaceForm extends Component {
     errorMessage: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
+    isSlotSizeVisible: PropTypes.bool,
   }
 
   static defaultProps = {
     errorMessage: undefined,
     isLoading: false,
+    isSlotSizeVisible: true,
   }
 
   renderErrorMessage() {
@@ -121,6 +123,7 @@ class PlaceForm extends Component {
         <Field
           component={FormSlotSizeEditor}
           disabled={this.props.isLoading}
+          isSlotSizeVisible={this.props.isSlotSizeVisible}
           name="slots"
         />
         <hr />

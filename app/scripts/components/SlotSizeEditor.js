@@ -11,6 +11,7 @@ const DEFAULT_SLOT_SIZE = '00:10'
 class FormSlotSizeEditor extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
+    isSlotSizeVisible: PropTypes.bool.isRequired,
     onBlur: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,
@@ -74,6 +75,10 @@ class FormSlotSizeEditor extends Component {
   }
 
   renderSlotSize() {
+    if (!this.props.isSlotSizeVisible) {
+      return null
+    }
+
     return (
       <div className="form__field">
         <label className="form__field-label">

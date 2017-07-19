@@ -18,7 +18,7 @@ class PlacesIndex extends Component {
     return (
       <section>
         <h1>{ translate('views.places.title') }</h1>
-        <Link className="button button--green" to="/places/new">
+        <Link className="button button--green" to="/new/place">
           { translate('views.places.createNewPlaceButton') }
         </Link>
         <hr />

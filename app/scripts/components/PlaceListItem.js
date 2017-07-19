@@ -7,9 +7,10 @@ import { translate } from '../services/i18n'
 
 class PlaceListItem extends Component {
   static propTypes = {
-    animal: React.PropTypes.object.isRequired,
+    animalName: PropTypes.string.isRequired,
     city: PropTypes.string,
     cityCode: PropTypes.string,
+    isOwnerMe: PropTypes.bool.isRequired,
     isPublic: PropTypes.bool.isRequired,
     latitude: PropTypes.number,
     longitude: PropTypes.number,
@@ -30,6 +31,26 @@ class PlaceListItem extends Component {
 
   onClick() {
     this.props.push(`/places/${this.props.slug}`)
+  }
+
+  onEditClick(event) {
+    event.stopPropagation()
+    this.props.push(`/places/${this.props.slug}/edit`)
+  }
+
+  renderActionButton() {
+    if (!this.props.isOwnerMe) {
+      return null
+    }
+
+    return (
+      <button
+        className="list-item__cover-image-button button button--green"
+        onClick={this.onEditClick}
+      >
+        { translate('components.placeListItem.editButton') }
+      </button>
+    )
   }
 
   renderPrivacy() {
@@ -54,14 +75,16 @@ class PlaceListItem extends Component {
 
   renderOwner() {
     return translate('components.placeListItem.owner', {
-      name: this.props.animal.name,
+      name: this.props.animalName,
     })
   }
 
   render() {
     return (
       <div className="list-item" onClick={this.onClick}>
-        <div className="list-item__cover-image" />
+        <div className="list-item__cover-image">
+          { this.renderActionButton() }
+        </div>
         <div className="list-item__content">
           <div className="list-item__title ellipsis">
             { this.props.title }
@@ -82,6 +105,7 @@ class PlaceListItem extends Component {
     super(props)
 
     this.onClick = this.onClick.bind(this)
+    this.onEditClick = this.onEditClick.bind(this)
   }
 }
 

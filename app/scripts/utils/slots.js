@@ -74,11 +74,22 @@ export function prepareSlotIds(slots) {
   }, [])
 }
 
-export function generateNewSlotItems(slotSizeStr) {
+export function generateNewSlotItems(slotSizeStr, existingSlots) {
   const slotItems = []
 
   if (!checkSlotSize(slotSizeStr).isValid) {
     return slotItems
+  }
+
+  let existingSlotStates = {}
+
+  if (existingSlots) {
+    existingSlotStates = existingSlots.reduce((acc, slot) => {
+      if (slot.isDisabled) {
+        acc[slot.slotIndex] = 'disabled'
+      }
+      return acc
+    }, {})
   }
 
   const slotSizeObj = convertSlotSize(slotSizeStr)
@@ -93,6 +104,7 @@ export function generateNewSlotItems(slotSizeStr) {
       fromTimeStr: dateFns.format(from, TIME_FORMAT),
       id,
       to,
+      status: existingSlotStates[id],
       toTimeStr: dateFns.format(to, TIME_FORMAT),
     })
 

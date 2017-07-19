@@ -1,4 +1,3 @@
-import marked from 'marked'
 import slugify from 'sequelize-slugify'
 
 import db from '../database'
@@ -75,15 +74,6 @@ const Place = db.sequelize.define('place', {
     type: db.Sequelize.STRING,
   },
 })
-
-Place.prototype.toJSON = function convert() {
-  const data = this.get()
-  data.descriptionHtml = marked(data.description)
-
-  return Object.assign({}, {
-    ...data,
-  })
-}
 
 slugify.slugifyModel(Place, {
   source: ['title'],

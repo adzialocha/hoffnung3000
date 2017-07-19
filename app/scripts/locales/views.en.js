@@ -7,5 +7,6 @@ export default {
     owner: 'by',
     title: 'Places',
     titlePlaceholder: 'Place',
+    updateSuccess: 'Your place was successfully updated.',
   },
 }

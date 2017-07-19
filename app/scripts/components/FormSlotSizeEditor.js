@@ -8,6 +8,7 @@ class FormSlotSizeEditor extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
+    isSlotSizeVisible: PropTypes.bool.isRequired,
   }
 
   render() {
@@ -17,6 +18,7 @@ class FormSlotSizeEditor extends Component {
       <div>
         <SlotSizeEditor
           disabled={disabled}
+          isSlotSizeVisible={this.props.isSlotSizeVisible}
           {...input}
         />
       </div>

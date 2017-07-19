@@ -1,18 +1,25 @@
 import ActionTypes from '../actionTypes'
+import { redirectTo } from './redirect'
 
 let counter = 0
 
 export default function flash(options) {
-  const { text, type = 'notification', lifetime } = options
+  const { text, type = 'notification', lifetime, redirect } = options
 
-  return {
-    type: ActionTypes.FLASH_ADD_MESSAGE,
-    message: {
-      id: ++counter,
-      lifetime,
-      text,
-      type,
-    },
+  return (dispatch) => {
+    dispatch({
+      type: ActionTypes.FLASH_ADD_MESSAGE,
+      message: {
+        id: ++counter,
+        lifetime,
+        text,
+        type,
+      },
+    })
+
+    if (redirect) {
+      dispatch(redirectTo(redirect))
+    }
   }
 }
 

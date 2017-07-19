@@ -21,6 +21,21 @@ class PlacesShow extends Component {
     this.props.fetchResource('places', this.props.resourceSlug)
   }
 
+  renderActionButton() {
+    if (!this.props.resourceData.isOwnerMe) {
+      return null
+    }
+
+    return (
+      <Link
+        className="button button--green"
+        to={`/places/${this.props.resourceSlug}/edit`}
+      >
+        { translate('components.placeListItem.editButton') }
+      </Link>
+    )
+  }
+
   renderPrivacy() {
     if (this.props.resourceData.isPublic) {
       return null
@@ -94,14 +109,14 @@ class PlacesShow extends Component {
   }
 
   renderOwner() {
-    const { name, slug } = this.props.resourceData.animal
+    const { animalName, animalId } = this.props.resourceData
 
     return (
       <p>
         { translate('views.places.owner') }
         &nbsp;
-        <Link to={`/animals/${slug}`}>
-          { name }
+        <Link to={`/inbox/new/${animalId}`}>
+          { animalName }
         </Link>
       </p>
     )
@@ -127,7 +142,7 @@ class PlacesShow extends Component {
   }
 
   renderTitle() {
-    if (this.props.isLoading || !this.props.resourceData) {
+    if (this.props.isLoading) {
       return <h1>{ translate('views.places.titlePlaceholder') }</h1>
     }
     return <h1>{ this.props.resourceData.title }</h1>
@@ -140,6 +155,7 @@ class PlacesShow extends Component {
         <Link className="button" to="/places">
           { translate('views.places.backToOverview') }
         </Link>
+        { this.renderActionButton() }
         <hr />
         { this.renderContent() }
       </section>
@@ -154,11 +170,11 @@ class PlacesShow extends Component {
 function mapStateToProps(state, ownProps) {
   const resourceSlug = ownProps.match.params.slug
   const resource = cachedResource('places', resourceSlug)
-  const { isLoading, object } = resource
+  const { isLoading, object: resourceData } = resource
 
   return {
     isLoading,
-    resourceData: object,
+    resourceData,
     resourceSlug,
   }
 }
