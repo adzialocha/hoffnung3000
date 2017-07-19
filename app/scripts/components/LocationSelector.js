@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs'
 import { GoogleMap, Marker, withGoogleMap } from 'react-google-maps'
 
+import config from '../../../config'
 import styles from '../utils/googleMapStyle.json'
 import { translate } from '../services/i18n'
 
@@ -13,8 +14,7 @@ const DEFAULT_LONGITUDE = 13.40780
 const DEFAULT_MODE = 'address'
 
 const DEFAULT_ZOOM = 17
-const GOOGLE_MAP_SCRIPT_URL = 'https://maps.googleapis.com/maps/api/js?v=3.exp'
-
+const GOOGLE_MAP_SCRIPT_URL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${config.googleMapApiKey}`
 const MAP_OPTIONS = {
   disableDefaultUI: true,
   zoomControl: true,
