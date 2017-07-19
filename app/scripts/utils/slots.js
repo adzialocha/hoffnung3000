@@ -54,6 +54,17 @@ export function checkSlotSize(slotSizeStr) {
   }
 }
 
+function stringPad(num) {
+  return num < 10 ? `0${num}` : num
+}
+
+export function numberToSlotSizeStr(num) {
+  const hours = Math.floor(num / 60)
+  const minutes = num - (hours * 60)
+
+  return `${stringPad(hours)}:${stringPad(minutes)}`
+}
+
 export function prepareSlotIds(slots) {
   return slots.reduce((acc, slot) => {
     if (slot.status !== undefined) {

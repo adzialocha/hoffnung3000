@@ -1,0 +1,170 @@
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+
+import { cachedResource } from '../services/resources'
+import { fetchResource } from '../actions/resources'
+import { LocationMap } from '../components'
+import { numberToSlotSizeStr } from '../utils/slots'
+import { translate } from '../services/i18n'
+
+class PlacesShow extends Component {
+  static propTypes = {
+    fetchResource: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    resourceSlug: PropTypes.string.isRequired,
+    resourceData: PropTypes.object.isRequired,
+  }
+
+  componentWillMount() {
+    this.props.fetchResource('places', this.props.resourceSlug)
+  }
+
+  renderPrivacy() {
+    if (this.props.resourceData.isPublic) {
+      return null
+    }
+    return (
+      <div className="bullet bullet--centered ellipsis">
+        { translate('components.placeListItem.isPrivatePlace') }
+      </div>
+    )
+  }
+
+  renderSlotSize() {
+    return (
+      <div>
+        <strong>Slot-size (hh:mm)</strong>
+        <p>{ numberToSlotSizeStr(this.props.resourceData.slotSize) }</p>
+      </div>
+    )
+  }
+
+  renderAddress() {
+    const {
+      city,
+      cityCode,
+      country,
+      latitude,
+      longitude,
+      mode,
+      street,
+    } = this.props.resourceData
+
+    if (mode === 'gps') {
+      return (
+        <div>
+          <strong>Location</strong>
+          <p>@ { latitude }, { longitude }</p>
+          <LocationMap latitude={latitude} longitude={longitude} />
+        </div>
+      )
+    } else if (mode === 'address') {
+      return (
+        <div>
+          <strong>Location</strong>
+          <p>
+            { street }<br />
+            { `${cityCode} ${city}` }<br />
+            { country }<br />
+          </p>
+        </div>
+      )
+    }
+    return (
+      <div>
+        <strong>Location</strong>
+        <p>{ translate('components.placeListItem.virtualLocation') }</p>
+      </div>
+    )
+  }
+
+  renderDescription() {
+    return (
+      <div>
+        <strong>Description</strong>
+        <div
+          dangerouslySetInnerHTML={ {
+            __html: this.props.resourceData.descriptionHtml,
+          } }
+        />
+      </div>
+    )
+  }
+
+  renderOwner() {
+    const { name, slug } = this.props.resourceData.animal
+
+    return (
+      <p>
+        { translate('views.places.owner') }
+        &nbsp;
+        <Link to={`animals/${slug}`}>
+          { name }
+        </Link>
+      </p>
+    )
+  }
+
+  renderContent() {
+    if (this.props.isLoading) {
+      return <p>{ translate('components.common.loading') }</p>
+    }
+
+    return (
+      <div>
+        { this.renderOwner() }
+        { this.renderPrivacy() }
+        <hr />
+        { this.renderAddress() }
+        <hr />
+        { this.renderSlotSize() }
+        { this.renderDescription() }
+        <hr />
+      </div>
+    )
+  }
+
+  renderTitle() {
+    if (this.props.isLoading || !this.props.resourceData) {
+      return <h1>{ translate('views.places.titlePlaceholder') }</h1>
+    }
+    return <h1>{ this.props.resourceData.title }</h1>
+  }
+
+  render() {
+    return (
+      <section>
+        { this.renderTitle() }
+        <Link className="button" to="/places">
+          { translate('views.places.backToOverview') }
+        </Link>
+        <hr />
+        { this.renderContent() }
+      </section>
+    )
+  }
+
+  constructor(props) {
+    super(props)
+  }
+}
+
+function mapStateToProps(state, ownProps) {
+  const resourceSlug = ownProps.match.params.slug
+  const resource = cachedResource('places', resourceSlug)
+  const { isLoading, object } = resource
+
+  return {
+    isLoading,
+    resourceData: object,
+    resourceSlug,
+  }
+}
+
+export default connect(
+  mapStateToProps, {
+    fetchResource,
+  }
+)(PlacesShow)

@@ -18,6 +18,7 @@ import {
   Performers,
   PlacesIndex,
   PlacesNew,
+  PlacesShow,
   Profile,
   Register,
   ResetPassword,
@@ -40,8 +41,9 @@ export default class Routes extends Component {
           <Route component={Calendar} path="/calendar" />
           <Route component={Page} path="/pages/:slug" />
           <Route component={isAuthenticated(Profile)} path="/profile" />
-          <Route component={PlacesNew} path="/places/new" />
-          <Route component={PlacesIndex} path="/places" />
+          <Route component={isParticipant(PlacesNew)} path="/places/new" />
+          <Route component={isParticipant(PlacesShow)} path="/places/:slug" />
+          <Route component={isParticipant(PlacesIndex)} path="/places" />
           <Route component={isParticipant(Performers)} path="/performers" />
           <Route component={isParticipant(Items)} path="/items" />
           <Route component={isAdmin(Admin)} path="/admin" />

@@ -4,6 +4,8 @@ export default {
     createNewPlaceButton: 'Create place',
     createNewPlaceTitle: 'Create new place',
     createSuccess: 'Ja! You successfully created a new place!',
+    owner: 'by',
     title: 'Places',
+    titlePlaceholder: 'Place',
   },
 }

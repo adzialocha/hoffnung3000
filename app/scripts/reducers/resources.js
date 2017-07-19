@@ -16,7 +16,7 @@ const initialState = {
 export const initialResourceState = {
   isDirty: false,
   isError: false,
-  isLoading: false,
+  isLoading: true,
   object: {},
 }
 

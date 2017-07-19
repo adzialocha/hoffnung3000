@@ -3,7 +3,7 @@ import {
   findAllCurated,
   findOneCurated,
   findOneCuratedWithSlug,
-  lookup,
+  lookupWithSlug,
   update,
 } from './base'
 
@@ -102,7 +102,7 @@ export default {
     return findOneCuratedWithSlug(Place, req, res, next)
   },
   lookup: (req, res, next) => {
-    return lookup(Place, PlaceHasOneAnimal, permittedFields, req, res, next)
+    return lookupWithSlug(Place, req, res, next)
   },
   update: (req, res, next) => {
     return update(Place, permittedFields, req, res, next)

@@ -37,7 +37,7 @@ class PlaceListItem extends Component {
       return null
     }
     return (
-      <div className="list-item__bullet ellipsis">
+      <div className="bullet ellipsis">
         { translate('components.placeListItem.isPrivatePlace') }
       </div>
     )

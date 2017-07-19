@@ -25,6 +25,21 @@ export function lookup(model, req, res, next) {
     .catch(err => next(err))
 }
 
+export function lookupWithSlug(model, req, res, next) {
+  return model.findOne({
+    include,
+    rejectOnEmpty: true,
+    where: {
+      slug: req.params.resourceSlug,
+    },
+  })
+    .then(data => {
+      req.ownerId = data.animal.userId
+      next()
+    })
+    .catch(err => next(err))
+}
+
 export function findOne(model, req, res, next) {
   return model.findById(req.params.resourceId, {
     rejectOnEmpty: true,

@@ -103,22 +103,3 @@ $_list-item-mobile-height: 100px;
     margin-top: 3px;
   }
 }
-
-.list-item__bullet {
-  max-width: 400px;
-
-  margin-top: 10px;
-
-  padding: 8px;
-
-  color: $white;
-
-  background-color: $blue;
-
-  font-size: $font-size-sm;
-
-  line-height: $font-size-sm;
-
-  text-align: center;
-  text-transform: uppercase;
-}
