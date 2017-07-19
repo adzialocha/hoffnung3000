@@ -41,7 +41,7 @@ class StaticPage extends Component {
     if (this.props.isLoading) {
       return (
         <div className="page__spinner">
-          <p>{ translate('components.common.loading') }</p>
+          <p>{ translate('common.loading') }</p>
         </div>
       )
     }

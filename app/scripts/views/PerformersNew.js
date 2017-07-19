@@ -18,7 +18,7 @@ class PerformersNew extends Component {
 
   onSubmit(values) {
     const flash = {
-      text: translate('views.performers.createSuccess'),
+      text: translate('flash.createPerformerSuccess'),
     }
 
     this.props.createResource(
@@ -33,9 +33,9 @@ class PerformersNew extends Component {
   render() {
     return (
       <section>
-        <h1>{ translate('views.performers.createNewPerformerTitle') }</h1>
+        <h1>{ translate('views.performers.createNewTitle') }</h1>
         <Link className="button" to="/performers">
-          { translate('views.performers.backToOverview') }
+          { translate('common.backToOverview') }
         </Link>
         <hr />
         <PerformerForm

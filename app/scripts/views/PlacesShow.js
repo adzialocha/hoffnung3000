@@ -31,7 +31,7 @@ class PlacesShow extends Component {
         className="button button--green"
         to={`/places/${this.props.resourceSlug}/edit`}
       >
-        { translate('components.placeListItem.editButton') }
+        { translate('common.editButton') }
       </Link>
     )
   }
@@ -42,7 +42,7 @@ class PlacesShow extends Component {
     }
     return (
       <div className="bullet bullet--centered ellipsis">
-        { translate('components.placeListItem.isPrivatePlace') }
+        { translate('views.places.isPrivatePlace') }
       </div>
     )
   }
@@ -51,7 +51,7 @@ class PlacesShow extends Component {
     return (
       <div>
         <strong>
-          { translate('components.placeListItem.slotSizeHeader') }
+          { translate('views.places.slotSizeHeader') }
         </strong>
         <p>{ numberToSlotSizeStrHuman(this.props.resourceData.slotSize) }</p>
       </div>
@@ -73,7 +73,7 @@ class PlacesShow extends Component {
       return (
         <div>
           <strong>
-            { translate('components.placeListItem.locationHeader') }
+            { translate('views.places.locationHeader') }
           </strong>
           <p>@ { latitude }, { longitude }</p>
           <LocationMap latitude={latitude} longitude={longitude} />
@@ -83,7 +83,7 @@ class PlacesShow extends Component {
       return (
         <div>
           <strong>
-            { translate('components.placeListItem.locationHeader') }
+            { translate('views.places.locationHeader') }
           </strong>
           <p>
             { street }<br />
@@ -96,9 +96,9 @@ class PlacesShow extends Component {
     return (
       <div>
         <strong>
-          { translate('components.placeListItem.locationHeader') }
+          { translate('views.places.locationHeader') }
         </strong>
-        <p>{ translate('components.placeListItem.virtualLocation') }</p>
+        <p>{ translate('views.places.virtualLocation') }</p>
       </div>
     )
   }
@@ -132,7 +132,7 @@ class PlacesShow extends Component {
 
   renderContent() {
     if (this.props.isLoading) {
-      return <p>{ translate('components.common.loading') }</p>
+      return <p>{ translate('common.loading') }</p>
     }
 
     return (
@@ -161,7 +161,7 @@ class PlacesShow extends Component {
       <section>
         { this.renderTitle() }
         <Link className="button" to="/places">
-          { translate('views.places.backToOverview') }
+          { translate('common.backToOverview') }
         </Link>
         { this.renderActionButton() }
         <hr />

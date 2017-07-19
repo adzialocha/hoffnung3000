@@ -17,9 +17,9 @@ class PerformersIndex extends Component {
   render() {
     return (
       <section>
-        <h1>{ translate('views.performers.title') }</h1>
+        <h1>{ translate('views.performers.indexTitle') }</h1>
         <Link className="button button--green" to="/new/performer">
-          { translate('views.performers.createNewPerformerButton') }
+          { translate('views.performers.createNewButton') }
         </Link>
         <hr />
         { this.renderPerformersList() }

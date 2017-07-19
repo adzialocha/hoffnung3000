@@ -1,6 +1,6 @@
 export default {
   common: {
-    submitError: 'Some information is missing, please check the form again!',
+    basicInformation: 'Basic information',
   },
   place: {
     errors: {
@@ -18,14 +18,13 @@ export default {
       titleMinLength: 'The title has to have a minimum of {len} characters',
       titleRequired: 'Please give your place a title',
     },
-    basicInformation: 'Basic information',
     title: 'Title of your place',
     description: 'Describe your place',
     where: 'Where is it?',
     publicOrPrivate: 'Is it public or private?',
     areEventsPublic: 'Events in this place are visible in the calendar',
     slots: 'When is it bookable?',
-    submit: 'Save it!',
+    submit: 'Done!',
     slotSizeNote: 'Other participants will be able to reserve so called slots in your place. Here you can define how long one slot is.',
   },
   item: {
@@ -36,9 +35,20 @@ export default {
       titleMinLength: 'The title has to have a minimum of {len} characters',
       titleRequired: 'Please give your place a title',
     },
-    basicInformation: 'Basic information',
     title: 'Title of your item',
     description: 'Describe your item briefly',
-    submit: 'Save it!',
+    submit: 'Done. Save it!',
+  },
+  performer: {
+    errors: {
+      descriptionMinLength: 'The description needs a minimum of {len} characters',
+      descriptionMaxLength: 'The description can\'t be longer than {len} characters',
+      descriptionRequired: 'Describe your performer a little',
+      titleMinLength: 'The title has to have a minimum of {len} characters',
+      titleRequired: 'Please give your performer a title',
+    },
+    title: 'Title of your performer',
+    description: 'Describe it!',
+    submit: 'Ok. Save it!',
   },
 }

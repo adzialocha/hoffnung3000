@@ -9,4 +9,9 @@ export default {
     zero: '{count} minute',
     other: '{count} minutes',
   },
+  editButton: 'Edit',
+  loading: 'Loading ...',
+  ownedBy: 'by {name}',
+  by: 'by',
+  backToOverview: 'Back to overview',
 }

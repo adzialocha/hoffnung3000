@@ -26,7 +26,7 @@ class ItemsEdit extends Component {
 
   onSubmit(values) {
     const successFlash = {
-      text: translate('views.items.updateSuccess'),
+      text: translate('flash.updateItemSuccess'),
     }
 
     this.props.updateResource(
@@ -73,7 +73,7 @@ class ItemsEdit extends Component {
       <section>
         { this.renderTitle() }
         <Link className="button" to="/items">
-          { translate('views.items.backToOverview') }
+          { translate('common.backToOverview') }
         </Link>
         <hr />
         { this.renderForm() }

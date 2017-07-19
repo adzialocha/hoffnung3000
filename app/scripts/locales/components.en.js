@@ -1,10 +1,9 @@
 export default {
   common: {
-    loading: 'Loading ...',
-    payViaPayPal: 'Pay via PayPal',
-    payViaTransfer: 'Pay via transfer',
     agreeWithTerms: 'I agree with the terms',
     nextStep: 'Next step',
+    payViaPayPal: 'Pay via PayPal',
+    payViaTransfer: 'Pay via transfer',
     previousStep: 'Previous step',
   },
   navigationLinks: {
@@ -63,12 +62,8 @@ export default {
     slotSizeLabel: 'How long is one slot?',
   },
   placeListItem: {
-    editButton: 'Edit',
     isPrivatePlace: 'This place is not visible to the audience',
-    owner: 'by {name}',
     virtualLocation: '@ Virtual location',
-    locationHeader: 'Location',
-    slotSizeHeader: 'Slot-size',
   },
   footer: {
     about: 'About',

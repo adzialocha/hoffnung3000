@@ -34,7 +34,7 @@ class PlacesEdit extends Component {
     const disabledSlots = slots ? prepareSlotIds(slots) : []
 
     const successFlash = {
-      text: translate('views.places.updateSuccess'),
+      text: translate('flash.updatePlaceSuccess'),
     }
 
     const requestParams = {
@@ -124,7 +124,7 @@ class PlacesEdit extends Component {
       <section>
         { this.renderTitle() }
         <Link className="button" to="/places">
-          { translate('views.places.backToOverview') }
+          { translate('common.backToOverview') }
         </Link>
         <hr />
         { this.renderForm() }

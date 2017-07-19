@@ -60,7 +60,7 @@ class TicketWizard extends Component {
   renderPaymentButtons() {
     if (this.state.isCheckoutClicked && this.props.isLoading) {
       return (
-        <p>{ translate('components.common.loading') }</p>
+        <p>{ translate('common.loading') }</p>
       )
     }
 

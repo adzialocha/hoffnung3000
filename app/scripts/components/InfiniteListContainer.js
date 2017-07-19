@@ -45,7 +45,7 @@ class InfiniteListContainer extends Component {
     if (!this.props.isLoading) {
       return null
     }
-    return <p>{ translate('components.common.loading') }</p>
+    return <p>{ translate('common.loading') }</p>
   }
 
   renderPlacesListItems() {

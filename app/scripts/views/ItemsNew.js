@@ -18,7 +18,7 @@ class ItemsNew extends Component {
 
   onSubmit(values) {
     const flash = {
-      text: translate('views.items.createSuccess'),
+      text: translate('flash.createItemSuccess'),
     }
 
     this.props.createResource(
@@ -33,9 +33,9 @@ class ItemsNew extends Component {
   render() {
     return (
       <section>
-        <h1>{ translate('views.items.createNewItemTitle') }</h1>
+        <h1>{ translate('views.items.createNewTitle') }</h1>
         <Link className="button" to="/items">
-          { translate('views.items.backToOverview') }
+          { translate('common.backToOverview') }
         </Link>
         <hr />
         <ItemForm

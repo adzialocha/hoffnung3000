@@ -23,13 +23,13 @@ class PerformerListItem extends Component {
         className="list-item__cover-image-button button button--green"
         to={`/performers/${this.props.slug}/edit`}
       >
-        { translate('components.performerListItem.editButton') }
+        { translate('common.editButton') }
       </Link>
     )
   }
 
   renderOwner() {
-    return translate('components.performerListItem.owner', {
+    return translate('common.ownedBy', {
       name: this.props.animalName,
     })
   }

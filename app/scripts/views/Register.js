@@ -19,7 +19,7 @@ class Register extends Component {
 
   renderRegisterContent() {
     if (this.props.isLoading) {
-      return <p>{ translate('components.common.loading') }</p>
+      return <p>{ translate('common.loading') }</p>
     }
     if (this.props.isRegistrationFull) {
       return <StaticPage slug="registration-full" />

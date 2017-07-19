@@ -17,9 +17,9 @@ class ItemsIndex extends Component {
   render() {
     return (
       <section>
-        <h1>{ translate('views.items.title') }</h1>
+        <h1>{ translate('views.items.indexTitle') }</h1>
         <Link className="button button--green" to="/new/item">
-          { translate('views.items.createNewItemButton') }
+          { translate('views.items.createNewButton') }
         </Link>
         <hr />
         { this.renderItemsList() }

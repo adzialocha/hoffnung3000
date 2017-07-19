@@ -26,7 +26,7 @@ class PerformersEdit extends Component {
 
   onSubmit(values) {
     const successFlash = {
-      text: translate('views.performers.updateSuccess'),
+      text: translate('flash.updatePerformerSuccess'),
     }
 
     this.props.updateResource(
@@ -73,7 +73,7 @@ class PerformersEdit extends Component {
       <section>
         { this.renderTitle() }
         <Link className="button" to="/performers">
-          { translate('views.performers.backToOverview') }
+          { translate('common.backToOverview') }
         </Link>
         <hr />
         { this.renderForm() }
