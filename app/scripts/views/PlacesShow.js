@@ -100,7 +100,7 @@ class PlacesShow extends Component {
       <p>
         { translate('views.places.owner') }
         &nbsp;
-        <Link to={`animals/${slug}`}>
+        <Link to={`/animals/${slug}`}>
           { name }
         </Link>
       </p>
