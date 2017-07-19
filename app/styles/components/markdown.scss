@@ -26,6 +26,10 @@ $_markdown-background: $gray-lighter;
     font-size: $font-size-base;
   }
 
+  p {
+    word-wrap: break-word;
+  }
+
   ul {
     display: inline-block;
 
