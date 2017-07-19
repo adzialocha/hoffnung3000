@@ -62,6 +62,11 @@ export default {
     editSlotsButton: 'Edit slots',
     slotSizeLabel: 'Slot-size (hh:mm)',
   },
+  placeListItem: {
+    isPrivatePlace: 'This place is not visible to the audience',
+    virtualLocation: '@ Virtual location',
+    owner: 'by {name}',
+  },
   footer: {
     about: 'About',
     contact: 'Contact',
