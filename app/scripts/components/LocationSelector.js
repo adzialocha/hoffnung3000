@@ -75,19 +75,22 @@ class LocationSelector extends Component {
     })
   }
 
-  onGpsSelect() {
+  onGpsSelect(event) {
+    event.preventDefault()
     this.setState({
       mode: 'gps',
     })
   }
 
-  onAddressSelect() {
+  onAddressSelect(event) {
+    event.preventDefault()
     this.setState({
       mode: 'address',
     })
   }
 
-  onVirtualSelect() {
+  onVirtualSelect(event) {
+    event.preventDefault()
     this.setState({
       mode: 'virtual',
     })
