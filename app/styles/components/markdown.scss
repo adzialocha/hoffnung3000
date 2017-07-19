@@ -1,0 +1,58 @@
+$_markdown-content-color: $gray;
+$_markdown-background: $gray-lighter;
+
+.markdown {
+  display: inline-block;
+
+  width: 100%;
+
+  margin-top: 15px;
+
+  padding-right: 15px;
+  padding-left: 15px;
+
+  color: $_markdown-content-color;
+
+  background-color: $_markdown-background;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 15px;
+
+    font-size: $font-size-base;
+  }
+
+  ul {
+    display: inline-block;
+
+    margin: 0;
+
+    padding: 0;
+
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+
+    &::before {
+      position: absolute;
+
+      left: -10px;
+
+      display: block;
+
+      content: "- ";
+
+      color: $_markdown-content-color;
+    }
+  }
+
+  a {
+    color: $_markdown-content-color;
+  }
+}

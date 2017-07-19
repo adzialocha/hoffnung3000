@@ -65,6 +65,30 @@ export function numberToSlotSizeStr(num) {
   return `${stringPad(hours)}:${stringPad(minutes)}`
 }
 
+export function numberToSlotSizeStrHuman(num) {
+  const hours = Math.floor(num / 60)
+  const minutes = num - (hours * 60)
+
+  let hoursStr = ''
+  let minutesStr = ''
+
+  if (hours > 0) {
+    hoursStr = translate('common.hoursHuman', {
+      count: hours,
+    }) + ' '
+  }
+
+  if (minutes > 0) {
+    minutesStr = translate('common.minutesHuman', {
+      count: minutes,
+    }) + ' '
+  }
+
+  const andStr = hours > 0 && minutes > 0 ? 'and ' : ''
+
+  return [hoursStr, andStr, minutesStr].join('')
+}
+
 export function prepareSlotIds(slots) {
   return slots.reduce((acc, slot) => {
     if (slot.status !== undefined) {

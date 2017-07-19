@@ -67,6 +67,8 @@ export default {
     isPrivatePlace: 'This place is not visible to the audience',
     owner: 'by {name}',
     virtualLocation: '@ Virtual location',
+    locationHeader: 'Location',
+    slotSizeHeader: 'Slot-size',
   },
   footer: {
     about: 'About',

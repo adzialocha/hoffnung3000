@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
 import { LocationMap } from '../components'
-import { numberToSlotSizeStr } from '../utils/slots'
+import { numberToSlotSizeStrHuman } from '../utils/slots'
 import { translate } from '../services/i18n'
 
 class PlacesShow extends Component {
@@ -50,8 +50,10 @@ class PlacesShow extends Component {
   renderSlotSize() {
     return (
       <div>
-        <strong>Slot-size (hh:mm)</strong>
-        <p>{ numberToSlotSizeStr(this.props.resourceData.slotSize) }</p>
+        <strong>
+          { translate('components.placeListItem.slotSizeHeader') }
+        </strong>
+        <p>{ numberToSlotSizeStrHuman(this.props.resourceData.slotSize) }</p>
       </div>
     )
   }
@@ -70,7 +72,9 @@ class PlacesShow extends Component {
     if (mode === 'gps') {
       return (
         <div>
-          <strong>Location</strong>
+          <strong>
+            { translate('components.placeListItem.locationHeader') }
+          </strong>
           <p>@ { latitude }, { longitude }</p>
           <LocationMap latitude={latitude} longitude={longitude} />
         </div>
@@ -78,7 +82,9 @@ class PlacesShow extends Component {
     } else if (mode === 'address') {
       return (
         <div>
-          <strong>Location</strong>
+          <strong>
+            { translate('components.placeListItem.locationHeader') }
+          </strong>
           <p>
             { street }<br />
             { `${cityCode} ${city}` }<br />
@@ -89,7 +95,9 @@ class PlacesShow extends Component {
     }
     return (
       <div>
-        <strong>Location</strong>
+        <strong>
+          { translate('components.placeListItem.locationHeader') }
+        </strong>
         <p>{ translate('components.placeListItem.virtualLocation') }</p>
       </div>
     )
@@ -98,8 +106,8 @@ class PlacesShow extends Component {
   renderDescription() {
     return (
       <div>
-        <strong>Description</strong>
         <div
+          className="markdown"
           dangerouslySetInnerHTML={ {
             __html: this.props.resourceData.descriptionHtml,
           } }
@@ -131,11 +139,11 @@ class PlacesShow extends Component {
       <div>
         { this.renderOwner() }
         { this.renderPrivacy() }
+        { this.renderDescription() }
         <hr />
         { this.renderAddress() }
         <hr />
         { this.renderSlotSize() }
-        { this.renderDescription() }
         <hr />
       </div>
     )
