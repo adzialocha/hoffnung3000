@@ -11,11 +11,17 @@ $_react-slider-height: 50px;
   width: $_react-slider-height;
   height: $_react-slider-height;
 
-  background-color: $gray-light;
+  background-color: $green;
+
+  transition: background .2s ease-in-out;
 
   cursor: pointer;
+
+  &:hover {
+    background-color: lighten($green, 25%);
+  }
 }
 
 .react-slider__handle--active {
-  background-color: $green;
+  background-color: lighten($green, 25%);
 }
