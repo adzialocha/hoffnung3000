@@ -37,7 +37,9 @@ label {
   }
 
   &[disabled] {
-    background-color: $gray;
+    color: $gray;
+
+    background-color: $gray-light;
 
     cursor: not-allowed;
   }
