@@ -1,5 +1,10 @@
 export default {
   common: {
+    errors: {
+      required: 'This field is required',
+      minLength: 'This field needs a minimum of {len} characters',
+      maxLength: 'This field can\'t be longer than {len} characters',
+    },
     basicInformation: 'Basic information',
   },
   place: {
@@ -29,11 +34,8 @@ export default {
   },
   item: {
     errors: {
-      descriptionMinLength: 'The description needs a minimum of {len} characters',
-      descriptionMaxLength: 'The description can\'t be longer than {len} characters',
-      descriptionRequired: 'Describe your place a little',
-      titleMinLength: 'The title has to have a minimum of {len} characters',
-      titleRequired: 'Please give your place a title',
+      descriptionRequired: 'Describe your item a little',
+      titleRequired: 'Please give your item a title',
     },
     title: 'Title of your item',
     description: 'Describe your item briefly',
@@ -41,10 +43,7 @@ export default {
   },
   performer: {
     errors: {
-      descriptionMinLength: 'The description needs a minimum of {len} characters',
-      descriptionMaxLength: 'The description can\'t be longer than {len} characters',
       descriptionRequired: 'Describe your performer a little',
-      titleMinLength: 'The title has to have a minimum of {len} characters',
       titleRequired: 'Please give your performer a title',
     },
     title: 'Title of your performer',

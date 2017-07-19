@@ -11,7 +11,7 @@ const validate = values => {
     errors.title = translate('forms.performer.errors.titleRequired')
   } else if (values.title.length < 3) {
     errors.title = translate(
-      'forms.performer.errors.titleMinLength', { len: 3 }
+      'forms.common.errors.minLength', { len: 3 }
     )
   }
 
@@ -19,11 +19,11 @@ const validate = values => {
     errors.description = translate('forms.performer.errors.descriptionRequired')
   } else if (values.description.length < 10) {
     errors.description = translate(
-      'forms.performer.errors.descriptionMinLength', { len: 10 }
+      'forms.common.errors.minLength', { len: 10 }
     )
   } else if (values.description.length > 60) {
     errors.description = translate(
-      'forms.performer.errors.descriptionMaxLength', { len: 60 }
+      'forms.common.errors.maxLength', { len: 60 }
     )
   }
 
