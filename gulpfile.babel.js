@@ -37,6 +37,7 @@ const VENDOR_MODULES = [
   'react-dom',
   'react-google-maps',
   'react-google-maps/lib/async/withScriptjs',
+  'react-infinite',
   'react-modal',
   'react-redux',
   'react-router',

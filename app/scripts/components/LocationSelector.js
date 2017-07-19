@@ -228,21 +228,21 @@ class LocationSelector extends Component {
       <div className="location-selector">
         <div className="button-group">
           <button
-            className="button button--green"
+            className="button button--green button--small-mobile"
             disabled={this.state.mode === 'gps' || this.props.disabled}
             onClick={this.onGpsSelect}
           >
             { translate('components.locationSelector.gpsPositionMode') }
           </button>
           <button
-            className="button button--green"
+            className="button button--green button--small-mobile"
             disabled={this.state.mode === 'address' || this.props.disabled}
             onClick={this.onAddressSelect}
           >
             { translate('components.locationSelector.addressMode') }
           </button>
           <button
-            className="button button--green"
+            className="button button--green button--small-mobile"
             disabled={this.state.mode === 'virtual' || this.props.disabled}
             onClick={this.onVirtualSelect}
           >

@@ -1,4 +1,7 @@
 export default {
+  common: {
+    submitError: 'Some information is missing, please check the form again!',
+  },
   place: {
     errors: {
       cityCodeRequired: 'The given address is incomplete. Please fill in the city code field',

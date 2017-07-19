@@ -56,7 +56,7 @@ class PlacesNew extends Component {
           errorMessage={this.props.errorMessage}
           initialValues={ {
             isPublic: true,
-            slots: { slotSize: '00:10' },
+            slots: { slotSize: '01:00' },
           } }
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
