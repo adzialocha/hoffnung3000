@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormField } from '../components'
+import { FormInput } from '../components'
 
 const validate = values => {
   const errors = {}
@@ -52,21 +52,21 @@ class ProfileForm extends Component {
         { this.renderErrorMessage() }
         <h2>Change your password</h2>
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Your current password"
           name="password"
           type="password"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="New Password"
           name="newPassword"
           type="password"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Repeat new password"
           name="newPasswordRepeat"

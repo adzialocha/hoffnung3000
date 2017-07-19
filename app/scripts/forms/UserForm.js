@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormField, FormCheckbox } from '../components'
+import { FormInput, FormCheckbox } from '../components'
 
 const validate = values => {
   const errors = {}
@@ -50,7 +50,7 @@ class UserForm extends Component {
 
     return (
       <Field
-        component={FormField}
+        component={FormInput}
         disabled={this.props.isLoading}
         label="Password (plaintext)"
         name="password"
@@ -64,14 +64,14 @@ class UserForm extends Component {
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Firstname"
           name="firstname"
           type="text"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Lastname"
           name="lastname"
@@ -79,14 +79,14 @@ class UserForm extends Component {
         />
         <hr />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Mobile phone number"
           name="phone"
           type="text"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="E-Mail-Address"
           name="email"
@@ -95,28 +95,28 @@ class UserForm extends Component {
         { this.renderPasswordField() }
         <hr />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Street and number"
           name="street"
           type="text"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="City code"
           name="cityCode"
           type="text"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="City"
           name="city"
           type="text"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Country"
           name="country"
@@ -126,18 +126,21 @@ class UserForm extends Component {
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
+          inline={true}
           label="Administrator"
           name="isAdmin"
         />
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
+          inline={true}
           label="Participates at festival"
           name="isParticipant"
         />
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
+          inline={true}
           label="Visitor"
           name="isVisitor"
         />
@@ -145,6 +148,7 @@ class UserForm extends Component {
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
+          inline={true}
           label="Account is enabled (Payment accepted)"
           name="isActive"
         />

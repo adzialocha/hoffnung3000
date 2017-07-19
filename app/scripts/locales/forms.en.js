@@ -1,0 +1,31 @@
+export default {
+  common: {
+    submitError: 'Some information is missing, please check the form again!',
+  },
+  place: {
+    errors: {
+      cityCodeRequired: 'The given address is incomplete. Please fill in the city code field',
+      cityRequired: 'The given address is incomplete. Please fill in the city field',
+      countryRequired: 'The given address is incomplete. Please fill in the country field',
+      descriptionMinLength: 'The description needs a minimum of {len} characters',
+      descriptionRequired: 'Describe your place a little',
+      gpsCoordinatesRequired: 'No GPS coordinates are specified',
+      slotSizeMaximum: 'The slot-size is too large',
+      slotSizeMinimum: 'The slot-size is too small',
+      slotSizeRequired: 'Please specify a slot size',
+      slotSizeWrongFormat: 'The slot-size has a wrong format',
+      streetRequired: 'The given address is incomplete. Please fill in the street field',
+      titleMinLength: 'The title has to have a minimum of {len} characters',
+      titleRequired: 'Please give your place a title',
+    },
+    basicInformation: 'Basic information',
+    title: 'Title of your place',
+    description: 'Describe your place',
+    where: 'Where is it?',
+    publicOrPrivate: 'Is it public or private?',
+    areEventsPublic: 'Events in this place are visible in the calendar',
+    slots: 'When is it bookable?',
+    submit: 'Save it!',
+    slotSizeNote: 'Other participants will be able to reserve so called slots in your place. Here you can define how long one slot is.',
+  },
+}

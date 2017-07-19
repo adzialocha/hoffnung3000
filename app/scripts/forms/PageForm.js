@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormField, FormTextarea } from '../components'
+import { FormInput, FormTextarea } from '../components'
 
 const validate = values => {
   const errors = {}
@@ -46,14 +46,14 @@ class PageForm extends Component {
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Title"
           name="title"
           type="text"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Slug"
           name="slug"

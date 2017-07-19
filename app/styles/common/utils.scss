@@ -17,3 +17,13 @@
 .justify {
   text-align: justify;
 }
+
+.ellipsis {
+  overflow: hidden;
+
+  width: 100%;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+}

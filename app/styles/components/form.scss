@@ -27,6 +27,10 @@
   .form__field-label {
     display: inline-block;
   }
+
+  .form__field-input {
+    margin-bottom: 5px;
+  }
 }
 
 .form__field--has-error,
@@ -39,8 +43,18 @@
 // .form__field-label {
 // }
 
-// .form__field-input {
-// }
+.form__field-input {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.form__field-label {
+  order: 1;
+
+  & + .form__field-checkbox {
+    order: 0;
+  }
+}
 
 .form__field-error,
 .form__field-warning {
