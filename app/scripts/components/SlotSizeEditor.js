@@ -13,6 +13,7 @@ class FormSlotSizeEditor extends Component {
     disabled: PropTypes.bool.isRequired,
     onBlur: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
+    onFocus: PropTypes.func.isRequired,
     value: PropTypes.any.isRequired,
   }
 
@@ -33,6 +34,13 @@ class FormSlotSizeEditor extends Component {
 
   onBlur() {
     this.props.onBlur({
+      slots: this.state.slots,
+      slotSize: this.state.slotSize,
+    })
+  }
+
+  onFocus() {
+    this.props.onFocus({
       slots: this.state.slots,
       slotSize: this.state.slotSize,
     })
@@ -78,6 +86,7 @@ class FormSlotSizeEditor extends Component {
           value={this.state.slotSize}
           onBlur={this.onBlur}
           onChange={this.onSlotSizeChange}
+          onFocus={this.onFocus}
         />
 
       </div>
@@ -140,6 +149,7 @@ class FormSlotSizeEditor extends Component {
 
     this.onBlur = this.onBlur.bind(this)
     this.onCloseClick = this.onCloseClick.bind(this)
+    this.onFocus = this.onFocus.bind(this)
     this.onOpenClick = this.onOpenClick.bind(this)
     this.onSlotSizeChange = this.onSlotSizeChange.bind(this)
     this.onSlotStatusChange = this.onSlotStatusChange.bind(this)

@@ -40,9 +40,9 @@ export function checkSlotSize(slotSizeStr) {
 
   const { hours, minutes } = convertSlotSize(slotSizeStr)
 
-  if (hours > 24 || minutes > 59) {
+  if (minutes > 59) {
     errorMessage = translate('forms.place.errors.slotSizeWrongFormat')
-  } else if (hours === 24 && minutes > 0) {
+  } else if ((hours === 24 && minutes > 0) || (hours > 24 && minutes === 0)) {
     errorMessage = translate('forms.place.errors.slotSizeMaximum')
   } else if (hours === 0 && minutes < 1) {
     errorMessage = translate('forms.place.errors.slotSizeMinimum')
@@ -52,6 +52,15 @@ export function checkSlotSize(slotSizeStr) {
     errorMessage,
     isValid: (errorMessage === undefined),
   }
+}
+
+export function prepareSlotIds(slots) {
+  return slots.reduce((acc, slot) => {
+    if (slot.status !== undefined) {
+      acc.push(slot.id)
+    }
+    return acc
+  }, [])
 }
 
 export function generateNewSlotItems(slotSizeStr) {

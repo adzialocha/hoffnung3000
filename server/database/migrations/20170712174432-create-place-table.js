@@ -26,6 +26,13 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true,
       },
+      mode: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
+      },
       description: {
         type: Sequelize.TEXT,
         allowNull: false,

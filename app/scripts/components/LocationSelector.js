@@ -45,22 +45,26 @@ const LocationSelectorMap = withScriptjs(withGoogleMap(props => {
 class LocationSelector extends Component {
   static propTypes = {
     disabled: PropTypes.bool,
-    onBlur: PropTypes.func,
+    onBlur: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
+    onFocus: PropTypes.func.isRequired,
     value: PropTypes.any.isRequired,
   }
 
   static defaultProps = {
     disabled: false,
-    onBlur: () => true,
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    this.props.onChange(nextState)
+  componentDidUpdate() {
+    this.props.onChange(this.state)
   }
 
   onBlur() {
     this.props.onBlur(this.state)
+  }
+
+  onFocus() {
+    this.props.onFocus(this.state)
   }
 
   onMapClick(event) {
@@ -146,6 +150,7 @@ class LocationSelector extends Component {
               value={this.state.street}
               onBlur={this.onBlur}
               onChange={this.onAddressChange}
+              onFocus={this.onFocus}
             />
           </div>
           <div className="form__field">
@@ -160,6 +165,7 @@ class LocationSelector extends Component {
               value={this.state.cityCode}
               onBlur={this.onBlur}
               onChange={this.onAddressChange}
+              onFocus={this.onFocus}
             />
           </div>
           <div className="form__field">
@@ -174,6 +180,7 @@ class LocationSelector extends Component {
               value={this.state.city}
               onBlur={this.onBlur}
               onChange={this.onAddressChange}
+              onFocus={this.onFocus}
             />
           </div>
           <div className="form__field">
@@ -188,6 +195,7 @@ class LocationSelector extends Component {
               value={this.state.country}
               onBlur={this.onBlur}
               onChange={this.onAddressChange}
+              onFocus={this.onFocus}
             />
           </div>
         </div>
@@ -266,6 +274,7 @@ class LocationSelector extends Component {
     this.onAddressChange = this.onAddressChange.bind(this)
     this.onAddressSelect = this.onAddressSelect.bind(this)
     this.onBlur = this.onBlur.bind(this)
+    this.onFocus = this.onFocus.bind(this)
     this.onGpsSelect = this.onGpsSelect.bind(this)
     this.onMapClick = this.onMapClick.bind(this)
     this.onVirtualSelect = this.onVirtualSelect.bind(this)

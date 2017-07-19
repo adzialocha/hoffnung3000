@@ -16,10 +16,18 @@ const validate = values => {
   const errors = {}
   if (!values.title) {
     errors.title = translate('forms.place.errors.titleRequired')
+  } else if (values.title.length < 3) {
+    errors.title = translate(
+      'forms.place.errors.titleMinLength', { len: 3 }
+    )
   }
 
   if (!values.description) {
     errors.description = translate('forms.place.errors.descriptionRequired')
+  } else if (values.description.length < 20) {
+    errors.description = translate(
+      'forms.place.errors.descriptionMinLength', { len: 20 }
+    )
   }
 
   if (values.location) {

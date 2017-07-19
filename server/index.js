@@ -27,7 +27,6 @@ if (envVariables.error && process.env.NODE_ENV === 'development') {
 
 // check for public assets folder
 const publicDirPath = process.env.NODE_ENV === 'development' ? '.tmp' : 'public'
-
 if (!fs.existsSync(path.join(__dirname, '..', publicDirPath))) {
   winston.error(
     'Public folder "%s" does not exist, please bundle assets first',
@@ -45,13 +44,14 @@ marked.setOptions({
 
 // check database connection
 const db = require('./database')
-
-db.sequelize.authenticate().then(() => {
-  winston.info('Database connection has been established successfully')
-}).catch((err) => {
-  winston.error('Unable to connect to the database: %s', err)
-  process.exit(1)
-})
+db.sequelize.authenticate()
+  .then(() => {
+    winston.info('Database connection has been established successfully')
+  })
+  .catch((err) => {
+    winston.error('Unable to connect to the database: %s', err)
+    process.exit(1)
+  })
 
 // initialize express instance
 const app = express()

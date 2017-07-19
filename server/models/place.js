@@ -3,6 +3,7 @@ import slugify from 'sequelize-slugify'
 import db from '../database'
 
 import Animal from './animal'
+import Slot from './slot'
 
 const Place = db.sequelize.define('place', {
   id: {
@@ -29,6 +30,13 @@ const Place = db.sequelize.define('place', {
   slug: {
     type: db.Sequelize.STRING,
     unique: true,
+  },
+  mode: {
+    type: db.Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
   },
   description: {
     type: db.Sequelize.TEXT,
@@ -75,6 +83,12 @@ export const PlaceBelongsToAnimal = Place.belongsTo(Animal, {
   as: 'animal',
   constraints: false,
   foreignKey: 'animalId',
+})
+
+export const PlaceHasManySlots = Place.hasMany(Slot, {
+  as: 'slots',
+  constraints: false,
+  targetKey: 'placeId',
 })
 
 export default Place

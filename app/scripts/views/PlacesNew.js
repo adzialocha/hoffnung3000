@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
 import { PlaceForm } from '../forms'
+import { prepareSlotIds } from '../utils/slots'
 
 class PlacesNew extends Component {
   static propTypes = {
@@ -16,18 +17,30 @@ class PlacesNew extends Component {
   }
 
   onSubmit(values) {
-    console.log(values)
-    // const flash = {
-    //   text: 'You successfully created a new place',
-    // }
+    const { title, description, isPublic } = values
+    const { slotSize, slots } = values.slots
+    const disabledSlots = slots ? prepareSlotIds(slots) : []
 
-    // this.props.createResource(
-    //   'places',
-    //   this.props.nextRandomId,
-    //   values,
-    //   flash,
-    //   '/places'
-    // )
+    const flash = {
+      text: 'You successfully created a new place',
+    }
+
+    const requestParams = {
+      ...values.location,
+      description,
+      disabledSlots,
+      isPublic,
+      slotSize,
+      title,
+    }
+
+    this.props.createResource(
+      'places',
+      this.props.nextRandomId,
+      requestParams,
+      flash,
+      '/places'
+    )
   }
 
   render() {
@@ -38,6 +51,10 @@ class PlacesNew extends Component {
         <hr />
         <PlaceForm
           errorMessage={this.props.errorMessage}
+          initialValues={ {
+            isPublic: true,
+            slots: { slotSize: '00:10' },
+          } }
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
         />

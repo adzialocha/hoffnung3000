@@ -35,6 +35,8 @@ $_slot-editor-bars-height: 37px;
   padding-bottom: $_slot-editor-bars-height;
 
   flex-wrap: wrap;
+
+  align-content: flex-start;
 }
 
 .slot-editor__item {
@@ -101,7 +103,7 @@ $_slot-editor-bars-height: 37px;
 .slot-editor__day-header {
   display: flex;
 
-  height: 50px;
+  height: 120px;
 
   font-weight: $font-weight-bold;
 

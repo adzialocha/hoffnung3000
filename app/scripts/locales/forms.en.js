@@ -1,8 +1,19 @@
 export default {
   place: {
     errors: {
-      titleRequired: 'Please give your place a title',
+      cityCodeRequired: 'The given address is incomplete. Please fill in the city code field',
+      cityRequired: 'The given address is incomplete. Please fill in the city field',
+      countryRequired: 'The given address is incomplete. Please fill in the country field',
+      descriptionMinLength: 'The description needs a minimum of {len} characters',
       descriptionRequired: 'Describe your place a little',
+      gpsCoordinatesRequired: 'No GPS coordinates are specified',
+      slotSizeMaximum: 'The slot-size is too large',
+      slotSizeMinimum: 'The slot-size is too small',
+      slotSizeRequired: 'Please specify a slot size',
+      slotSizeWrongFormat: 'The slot-size has a wrong format, please use the format hh:mm',
+      streetRequired: 'The given address is incomplete. Please fill in the street field',
+      titleMinLength: 'The title has to have a minimum of {len} characters',
+      titleRequired: 'Please give your place a title',
     },
     basicInformation: 'Basic information',
     title: 'Title of your place',
