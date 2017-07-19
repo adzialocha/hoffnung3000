@@ -2,10 +2,11 @@ export default {
   places: {
     createNewButton: 'Create place',
     createNewTitle: 'Create new place',
-    titlePlaceholder: 'Place',
     indexTitle: 'Places',
+    isPrivatePlace: 'This place is not visible to the audience',
     locationHeader: 'Location',
     slotSizeHeader: 'Slot-size',
+    titlePlaceholder: 'Place',
     virtualLocation: '@ Virtual location',
   },
   items: {
