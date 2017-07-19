@@ -9,4 +9,14 @@ export default {
     titlePlaceholder: 'Place',
     updateSuccess: 'Your place was successfully updated.',
   },
+  items: {
+    backToOverview: 'Back to overview',
+    createNewItemButton: 'Create item',
+    createNewItemTitle: 'Create new item',
+    createSuccess: 'Hurra! You successfully created a new item!',
+    owner: 'by',
+    title: 'Items',
+    titlePlaceholder: 'Item',
+    updateSuccess: 'Your item was successfully updated.',
+  },
 }

@@ -12,21 +12,14 @@ const include = [{
   model: Animal,
 }]
 
-export function prepareResponse(data, req, hideDescription = false) {
+export function prepareResponse(data, req) {
   const response = data.toJSON()
 
   // set owner flag for frontend ui
   response.isOwnerMe = typeof req.isOwnerMe !== 'undefined' ? req.isOwnerMe : (data.animal.userId === req.user.id)
 
   // convert markdown to html
-  if (!hideDescription) {
-    response.descriptionHtml = marked(response.description)
-  }
-
-  // remove markdown code when not needed
-  if (!response.isOwnerMe || hideDescription) {
-    delete response.description
-  }
+  response.descriptionHtml = marked(response.description)
 
   // hide animal resource and just return name and id
   if (response.animal) {
@@ -38,7 +31,7 @@ export function prepareResponse(data, req, hideDescription = false) {
 }
 
 export function prepareResponseAll(rows, req) {
-  return rows.map(row => prepareResponse(row, req, true))
+  return rows.map(row => prepareResponse(row, req))
 }
 
 export function lookup(model, req, res, next) {

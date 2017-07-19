@@ -12,6 +12,9 @@ import {
   ForgotPassword,
   Home,
   Items,
+  ItemsEdit,
+  ItemsIndex,
+  ItemsNew,
   Login,
   NotFound,
   Page,
@@ -43,9 +46,12 @@ export default class Routes extends Component {
           <Route component={Page} path="/pages/:slug" />
           <Route component={isAuthenticated(Profile)} path="/profile" />
           <Route component={isParticipant(PlacesNew)} path="/new/place" />
+          <Route component={isParticipant(ItemsNew)} path="/new/item" />
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
           <Route component={isParticipant(PlacesShow)} path="/places/:slug" />
           <Route component={isParticipant(PlacesIndex)} path="/places" />
+          <Route component={isParticipant(ItemsEdit)} path="/items/:slug/edit" />
+          <Route component={isParticipant(ItemsIndex)} path="/items" />
           <Route component={isParticipant(Performers)} path="/performers" />
           <Route component={isParticipant(Items)} path="/items" />
           <Route component={isAdmin(Admin)} path="/admin" />

@@ -5,8 +5,6 @@ import {
   prepareResponse,
 } from './base'
 
-import db from '../database'
-
 import pick from '../utils/pick'
 
 import Animal from '../models/animal'
