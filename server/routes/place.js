@@ -19,18 +19,11 @@ router.route('/')
     placeController.create
   )
 
-router.route('/:resourceSlug(\\D+)/')
+router.route('/:resourceSlug')
   .get(
     placeController.lookup,
     canRead,
     placeController.findOneWithSlug
-  )
-
-router.route('/:resourceId(\\d+)/')
-  .get(
-    placeController.lookup,
-    canRead,
-    placeController.findOne
   )
   .put(
     placeController.lookup,

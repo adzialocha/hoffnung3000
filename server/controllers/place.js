@@ -1,10 +1,10 @@
 import {
-  destroy,
+  destroyWithSlug,
   findAllCurated,
   findOneCurated,
   findOneCuratedWithSlug,
   lookupWithSlug,
-  update,
+  updateWithSlug,
 } from './base'
 
 import pick from '../utils/pick'
@@ -90,7 +90,7 @@ export default {
       .catch(err => next(err))
   },
   destroy: (req, res, next) => {
-    return destroy(Place, req, res, next)
+    return destroyWithSlug(Place, req, res, next)
   },
   findAll: (req, res, next) => {
     return findAllCurated(Place, req, res, next)
@@ -105,6 +105,6 @@ export default {
     return lookupWithSlug(Place, req, res, next)
   },
   update: (req, res, next) => {
-    return update(Place, permittedFields, req, res, next)
+    return updateWithSlug(Place, permittedFields, req, res, next)
   },
 }

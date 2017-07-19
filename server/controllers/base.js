@@ -141,6 +141,18 @@ export function update(model, fields, req, res, next) {
     .catch(err => next(err))
 }
 
+export function updateWithSlug(model, fields, req, res, next) {
+  return model.update(pick(fields, req.body), {
+    where: {
+      slug: req.params.resourceSlug,
+    },
+    limit: 1,
+    returning: true,
+  })
+    .then(data => res.json(data[1][0]))
+    .catch(err => next(err))
+}
+
 export function create(model, fields, req, res, next) {
   return model.create(pick(fields, req.body), {
     returning: true,
@@ -167,6 +179,16 @@ export function destroy(model, req, res, next) {
   return model.destroy({
     where: {
       id: req.params.resourceId,
+    },
+  })
+    .then(() => res.json({ message: 'ok' }))
+    .catch(err => next(err))
+}
+
+export function destroyWithSlug(model, req, res, next) {
+  return model.destroy({
+    where: {
+      slug: req.params.resourceSlug,
     },
   })
     .then(() => res.json({ message: 'ok' }))
