@@ -53,7 +53,7 @@ class AdminPagesNewForm extends Component {
 
 function mapStateToProps(state) {
   const { errorMessage, nextRandomId } = state.resources
-  const { isLoading } = cachedResource('pages', nextRandomId)
+  const { isLoading } = cachedResource('pages', nextRandomId, true)
 
   return {
     errorMessage,

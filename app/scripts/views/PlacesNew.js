@@ -74,7 +74,7 @@ class PlacesNew extends Component {
 
 function mapStateToProps(state) {
   const { errorMessage, nextRandomId } = state.resources
-  const { isLoading } = cachedResource('places', nextRandomId)
+  const { isLoading } = cachedResource('places', nextRandomId, true)
 
   return {
     errorMessage,
