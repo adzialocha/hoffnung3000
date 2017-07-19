@@ -7,6 +7,7 @@ import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
 import { PlaceForm } from '../forms'
 import { prepareSlotIds } from '../utils/slots'
+import { translate } from '../services/i18n'
 
 class PlacesNew extends Component {
   static propTypes = {
@@ -22,7 +23,7 @@ class PlacesNew extends Component {
     const disabledSlots = slots ? prepareSlotIds(slots) : []
 
     const flash = {
-      text: 'You successfully created a new place',
+      text: translate('views.places.createSuccess'),
     }
 
     const requestParams = {
@@ -46,8 +47,10 @@ class PlacesNew extends Component {
   render() {
     return (
       <section>
-        <h1>Create a new place</h1>
-        <Link className="button" to="/places">Back to overview</Link>
+        <h1>{ translate('views.places.createNewPlaceTitle') }</h1>
+        <Link className="button" to="/places">
+          { translate('views.places.backToOverview') }
+        </Link>
         <hr />
         <PlaceForm
           errorMessage={this.props.errorMessage}

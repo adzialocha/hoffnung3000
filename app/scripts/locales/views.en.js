@@ -1,7 +1,9 @@
 export default {
   places: {
-    title: 'Places',
-    createNew: 'Create place',
     backToOverview: 'Back to overview',
+    createNewPlaceButton: 'Create place',
+    createNewPlaceTitle: 'Create new place',
+    createSuccess: 'Ja! You successfully created a new place!',
+    title: 'Places',
   },
 }

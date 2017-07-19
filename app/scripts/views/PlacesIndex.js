@@ -9,7 +9,7 @@ class PlacesIndex extends Component {
       <section>
         <h1>{ translate('views.places.title') }</h1>
         <Link className="button" to="/places/new">
-          { translate('views.places.createNew') }
+          { translate('views.places.createNewPlaceButton') }
         </Link>
       </section>
     )
