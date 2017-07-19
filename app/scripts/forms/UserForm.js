@@ -126,18 +126,21 @@ class UserForm extends Component {
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
+          inline={true}
           label="Administrator"
           name="isAdmin"
         />
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
+          inline={true}
           label="Participates at festival"
           name="isParticipant"
         />
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
+          inline={true}
           label="Visitor"
           name="isVisitor"
         />
@@ -145,6 +148,7 @@ class UserForm extends Component {
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
+          inline={true}
           label="Account is enabled (Payment accepted)"
           name="isActive"
         />
