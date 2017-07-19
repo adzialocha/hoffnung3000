@@ -14,6 +14,7 @@ import pageController from '../controllers/page'
 import authRoutes from './auth'
 import itemRoutes from './item'
 import pageRoutes from './page'
+import performerRoutes from './performer'
 import placeRoutes from './place'
 import profileRoutes from './profile'
 import userRoutes from './user'
@@ -50,6 +51,7 @@ router.use('/profile', profileRoutes)
 
 router.use('/places', placeRoutes)
 router.use('/items', itemRoutes)
+router.use('/performers', performerRoutes)
 
 // admin API routes
 

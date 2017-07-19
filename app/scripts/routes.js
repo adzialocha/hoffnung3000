@@ -11,14 +11,15 @@ import {
   Calendar,
   ForgotPassword,
   Home,
-  Items,
   ItemsEdit,
   ItemsIndex,
   ItemsNew,
+  PerformersEdit,
+  PerformersIndex,
+  PerformersNew,
   Login,
   NotFound,
   Page,
-  Performers,
   PlacesEdit,
   PlacesIndex,
   PlacesNew,
@@ -47,13 +48,14 @@ export default class Routes extends Component {
           <Route component={isAuthenticated(Profile)} path="/profile" />
           <Route component={isParticipant(PlacesNew)} path="/new/place" />
           <Route component={isParticipant(ItemsNew)} path="/new/item" />
+          <Route component={isParticipant(PerformersNew)} path="/new/performer" />
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
           <Route component={isParticipant(PlacesShow)} path="/places/:slug" />
           <Route component={isParticipant(PlacesIndex)} path="/places" />
           <Route component={isParticipant(ItemsEdit)} path="/items/:slug/edit" />
           <Route component={isParticipant(ItemsIndex)} path="/items" />
-          <Route component={isParticipant(Performers)} path="/performers" />
-          <Route component={isParticipant(Items)} path="/items" />
+          <Route component={isParticipant(PerformersEdit)} path="/performers/:slug/edit" />
+          <Route component={isParticipant(PerformersIndex)} path="/performers" />
           <Route component={isAdmin(Admin)} path="/admin" />
           <Route component={NotFound} />
         </Switch>

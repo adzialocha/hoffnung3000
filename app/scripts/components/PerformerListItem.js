@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { translate } from '../services/i18n'
 
-class ItemListItem extends Component {
+class PerformerListItem extends Component {
   static propTypes = {
     animalName: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
@@ -21,15 +21,15 @@ class ItemListItem extends Component {
     return (
       <Link
         className="list-item__cover-image-button button button--green"
-        to={`/items/${this.props.slug}/edit`}
+        to={`/performers/${this.props.slug}/edit`}
       >
-        { translate('components.itemListItem.editButton') }
+        { translate('components.performerListItem.editButton') }
       </Link>
     )
   }
 
   renderOwner() {
-    return translate('components.itemListItem.owner', {
+    return translate('components.performerListItem.owner', {
       name: this.props.animalName,
     })
   }
@@ -60,4 +60,4 @@ class ItemListItem extends Component {
   }
 }
 
-export default ItemListItem
+export default PerformerListItem

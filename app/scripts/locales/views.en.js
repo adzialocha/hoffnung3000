@@ -19,4 +19,14 @@ export default {
     titlePlaceholder: 'Item',
     updateSuccess: 'Your item was successfully updated.',
   },
+  performers: {
+    backToOverview: 'Back to overview',
+    createNewItemButton: 'Create performer',
+    createNewItemTitle: 'Create new performer',
+    createSuccess: 'Hurra! You successfully created a new performer!',
+    owner: 'by',
+    title: 'Performers',
+    titlePlaceholder: 'Performer',
+    updateSuccess: 'Your performer was successfully updated.',
+  },
 }
