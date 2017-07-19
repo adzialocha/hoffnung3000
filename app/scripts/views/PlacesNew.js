@@ -16,17 +16,18 @@ class PlacesNew extends Component {
   }
 
   onSubmit(values) {
-    const flash = {
-      text: 'You successfully created new place',
-    }
+    console.log(values)
+    // const flash = {
+    //   text: 'You successfully created a new place',
+    // }
 
-    this.props.createResource(
-      'places',
-      this.props.nextRandomId,
-      values,
-      flash,
-      '/places'
-    )
+    // this.props.createResource(
+    //   'places',
+    //   this.props.nextRandomId,
+    //   values,
+    //   flash,
+    //   '/places'
+    // )
   }
 
   render() {

@@ -28,12 +28,12 @@ const validate = values => {
         errors.location = translate('forms.place.errors.gpsCoordinatesRequired')
       }
     } else if (values.location.mode === 'address') {
-      if (!values.location.city) {
-        errors.location = translate('forms.place.errors.cityRequired')
+      if (!values.location.street) {
+        errors.location = translate('forms.place.errors.streetRequired')
       } else if (!values.location.cityCode) {
         errors.location = translate('forms.place.errors.cityCodeRequired')
-      } else if (!values.location.street) {
-        errors.location = translate('forms.place.errors.streetRequired')
+      } else if (!values.location.city) {
+        errors.location = translate('forms.place.errors.cityRequired')
       } else if (!values.location.country) {
         errors.location = translate('forms.place.errors.countryRequired')
       }
