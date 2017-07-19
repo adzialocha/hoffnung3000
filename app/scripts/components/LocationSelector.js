@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs'
 import { GoogleMap, Marker, withGoogleMap } from 'react-google-maps'
 
+import styles from '../utils/googleMapStyle.json'
 import { translate } from '../services/i18n'
 
 const DEFAULT_CITY = 'Berlin'
@@ -13,17 +14,11 @@ const DEFAULT_MODE = 'address'
 
 const DEFAULT_ZOOM = 17
 const GOOGLE_MAP_SCRIPT_URL = 'https://maps.googleapis.com/maps/api/js?v=3.exp'
-const MAP_STYLES = [{
-  featureType: 'poi',
-  elementType: 'labels',
-  stylers: [
-    { visibility: 'off' },
-  ],
-}]
+
 const MAP_OPTIONS = {
   disableDefaultUI: true,
   zoomControl: true,
-  styles: MAP_STYLES,
+  styles,
 }
 
 const LocationSelectorMap = withScriptjs(withGoogleMap(props => {
