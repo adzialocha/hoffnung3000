@@ -13,6 +13,7 @@ import pageController from '../controllers/page'
 
 import authRoutes from './auth'
 import pageRoutes from './page'
+import placeRoutes from './place'
 import profileRoutes from './profile'
 import userRoutes from './user'
 
@@ -45,6 +46,8 @@ router.use(
 )
 
 router.use('/profile', profileRoutes)
+
+router.use('/places', placeRoutes)
 
 // admin API routes
 

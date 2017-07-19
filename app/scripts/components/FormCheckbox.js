@@ -1,17 +1,12 @@
-import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import { asFormField } from '../forms'
+
 class FormCheckbox extends Component {
   static propTypes = {
-    disabled: PropTypes.bool,
+    disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
-    label: PropTypes.string.isRequired,
-    meta: PropTypes.object.isRequired,
-  }
-
-  static defaultProps = {
-    disabled: false,
   }
 
   onBlur() {
@@ -22,44 +17,20 @@ class FormCheckbox extends Component {
     this.props.input.onChange(this.refs.checkbox.checked)
   }
 
-  renderError() {
-    const { error, touched, warning } = this.props.meta
-
-    return (
-      touched && (
-        (error && <span className="form__field-error">{error}</span>) ||
-        (warning && <span className="form__field-warning">{warning}</span>)
-      )
-    )
-  }
-
   render() {
-    const { error, touched, warning } = this.props.meta
-    const { disabled, label, input } = this.props
-
-    const formFieldClasses = classnames(
-      'form__field',
-      'form__field--inline', {
-        'form__field--has-error': error && touched,
-        'form__field--has-warning': warning && touched,
-      }
-    )
+    const { disabled, input } = this.props
 
     return (
-      <div className={formFieldClasses}>
-        <input
-          {...input}
-          checked={this.props.input.value}
-          className="form__field-input"
-          disabled={disabled}
-          ref="checkbox"
-          type="checkbox"
-          onBlur={this.onBlur}
-          onChange={this.onChange}
-        />
-        <label className="form__field-label">{label}</label>
-        { this.renderError() }
-      </div>
+      <input
+        checked={this.props.input.value}
+        className="form__field-input form__field-checkbox"
+        disabled={disabled}
+        ref="checkbox"
+        type="checkbox"
+        {...input}
+        onBlur={this.onBlur}
+        onChange={this.onChange}
+      />
     )
   }
 
@@ -71,4 +42,4 @@ class FormCheckbox extends Component {
   }
 }
 
-export default FormCheckbox
+export default asFormField(FormCheckbox)

@@ -1,39 +1,29 @@
+import { connectedReduxRedirect } from 'redux-auth-wrapper/history4/redirect'
 import { routerActions } from 'react-router-redux'
-import { UserAuthWrapper } from 'redux-auth-wrapper'
-
-const authSelector = (state) => {
-  const { auth, user } = state
-  return {
-    auth,
-    user,
-  }
-}
 
 const redirectAction = routerActions.replace
-const failureRedirectPath = '/'
+const redirectPath = '/'
 
 /* eslint-disable new-cap */
-export const isAuthenticated = UserAuthWrapper({
-  authSelector: state => state.auth,
+export const isAuthenticated = connectedReduxRedirect({
+  authenticatedSelector: state => state.auth.isAuthenticated,
   redirectAction,
-  failureRedirectPath,
-  predicate: auth => auth.isAuthenticated,
+  redirectPath,
   wrapperDisplayName: 'UserIsAuthenticated',
 })
 
-export const shouldNotBeAuthenticated = UserAuthWrapper({
-  authSelector: state => state.auth,
+export const shouldNotBeAuthenticated = connectedReduxRedirect({
+  allowRedirectBack: false,
+  authenticatedSelector: state => !state.auth.isAuthenticated,
   redirectAction,
-  failureRedirectPath,
-  predicate: auth => !auth.isAuthenticated,
+  redirectPath,
   wrapperDisplayName: 'UserIsNotAuthenticated',
 })
 
-export const isParticipant = UserAuthWrapper({
-  authSelector,
+export const isParticipant = connectedReduxRedirect({
   redirectAction,
-  failureRedirectPath,
-  predicate: (state) => {
+  redirectPath,
+  authenticatedSelector: (state) => {
     return (
       state.auth.isAuthenticated &&
       (state.user.isParticipant || state.user.isAdmin) &&
@@ -43,11 +33,10 @@ export const isParticipant = UserAuthWrapper({
   wrapperDisplayName: 'UserIsParticipant',
 })
 
-export const isVisitor = UserAuthWrapper({
-  authSelector,
+export const isVisitor = connectedReduxRedirect({
   redirectAction,
-  failureRedirectPath,
-  predicate: (state) => {
+  redirectPath,
+  authenticatedSelector: (state) => {
     return (
       state.auth.isAuthenticated &&
       (state.user.isVisitor || state.user.isAdmin) &&
@@ -57,11 +46,10 @@ export const isVisitor = UserAuthWrapper({
   wrapperDisplayName: 'UserIsVisitor',
 })
 
-export const isAdmin = UserAuthWrapper({
-  authSelector,
+export const isAdmin = connectedReduxRedirect({
   redirectAction,
-  failureRedirectPath,
-  predicate: (state) => {
+  redirectPath,
+  authenticatedSelector: (state) => {
     return (
       state.auth.isAuthenticated &&
       state.user.isAdmin &&

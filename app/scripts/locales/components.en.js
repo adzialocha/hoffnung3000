@@ -26,6 +26,18 @@ export default {
   ticketWizard: {
     stepTitle: 'Get a festival ticket (Step {currentStep} of {totalSteps})',
   },
+  locationSelector: {
+    addressMode: 'Regular address',
+    city: 'City',
+    cityCode: 'City code',
+    clickMap: 'Click on the map to mark a position for your place.',
+    country: 'Country',
+    currentGpsPosition: 'Selected position (latitude and longitude)',
+    gpsPositionMode: 'GPS position',
+    street: 'Street + Number',
+    virtualMode: 'Virtual space',
+    yourPlacePosition: 'The position of your place',
+  },
   registrationWizard: {
     stepTitle: 'Registration (Step {currentStep} of {totalSteps})',
   },
@@ -40,6 +52,15 @@ export default {
     visitorButton: 'Buy a visitor ticket',
     visitorHeader: 'Or buy a visitor ticket to visit the festival.',
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
+  },
+  slotEditor: {
+    submitButton: 'Okay',
+    title: 'Slot editor',
+  },
+  slotSizeEditor: {
+    editSlotsLabel: 'Enable / disable slots',
+    editSlotsButton: 'Edit slots',
+    slotSizeLabel: 'Slot-size (hh:mm)',
   },
   footer: {
     about: 'About',

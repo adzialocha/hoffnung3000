@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
-import { PageForm } from '../forms'
+import { PlaceForm } from '../forms'
 
-class AdminPagesNewForm extends Component {
+class PlacesNew extends Component {
   static propTypes = {
     createResource: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
@@ -17,25 +17,25 @@ class AdminPagesNewForm extends Component {
 
   onSubmit(values) {
     const flash = {
-      text: 'Successfully created new page',
+      text: 'You successfully created new place',
     }
 
     this.props.createResource(
-      'pages',
+      'places',
       this.props.nextRandomId,
       values,
       flash,
-      '/admin/pages/all'
+      '/places'
     )
   }
 
   render() {
     return (
       <section>
-        <h1>New Page</h1>
-        <Link className="button" to="/admin/pages/all/1">Back to overview</Link>
+        <h1>Create a new place</h1>
+        <Link className="button" to="/places">Back to overview</Link>
         <hr />
-        <PageForm
+        <PlaceForm
           errorMessage={this.props.errorMessage}
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
@@ -53,7 +53,7 @@ class AdminPagesNewForm extends Component {
 
 function mapStateToProps(state) {
   const { errorMessage, nextRandomId } = state.resources
-  const { isLoading } = cachedResource('pages', nextRandomId)
+  const { isLoading } = cachedResource('places', nextRandomId)
 
   return {
     errorMessage,
@@ -66,4 +66,4 @@ export default connect(
   mapStateToProps, {
     createResource,
   }
-)(AdminPagesNewForm)
+)(PlacesNew)
