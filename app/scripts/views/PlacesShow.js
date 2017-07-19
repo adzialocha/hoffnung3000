@@ -121,7 +121,7 @@ class PlacesShow extends Component {
 
     return (
       <p>
-        { translate('views.places.owner') }
+        { translate('common.by') }
         &nbsp;
         <Link to={`/inbox/new/${animalId}`}>
           { animalName }
