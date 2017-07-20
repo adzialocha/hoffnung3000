@@ -47,13 +47,13 @@ class TicketWizard extends Component {
   renderErrorMessage() {
     if (this.props.errorMessage) {
       Scroll.animateScroll.scrollToTop()
-
       return (
         <div className="form__error">
           { this.props.errorMessage }
         </div>
       )
     }
+
     return null
   }
 

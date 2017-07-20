@@ -1,15 +1,34 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { push } from 'react-router-redux'
 
-import { InfiniteListContainer, PlaceListItem } from '../components'
+import { asInfiniteList } from '../containers'
+import { CuratedPlaceListItem } from '../components'
 import { translate } from '../services/i18n'
 
+const WrappedInfiniteList = asInfiniteList(CuratedPlaceListItem)
+
 class PlacesIndex extends Component {
-  renderPlacesList() {
+  static propTypes = {
+    push: PropTypes.func.isRequired,
+  }
+
+  onClick(item) {
+    this.props.push(`/places/${item.slug}`)
+  }
+
+  onEditClick(item) {
+    this.props.push(`/places/${item.slug}/edit`)
+  }
+
+  renderItemsList() {
     return (
-      <InfiniteListContainer
-        listItemNode={this.listItem}
+      <WrappedInfiniteList
         resourceName="places"
+        onClick={this.onClick}
+        onEditClick={this.onEditClick}
       />
     )
   }
@@ -22,14 +41,21 @@ class PlacesIndex extends Component {
           { translate('views.places.createNewButton') }
         </Link>
         <hr />
-        { this.renderPlacesList() }
+        { this.renderItemsList() }
       </section>
     )
   }
 
-  listItem(props) {
-    return <PlaceListItem key={props.id} {...props} />
+  constructor(props) {
+    super(props)
+
+    this.onClick = this.onClick.bind(this)
+    this.onEditClick = this.onEditClick.bind(this)
   }
 }
 
-export default PlacesIndex
+export default connect(
+  null, {
+    push,
+  }
+)(PlacesIndex)

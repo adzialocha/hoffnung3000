@@ -34,6 +34,7 @@ class StaticPage extends Component {
     if (this.props.hideTitle) {
       return null
     }
+
     return <h1>{ this.props.title }</h1>
   }
 

@@ -35,11 +35,9 @@ class Navigation extends Component {
           className={overlayClasses}
           onClick={this.props.collapseAll}
         />
-
         <Drawer expanded={this.props.isNavigationExpanded}>
           <NavigationLinks />
         </Drawer>
-
         <button
           className="button button--clear navigation__toggle"
           onClick={this.props.toggleNavigation}
@@ -50,7 +48,6 @@ class Navigation extends Component {
             <div className="hamburger__line" />
           </div>
         </button>
-
         <Sidebar />
       </nav>
     )

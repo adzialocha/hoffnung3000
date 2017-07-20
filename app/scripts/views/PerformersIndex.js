@@ -1,15 +1,29 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { push } from 'react-router-redux'
 
-import { InfiniteListContainer, PerformerListItem } from '../components'
+import { asInfiniteList } from '../containers'
+import { CuratedListItem } from '../components'
 import { translate } from '../services/i18n'
 
+const WrappedInfiniteList = asInfiniteList(CuratedListItem)
+
 class PerformersIndex extends Component {
-  renderPerformersList() {
+  static propTypes = {
+    push: PropTypes.func.isRequired,
+  }
+
+  onEditClick(item) {
+    this.props.push(`/performers/${item.slug}/edit`)
+  }
+
+  renderItemsList() {
     return (
-      <InfiniteListContainer
-        listItemNode={this.listItem}
+      <WrappedInfiniteList
         resourceName="performers"
+        onEditClick={this.onEditClick}
       />
     )
   }
@@ -18,18 +32,24 @@ class PerformersIndex extends Component {
     return (
       <section>
         <h1>{ translate('views.performers.indexTitle') }</h1>
-        <Link className="button button--green" to="/new/performer">
+        <Link className="button button--green" to="/new/place">
           { translate('views.performers.createNewButton') }
         </Link>
         <hr />
-        { this.renderPerformersList() }
+        { this.renderItemsList() }
       </section>
     )
   }
 
-  listItem(props) {
-    return <PerformerListItem key={props.id} {...props} />
+  constructor(props) {
+    super(props)
+
+    this.onEditClick = this.onEditClick.bind(this)
   }
 }
 
-export default PerformersIndex
+export default connect(
+  null, {
+    push,
+  }
+)(PerformersIndex)

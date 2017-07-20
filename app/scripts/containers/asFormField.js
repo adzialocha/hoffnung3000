@@ -33,6 +33,7 @@ export default function asFormField(WrappedComponent) {
       if (!this.props.label) {
         return null
       }
+
       return <label className="form__field-label">{this.props.label}</label>
     }
 

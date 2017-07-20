@@ -8,6 +8,7 @@ import {
 } from './auth'
 
 import {
+  Admin,
   Calendar,
   EventsEdit,
   EventsNew,
@@ -32,8 +33,6 @@ import {
   ResetPassword,
   Tickets,
 } from './views'
-
-import { Admin } from './containers'
 
 export default class Routes extends Component {
   render() {

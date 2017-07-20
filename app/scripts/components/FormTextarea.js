@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { asFormField } from '../forms'
+import { asFormField } from '../containers'
 
 class FormTextarea extends Component {
   static propTypes = {

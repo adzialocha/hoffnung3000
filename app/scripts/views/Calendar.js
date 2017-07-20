@@ -1,15 +1,34 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { push } from 'react-router-redux'
 
-import { InfiniteListContainer, EventListItem } from '../components'
+import { asInfiniteList } from '../containers'
+import { CuratedEventListItem } from '../components'
 import { translate } from '../services/i18n'
 
+const WrappedInfiniteList = asInfiniteList(CuratedEventListItem)
+
 class Calendar extends Component {
-  renderEventsList() {
+  static propTypes = {
+    push: PropTypes.func.isRequired,
+  }
+
+  onClick(item) {
+    this.props.push(`/events/${item.slug}`)
+  }
+
+  onEditClick(item) {
+    this.props.push(`/events/${item.slug}/edit`)
+  }
+
+  renderItemsList() {
     return (
-      <InfiniteListContainer
-        listItemNode={this.listItem}
+      <WrappedInfiniteList
         resourceName="events"
+        onClick={this.onClick}
+        onEditClick={this.onEditClick}
       />
     )
   }
@@ -22,14 +41,21 @@ class Calendar extends Component {
           { translate('views.events.createNewButton') }
         </Link>
         <hr />
-        { this.renderEventsList() }
+        { this.renderItemsList() }
       </section>
     )
   }
 
-  listItem(props) {
-    return <EventListItem key={props.id} {...props} />
+  constructor(props) {
+    super(props)
+
+    this.onClick = this.onClick.bind(this)
+    this.onEditClick = this.onEditClick.bind(this)
   }
 }
 
-export default Calendar
+export default connect(
+  null, {
+    push,
+  }
+)(Calendar)

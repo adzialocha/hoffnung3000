@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormInput, FormTextarea } from '../components'
+import { FormInput, FormTextarea, FormPlaceSelector } from '../components'
 import { translate } from '../services/i18n'
 
 const validate = values => {
@@ -68,6 +68,15 @@ class EventForm extends Component {
           name="description"
           type="text"
         />
+        <hr />
+        <Field
+          component={FormPlaceSelector}
+          disabled={this.props.isLoading}
+          label={translate('forms.event.where')}
+          name="placeId"
+          type="text"
+        />
+        <hr />
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}

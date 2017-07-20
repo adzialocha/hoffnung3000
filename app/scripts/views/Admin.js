@@ -9,7 +9,7 @@ import {
   AdminUsers,
   AdminUsersEditForm,
   AdminUsersNewForm,
-} from '../views'
+} from './'
 
 class Admin extends Component {
   render() {

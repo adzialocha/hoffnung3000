@@ -1,15 +1,29 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { push } from 'react-router-redux'
 
-import { InfiniteListContainer, ItemListItem } from '../components'
+import { asInfiniteList } from '../containers'
+import { CuratedListItem } from '../components'
 import { translate } from '../services/i18n'
 
+const WrappedInfiniteList = asInfiniteList(CuratedListItem)
+
 class ItemsIndex extends Component {
+  static propTypes = {
+    push: PropTypes.func.isRequired,
+  }
+
+  onEditClick(item) {
+    this.props.push(`/items/${item.slug}/edit`)
+  }
+
   renderItemsList() {
     return (
-      <InfiniteListContainer
-        listItemNode={this.listItem}
+      <WrappedInfiniteList
         resourceName="items"
+        onEditClick={this.onEditClick}
       />
     )
   }
@@ -18,7 +32,7 @@ class ItemsIndex extends Component {
     return (
       <section>
         <h1>{ translate('views.items.indexTitle') }</h1>
-        <Link className="button button--green" to="/new/item">
+        <Link className="button button--green" to="/new/place">
           { translate('views.items.createNewButton') }
         </Link>
         <hr />
@@ -27,9 +41,15 @@ class ItemsIndex extends Component {
     )
   }
 
-  listItem(props) {
-    return <ItemListItem key={props.id} {...props} />
+  constructor(props) {
+    super(props)
+
+    this.onEditClick = this.onEditClick.bind(this)
   }
 }
 
-export default ItemsIndex
+export default connect(
+  null, {
+    push,
+  }
+)(ItemsIndex)

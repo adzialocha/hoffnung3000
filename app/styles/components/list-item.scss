@@ -5,15 +5,18 @@ $_list-item-mobile-height: 100px;
   display: flex;
 
   width: 100%;
+  min-width: 100%;
   height: $_list-item-height;
-
-  transition: background .2s linear;
-
-  cursor: pointer;
 
   + .list-item {
     margin-top: 25px;
   }
+}
+
+.list-item--clickable {
+  transition: background .2s linear;
+
+  cursor: pointer;
 
   &:hover {
     background-color: $gray-lighter;
