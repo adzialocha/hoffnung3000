@@ -106,6 +106,32 @@ class FormSlotSizeEditor extends Component {
     )
   }
 
+  renderModalContent() {
+    return (
+      <div className="modal">
+        <div className="modal__header">
+          <h1>{ translate('components.slotEditor.title') }</h1>
+        </div>
+        <div className="modal__content modal__content--scrollable">
+          <SlotEditor
+            slots={this.state.slots}
+            onSlotStatusChange={this.onSlotStatusChange}
+          />
+        </div>
+        <div className="modal__footer">
+          <div className="button-group">
+            <button
+              className="button button--green"
+              onClick={this.onCloseClick}
+            >
+              { translate('components.slotEditor.submitButton') }
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   renderBlockSlots() {
     return (
       <div className="form__field">
@@ -117,11 +143,7 @@ class FormSlotSizeEditor extends Component {
             contentLabel="FormSlotSizeEditorModal"
             isOpen={this.state.isModalOpen}
           >
-            <SlotEditor
-              slots={this.state.slots}
-              onSlotStatusChange={this.onSlotStatusChange}
-              onSubmit={this.onCloseClick}
-            />
+            { this.renderModalContent() }
           </Modal>
           <div className="button-group">
             <button

@@ -3,13 +3,11 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { SlotEditorItem } from './'
-import { translate } from '../services/i18n'
 
 class SlotEditor extends Component {
   static propTypes = {
     isBookingMode: PropTypes.bool,
     onSlotStatusChange: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
     slots: PropTypes.array,
   }
 
@@ -20,10 +18,6 @@ class SlotEditor extends Component {
 
   componentDidUpdate() {
     this.props.onSlotStatusChange(this.state.slots)
-  }
-
-  onSubmit() {
-    this.props.onSubmit()
   }
 
   onSlotStatusChange(slot) {
@@ -62,6 +56,7 @@ class SlotEditor extends Component {
         this.renderSlotItem(item, index),
       ]
     }
+
     return this.renderSlotItem(item, index)
   }
 
@@ -75,22 +70,7 @@ class SlotEditor extends Component {
   render() {
     return (
       <div className="slot-editor">
-        <div className="slot-editor__header">
-          <h1>{ translate('components.slotEditor.title') }</h1>
-        </div>
-        <div className="slot-editor__content">
-          { this.renderContent() }
-        </div>
-        <div className="slot-editor__footer">
-          <div className="button-group">
-            <button
-              className="button button--green"
-              onClick={this.onSubmit}
-            >
-              { translate('components.slotEditor.submitButton') }
-            </button>
-          </div>
-        </div>
+        { this.renderContent() }
       </div>
     )
   }
@@ -102,7 +82,6 @@ class SlotEditor extends Component {
       slots: props.slots,
     }
 
-    this.onSubmit = this.onSubmit.bind(this)
     this.onSlotStatusChange = this.onSlotStatusChange.bind(this)
   }
 }

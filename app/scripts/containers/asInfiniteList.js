@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import Infinite from 'react-infinite'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -12,6 +13,7 @@ const INFINITE_LOAD_OFFSET = 50
 export default function asInfiniteList(WrappedListItemComponent) {
   class InfiniteListContainer extends Component {
     static propTypes = {
+      containerHeight: PropTypes.number,
       currentPageIndex: PropTypes.number.isRequired,
       fetchList: PropTypes.func.isRequired,
       isLoading: PropTypes.bool.isRequired,
@@ -20,15 +22,15 @@ export default function asInfiniteList(WrappedListItemComponent) {
       onEditClick: PropTypes.func,
       resourceName: PropTypes.string.isRequired,
       totalPageCount: PropTypes.number,
+      useWindowAsScrollContainer: PropTypes.bool,
     }
 
     static defaultProps = {
+      containerHeight: undefined,
       onClick: undefined,
       onEditClick: undefined,
-    }
-
-    static defaultProps = {
       totalPageCount: undefined,
+      useWindowAsScrollContainer: true,
     }
 
     componentDidMount() {
@@ -72,14 +74,25 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
 
     render() {
+      const infiniteListClasses = classnames(
+        'infinite-list-container', {
+          'infinite-list-container--in-modal': (
+            !this.props.useWindowAsScrollContainer
+          ),
+        }
+      )
+
       return (
         <Infinite
-          className="infinite-list-container"
+          className={infiniteListClasses}
+          containerHeight={this.props.containerHeight}
           elementHeight={LIST_ITEM_HEIGHT}
           infiniteLoadBeginEdgeOffset={INFINITE_LOAD_OFFSET}
           isInfiniteLoading={this.props.isLoading}
           loadingSpinnerDelegate={this.renderSpinner()}
-          useWindowAsScrollContainer={true}
+          useWindowAsScrollContainer={
+            this.props.useWindowAsScrollContainer
+          }
           onInfiniteLoad={this.onInfiniteLoad}
         >
           { this.renderListItems() }

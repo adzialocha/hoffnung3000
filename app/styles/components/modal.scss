@@ -21,23 +21,20 @@ $_modal-header-height: 55px;
 }
 
 .modal__content {
-  position: absolute;
+  overflow: hidden;
 
-  top: 0;
-  bottom: 0;
-
-  display: flex;
-
-  overflow: auto;
-
-  width: 100%;
+  height: 100%;
 
   padding-top: $_modal-header-height;
   padding-bottom: $_modal-footer-height;
+}
 
-  flex-wrap: wrap;
+.modal__content--full {
+  padding: 0;
+}
 
-  align-content: flex-start;
+.modal__content--scrollable {
+  overflow: auto;
 }
 
 .modal__footer {

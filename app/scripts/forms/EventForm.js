@@ -2,7 +2,13 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormInput, FormTextarea, FormPlaceSelector } from '../components'
+import {
+  FormCheckbox,
+  FormInput,
+  FormPlaceSelector,
+  FormSlotSelector,
+  FormTextarea,
+} from '../components'
 import { translate } from '../services/i18n'
 
 const validate = values => {
@@ -69,12 +75,29 @@ class EventForm extends Component {
           type="text"
         />
         <hr />
+        <h2>{ translate('forms.event.where') }</h2>
         <Field
           component={FormPlaceSelector}
           disabled={this.props.isLoading}
-          label={translate('forms.event.where')}
           name="placeId"
           type="text"
+        />
+        <hr />
+        <h2>{ translate('forms.event.when') }</h2>
+        <Field
+          component={FormSlotSelector}
+          disabled={this.props.isLoading}
+          name="slots"
+          type="text"
+        />
+        <hr />
+        <h2>{ translate('forms.event.publicOrPrivate') }</h2>
+        <Field
+          component={FormCheckbox}
+          disabled={this.props.isLoading}
+          inline={true}
+          label={translate('forms.event.areEventsPublic')}
+          name="isPublic"
         />
         <hr />
         <button

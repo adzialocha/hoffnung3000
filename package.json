@@ -119,6 +119,7 @@
     "pg": "6.4.0",
     "pg-hstore": "2.3.2",
     "random-animal-name-generator": "0.1.0",
+    "react-measure": "^2.0.2",
     "save-dev": "2.0.0",
     "sequelize": "4.3.1",
     "sequelize-slugify": "https://github.com/gleuch/sequelize-slugify#master",

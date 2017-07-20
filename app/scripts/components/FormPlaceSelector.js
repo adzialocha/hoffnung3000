@@ -1,3 +1,4 @@
+import Measure from 'react-measure'
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -16,6 +17,12 @@ class FormPlaceSelector extends Component {
 
   componentDidUpdate() {
     this.props.input.onChange(this.state.place)
+  }
+
+  onMeasureResize(contentRect) {
+    this.setState({
+      containerHeight: contentRect.bounds.height,
+    })
   }
 
   onPlaceClick(place) {
@@ -42,9 +49,30 @@ class FormPlaceSelector extends Component {
   renderPlacesList() {
     return (
       <WrappedInfiniteList
+        containerHeight={this.state.containerHeight}
         resourceName="places"
+        useWindowAsScrollContainer={false}
         onClick={this.onPlaceClick}
       />
+    )
+  }
+
+  renderModalContainer() {
+    return (
+      <Measure bounds={true} onResize={this.onMeasureResize}>
+        {
+          ({ measureRef }) => {
+            return (
+              <div
+                className="modal__content modal__content--full"
+                ref={measureRef}
+              >
+                { this.renderPlacesList() }
+              </div>
+            )
+          }
+        }
+      </Measure>
     )
   }
 
@@ -52,18 +80,16 @@ class FormPlaceSelector extends Component {
     return (
       <div className="modal">
         <div className="modal__header">
-          <h1>{ translate('components.placeSelector.title') }</h1>
+          <h1>{ translate('components.formPlaceSelector.title') }</h1>
         </div>
-        <div className="modal__content">
-          { this.renderPlacesList() }
-        </div>
+        { this.renderModalContainer() }
         <div className="modal__footer">
           <div className="button-group">
             <button
               className="button button--green"
               onClick={this.onCloseClick}
             >
-              { translate('components.placeSelector.submitButton') }
+              { translate('components.formPlaceSelector.submitButton') }
             </button>
           </div>
         </div>
@@ -95,7 +121,7 @@ class FormPlaceSelector extends Component {
             disabled={this.props.disabled}
             onClick={this.onOpenClick}
           >
-            { translate('components.placeSelector.openModalButton') }
+            { translate('components.formPlaceSelector.openModalButton') }
           </button>
         </div>
       </div>
@@ -106,11 +132,13 @@ class FormPlaceSelector extends Component {
     super(props)
 
     this.state = {
+      containerHeight: 500,
       isModalOpen: false,
       place: props.input.value,
     }
 
     this.onCloseClick = this.onCloseClick.bind(this)
+    this.onMeasureResize = this.onMeasureResize.bind(this)
     this.onOpenClick = this.onOpenClick.bind(this)
     this.onPlaceClick = this.onPlaceClick.bind(this)
   }
