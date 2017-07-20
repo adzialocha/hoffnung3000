@@ -23,7 +23,7 @@ class PaginatedListActionButton extends Component {
   render() {
     const buttonClasses = classnames([
       'button',
-      'paginated-list__action-button',
+      'button--small-mobile',
       this.props.classNameModifier,
     ])
 

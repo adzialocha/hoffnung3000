@@ -1,10 +1,9 @@
 export default {
   common: {
-    loading: 'Loading ...',
-    payViaPayPal: 'Pay via PayPal',
-    payViaTransfer: 'Pay via transfer',
     agreeWithTerms: 'I agree with the terms',
     nextStep: 'Next step',
+    payViaPayPal: 'Pay via PayPal',
+    payViaTransfer: 'Pay via transfer',
     previousStep: 'Previous step',
   },
   navigationLinks: {
@@ -26,6 +25,18 @@ export default {
   ticketWizard: {
     stepTitle: 'Get a festival ticket (Step {currentStep} of {totalSteps})',
   },
+  locationSelector: {
+    addressMode: 'Regular address',
+    city: 'City',
+    cityCode: 'City code',
+    clickMap: 'Click on the map to mark a position for your place.',
+    country: 'Country',
+    currentGpsPosition: 'Selected position (latitude and longitude)',
+    gpsPositionMode: 'GPS position',
+    street: 'Street + Number',
+    virtualMode: 'Virtual space',
+    yourPlacePosition: 'The position of your place',
+  },
   registrationWizard: {
     stepTitle: 'Registration (Step {currentStep} of {totalSteps})',
   },
@@ -40,6 +51,19 @@ export default {
     visitorButton: 'Buy a visitor ticket',
     visitorHeader: 'Or buy a visitor ticket to visit the festival.',
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
+  },
+  slotEditor: {
+    submitButton: 'Okay',
+    title: 'Slot editor',
+  },
+  slotSizeEditor: {
+    editSlotsLabel: 'Enable / disable slots',
+    editSlotsButton: 'Edit slots',
+    slotSizeLabel: 'How long is one slot?',
+  },
+  placeListItem: {
+    isPrivatePlace: 'This place is not visible to the audience',
+    virtualLocation: '@ Virtual location',
   },
   footer: {
     about: 'About',

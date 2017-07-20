@@ -46,6 +46,17 @@ button,
   }
 }
 
+@include media-breakpoint(xs) {
+  .button--small-mobile {
+    padding-top: 8px;
+    padding-right: 8px;
+    padding-bottom: 6px;
+    padding-left: 8px;
+
+    font-size: $font-size-sm;
+  }
+}
+
 .button--clear {
   padding: 0;
 

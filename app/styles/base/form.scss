@@ -37,9 +37,11 @@ label {
   }
 
   &[disabled] {
-    background-color: $gray;
+    color: $gray;
 
-    cursor: default;
+    background-color: $gray-light;
+
+    cursor: not-allowed;
   }
 }
 
@@ -75,6 +77,20 @@ input {
     @extend %form-layout-style;
   }
 
+  &:read-only {
+    color: $gray;
+
+    background-color: $gray-lighter;
+
+    transition: none;
+
+    cursor: not-allowed;
+
+    &:focus {
+      background-color: $gray-lighter;
+    }
+  }
+
   &[type="submit"] {
     margin-top: 20px;
   }
@@ -106,7 +122,7 @@ input {
       &[disabled] {
         background-color: $gray;
 
-        cursor: default;
+        cursor: not-allowed;
       }
     }
   }

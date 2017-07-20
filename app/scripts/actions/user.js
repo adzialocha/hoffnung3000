@@ -12,7 +12,7 @@ export function changeProfile(password, newPassword) {
     success: {
       type: ActionTypes.CHANGE_PROFILE_SUCCESS,
       [FLASH]: {
-        text: translate('flash.changeProfileSuccess'),
+        text: translate('flash.updateProfileSuccess'),
       },
       [REDIRECT]: '/',
     },

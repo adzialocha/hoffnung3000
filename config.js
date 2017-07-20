@@ -29,6 +29,7 @@ const config = {
   video: {
     registration: process.env.CONFIG_VIDEO_REGISTRATION || 'KRYVH7fGa68',
   },
+  googleMapApiKey: process.env.GOOGLE_MAP_API_KEY,
 }
 
 export default config

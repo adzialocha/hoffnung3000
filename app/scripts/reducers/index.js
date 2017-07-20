@@ -6,6 +6,7 @@ import api from './api'
 import auth from './auth'
 import drawer from './drawer'
 import flash from './flash'
+import infiniteList from './infiniteList'
 import meta from './meta'
 import page from './page'
 import paginatedList from './paginatedList'
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   drawer,
   flash,
   form,
+  infiniteList,
   meta,
   page,
   paginatedList,

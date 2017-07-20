@@ -15,7 +15,7 @@ function sortItems(list) {
   })
 }
 
-function remoteItem(state, resourceId) {
+function removeItem(state, resourceId) {
   return state.listItems.filter((listItem) => {
     return listItem.id !== resourceId
   })
@@ -42,7 +42,7 @@ export default (state = initialState, action) => {
     })
   case ActionTypes.PAGINATED_LIST_REMOVE_ITEM:
     return update(state, {
-      listItems: { $set: remoteItem(state, action.resourceId) },
+      listItems: { $set: removeItem(state, action.resourceId) },
     })
   default:
     return state
