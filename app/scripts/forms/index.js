@@ -1,4 +1,5 @@
 export asFormField from './asFormField'
+export EventForm from './EventForm'
 export ForgotPasswordForm from './ForgotPasswordForm'
 export ItemForm from './ItemForm'
 export LoginForm from './LoginForm'

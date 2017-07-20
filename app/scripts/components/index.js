@@ -1,4 +1,5 @@
 export Drawer from './Drawer'
+export EventListItem from './EventListItem'
 export FlashMessage from './FlashMessage'
 export FlashMessageStage from './FlashMessageStage'
 export Footer from './Footer'

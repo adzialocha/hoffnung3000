@@ -12,6 +12,7 @@ import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
 
 import authRoutes from './auth'
+import eventRoutes from './event'
 import itemRoutes from './item'
 import pageRoutes from './page'
 import performerRoutes from './performer'
@@ -47,11 +48,11 @@ router.use(
   }
 )
 
-router.use('/profile', profileRoutes)
-
-router.use('/places', placeRoutes)
+router.use('/events', eventRoutes)
 router.use('/items', itemRoutes)
 router.use('/performers', performerRoutes)
+router.use('/places', placeRoutes)
+router.use('/profile', profileRoutes)
 
 // admin API routes
 

@@ -12,6 +12,9 @@ module.exports = {
       updatedAt: {
         type: Sequelize.DATE,
       },
+      animalId: {
+        type: Sequelize.INTEGER,
+      },
       placeId: {
         type: Sequelize.INTEGER,
       },

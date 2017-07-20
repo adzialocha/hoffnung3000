@@ -9,17 +9,20 @@ import {
 
 import {
   Calendar,
+  EventsEdit,
+  EventsNew,
+  EventsShow,
   ForgotPassword,
   Home,
   ItemsEdit,
   ItemsIndex,
   ItemsNew,
-  PerformersEdit,
-  PerformersIndex,
-  PerformersNew,
   Login,
   NotFound,
   Page,
+  PerformersEdit,
+  PerformersIndex,
+  PerformersNew,
   PlacesEdit,
   PlacesIndex,
   PlacesNew,
@@ -43,12 +46,15 @@ export default class Routes extends Component {
           <Route component={shouldNotBeAuthenticated(Tickets)} path="/tickets" />
           <Route component={shouldNotBeAuthenticated(ForgotPassword)} path="/forgot" />
           <Route component={shouldNotBeAuthenticated(ResetPassword)} path="/reset/:token" />
-          <Route component={Calendar} path="/calendar" />
           <Route component={Page} path="/pages/:slug" />
+          <Route component={Calendar} path="/calendar" />
           <Route component={isAuthenticated(Profile)} path="/profile" />
           <Route component={isParticipant(PlacesNew)} path="/new/place" />
           <Route component={isParticipant(ItemsNew)} path="/new/item" />
+          <Route component={isParticipant(EventsNew)} path="/new/event" />
           <Route component={isParticipant(PerformersNew)} path="/new/performer" />
+          <Route component={isParticipant(EventsEdit)} path="/events/:slug/edit" />
+          <Route component={isParticipant(EventsShow)} path="/events/:slug" />
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
           <Route component={isParticipant(PlacesShow)} path="/places/:slug" />
           <Route component={isParticipant(PlacesIndex)} path="/places" />
