@@ -17,7 +17,7 @@ class CuratedListItem extends Component {
 
   render() {
     return (
-      <div className="list-item__content">
+      <div className="list-item-content">
         <div className="list-item__title ellipsis">
           { this.props.item.title }
         </div>
