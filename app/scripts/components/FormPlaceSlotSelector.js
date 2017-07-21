@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 
 import { asFormField } from '../containers'
 import { fetchSlots } from '../actions/slots'
-import { generateNewSlotItems } from '../utils/slots'
+import { formatEventTime } from '../utils/dateFormat'
+import { generateNewSlotItems, getSlotWithIndex } from '../utils/slots'
 import { PlaceSelector, SlotSelector, CuratedPlaceListItem } from './'
 import { translate } from '../services/i18n'
 
@@ -44,7 +45,19 @@ class FormPlaceSlotSelector extends Component {
   }
 
   renderSelectedSlots() {
-    return null
+    const slotIndexes = this.state.selectedSlotsIndexes
+
+    if (slotIndexes.length === 0) {
+      return null
+    }
+
+    const slots = this.generateSlots()
+    const firstSlot = getSlotWithIndex(slots, slotIndexes[0])
+    const lastSlot = getSlotWithIndex(
+      slots, slotIndexes[slotIndexes.length - 1]
+    )
+
+    return formatEventTime(firstSlot.from, lastSlot.to)
   }
 
   renderSlotSelector() {

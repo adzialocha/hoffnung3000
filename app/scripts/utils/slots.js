@@ -69,6 +69,10 @@ export function getDisabledSlotIndexes(slots) {
   }, [])
 }
 
+export function getSlotWithIndex(slots, slotIndex) {
+  return slots.find((slot) => slot.slotIndex === slotIndex)
+}
+
 export function generateNewSlotItems(slotSize, existingSlots) {
   const slotItems = []
 
