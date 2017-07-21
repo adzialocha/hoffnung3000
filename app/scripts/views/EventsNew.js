@@ -40,6 +40,7 @@ class EventsNew extends Component {
         <hr />
         <EventForm
           errorMessage={this.props.errorMessage}
+          initialValues={ { isPublic: true } }
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
         />
