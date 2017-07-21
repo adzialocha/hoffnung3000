@@ -61,10 +61,18 @@
   color: $white;
 
   background-color: $red;
+
+  &:hover {
+    background-color: lighten($red, 25%);
+  }
 }
 
 .slot-editor__item--booked-by-me {
   background-color: $green;
+
+  &:hover {
+    background-color: lighten($green, 25%);
+  }
 }
 
 .slot-editor__day-header {
