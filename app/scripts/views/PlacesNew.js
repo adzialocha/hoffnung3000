@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
 import { PlaceForm } from '../forms'
-import { prepareSlotIds } from '../utils/slots'
+import { getDisabledSlotIndexes } from '../utils/slots'
 import { translate } from '../services/i18n'
 
 class PlacesNew extends Component {
@@ -20,7 +20,7 @@ class PlacesNew extends Component {
   onSubmit(values) {
     const { title, description, isPublic } = values
     const { slotSize, slots } = values.slots
-    const disabledSlots = slots ? prepareSlotIds(slots) : []
+    const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
 
     const flash = {
       text: translate('flash.createPlaceSuccess'),

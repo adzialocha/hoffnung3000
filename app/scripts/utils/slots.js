@@ -62,20 +62,10 @@ export function numberToSlotSizeStrHuman(num) {
   return [hoursStr, andStr, minutesStr].join('')
 }
 
-export function prepareSlotIds(slots) {
+export function getDisabledSlotIndexes(slots) {
   return slots.reduce((acc, slot) => {
-    if (!filter && slot.status !== undefined) {
-      acc.push(slot.id)
-    }
-    return acc
-  }, [])
-}
-
-export function filterMySlots(slots) {
-  return slots.reduce((acc, slot) => {
-    if (slot.status === BOOKED_BY_ME || slot.isBookedByMe) {
-      slot.isBookedByMe = true
-      acc.push(slot)
+    if (slot.isDisabled) {
+      acc.push(slot.slotIndex)
     }
     return acc
   }, [])

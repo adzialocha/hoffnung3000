@@ -69,7 +69,7 @@ class FormSlotSizeEditor extends Component {
     })
   }
 
-  onSlotStatusChange(slots) {
+  onSlotDisabledChange(slots) {
     this.setState({
       slots,
     })
@@ -115,7 +115,7 @@ class FormSlotSizeEditor extends Component {
         <div className="modal__content modal__content--scrollable">
           <SlotEditor
             slots={this.state.slots}
-            onSlotStatusChange={this.onSlotStatusChange}
+            onSlotDisabledChange={this.onSlotDisabledChange}
           />
         </div>
         <div className="modal__footer">
@@ -187,7 +187,7 @@ class FormSlotSizeEditor extends Component {
     this.onFocus = this.onFocus.bind(this)
     this.onOpenClick = this.onOpenClick.bind(this)
     this.onAfterChange = this.onAfterChange.bind(this)
-    this.onSlotStatusChange = this.onSlotStatusChange.bind(this)
+    this.onSlotDisabledChange = this.onSlotDisabledChange.bind(this)
   }
 }
 

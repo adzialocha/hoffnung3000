@@ -31,7 +31,6 @@ function isInClosedOrder(arr) {
 
 class SlotEditor extends Component {
   static propTypes = {
-    disabledSlotsIndexes: PropTypes.array,
     isBookingMode: PropTypes.bool,
     onSlotDisabledChange: PropTypes.func,
     onSlotSelectionChange: PropTypes.func,
@@ -40,7 +39,6 @@ class SlotEditor extends Component {
   }
 
   static defaultProps = {
-    disabledSlotsIndexes: [],
     isBookingMode: false,
     onSlotDisabledChange: undefined,
     onSlotSelectionChange: undefined,
@@ -49,15 +47,19 @@ class SlotEditor extends Component {
   }
 
   onSlotDisabledChange(slot, status) {
-    const disabledSlotsIndexes = addOrRemoveFromArray(
-      this.state.disabledSlotsIndexes, slot.slotIndex, status
-    )
+    const slots = this.state.slots.reduce((acc, item) => {
+      if (item.slotIndex === slot.slotIndex) {
+        item.isDisabled = status
+      }
+      acc.push(item)
+      return acc
+    }, [])
 
     this.setState({
-      disabledSlotsIndexes,
+      slots,
     })
 
-    this.props.onSlotDisabledChange(disabledSlotsIndexes)
+    this.props.onSlotDisabledChange(this.state.slots)
   }
 
   onSlotBookedChange(slot, status) {
@@ -133,7 +135,6 @@ class SlotEditor extends Component {
     super(props)
 
     this.state = {
-      disabledSlotsIndexes: props.disabledSlotsIndexes,
       selectedSlotsIndexes: props.selectedSlotsIndexes,
       slots: props.slots,
     }
