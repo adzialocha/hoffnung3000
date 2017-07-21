@@ -53,8 +53,13 @@ export default {
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
   },
   slotEditor: {
+    slotsHaveToBeInClosedOrder: 'Please select your slots in a closed order',
     submitButton: 'Okay',
     title: 'Slot editor',
+  },
+  slotEditorItem: {
+    slotIsBookedAlert: 'Sorry, this slot was already booked by someone else',
+    slotIsDisabledAlert: 'Sorry, the owner of this place disabled this slot',
   },
   formPlaceSlotSelector: {
     loadingSlots: 'Loading slot data ...',

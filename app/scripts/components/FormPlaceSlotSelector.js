@@ -57,7 +57,7 @@ class FormPlaceSlotSelector extends Component {
       slots, slotIndexes[slotIndexes.length - 1]
     )
 
-    return formatEventTime(firstSlot.from, lastSlot.to)
+    return <h4>{ formatEventTime(firstSlot.from, lastSlot.to) }</h4>
   }
 
   renderSlotSelector() {
@@ -110,6 +110,7 @@ class FormPlaceSlotSelector extends Component {
       <div className="form__field-input">
         <h2>{ translate('components.formPlaceSlotSelector.where') }</h2>
         { this.renderSelectedPlace() }
+        <br />
         { this.renderPlaceSelector() }
         <hr />
         <h2>{ translate('components.formPlaceSlotSelector.when') }</h2>
