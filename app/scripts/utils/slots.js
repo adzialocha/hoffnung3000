@@ -1,10 +1,8 @@
 import dateFns from 'date-fns'
 
-import { DISABLED, BOOKED, BOOKED_BY_ME } from '../components/SlotEditorItem'
+import config from '../../../config'
 import { translate } from '../services/i18n'
 
-const FESTIVAL_DATE_START = '2017-08-24T00:00:00.000+02:00'
-const FESTIVAL_DATE_END = '2017-08-27T00:00:00.000+02:00'
 const TIME_FORMAT = 'HH:mm'
 
 function addSlotDuration(date, slotSize) {
@@ -14,8 +12,8 @@ function addSlotDuration(date, slotSize) {
 function isInFestivalRange(date) {
   return dateFns.isWithinRange(
     date,
-    FESTIVAL_DATE_START,
-    FESTIVAL_DATE_END
+    config.festivalDateStart,
+    config.festivalDateEnd
   )
 }
 
@@ -94,7 +92,7 @@ export function generateNewSlotItems(slotSize, existingSlots) {
   }
 
   let slotIndex = 0
-  let from = dateFns.parse(FESTIVAL_DATE_START)
+  let from = dateFns.parse(config.festivalDateStart)
   let to = addSlotDuration(from, slotSize)
 
   while (isInFestivalRange(to)) {

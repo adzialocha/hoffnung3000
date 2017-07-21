@@ -7,22 +7,16 @@ import config from '../../../config'
 import styles from '../utils/googleMapStyle.json'
 import { translate } from '../services/i18n'
 
-const DEFAULT_CITY = 'Berlin'
-const DEFAULT_COUNTRY = 'Germany'
-const DEFAULT_LATITUDE = 52.53647
-const DEFAULT_LONGITUDE = 13.40780
 const DEFAULT_MODE = 'address'
-
 const DEFAULT_ZOOM = 17
 const GOOGLE_MAP_SCRIPT_URL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${config.googleMapApiKey}`
-const MAP_OPTIONS = {
-  disableDefaultUI: true,
-  zoomControl: true,
-  styles,
-}
+const MAP_OPTIONS = { disableDefaultUI: true, zoomControl: true, styles }
 
 const LocationSelectorMap = withScriptjs(withGoogleMap(props => {
-  const defaultCenter = { lat: DEFAULT_LATITUDE, lng: DEFAULT_LONGITUDE }
+  const defaultCenter = {
+    lat: config.defaultLatitude,
+    lng: config.defaultLongitude,
+  }
   const center = props.markerPosition ? props.markerPosition : defaultCenter
 
   return (
@@ -263,11 +257,11 @@ class LocationSelector extends Component {
     super(props)
 
     this.state = {
-      city: this.props.value.city || DEFAULT_CITY,
+      city: this.props.value.city || config.defaultCity,
       cityCode: this.props.value.cityCode || '',
-      country: this.props.value.country || DEFAULT_COUNTRY,
-      latitude: this.props.value.latitude || DEFAULT_LATITUDE,
-      longitude: this.props.value.longitude || DEFAULT_LONGITUDE,
+      country: this.props.value.country || config.defaultCountry,
+      latitude: this.props.value.latitude || config.defaultLatitude,
+      longitude: this.props.value.longitude || config.defaultLongitude,
       mode: this.props.value.mode || DEFAULT_MODE,
       street: this.props.value.street || '',
     }
