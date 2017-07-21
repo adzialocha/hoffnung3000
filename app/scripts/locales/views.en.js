@@ -23,7 +23,7 @@ export default {
   },
   events: {
     calendarTitle: 'Calendar',
-    crateNewButton: 'Create event',
+    createNewButton: 'Create event',
     createNewTitle: 'Create new event',
   },
 }
