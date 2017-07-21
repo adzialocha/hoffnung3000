@@ -11,6 +11,7 @@ import meta from './meta'
 import page from './page'
 import paginatedList from './paginatedList'
 import resources from './resources'
+import slots from './slots'
 import ticket from './ticket'
 import user from './user'
 
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   paginatedList,
   resources,
   routing,
+  slots,
   ticket,
   user,
 })

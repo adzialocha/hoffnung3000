@@ -3,8 +3,8 @@ import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { asFormField, asInfiniteList } from '../containers'
-import CuratedPlaceListItem from './CuratedPlaceListItem'
+import { asInfiniteList } from '../containers'
+import { CuratedPlaceListItem } from './'
 import { translate } from '../services/i18n'
 
 const WrappedInfiniteList = asInfiniteList(CuratedPlaceListItem)
@@ -12,11 +12,7 @@ const WrappedInfiniteList = asInfiniteList(CuratedPlaceListItem)
 class FormPlaceSelector extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
-    input: PropTypes.object.isRequired,
-  }
-
-  componentDidUpdate() {
-    this.props.input.onChange(this.state.place)
+    onChange: PropTypes.func.isRequired,
   }
 
   onMeasureResize(contentRect) {
@@ -27,9 +23,10 @@ class FormPlaceSelector extends Component {
 
   onPlaceClick(place) {
     this.setState({
-      place,
       isModalOpen: false,
     })
+
+    this.props.onChange(place)
   }
 
   onOpenClick(event) {
@@ -80,7 +77,7 @@ class FormPlaceSelector extends Component {
     return (
       <div className="modal">
         <div className="modal__header">
-          <h1>{ translate('components.formPlaceSelector.title') }</h1>
+          <h1>{ translate('components.placeSelector.title') }</h1>
         </div>
         { this.renderModalContainer() }
         <div className="modal__footer">
@@ -89,7 +86,7 @@ class FormPlaceSelector extends Component {
               className="button button--green"
               onClick={this.onCloseClick}
             >
-              { translate('components.formPlaceSelector.submitButton') }
+              { translate('components.placeSelector.submitButton') }
             </button>
           </div>
         </div>
@@ -97,33 +94,36 @@ class FormPlaceSelector extends Component {
     )
   }
 
-  renderSelectedPlace() {
-    if (!this.state.place) {
-      return null
-    }
+  renderModal() {
+    return (
+      <Modal
+        contentLabel="FormPlaceSelectorModal"
+        isOpen={this.state.isModalOpen}
+      >
+        { this.renderModalContent() }
+      </Modal>
+    )
+  }
 
-    return <CuratedPlaceListItem item={this.state.place} />
+  renderButton() {
+    return (
+      <div className="button-group">
+        <button
+          className="button button--green"
+          disabled={this.props.disabled}
+          onClick={this.onOpenClick}
+        >
+          { translate('components.placeSelector.openModalButton') }
+        </button>
+      </div>
+    )
   }
 
   render() {
     return (
-      <div className="form__field-input">
-        <Modal
-          contentLabel="FormPlaceSelectorModal"
-          isOpen={this.state.isModalOpen}
-        >
-          { this.renderModalContent() }
-        </Modal>
-        { this.renderSelectedPlace() }
-        <div className="button-group">
-          <button
-            className="button button--green"
-            disabled={this.props.disabled}
-            onClick={this.onOpenClick}
-          >
-            { translate('components.formPlaceSelector.openModalButton') }
-          </button>
-        </div>
+      <div className="place-selector">
+        { this.renderModal() }
+        { this.renderButton() }
       </div>
     )
   }
@@ -134,7 +134,6 @@ class FormPlaceSelector extends Component {
     this.state = {
       containerHeight: 500,
       isModalOpen: false,
-      place: props.input.value,
     }
 
     this.onCloseClick = this.onCloseClick.bind(this)
@@ -144,4 +143,4 @@ class FormPlaceSelector extends Component {
   }
 }
 
-export default asFormField(FormPlaceSelector)
+export default FormPlaceSelector

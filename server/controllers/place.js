@@ -104,7 +104,7 @@ export default {
       .then(data => res.json(data))
       .catch(err => next(err))
   },
-  destroy: (req, res, next) => {
+  destroyWithSlug: (req, res, next) => {
     return destroyWithSlug(Place, req, res, next)
   },
   findAll: (req, res, next) => {
@@ -127,10 +127,10 @@ export default {
       })
       .catch(err => next(err))
   },
-  lookup: (req, res, next) => {
+  lookupWithSlug: (req, res, next) => {
     return lookupWithSlug(Place, req, res, next)
   },
-  update: (req, res, next) => {
+  updateWithSlug: (req, res, next) => {
     const body = pick(permittedFields, req.body)
     const values = preparePlaceValues(body, req.resourceId)
 

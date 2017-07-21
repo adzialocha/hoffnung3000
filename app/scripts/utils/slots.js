@@ -1,5 +1,6 @@
 import dateFns from 'date-fns'
 
+import { DISABLED, BOOKED, BOOKED_BY_ME } from '../components/SlotEditorItem'
 import { translate } from '../services/i18n'
 
 const FESTIVAL_DATE_START = '2017-08-24T00:00:00.000+02:00'
@@ -63,8 +64,18 @@ export function numberToSlotSizeStrHuman(num) {
 
 export function prepareSlotIds(slots) {
   return slots.reduce((acc, slot) => {
-    if (slot.status !== undefined) {
+    if (!filter && slot.status !== undefined) {
       acc.push(slot.id)
+    }
+    return acc
+  }, [])
+}
+
+export function filterMySlots(slots) {
+  return slots.reduce((acc, slot) => {
+    if (slot.status === BOOKED_BY_ME || slot.isBookedByMe) {
+      slot.isBookedByMe = true
+      acc.push(slot)
     }
     return acc
   }, [])
@@ -77,32 +88,37 @@ export function generateNewSlotItems(slotSize, existingSlots) {
     return slotItems
   }
 
-  let existingSlotStates = {}
+  let existingSlotDisabledStates = {}
+  let existingSlotEventIdStates = {}
 
   if (existingSlots) {
-    existingSlotStates = existingSlots.reduce((acc, slot) => {
-      if (slot.isDisabled) {
-        acc[slot.slotIndex] = 'disabled'
-      }
+    existingSlotDisabledStates = existingSlots.reduce((acc, slot) => {
+      acc[slot.slotIndex] = slot.isDisabled
+      return acc
+    }, {})
+
+    existingSlotEventIdStates = existingSlots.reduce((acc, slot) => {
+      acc[slot.slotIndex] = slot.eventId
       return acc
     }, {})
   }
 
-  let id = 0
+  let slotIndex = 0
   let from = dateFns.parse(FESTIVAL_DATE_START)
   let to = addSlotDuration(from, slotSize)
 
   while (isInFestivalRange(to)) {
     slotItems.push({
+      eventId: existingSlotEventIdStates[slotIndex],
       from,
       fromTimeStr: dateFns.format(from, TIME_FORMAT),
-      id,
+      isDisabled: existingSlotDisabledStates[slotIndex],
+      slotIndex,
       to,
-      status: existingSlotStates[id],
       toTimeStr: dateFns.format(to, TIME_FORMAT),
     })
 
-    id += 1
+    slotIndex += 1
     from = addSlotDuration(from, slotSize)
     to = addSlotDuration(from, slotSize)
   }

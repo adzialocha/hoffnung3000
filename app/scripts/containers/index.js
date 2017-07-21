@@ -1,3 +1,3 @@
-export asFormField from './asFormField'
-export asInfiniteList from './asInfiniteList'
-export asInfiniteListItem from './asInfiniteListItem'
+export { default as asFormField } from './asFormField'
+export { default as asInfiniteList } from './asInfiniteList'
+export { default as asInfiniteListItem } from './asInfiniteListItem'

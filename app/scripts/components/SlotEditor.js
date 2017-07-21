@@ -2,29 +2,79 @@ import dateFns from 'date-fns'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import { alert } from '../services/dialog'
 import { SlotEditorItem } from './'
+import { translate } from '../services/i18n'
+
+function addOrRemoveFromArray(arr, slotIndex, status) {
+  if (status) {
+    return arr.concat([slotIndex])
+  }
+  return arr.filter(value => slotIndex !== value)
+}
+
+function isInClosedOrder(arr) {
+  if (arr.length < 2) {
+    return true
+  }
+
+  arr.sort((valA, valB) => valA - valB)
+
+  return !arr.some((currentItem, index) => {
+    const nextItem = arr[index + 1]
+    if (nextItem && nextItem !== currentItem + 1) {
+      return true
+    }
+    return false
+  })
+}
 
 class SlotEditor extends Component {
   static propTypes = {
+    disabledSlotsIndexes: PropTypes.array,
     isBookingMode: PropTypes.bool,
-    onSlotStatusChange: PropTypes.func.isRequired,
+    onSlotDisabledChange: PropTypes.func,
+    onSlotSelectionChange: PropTypes.func,
+    selectedSlotsIndexes: PropTypes.array,
     slots: PropTypes.array,
   }
 
   static defaultProps = {
+    disabledSlotsIndexes: [],
     isBookingMode: false,
+    onSlotDisabledChange: undefined,
+    onSlotSelectionChange: undefined,
+    selectedSlotsIndexes: [],
     slots: [],
   }
 
-  componentDidUpdate() {
-    this.props.onSlotStatusChange(this.state.slots)
+  onSlotDisabledChange(slot, status) {
+    const disabledSlotsIndexes = addOrRemoveFromArray(
+      this.state.disabledSlotsIndexes, slot.slotIndex, status
+    )
+
+    this.setState({
+      disabledSlotsIndexes,
+    })
+
+    this.props.onSlotDisabledChange(disabledSlotsIndexes)
   }
 
-  onSlotStatusChange(slot) {
-    this.state.slots[slot.id] = slot
+  onSlotBookedChange(slot, status) {
+    const selectedSlotsIndexes = addOrRemoveFromArray(
+      this.state.selectedSlotsIndexes, slot.slotIndex, status
+    )
+
+    if (!isInClosedOrder(selectedSlotsIndexes)) {
+      alert(translate('components.slotEditor.slotsHaveToBeInClosedOrder'))
+      return
+    }
+
     this.setState({
-      slots: this.state.slots,
+      selectedSlotsIndexes,
     })
+
+    this.props.onSlotSelectionChange(selectedSlotsIndexes)
   }
 
   renderSlotDateHeader(item, index) {
@@ -42,9 +92,13 @@ class SlotEditor extends Component {
     return (
       <SlotEditorItem
         isBookingMode={this.props.isBookingMode}
+        isSlotBookedByMe={
+          this.state.selectedSlotsIndexes.indexOf(item.slotIndex) > -1
+        }
         key={`slot-${index}`}
         slot={item}
-        onChange={this.onSlotStatusChange}
+        onChangeBookedByMeStatus={this.onSlotBookedChange}
+        onChangeDisabledStatus={this.onSlotDisabledChange}
       />
     )
   }
@@ -79,10 +133,13 @@ class SlotEditor extends Component {
     super(props)
 
     this.state = {
+      disabledSlotsIndexes: props.disabledSlotsIndexes,
+      selectedSlotsIndexes: props.selectedSlotsIndexes,
       slots: props.slots,
     }
 
-    this.onSlotStatusChange = this.onSlotStatusChange.bind(this)
+    this.onSlotBookedChange = this.onSlotBookedChange.bind(this)
+    this.onSlotDisabledChange = this.onSlotDisabledChange.bind(this)
   }
 }
 

@@ -5,8 +5,7 @@ import { Field, reduxForm } from 'redux-form'
 import {
   FormCheckbox,
   FormInput,
-  FormPlaceSelector,
-  FormSlotSelector,
+  FormPlaceSlotSelector,
   FormTextarea,
 } from '../components'
 import { translate } from '../services/i18n'
@@ -75,20 +74,11 @@ class EventForm extends Component {
           type="text"
         />
         <hr />
-        <h2>{ translate('forms.event.where') }</h2>
+        <h2>{ translate('forms.event.whereAndWhen') }</h2>
         <Field
-          component={FormPlaceSelector}
+          component={FormPlaceSlotSelector}
           disabled={this.props.isLoading}
-          name="placeId"
-          type="text"
-        />
-        <hr />
-        <h2>{ translate('forms.event.when') }</h2>
-        <Field
-          component={FormSlotSelector}
-          disabled={this.props.isLoading}
-          name="slots"
-          type="text"
+          name="placeSlots"
         />
         <hr />
         <h2>{ translate('forms.event.publicOrPrivate') }</h2>

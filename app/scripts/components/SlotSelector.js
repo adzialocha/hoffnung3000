@@ -2,27 +2,19 @@ import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { asFormField } from '../containers'
 import { SlotEditor } from './'
 import { translate } from '../services/i18n'
 
-class FormSlotSelector extends Component {
+class SlotSelector extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
-    input: PropTypes.object.isRequired,
-    slots: PropTypes.array,
+    onChange: PropTypes.func.isRequired,
+    selectedSlotsIndexes: PropTypes.array.isRequired,
+    slots: PropTypes.array.isRequired,
   }
 
-  static defaultProps = {
-    slots: undefined,
-  }
-
-  componentDidUpdate() {
-    this.props.input.onChange(this.state.place)
-  }
-
-  onSlotStatusChange(selectedSlots) {
-    console.log(selectedSlots)
+  onSlotSelectionChange(selectedSlotsIndexes) {
+    this.props.onChange(selectedSlotsIndexes)
   }
 
   onOpenClick(event) {
@@ -40,20 +32,17 @@ class FormSlotSelector extends Component {
   }
 
   renderModalContent() {
-    if (!this.props.slots) {
-      return null
-    }
-
     return (
       <div className="modal">
         <div className="modal__header">
           <h1>{ translate('components.formSlotSelector.title') }</h1>
         </div>
-        <div className="modal__content">
+        <div className="modal__content modal__content--scrollable">
           <SlotEditor
             isBookingMode={true}
+            selectedSlotsIndexes={this.props.selectedSlotsIndexes}
             slots={this.props.slots}
-            onSlotStatusChange={this.onSlotStatusChange}
+            onSlotSelectionChange={this.onSlotSelectionChange}
             onSubmit={this.onCloseClick}
           />
         </div>
@@ -74,7 +63,7 @@ class FormSlotSelector extends Component {
   renderModal() {
     return (
       <Modal
-        contentLabel="FormSlotSelectorModal"
+        contentLabel="SlotSelectorModal"
         isOpen={this.state.isModalOpen}
       >
         { this.renderModalContent() }
@@ -82,28 +71,25 @@ class FormSlotSelector extends Component {
     )
   }
 
-  renderSelectedSlots() {
-    if (!this.props.slots) {
-      return null
-    }
-
-    return null
+  renderButton() {
+    return (
+      <div className="button-group">
+        <button
+          className="button button--green"
+          disabled={this.props.disabled}
+          onClick={this.onOpenClick}
+        >
+          { translate('components.formSlotSelector.openModalButton') }
+        </button>
+      </div>
+    )
   }
 
   render() {
     return (
-      <div className="form__field-input">
+      <div className="slot-selector">
         { this.renderModal() }
-        { this.renderSelectedSlots() }
-        <div className="button-group">
-          <button
-            className="button button--green"
-            disabled={this.props.disabled || !this.props.slots}
-            onClick={this.onOpenClick}
-          >
-            { translate('components.formSlotSelector.openModalButton') }
-          </button>
-        </div>
+        { this.renderButton() }
       </div>
     )
   }
@@ -113,13 +99,12 @@ class FormSlotSelector extends Component {
 
     this.state = {
       isModalOpen: false,
-      selectedSlots: props.input.value,
     }
 
     this.onCloseClick = this.onCloseClick.bind(this)
     this.onOpenClick = this.onOpenClick.bind(this)
-    this.onSlotStatusChange = this.onSlotStatusChange.bind(this)
+    this.onSlotSelectionChange = this.onSlotSelectionChange.bind(this)
   }
 }
 
-export default asFormField(FormSlotSelector)
+export default SlotSelector
