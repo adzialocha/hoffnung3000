@@ -28,6 +28,16 @@ const validate = values => {
     )
   }
 
+  if (values.placeSlots) {
+    if (!values.placeSlots.place) {
+      errors.placeSlots = translate('forms.event.errors.selectPlace')
+    } else if (values.placeSlots.selectedSlotsIndexes.length === 0) {
+      errors.placeSlots = translate('forms.event.errors.selectTime')
+    }
+  } else {
+    errors.placeSlots = translate('forms.event.errors.selectPlaceAndTime')
+  }
+
   return errors
 }
 
