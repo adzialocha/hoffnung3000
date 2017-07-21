@@ -108,8 +108,11 @@ class FormPlaceSlotSelector extends Component {
   render() {
     return (
       <div className="form__field-input">
+        <h2>{ translate('components.formPlaceSlotSelector.where') }</h2>
         { this.renderSelectedPlace() }
         { this.renderPlaceSelector() }
+        <hr />
+        <h2>{ translate('components.formPlaceSlotSelector.when') }</h2>
         { this.renderSelectedSlots() }
         { this.renderSlotSelector() }
       </div>

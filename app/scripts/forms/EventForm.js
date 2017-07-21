@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Field, reduxForm } from 'redux-form'
+import { connect } from 'react-redux'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 
 import {
   FormCheckbox,
@@ -46,11 +47,13 @@ class EventForm extends Component {
     errorMessage: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
+    placeSlots: PropTypes.object,
   }
 
   static defaultProps = {
     errorMessage: undefined,
     isLoading: false,
+    placeSlots: {},
   }
 
   renderErrorMessage() {
@@ -62,6 +65,24 @@ class EventForm extends Component {
       )
     }
     return null
+  }
+
+  renderPrivateField() {
+    const { place } = this.props.placeSlots
+
+    if (place && !place.isPublic) {
+      return <p>{ translate('forms.event.placeIsPrivate') }</p>
+    }
+
+    return (
+      <Field
+        component={FormCheckbox}
+        disabled={this.props.isLoading || (place && !place.isPublic)}
+        inline={true}
+        label={translate('forms.event.areEventsPublic')}
+        name="isPublic"
+      />
+    )
   }
 
   render() {
@@ -84,7 +105,6 @@ class EventForm extends Component {
           type="text"
         />
         <hr />
-        <h2>{ translate('forms.event.whereAndWhen') }</h2>
         <Field
           component={FormPlaceSlotSelector}
           disabled={this.props.isLoading}
@@ -92,13 +112,7 @@ class EventForm extends Component {
         />
         <hr />
         <h2>{ translate('forms.event.publicOrPrivate') }</h2>
-        <Field
-          component={FormCheckbox}
-          disabled={this.props.isLoading}
-          inline={true}
-          label={translate('forms.event.areEventsPublic')}
-          name="isPublic"
-        />
+        { this.renderPrivateField() }
         <hr />
         <button
           className="form__submit button button--blue"
@@ -112,8 +126,16 @@ class EventForm extends Component {
   }
 }
 
-export default reduxForm({
+const SelectingEventForm = reduxForm({
   enableReinitialize: true,
   form: 'event',
   validate,
 })(EventForm)
+
+const selector = formValueSelector('event')
+
+export default connect(state => {
+  return {
+    placeSlots: selector(state, 'placeSlots'),
+  }
+})(SelectingEventForm)

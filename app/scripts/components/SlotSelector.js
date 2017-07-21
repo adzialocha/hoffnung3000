@@ -35,7 +35,7 @@ class SlotSelector extends Component {
     return (
       <div className="modal">
         <div className="modal__header">
-          <h1>{ translate('components.formSlotSelector.title') }</h1>
+          <h1>{ translate('components.slotSelector.title') }</h1>
         </div>
         <div className="modal__content modal__content--scrollable">
           <SlotEditor
@@ -52,7 +52,7 @@ class SlotSelector extends Component {
               className="button button--green"
               onClick={this.onCloseClick}
             >
-              { translate('components.formSlotSelector.submitButton') }
+              { translate('components.slotSelector.submitButton') }
             </button>
           </div>
         </div>
@@ -79,7 +79,7 @@ class SlotSelector extends Component {
           disabled={this.props.disabled}
           onClick={this.onOpenClick}
         >
-          { translate('components.formSlotSelector.openModalButton') }
+          { translate('components.slotSelector.openModalButton') }
         </button>
       </div>
     )

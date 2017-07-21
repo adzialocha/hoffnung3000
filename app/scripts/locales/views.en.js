@@ -21,4 +21,9 @@ export default {
     titlePlaceholder: 'Performer',
     indexTitle: 'Performers',
   },
+  events: {
+    calendarTitle: 'Calendar',
+    crateNewButton: 'Create event',
+    createNewTitle: 'Create new event',
+  },
 }

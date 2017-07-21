@@ -56,10 +56,26 @@ export default {
     submitButton: 'Okay',
     title: 'Slot editor',
   },
+  formPlaceSlotSelector: {
+    loadingSlots: 'Loading slot data ...',
+    selectAPlaceFirst: 'Please select a place first!',
+    when: 'When?',
+    where: 'Where?',
+  },
   slotSizeEditor: {
     editSlotsLabel: 'Enable / disable slots',
     editSlotsButton: 'Edit slots',
     slotSizeLabel: 'How long is one slot?',
+  },
+  placeSelector: {
+    openModalButton: 'Select a place',
+    submitButton: 'Close',
+    title: 'Select a place',
+  },
+  slotSelector: {
+    openModalButton: 'Select time slots',
+    submitButton: 'Close',
+    title: 'Select time slots',
   },
   placeListItem: {
     isPrivatePlace: 'This place is not visible to the audience',
