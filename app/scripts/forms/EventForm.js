@@ -6,6 +6,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import {
   FormCheckbox,
   FormInput,
+  FormItemSelector,
   FormPlaceSlotSelector,
   FormTextarea,
 } from '../components'
@@ -113,6 +114,22 @@ class EventForm extends Component {
         <hr />
         <h2>{ translate('forms.event.publicOrPrivate') }</h2>
         { this.renderPrivateField() }
+        <hr />
+        <h2>{ translate('forms.event.pickItems') }</h2>
+        <Field
+          component={FormItemSelector}
+          disabled={this.props.isLoading}
+          name="items"
+          type="items"
+        />
+        <hr />
+        <h2>{ translate('forms.event.pickPerformers') }</h2>
+        <Field
+          component={FormItemSelector}
+          disabled={this.props.isLoading}
+          name="performers"
+          type="performers"
+        />
         <hr />
         <button
           className="form__submit button button--blue"

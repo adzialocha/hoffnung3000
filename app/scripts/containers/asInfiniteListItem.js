@@ -10,11 +10,13 @@ export default function asInfiniteListItem(WrappedListItemComponent) {
       item: PropTypes.object.isRequired,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
+      input: PropTypes.object,
     }
 
     static defaultProps = {
       onClick: undefined,
       onEditClick: undefined,
+      input: undefined,
     }
 
     onClick() {
@@ -58,7 +60,10 @@ export default function asInfiniteListItem(WrappedListItemComponent) {
           <div className="list-item__cover-image">
             { this.renderEditButton() }
           </div>
-          <WrappedListItemComponent item={this.props.item} />
+          <WrappedListItemComponent
+            input={this.props.input}
+            item={this.props.item}
+          />
         </div>
       )
     }

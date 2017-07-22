@@ -1,0 +1,20 @@
+.item-selector {
+  display: flex;
+}
+
+.item-selector__selected-list {
+  margin-right: 10px;
+
+  padding-top: 55px;
+  padding-bottom: 37px;
+
+  border-right: 2px solid $gray-light;
+
+  flex: 1 50%;
+}
+
+.item-selector__all-list {
+  margin-left: 10px;
+
+  flex: 1 50%;
+}

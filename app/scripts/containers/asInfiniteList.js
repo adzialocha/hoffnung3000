@@ -16,6 +16,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
       containerHeight: PropTypes.number,
       currentPageIndex: PropTypes.number.isRequired,
       fetchList: PropTypes.func.isRequired,
+      input: PropTypes.object.isRequired,
       isLoading: PropTypes.bool.isRequired,
       listItems: PropTypes.array.isRequired,
       onClick: PropTypes.func,
@@ -27,6 +28,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
 
     static defaultProps = {
       containerHeight: undefined,
+      input: undefined,
       onClick: undefined,
       onEditClick: undefined,
       totalPageCount: undefined,
@@ -64,6 +66,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
       return this.props.listItems.map((item, index) => {
         return (
           <WrappedListItemComponent
+            input={this.props.input}
             item={item}
             key={index}
             onClick={this.props.onClick}

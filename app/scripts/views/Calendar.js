@@ -36,7 +36,12 @@ class Calendar extends Component {
   }
 
   renderCreateButton() {
-    if (!this.props.isParticipant || !this.props.isAuthenticated) {
+    console.log(this.props)
+
+    if (
+      !(this.props.isParticipant || this.props.isAdmin) ||
+      !this.props.isAuthenticated
+    ) {
       return null
     }
 
