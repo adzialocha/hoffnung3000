@@ -71,9 +71,10 @@ class FormPlaceSlotSelectorSlot extends Component {
     )
   }
 
-  renderButton() {
+  render() {
     return (
       <div className="button-group">
+        { this.renderModal() }
         <button
           className="button button--green"
           disabled={this.props.disabled}
@@ -81,15 +82,6 @@ class FormPlaceSlotSelectorSlot extends Component {
         >
           { translate('components.slotSelector.openModalButton') }
         </button>
-      </div>
-    )
-  }
-
-  render() {
-    return (
-      <div>
-        { this.renderModal() }
-        { this.renderButton() }
       </div>
     )
   }
