@@ -16,7 +16,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
       containerHeight: PropTypes.number,
       currentPageIndex: PropTypes.number.isRequired,
       fetchList: PropTypes.func.isRequired,
-      input: PropTypes.object.isRequired,
+      input: PropTypes.object,
       isLoading: PropTypes.bool.isRequired,
       listItems: PropTypes.array.isRequired,
       onClick: PropTypes.func,
