@@ -86,6 +86,23 @@ export default {
     isPrivatePlace: 'This place is not visible to the audience',
     virtualLocation: '@ Virtual location',
   },
+  formItemSelector: {
+    items: {
+      openModalButton: 'Select items',
+      title: 'Select items for your event',
+    },
+    performers: {
+      openModalButton: 'Select performers',
+      title: 'Select performers for your event',
+    },
+    submitButton: 'Okay',
+  },
+  curatedSelectableListItem: {
+    addItem: 'Add',
+    isNotAvailable: 'Not available',
+    isSelected: 'Selected',
+    removeItem: 'Remove',
+  },
   footer: {
     about: 'About',
     contact: 'Contact',

@@ -60,10 +60,13 @@ export default {
     },
     areEventsPublic: 'This event is visible in the calendar',
     description: 'Description',
+    pickItems: 'Which items?',
+    pickPerformers: 'Which performers?',
     placeIsPrivate: 'Please note that the selected place is already private',
     publicOrPrivate: 'Is it public or private?',
     submit: 'Save event',
     title: 'Title of your event',
+    what: 'What?',
     whereAndWhen: 'Where and when?',
   },
 }

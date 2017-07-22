@@ -91,7 +91,7 @@ class FormItemSelector extends Component {
           disabled={this.props.disabled}
           onClick={this.onOpenClick}
         >
-          { translate('components.formItemSelector.openModalButton') }
+          { this.localeHelper('openModalButton') }
         </button>
       </div>
     )

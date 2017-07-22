@@ -90,7 +90,7 @@ class EventForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
-        <h2>{ translate('forms.common.basicInformation') }</h2>
+        <h2>{ translate('forms.event.what') }</h2>
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
