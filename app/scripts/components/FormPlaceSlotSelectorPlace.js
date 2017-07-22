@@ -121,7 +121,7 @@ class FormPlaceSlotSelectorPlace extends Component {
 
   render() {
     return (
-      <div className="place-selector">
+      <div>
         { this.renderModal() }
         { this.renderButton() }
       </div>
