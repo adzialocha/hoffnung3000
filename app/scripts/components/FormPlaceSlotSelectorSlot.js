@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { SlotEditor } from './'
 import { translate } from '../services/i18n'
 
-class SlotSelector extends Component {
+class FormPlaceSlotSelectorSlot extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -63,7 +63,7 @@ class SlotSelector extends Component {
   renderModal() {
     return (
       <Modal
-        contentLabel="SlotSelectorModal"
+        contentLabel="FormPlaceSlotSelectorSlotModal"
         isOpen={this.state.isModalOpen}
       >
         { this.renderModalContent() }
@@ -107,4 +107,4 @@ class SlotSelector extends Component {
   }
 }
 
-export default SlotSelector
+export default FormPlaceSlotSelectorSlot

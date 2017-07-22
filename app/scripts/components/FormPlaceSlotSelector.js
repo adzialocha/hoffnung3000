@@ -6,7 +6,11 @@ import { asFormField } from '../containers'
 import { fetchSlots } from '../actions/slots'
 import { formatEventTime } from '../utils/dateFormat'
 import { generateNewSlotItems, getSlotWithIndex } from '../utils/slots'
-import { PlaceSelector, SlotSelector, CuratedPlaceListItem } from './'
+import {
+  CuratedPlaceListItem,
+  FormPlaceSlotSelectorPlace,
+  FormPlaceSlotSelectorSlot,
+} from './'
 import { translate } from '../services/i18n'
 
 class FormPlaceSlotSelector extends Component {
@@ -78,7 +82,7 @@ class FormPlaceSlotSelector extends Component {
     }
 
     return (
-      <SlotSelector
+      <FormPlaceSlotSelectorSlot
         disabled={this.props.disabled}
         selectedSlotsIndexes={this.state.selectedSlotsIndexes}
         slots={this.generateSlots()}
@@ -97,7 +101,7 @@ class FormPlaceSlotSelector extends Component {
 
   renderPlaceSelector() {
     return (
-      <PlaceSelector
+      <FormPlaceSlotSelectorPlace
         disabled={this.props.disabled}
         place={this.state.place}
         onChange={this.onPlaceChange}

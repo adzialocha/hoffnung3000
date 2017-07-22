@@ -9,7 +9,7 @@ import { translate } from '../services/i18n'
 
 const WrappedInfiniteList = asInfiniteList(CuratedPlaceListItem)
 
-class FormPlaceSelector extends Component {
+class FormPlaceSlotSelectorPlace extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -97,7 +97,7 @@ class FormPlaceSelector extends Component {
   renderModal() {
     return (
       <Modal
-        contentLabel="FormPlaceSelectorModal"
+        contentLabel="FormPlaceSlotSelectorPlaceModal"
         isOpen={this.state.isModalOpen}
       >
         { this.renderModalContent() }
@@ -143,4 +143,4 @@ class FormPlaceSelector extends Component {
   }
 }
 
-export default FormPlaceSelector
+export default FormPlaceSlotSelectorPlace
