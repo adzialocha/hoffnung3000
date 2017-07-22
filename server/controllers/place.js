@@ -145,6 +145,7 @@ export default {
         // clean up all slot before
         return Slot.destroy({
           where: {
+            isDisabled: true,
             placeId: req.resourceId,
           },
         })

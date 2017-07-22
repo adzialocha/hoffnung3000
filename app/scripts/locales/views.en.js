@@ -25,5 +25,6 @@ export default {
     calendarTitle: 'Calendar',
     createNewButton: 'Create event',
     createNewTitle: 'Create new event',
+    titlePlaceholder: 'Event',
   },
 }
