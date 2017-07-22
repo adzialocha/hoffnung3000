@@ -22,10 +22,7 @@ function isInClosedOrder(arr) {
 
   return !arr.some((currentItem, index) => {
     const nextItem = arr[index + 1]
-    if (nextItem && nextItem !== currentItem + 1) {
-      return true
-    }
-    return false
+    return nextItem && nextItem !== currentItem + 1
   })
 }
 

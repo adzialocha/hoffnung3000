@@ -1,22 +1,17 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { Drawer, SidebarToggle } from './'
-import { logout } from '../actions/auth'
 import { translate } from '../services/i18n'
+import { withUserState, withDrawerState } from '../containers'
 
 class Sidebar extends Component {
   static propTypes = {
-    firstname: PropTypes.string,
+    firstname: PropTypes.string.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     isSidebarExpanded: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
-  }
-
-  static defaultProps = {
-    firstname: '',
   }
 
   renderSidebarBottom() {
@@ -114,19 +109,4 @@ class Sidebar extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { isAuthenticated } = state.auth
-  const { firstname } = state.user
-
-  return {
-    ...state.drawer,
-    isAuthenticated,
-    firstname,
-  }
-}
-
-export default connect(
-  mapStateToProps, {
-    logout,
-  }
-)(Sidebar)
+export default withUserState(withDrawerState(Sidebar))
