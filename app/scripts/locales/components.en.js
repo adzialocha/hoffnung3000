@@ -13,7 +13,7 @@ export default {
     contact: 'Contact',
     home: 'Home',
     information: 'Information',
-    resources: 'Markt',
+    resources: 'Der Markt',
     places: 'Places',
     tickets: 'Tickets',
   },
@@ -68,7 +68,7 @@ export default {
     where: 'Where?',
   },
   slotSizeEditor: {
-    editSlotsLabel: 'Make slots available',
+    editSlotsLabel: 'Manage available slots',
     editSlotsButton: 'Edit slots',
     slotSizeLabel: 'How long is one slot?',
   },
