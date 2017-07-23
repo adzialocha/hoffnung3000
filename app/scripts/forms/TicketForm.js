@@ -140,7 +140,7 @@ class TicketForm extends Component {
           name="country"
           type="text"
         />
-        <small>Terms: We need your address only to send you an invoice.</small>
+        <small>We need your address only to send you an invoice.</small>
         <hr />
 
         <button
