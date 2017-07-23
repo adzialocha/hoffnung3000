@@ -48,6 +48,13 @@ function generateNewRandomId(state) {
 
 function updateResource(state, action, isLoading, isDirty) {
   const { resourceType, resourceId } = action.meta
+  const { objects } = state
+
+  let previousResourceState = initialResourceState
+  if (resourceType in objects && resourceId in objects[resourceType]) {
+    previousResourceState = objects[resourceType][resourceId]
+  }
+
   const resourceState = {}
 
   if (typeof isLoading !== 'undefined') {
@@ -58,7 +65,7 @@ function updateResource(state, action, isLoading, isDirty) {
     resourceState.isDirty = { $set: isDirty }
   }
 
-  const data = action.payload || action.meta.data
+  const data = action.payload
   if (data && !action.error) {
     resourceState.object = { $set: data }
   }
@@ -80,7 +87,7 @@ function updateResource(state, action, isLoading, isDirty) {
         [resourceType]: {
           $set: update(state.objects[resourceType] || {}, {
             [resourceId]: {
-              $set: update(initialResourceState, resourceState),
+              $set: update(previousResourceState, resourceState),
             },
           }),
         },

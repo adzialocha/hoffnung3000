@@ -12,6 +12,7 @@ const WrappedInfiniteList = asInfiniteList(CuratedEventListItem)
 
 class Calendar extends Component {
   static propTypes = {
+    isAdmin: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     isParticipant: PropTypes.bool.isRequired,
     push: PropTypes.func.isRequired,
@@ -36,8 +37,6 @@ class Calendar extends Component {
   }
 
   renderCreateButton() {
-    console.log(this.props)
-
     if (
       !(this.props.isParticipant || this.props.isAdmin) ||
       !this.props.isAuthenticated
