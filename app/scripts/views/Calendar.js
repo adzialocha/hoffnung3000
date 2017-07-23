@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { push } from 'react-router-redux'
 
 import { asInfiniteList } from '../containers'
-import { CuratedEventListItem } from '../components'
+import { CuratedEventListItem, StaticPage } from '../components'
 import { translate } from '../services/i18n'
 
 const WrappedInfiniteList = asInfiniteList(CuratedEventListItem)
