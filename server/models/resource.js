@@ -35,18 +35,21 @@ const Resource = db.sequelize.define('resource', {
 export const ResourceBelongsToAnimal = Resource.belongsTo(Animal, {
   as: 'animal',
   foreignKey: 'animalId',
+  onDelete: 'CASCADE',
 })
 
 export const ResourceBelongsToManyEvent = Resource.belongsToMany(Event, {
-  through: 'resourcesEvents',
   as: 'events',
   foreignKey: 'resourceId',
+  onDelete: 'CASCADE',
+  through: 'resourcesEvents',
 })
 
 export const EventBelongsToManyResource = Event.belongsToMany(Resource, {
-  through: 'resourcesEvents',
   as: 'resources',
   foreignKey: 'eventId',
+  onDelete: 'CASCADE',
+  through: 'resourcesEvents',
 })
 
 slugify.slugifyModel(Resource, {

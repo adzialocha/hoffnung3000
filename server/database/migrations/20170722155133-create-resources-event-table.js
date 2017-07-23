@@ -1,11 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('resourcesEvents', {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
       createdAt: {
         type: Sequelize.DATE,
       },
@@ -14,9 +9,11 @@ module.exports = {
       },
       resourceId: {
         type: Sequelize.INTEGER,
+        primaryKey: true,
       },
       eventId: {
         type: Sequelize.INTEGER,
+        primaryKey: true,
       },
     })
   },

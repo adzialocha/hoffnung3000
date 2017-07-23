@@ -297,7 +297,24 @@ export default {
       })
   },
   destroy: (req, res, next) => {
-    return destroyWithSlug(Event, req, res, next)
+    return Event.findById(req.resourceId, {
+      rejectOnEmpty: true,
+    })
+      .then((event) => {
+        return event.destroy()
+      })
+      .then(() => {
+        // delete related slots
+        return Slot.destroy({
+          where: {
+            eventId: req.resourceId,
+          },
+        })
+      })
+      .then(() => {
+        res.json({ message: 'ok' })
+      })
+      .catch(err => next(err))
   },
   findAll: (req, res, next) => {
     return findAllCurated(Event, req, res, next)

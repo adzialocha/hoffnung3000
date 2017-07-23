@@ -44,6 +44,8 @@ export default keyMirror({
   PAGINATED_LIST_REQUEST: null,
   PAGINATED_LIST_SUCCESS: null,
 
+  REDIRECT: null,
+
   RESET_PASSWORD_FAILURE: null,
   RESET_PASSWORD_REQUEST: null,
   RESET_PASSWORD_SUCCESS: null,

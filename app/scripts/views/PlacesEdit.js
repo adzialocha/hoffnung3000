@@ -5,7 +5,12 @@ import { Link } from 'react-router-dom'
 
 import flash from '../actions/flash'
 import { cachedResource } from '../services/resources'
-import { fetchResource, updateResource } from '../actions/resources'
+import { confirm } from '../services/dialog'
+import {
+  deleteResource,
+  fetchResource,
+  updateResource,
+} from '../actions/resources'
 import { PlaceForm } from '../forms'
 import {
   generateNewSlotItems,
@@ -15,6 +20,7 @@ import { translate } from '../services/i18n'
 
 class PlacesEdit extends Component {
   static propTypes = {
+    deleteResource: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
     flash: PropTypes.func.isRequired,
@@ -26,6 +32,16 @@ class PlacesEdit extends Component {
 
   componentDidMount() {
     this.props.fetchResource('places', this.props.resourceSlug)
+  }
+
+  componentDidUpdate() {
+    if (!this.props.isLoading && !this.props.resourceData.isOwnerMe) {
+      this.props.flash({
+        redirect: '/',
+        text: translate('flash.unauthorizedView'),
+        type: 'error',
+      })
+    }
   }
 
   onSubmit(values) {
@@ -54,17 +70,26 @@ class PlacesEdit extends Component {
     )
   }
 
+  onDeleteClick() {
+    if (!confirm(translate('common.areYouSure'))) {
+      return
+    }
+
+    const deleteFlash = {
+      text: translate('flash.deletePlaceSuccess'),
+    }
+
+    this.props.deleteResource(
+      'places',
+      this.props.resourceSlug,
+      deleteFlash,
+      '/places'
+    )
+  }
+
   renderForm() {
     if (this.props.isLoading) {
       return <p>Loading ...</p>
-    }
-
-    if (!this.props.resourceData.isOwnerMe) {
-      this.props.flash({
-        redirect: '/',
-        text: translate('flash.common.unauthorizedView'),
-        type: 'error',
-      })
     }
 
     const {
@@ -126,6 +151,9 @@ class PlacesEdit extends Component {
         <Link className="button" to="/places">
           { translate('common.backToOverview') }
         </Link>
+        <button className="button button--red" onClick={this.onDeleteClick}>
+          { translate('common.deleteButton') }
+        </button>
         <hr />
         { this.renderForm() }
       </section>
@@ -135,6 +163,7 @@ class PlacesEdit extends Component {
   constructor(props) {
     super(props)
 
+    this.onDeleteClick = this.onDeleteClick.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
   }
 }
@@ -155,6 +184,7 @@ function mapStateToProps(state, ownProps) {
 
 export default connect(
   mapStateToProps, {
+    deleteResource,
     fetchResource,
     flash,
     updateResource,

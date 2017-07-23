@@ -39,13 +39,20 @@ router.route('/meta')
 
 // private API routes
 
-router.use(
-  '/*',
-  passport.authenticate('jwt', { session: false }),
-  (req, res, next) => {
-    next()
-  }
-)
+router.use('/*', (req, res, next) => {
+  passport.authenticate('jwt', { session: false }, (err, user) => {
+    if (err) {
+      return next(err)
+    }
+    if (!user) {
+      return next(
+        new APIError('Unauthorized', httpStatus.UNAUTHORIZED)
+      )
+    }
+    req.user = user
+    return next()
+  })(req, res, next)
+})
 
 router.use('/events', eventRoutes)
 router.use('/places', placeRoutes)
