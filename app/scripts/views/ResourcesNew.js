@@ -26,7 +26,7 @@ class ResourcesNew extends Component {
       this.props.nextRandomId,
       values,
       flash,
-      '/markt'
+      '/resources'
     )
   }
 
@@ -34,7 +34,7 @@ class ResourcesNew extends Component {
     return (
       <section>
         <h1>{ translate('views.resources.createNewTitle') }</h1>
-        <Link className="button" to="/markt">
+        <Link className="button" to="/resources">
           { translate('common.backToOverview') }
         </Link>
         <hr />
