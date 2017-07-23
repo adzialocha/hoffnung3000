@@ -187,6 +187,9 @@ function createEvent(req, fields) {
             userId: req.user.id,
           },
         }, {
+          include: [
+            EventBelongsToAnimal,
+          ],
           returning: true,
         })
           .then(event => {
