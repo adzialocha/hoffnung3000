@@ -140,7 +140,7 @@ class TicketForm extends Component {
           name="country"
           type="text"
         />
-        <small>We need your address only to send you an invoice.</small>
+        <small>Terms: We need your address only to send you an invoice. When we have received your 10 Euro ticket price, we will provide you access to the platform and the locations in the calendar.</small>
         <hr />
 
         <button
