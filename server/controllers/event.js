@@ -5,7 +5,6 @@ import {
   findAllCurated,
   lookupWithSlug,
   prepareResponse,
-  updateCuratedWithSlug,
 } from './base'
 
 import Event, {

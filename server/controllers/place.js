@@ -1,3 +1,5 @@
+import httpStatus from 'http-status'
+
 import {
   destroyWithSlug,
   findAllCurated,
@@ -13,6 +15,8 @@ import Place, {
   PlaceHasManySlots,
 } from '../models/place'
 import Slot from '../models/slot'
+
+import { APIError } from '../helpers/errors'
 
 const include = [
   {
@@ -39,6 +43,34 @@ const permittedFields = [
 const permittedFieldsCreate = permittedFields.concat([
   'slotSize',
 ])
+
+function areSlotsBooked(placeId, slotIndexes) {
+  return new Promise((resolve, reject) => {
+    Slot.findAndCountAll({
+      where: {
+        placeId,
+        slotIndex: {
+          $in: slotIndexes,
+        },
+        eventId: {
+          $not: null,
+        },
+      },
+    })
+      .then(result => {
+        if (result.count > 0) {
+          reject(
+            new APIError(
+              'Can\'t disable slots which are already booked by someone',
+              httpStatus.BAD_REQUEST
+            )
+          )
+        } else {
+          resolve()
+        }
+      })
+  })
+}
 
 function preparePlaceValues(body) {
   const {
@@ -127,32 +159,37 @@ export default {
     const body = pick(permittedFields, req.body)
     const values = preparePlaceValues(body)
 
-    return Place.update(values, {
-      where: {
-        slug: req.params.resourceSlug,
-      },
-      limit: 1,
-      returning: true,
-    })
-      .then(data => {
-        const place = data[1][0]
-
-        // clean up all slot before
-        return Slot.destroy({
+    // check first if we can disable the requested slots
+    areSlotsBooked(req.resourceId, body.disabledSlots)
+      .then(() => {
+        // update place
+        Place.update(values, {
           where: {
-            isDisabled: true,
-            placeId: place.id,
+            slug: req.params.resourceSlug,
           },
+          limit: 1,
+          returning: true,
         })
-          .then(() => {
-            const slots = createDisabledSlots(
-              body.disabledSlots,
-              place.id,
-              place.slotSize
-            )
-            return Slot.bulkCreate(slots)
+          .then(data => {
+            const place = data[1][0]
+
+            // clean up all slot before
+            return Slot.destroy({
+              where: {
+                isDisabled: true,
+                placeId: place.id,
+              },
+            })
+              .then(() => {
+                const slots = createDisabledSlots(
+                  body.disabledSlots,
+                  place.id,
+                  place.slotSize
+                )
+                return Slot.bulkCreate(slots)
+              })
+              .then(() => res.json(prepareResponse(place, req)))
           })
-          .then(() => res.json(prepareResponse(place, req)))
       })
       .catch(err => next(err))
   },

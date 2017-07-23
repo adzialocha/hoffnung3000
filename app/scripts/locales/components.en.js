@@ -58,6 +58,7 @@ export default {
     title: 'Slot editor',
   },
   slotEditorItem: {
+    cantDisableBookedSlot: 'Sorry, you can\'t disable a slot which is already booked',
     slotIsBookedAlert: 'Sorry, this slot was already booked by someone else',
     slotIsDisabledAlert: 'Sorry, the owner of this place disabled this slot',
   },
