@@ -16,6 +16,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
       containerHeight: PropTypes.number,
       currentPageIndex: PropTypes.number.isRequired,
       fetchList: PropTypes.func.isRequired,
+      filter: PropTypes.object,
       input: PropTypes.object,
       isLoading: PropTypes.bool.isRequired,
       listItems: PropTypes.array.isRequired,
@@ -28,6 +29,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
 
     static defaultProps = {
       containerHeight: undefined,
+      filter: {},
       input: undefined,
       onClick: undefined,
       onEditClick: undefined,
@@ -36,7 +38,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
 
     componentDidMount() {
-      this.props.fetchList(this.props.resourceName, 0)
+      this.props.fetchList(this.props.resourceName, 0, this.props.filter)
     }
 
     onInfiniteLoad() {

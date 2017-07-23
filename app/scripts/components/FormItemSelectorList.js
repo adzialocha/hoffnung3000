@@ -1,17 +1,17 @@
 import Measure from 'react-measure'
-import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { asFormField, asInfiniteList } from '../containers'
+import { asInfiniteList } from '../containers'
 import { CuratedSelectableListItem } from './'
-import { translate } from '../services/i18n'
 
 const WrappedInfiniteList = asInfiniteList(CuratedSelectableListItem)
 
 class FormItemSelectorList extends Component {
   static propTypes = {
+    from: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    to: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     value: PropTypes.any,
   }
@@ -53,9 +53,12 @@ class FormItemSelectorList extends Component {
   }
 
   renderAllItemsList() {
+    const { from, to } = this.props
+
     return (
       <WrappedInfiniteList
         containerHeight={this.state.containerHeight}
+        filter={ { from, to } }
         input={
           {
             isAvailable: this.isAvailable,
@@ -74,15 +77,15 @@ class FormItemSelectorList extends Component {
     return this.state.selectedItems.map((item, index) => {
       return (
         <CuratedSelectableListItem
-          item={item}
-          key={index}
           input={
             {
-              isAvailable: this.isAvailable,
+              isAvailable: true,
               isRemovable: true,
               isSelected: this.isSelected,
             }
           }
+          item={item}
+          key={index}
           onClick={this.onItemRemoveClick}
         />
       )
@@ -128,7 +131,10 @@ class FormItemSelectorList extends Component {
   }
 
   isAvailable(item) {
-    return true
+    const wasSelected = this.state.initiallySelectedItems.find((selItem) => {
+      return selItem.id === item.id
+    })
+    return wasSelected || item.isAvailable
   }
 
   constructor(props) {
@@ -136,6 +142,7 @@ class FormItemSelectorList extends Component {
 
     this.state = {
       containerHeight: 500,
+      initiallySelectedItems: props.value || [],
       selectedItems: props.value || [],
     }
 

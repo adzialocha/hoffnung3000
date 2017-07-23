@@ -42,10 +42,10 @@ class CuratedSelectableListItem extends Component {
     }
 
     return (
-        <button className="button button--green">
-          { translate('components.curatedSelectableListItem.addItem') }
-        </button>
-      )
+      <button className="button button--green">
+        { translate('components.curatedSelectableListItem.addItem') }
+      </button>
+    )
   }
 
   render() {

@@ -9,8 +9,15 @@ import { translate } from '../services/i18n'
 class FormItemSelector extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
+    from: PropTypes.string,
     input: PropTypes.object.isRequired,
+    to: PropTypes.string,
     type: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    from: '',
+    to: '',
   }
 
   onMeasureResize(contentRect) {
@@ -40,6 +47,8 @@ class FormItemSelector extends Component {
   renderModalContainer() {
     return (
       <FormItemSelectorList
+        from={this.props.from}
+        to={this.props.to}
         type={this.props.type}
         value={this.props.input.value}
         onChange={this.onChange}

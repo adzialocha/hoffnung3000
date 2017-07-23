@@ -86,6 +86,27 @@ class EventForm extends Component {
     )
   }
 
+  renderResourcesSelector() {
+    const { place, selectedSlotsIndexes } = this.props.placeSlots
+
+    if (!place || !place.id || selectedSlotsIndexes.length === 0) {
+      return <p>{ translate('forms.event.selectPlaceAndSlotsFirst') }</p>
+    }
+
+    const { eventFromStr, eventToStr } = this.props.placeSlots
+
+    return (
+      <Field
+        component={FormItemSelector}
+        disabled={this.props.isLoading}
+        from={eventFromStr}
+        name="items"
+        to={eventToStr}
+        type="items"
+      />
+    )
+  }
+
   render() {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
@@ -116,20 +137,7 @@ class EventForm extends Component {
         { this.renderPrivateField() }
         <hr />
         <h2>{ translate('forms.event.pickItems') }</h2>
-        <Field
-          component={FormItemSelector}
-          disabled={this.props.isLoading}
-          name="items"
-          type="items"
-        />
-        <hr />
-        <h2>{ translate('forms.event.pickPerformers') }</h2>
-        <Field
-          component={FormItemSelector}
-          disabled={this.props.isLoading}
-          name="performers"
-          type="performers"
-        />
+        { this.renderResourcesSelector() }
         <hr />
         <button
           className="form__submit button button--blue"

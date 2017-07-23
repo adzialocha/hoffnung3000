@@ -1,3 +1,4 @@
+import dateFns from 'date-fns'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -22,6 +23,10 @@ class FormPlaceSlotSelector extends Component {
     slots: PropTypes.array.isRequired,
   }
 
+  componentDidMount() {
+    this.generateIsoEventTimeframe(this.state.selectedSlotsIndexes)
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (
       this.state.place && (
@@ -37,15 +42,15 @@ class FormPlaceSlotSelector extends Component {
 
   onPlaceChange(place) {
     this.setState({
+      eventFromStr: undefined,
+      eventToStr: undefined,
       place,
       selectedSlotsIndexes: [],
     })
   }
 
   onSlotChange(selectedSlotsIndexes) {
-    this.setState({
-      selectedSlotsIndexes,
-    })
+    this.generateIsoEventTimeframe(selectedSlotsIndexes)
   }
 
   renderSelectedSlots() {
@@ -130,6 +135,8 @@ class FormPlaceSlotSelector extends Component {
     const { place, selectedSlotsIndexes } = props.input.value
 
     this.state = {
+      eventFromStr: undefined,
+      eventToStr: undefined,
       place,
       selectedSlotsIndexes: selectedSlotsIndexes || [],
     }
@@ -143,6 +150,24 @@ class FormPlaceSlotSelector extends Component {
       this.state.place.slotSize,
       this.props.slots
     )
+  }
+
+  generateIsoEventTimeframe(slotIndexes) {
+    if (slotIndexes.length === 0) {
+      return
+    }
+
+    const slots = this.generateSlots()
+    const firstSlot = getSlotWithIndex(slots, slotIndexes[0])
+    const lastSlot = getSlotWithIndex(
+      slots, slotIndexes[slotIndexes.length - 1]
+    )
+
+    this.setState({
+      eventFromStr: dateFns.format(firstSlot.from),
+      eventToStr: dateFns.format(lastSlot.to),
+      selectedSlotsIndexes: slotIndexes,
+    })
   }
 }
 
