@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
+import { formatEventTime } from '../utils/dateFormat'
 import { translate } from '../services/i18n'
 
 class EventsShow extends Component {
@@ -59,16 +60,22 @@ class EventsShow extends Component {
   }
 
   renderOwner() {
-    const { name, id } = this.props.resourceData.animal
+    const { name } = this.props.resourceData.animal
 
     return (
       <p>
         { translate('common.by') }
         &nbsp;
-        <Link to={`/inbox/new/${id}`}>
-          { name }
-        </Link>
+        { name }
       </p>
+    )
+  }
+
+  renderPlace() {
+    return (
+      <Link to={`/places/${this.props.resourceData.place.slug}`}>
+        @ { this.props.resourceData.place.title }
+      </Link>
     )
   }
 
@@ -81,9 +88,45 @@ class EventsShow extends Component {
       <div>
         { this.renderOwner() }
         { this.renderPrivacy() }
+        { this.renderEventTime() }
+        <h4>
+          { this.renderPlace() }
+        </h4>
         { this.renderDescription() }
+        <hr />
       </div>
     )
+  }
+
+  renderAddress() {
+    const {
+      city,
+      cityCode,
+      latitude,
+      longitude,
+      mode,
+      street,
+    } = this.props.resourceData.place
+
+    if (mode === 'gps') {
+      return `@ ${latitude}, ${longitude}`
+    } else if (mode === 'address') {
+      return `@ ${street}, ${cityCode} ${city}`
+    }
+    return translate('components.placeListItem.virtualLocation')
+  }
+
+  renderEventTime() {
+    const slots = this.props.resourceData.slots
+
+    if (slots.length === 0) {
+      return null
+    }
+
+    const firstSlot = slots[0]
+    const lastSlot = slots[slots.length - 1]
+
+    return <h4>{ formatEventTime(firstSlot.from, lastSlot.to) }</h4>
   }
 
   renderTitle() {
