@@ -1,10 +1,11 @@
 import httpStatus from 'http-status'
 
 import {
-  destroyWithSlug,
-  findAllCurated,
+  DEFAULT_LIMIT,
+  DEFAULT_OFFSET,
   lookupWithSlug,
   prepareResponse,
+  prepareResponseAll,
 } from './base'
 
 import Event, {
@@ -317,7 +318,28 @@ export default {
       .catch(err => next(err))
   },
   findAll: (req, res, next) => {
-    return findAllCurated(Event, req, res, next)
+    const {
+      limit = DEFAULT_LIMIT,
+      offset = DEFAULT_OFFSET,
+    } = req.query
+
+    return Event.findAndCountAll({
+      include,
+      limit,
+      offset,
+      order: [
+        [EventHasManySlots, 'from', 'ASC'],
+      ],
+    })
+      .then(result => {
+        res.json({
+          data: prepareResponseAll(result.rows, req),
+          limit: parseInt(limit, 10),
+          offset: parseInt(offset, 10),
+          total: result.count,
+        })
+      })
+      .catch(err => next(err))
   },
   findOneWithSlug: (req, res, next) => {
     return Event.findOne({
