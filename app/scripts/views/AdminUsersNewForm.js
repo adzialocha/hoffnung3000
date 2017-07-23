@@ -60,7 +60,7 @@ class AdminUsersNewForm extends Component {
 
 function mapStateToProps(state) {
   const { errorMessage, nextRandomId } = state.resources
-  const { isLoading } = cachedResource('users', nextRandomId)
+  const { isLoading } = cachedResource('users', nextRandomId, true)
 
   return {
     errorMessage,

@@ -8,12 +8,16 @@ import passport from '../services/passport'
 import { APIError } from '../helpers/errors'
 import { onlyAdmin } from '../middlewares/roles'
 
+import eventController from '../controllers/event'
 import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
 
 import authRoutes from './auth'
+import eventRoutes from './event'
 import pageRoutes from './page'
+import placeRoutes from './place'
 import profileRoutes from './profile'
+import resourceRoutes from './resource'
 import userRoutes from './user'
 
 const router = express.Router() // eslint-disable-line new-cap
@@ -34,17 +38,32 @@ router.route('/pages/:resourceSlug(\\D+)/')
 router.route('/meta')
   .get(metaController.information)
 
+router.route('/preview')
+  .get(
+    eventController.findAll
+  )
+
 // private API routes
 
-router.use(
-  '/*',
-  passport.authenticate('jwt', { session: false }),
-  (req, res, next) => {
-    next()
-  }
-)
+router.use('/*', (req, res, next) => {
+  passport.authenticate('jwt', { session: false }, (err, user) => {
+    if (err) {
+      return next(err)
+    }
+    if (!user) {
+      return next(
+        new APIError('Unauthorized', httpStatus.UNAUTHORIZED)
+      )
+    }
+    req.user = user
+    return next()
+  })(req, res, next)
+})
 
+router.use('/events', eventRoutes)
+router.use('/places', placeRoutes)
 router.use('/profile', profileRoutes)
+router.use('/resources', resourceRoutes)
 
 // admin API routes
 

@@ -5,6 +5,7 @@ import { routerMiddleware } from 'react-router-redux'
 
 import api from './middlewares/api'
 import flash from './middlewares/flash'
+import formErrorFlash from './middlewares/formErrorFlash'
 import redirect from './middlewares/redirect'
 import reducers from './reducers'
 
@@ -15,6 +16,7 @@ export default function configureStore(initialState, history) {
     thunk,
     routerMiddleware(history),
     api,
+    formErrorFlash,
     flash,
     redirect,
   ]

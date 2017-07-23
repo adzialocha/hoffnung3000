@@ -47,14 +47,17 @@ class PaginatedList extends Component {
     return this.props.columns.map((cell) => {
       const key = `${item.id}${cell.key}`
       const value = item[cell.key]
+
       if (cell.key === '$index') {
         return this.renderTableCellString(key,
           (index + 1) + (this.props.currentPageIndex * ITEMS_PER_PAGE)
         )
       }
+
       if (typeof value === 'boolean') {
         return this.renderTableCellBoolean(key, value)
       }
+
       return this.renderTableCellString(key, value)
     })
   }
@@ -120,7 +123,7 @@ class PaginatedList extends Component {
 
   render() {
     if (this.props.isLoading) {
-      return <p>{ translate('components.common.loading') }</p>
+      return <p>{ translate('common.loading') }</p>
     }
 
     return (
@@ -144,6 +147,7 @@ class PaginatedList extends Component {
     if (typeof item.isRemovable === 'boolean') {
       return item.isRemovable
     }
+
     return true
   }
 }

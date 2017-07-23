@@ -37,9 +37,11 @@ label {
   }
 
   &[disabled] {
-    background-color: $gray;
+    color: $gray;
 
-    cursor: default;
+    background-color: $gray-light;
+
+    cursor: not-allowed;
   }
 }
 
@@ -61,6 +63,7 @@ textarea {
   @extend %form-base-style;
   @extend %form-layout-style;
 
+  min-width: 100%;
   max-width: 100%;
   min-height: 200px;
 
@@ -73,6 +76,20 @@ input {
   &[type="text"] {
     @extend %form-base-style;
     @extend %form-layout-style;
+  }
+
+  &:read-only {
+    color: $gray;
+
+    background-color: $gray-lighter;
+
+    transition: none;
+
+    cursor: not-allowed;
+
+    &:focus {
+      background-color: $gray-lighter;
+    }
   }
 
   &[type="submit"] {
@@ -106,7 +123,7 @@ input {
       &[disabled] {
         background-color: $gray;
 
-        cursor: default;
+        cursor: not-allowed;
       }
     }
   }

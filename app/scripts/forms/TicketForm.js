@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormField } from '../components'
+import { FormInput } from '../components'
 
 const validate = values => {
   const errors = {}
@@ -72,21 +72,21 @@ class TicketForm extends Component {
         { this.renderErrorMessage() }
         <h2>Basic Information</h2>
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Firstname"
           name="firstname"
           type="text"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Lastname"
           name="lastname"
           type="text"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Email-Address"
           name="email"
@@ -96,14 +96,14 @@ class TicketForm extends Component {
 
         <h2>Your Password</h2>
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Password"
           name="password"
           type="password"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Repeat password"
           name="passwordRepeat"
@@ -113,34 +113,34 @@ class TicketForm extends Component {
 
         <h2>Your Address</h2>
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Street and number"
           name="street"
           type="text"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="City code"
           name="cityCode"
           type="text"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="City"
           name="city"
           type="text"
         />
         <Field
-          component={FormField}
+          component={FormInput}
           disabled={this.props.isLoading}
           label="Country"
           name="country"
           type="text"
         />
-        <small>We need your address only to send you an invoice.</small>
+        <small>Terms: We need your address only to send you an invoice.</small>
         <hr />
 
         <button

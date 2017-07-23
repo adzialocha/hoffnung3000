@@ -1,0 +1,15 @@
+$_react-modal-overlay-background: rgba($black, .75);
+
+// sass-lint:disable class-name-format, no-important
+.ReactModal__Overlay {
+  z-index: map-get($z-index, "react-modal");
+
+  background-color: $_react-modal-overlay-background !important;
+}
+
+.ReactModal__Content {
+  padding: 0 !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+}

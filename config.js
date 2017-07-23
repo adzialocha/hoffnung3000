@@ -29,6 +29,13 @@ const config = {
   video: {
     registration: process.env.CONFIG_VIDEO_REGISTRATION || 'KRYVH7fGa68',
   },
+  googleMapApiKey: process.env.GOOGLE_MAP_API_KEY,
+  festivalDateStart: process.env.CONFIG_FESTIVAL_DATE_START || '2017-08-24T00:00:00.000+02:00',
+  festivalDateEnd: process.env.CONFIG_FESTIVAL_DATE_START || '2017-08-27T00:00:00.000+02:00',
+  defaultCity: process.env.CONFIG_DEFAULT_CITY || 'Berlin',
+  defaultCountry: process.env.CONFIG_DEFAULT_COUNTRY || 'Germany',
+  defaultLatitude: float(process.env.CONFIG_DEFAULT_LATITUDE, 52.53647),
+  defaultLongitude: float(process.env.CONFIG_DEFAULT_LONGITUDE, 13.40780),
 }
 
 export default config

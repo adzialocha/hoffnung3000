@@ -1,10 +1,9 @@
 export default {
   common: {
-    loading: 'Loading ...',
-    payViaPayPal: 'Pay via PayPal',
-    payViaTransfer: 'Pay via transfer',
     agreeWithTerms: 'I agree with the terms',
     nextStep: 'Next step',
+    payViaPayPal: 'Pay via PayPal',
+    payViaTransfer: 'Pay via transfer',
     previousStep: 'Previous step',
   },
   navigationLinks: {
@@ -14,8 +13,7 @@ export default {
     contact: 'Contact',
     home: 'Home',
     information: 'Information',
-    items: 'Items',
-    performers: 'Performers',
+    resources: 'Der Markt',
     places: 'Places',
     tickets: 'Tickets',
   },
@@ -25,6 +23,18 @@ export default {
   },
   ticketWizard: {
     stepTitle: 'Get a festival ticket (Step {currentStep} of {totalSteps})',
+  },
+  locationSelector: {
+    addressMode: 'Regular address',
+    city: 'City',
+    cityCode: 'City code',
+    clickMap: 'Click on the map to mark a position for your place.',
+    country: 'Country',
+    currentGpsPosition: 'Selected position (latitude and longitude)',
+    gpsPositionMode: 'GPS position',
+    street: 'Street + Number',
+    virtualMode: 'Virtual space',
+    yourPlacePosition: 'The position of your place',
   },
   registrationWizard: {
     stepTitle: 'Registration (Step {currentStep} of {totalSteps})',
@@ -40,6 +50,52 @@ export default {
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
+  },
+  slotEditor: {
+    slotsHaveToBeInClosedOrder: 'Please select your slots in a closed order',
+    submitButton: 'Okay',
+    title: 'Slot editor',
+  },
+  slotEditorItem: {
+    cantDisableBookedSlot: 'Sorry, you can\'t disable a slot which is already booked',
+    slotIsBookedAlert: 'Sorry, this slot was already booked by someone else',
+    slotIsDisabledAlert: 'Sorry, the owner of this place disabled this slot',
+  },
+  formPlaceSlotSelector: {
+    loadingSlots: 'Loading slot data ...',
+    selectAPlaceFirst: 'Please select a place first!',
+    when: 'When?',
+    where: 'Where?',
+  },
+  slotSizeEditor: {
+    editSlotsLabel: 'Manage available slots',
+    editSlotsButton: 'Edit slots',
+    slotSizeLabel: 'How long is one slot?',
+  },
+  placeSelector: {
+    openModalButton: 'Select a place',
+    submitButton: 'Close',
+    title: 'Select a place',
+  },
+  slotSelector: {
+    openModalButton: 'Select time slots',
+    submitButton: 'Close',
+    title: 'Select time slots',
+  },
+  placeListItem: {
+    isPrivatePlace: 'This place is not visible to the audience',
+    virtualLocation: '@ Virtual location',
+  },
+  formResourceSelector: {
+    openModalButton: 'Select resources',
+    title: 'Select resources for your event',
+    submitButton: 'Okay',
+  },
+  curatedSelectableListItem: {
+    addItem: 'Add',
+    isNotAvailable: 'Not available',
+    isSelected: 'Selected',
+    removeItem: 'Remove',
   },
   footer: {
     about: 'About',

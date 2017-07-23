@@ -1,9 +1,12 @@
 import Sequelize from 'sequelize'
+import winston from 'winston'
 
 const config = require('./config.js')[process.env.NODE_ENV]
 const { url, dialect } = config
 const sequelize = new Sequelize(url, {
-  logging: process.env.NODE_ENV === 'development',
+  logging: (msg) => {
+    winston.info(msg)
+  },
   dialect,
 })
 

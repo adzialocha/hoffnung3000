@@ -5,7 +5,7 @@ import { jwtDecode } from '../utils/jwt'
 
 const initialState = {
   errorMessage: '',
-  firstname: undefined,
+  firstname: '',
   id: undefined,
   isActive: false,
   isAdmin: false,

@@ -1,7 +1,3 @@
 @mixin media-breakpoint($class) {
-  @if $class == xs {
-    @media (max-width: map-get($media-breakpoint, $class)) { @content; }
-  } @else {
-    @media (min-width: map-get($media-breakpoint, $class)) { @content; }
-  }
+  @media (max-width: map-get($media-breakpoint, $class)) { @content; }
 }

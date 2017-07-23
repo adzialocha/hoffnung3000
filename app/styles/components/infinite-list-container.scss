@@ -1,0 +1,15 @@
+$_modal-footer-height: 37px;
+$_modal-header-height: 55px;
+
+.infinite-list-container {
+  width: 100%;
+}
+
+.infinite-list-container--in-modal {
+  padding-top: $_modal-header-height;
+  padding-bottom: $_modal-footer-height;
+}
+
+.infinite-list-container__spinner {
+  text-align: center;
+}

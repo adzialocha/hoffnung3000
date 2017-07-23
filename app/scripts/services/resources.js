@@ -6,11 +6,12 @@ function hasCachedResource(state, resourceType, resourceId) {
   return (resourceType in objects) && (resourceId in objects[resourceType])
 }
 
-export function cachedResource(resourceType, resourceId) {
+export function cachedResource(resourceType, resourceId, isResourceNew = false) {
   const store = getStore()
   const state = store.getState()
 
   if (!hasCachedResource(state, resourceType, resourceId)) {
+    initialResourceState.isLoading = !isResourceNew
     return initialResourceState
   }
 

@@ -18,8 +18,7 @@ const SECONDARY_NAVIGATION = [
 
 const CURATION_NAVIGATION = [
   { localeKey: 'places', url: '/places' },
-  { localeKey: 'performers', url: '/performers' },
-  { localeKey: 'items', url: '/items' },
+  { localeKey: 'resources', url: '/resources' },
 ]
 
 const ADMIN_NAVIGATION = CURATION_NAVIGATION.concat([

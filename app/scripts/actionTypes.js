@@ -26,6 +26,11 @@ export default keyMirror({
   FLASH_REMOVE_ALL_MESSAGES: null,
   FLASH_REMOVE_MESSAGE: null,
 
+  INFINITE_LIST_FAILURE: null,
+  INFINITE_LIST_INITIALIZE: null,
+  INFINITE_LIST_REQUEST: null,
+  INFINITE_LIST_SUCCESS: null,
+
   META_FAILURE: null,
   META_REQUEST: null,
   META_SUCCESS: null,
@@ -38,6 +43,8 @@ export default keyMirror({
   PAGINATED_LIST_REMOVE_ITEM: null,
   PAGINATED_LIST_REQUEST: null,
   PAGINATED_LIST_SUCCESS: null,
+
+  REDIRECT: null,
 
   RESET_PASSWORD_FAILURE: null,
   RESET_PASSWORD_REQUEST: null,
@@ -55,6 +62,10 @@ export default keyMirror({
   RESOURCE_UPDATE_FAILURE: null,
   RESOURCE_UPDATE_REQUEST: null,
   RESOURCE_UPDATE_SUCCESS: null,
+
+  SLOTS_FAILURE: null,
+  SLOTS_REQUEST: null,
+  SLOTS_SUCCESS: null,
 
   TICKET_FAILURE: null,
   TICKET_REQUEST: null,
