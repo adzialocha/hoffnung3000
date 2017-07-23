@@ -32,7 +32,7 @@ class PerformersIndex extends Component {
     return (
       <section>
         <h1>{ translate('views.performers.indexTitle') }</h1>
-        <Link className="button button--green" to="/new/place">
+        <Link className="button button--green" to="/new/performer">
           { translate('views.performers.createNewButton') }
         </Link>
         <hr />

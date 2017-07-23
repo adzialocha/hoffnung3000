@@ -8,6 +8,11 @@ import {
 } from './base'
 
 import Item from '../models/item'
+import Event from '../models/event'
+import Slot from '../models/slot'
+
+import { createEventSlots, isInClosedOrder } from '../utils/slots'
+import { APIError } from '../helpers/errors'
 
 const permittedFields = [
   'description',

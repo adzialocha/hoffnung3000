@@ -38,9 +38,6 @@ const LocationSelectorMap = withScriptjs(withGoogleMap(props => {
 class FormLocationSelector extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
-    onBlur: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onFocus: PropTypes.func.isRequired,
     input: PropTypes.object.isRequired,
   }
 

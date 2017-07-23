@@ -3,6 +3,7 @@ import slugify from 'sequelize-slugify'
 import db from '../database'
 
 import Animal from './animal'
+import Event from './event'
 
 const Performer = db.sequelize.define('performer', {
   id: {
@@ -35,6 +36,18 @@ export const PerformerBelongsToAnimal = Performer.belongsTo(Animal, {
   as: 'animal',
   constraints: false,
   foreignKey: 'animalId',
+})
+
+export const PerformerBelongsToManyEvent = Performer.belongsToMany(Event, {
+  through: 'performersEvents',
+  as: 'events',
+  foreignKey: 'performerId',
+})
+
+export const EventBelongsToManyPerformer = Event.belongsToMany(Performer, {
+  through: 'performersEvents',
+  as: 'performers',
+  foreignKey: 'eventId',
 })
 
 slugify.slugifyModel(Performer, {

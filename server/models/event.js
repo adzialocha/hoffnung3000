@@ -43,7 +43,6 @@ const Event = db.sequelize.define('event', {
 
 export const EventBelongsToAnimal = Event.belongsTo(Animal, {
   as: 'animal',
-  constraints: false,
   foreignKey: 'animalId',
 })
 

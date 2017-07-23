@@ -32,7 +32,7 @@ class ItemsIndex extends Component {
     return (
       <section>
         <h1>{ translate('views.items.indexTitle') }</h1>
-        <Link className="button button--green" to="/new/place">
+        <Link className="button button--green" to="/new/item">
           { translate('views.items.createNewButton') }
         </Link>
         <hr />

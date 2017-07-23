@@ -6,6 +6,7 @@ import {
 } from './base'
 
 import pick from '../utils/pick'
+import { createDisabledSlots } from '../utils/slots'
 
 import Animal from '../models/animal'
 import Place from '../models/place'
@@ -39,7 +40,7 @@ const permittedFieldsCreate = permittedFields.concat([
   'slotSize',
 ])
 
-function preparePlaceValues(body, placeId) {
+function preparePlaceValues(body) {
   const {
     description,
     isPublic,
@@ -64,26 +65,12 @@ function preparePlaceValues(body, placeId) {
     values.longitude = body.longitude
   }
 
-  const slots = body.disabledSlots.map((slotIndex) => {
-    const slot = {
-      slotIndex,
-      isDisabled: true,
-    }
-
-    if (placeId) {
-      slot.placeId = placeId
-    }
-
-    return slot
-  })
-
   if (body.slotSize) {
     values.slotSize = body.slotSize
   }
 
   return {
     ...values,
-    slots,
   }
 }
 
@@ -91,6 +78,12 @@ export default {
   create: (req, res, next) => {
     const body = pick(permittedFieldsCreate, req.body)
     const values = preparePlaceValues(body)
+
+    values.slots = createDisabledSlots(
+      body.disabledSlots,
+      null,
+      body.slotSize
+    )
 
     return Place.create({
       ...values,
@@ -132,7 +125,7 @@ export default {
   },
   updateWithSlug: (req, res, next) => {
     const body = pick(permittedFields, req.body)
-    const values = preparePlaceValues(body, req.resourceId)
+    const values = preparePlaceValues(body)
 
     return Place.update(values, {
       where: {
@@ -142,17 +135,24 @@ export default {
       returning: true,
     })
       .then(data => {
+        const place = data[1][0]
+
         // clean up all slot before
         return Slot.destroy({
           where: {
             isDisabled: true,
-            placeId: req.resourceId,
+            placeId: place.id,
           },
         })
           .then(() => {
-            return Slot.bulkCreate(values.slots)
+            const slots = createDisabledSlots(
+              body.disabledSlots,
+              place.id,
+              place.slotSize
+            )
+            return Slot.bulkCreate(slots)
           })
-          .then(() => res.json(prepareResponse(data[1][0], req)))
+          .then(() => res.json(prepareResponse(place, req)))
       })
       .catch(err => next(err))
   },

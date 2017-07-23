@@ -17,9 +17,6 @@ class FormSlotSizeEditor extends Component {
     disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
     isSlotSizeVisible: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onFocus: PropTypes.func.isRequired,
-    value: PropTypes.any.isRequired,
   }
 
   shouldComponentUpdate(nextProps, nextState) {
