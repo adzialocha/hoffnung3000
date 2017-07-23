@@ -8,10 +8,14 @@ import { withUserState, withDrawerState } from '../containers'
 
 class Sidebar extends Component {
   static propTypes = {
-    firstname: PropTypes.string.isRequired,
+    firstname: PropTypes.string,
     isAuthenticated: PropTypes.bool.isRequired,
     isSidebarExpanded: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    firstname: '',
   }
 
   renderSidebarBottom() {

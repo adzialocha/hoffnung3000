@@ -8,6 +8,7 @@ import passport from '../services/passport'
 import { APIError } from '../helpers/errors'
 import { onlyAdmin } from '../middlewares/roles'
 
+import eventController from '../controllers/event'
 import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
 
@@ -36,6 +37,11 @@ router.route('/pages/:resourceSlug(\\D+)/')
 
 router.route('/meta')
   .get(metaController.information)
+
+router.route('/preview')
+  .get(
+    eventController.findAll
+  )
 
 // private API routes
 

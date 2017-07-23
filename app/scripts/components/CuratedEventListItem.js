@@ -1,12 +1,26 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { asInfiniteListItem } from '../containers'
+import { asInfiniteListItem, withUserState } from '../containers'
 import { formatEventTime } from '../utils/dateFormat'
 
 class CuratedEventListItem extends Component {
   static propTypes = {
+    isActive: PropTypes.bool.isRequired,
+    isAuthenticated: PropTypes.bool.isRequired,
     item: PropTypes.object.isRequired,
+  }
+
+  renderPlaceName() {
+    if (!this.props.isAuthenticated || !this.props.isActive) {
+      return null
+    }
+
+    return (
+      <div className="list-item-content__description ellipsis">
+        { this.props.item.place.title }
+      </div>
+    )
   }
 
   renderEventTime() {
@@ -26,12 +40,10 @@ class CuratedEventListItem extends Component {
         <div className="list-item-content__subtitle ellipsis">
           { this.renderEventTime() }
         </div>
-        <div className="list-item-content__description ellipsis">
-          { this.props.item.place.title }
-        </div>
+        { this.renderPlaceName() }
       </div>
     )
   }
 }
 
-export default asInfiniteListItem(CuratedEventListItem)
+export default asInfiniteListItem(withUserState(CuratedEventListItem))

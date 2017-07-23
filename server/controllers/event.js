@@ -33,26 +33,39 @@ const permittedFields = [
   'title',
 ]
 
-const include = [{
+const belongsToAnimal = {
   association: EventBelongsToAnimal,
-  attributes: ['name', 'id'],
-}, {
+  attributes: ['name', 'id', 'userId'],
+}
+
+const belongsToManyResources = {
   association: EventBelongsToManyResource,
   attributes: { exclude: ['createdAt', 'updatedAt'] },
   include: [{
     association: ResourceBelongsToAnimal,
     attributes: ['name', 'id'],
   }],
-}, {
+}
+
+const belongsToPlace = {
   association: EventBelongsToPlace,
   include: [{
     association: PlaceBelongsToAnimal,
     attributes: ['name', 'id'],
   }],
-}, {
+}
+
+const hasManySlots = {
   association: EventHasManySlots,
   attributes: { exclude: ['createdAt', 'updatedAt'] },
-}]
+}
+
+const include = [
+  belongsToAnimal,
+  belongsToManyResources,
+  belongsToPlace,
+  hasManySlots,
+]
 
 function areSlotsInClosedRange(req) {
   return new Promise((resolve, reject) => {
@@ -323,17 +336,31 @@ export default {
       offset = DEFAULT_OFFSET,
     } = req.query
 
+    const isAuthorized = req.user && req.user.isActive
+
+    const includeAssociations = [hasManySlots]
+    const where = {}
+    if (isAuthorized) {
+      includeAssociations.push(belongsToAnimal)
+      includeAssociations.push(belongsToPlace)
+    } else {
+      where.isPublic = true
+    }
+
     return Event.findAndCountAll({
-      include,
+      include: includeAssociations,
       limit,
       offset,
+      where,
       order: [
         [EventHasManySlots, 'from', 'ASC'],
       ],
     })
       .then(result => {
+        const data = isAuthorized ? prepareResponseAll(result.rows, req) : result.rows
+
         res.json({
-          data: prepareResponseAll(result.rows, req),
+          data,
           limit: parseInt(limit, 10),
           offset: parseInt(offset, 10),
           total: result.count,
