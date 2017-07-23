@@ -54,6 +54,7 @@ export default {
     pickResources: 'Which resources?',
     placeIsPrivate: 'Please note that the selected place is already private',
     publicOrPrivate: 'Is it public or private?',
+    selectPlaceAndSlotsFirst: 'Please select a place and time first!',
     submit: 'Save event',
     title: 'Title of your event',
     what: 'What?',

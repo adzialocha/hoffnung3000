@@ -14,6 +14,7 @@ export default {
   signUpTransferFailure: 'Something with the registration went wrong',
   signUpTransferSuccess: 'Thank you for your registration! We just sent you an email with our bank account details! Please contact us if you didn\'t receive the mail in the next minutes or you have any questions.',
   signUpTransferTicketSuccess: 'Thank you! We just sent you an email with our bank account details! Please contact us if you didn\'t receive the mail in the next minutes or you have any questions.',
+  unauthorizedView: 'Sorry, something went wrong!',
   updateEventSuccess: 'Yes! Your event was successfully updated!',
   updatePlaceSuccess: 'Your place was successfully updated.',
   updateProfileSuccess: 'Your profile has been successfully updated!',

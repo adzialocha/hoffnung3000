@@ -16,9 +16,6 @@ import {
   EventsShow,
   ForgotPassword,
   Home,
-  ResourcesEdit,
-  ResourcesIndex,
-  ResourcesNew,
   Login,
   NotFound,
   Page,
@@ -29,6 +26,9 @@ import {
   Profile,
   Register,
   ResetPassword,
+  ResourcesEdit,
+  ResourcesIndex,
+  ResourcesNew,
   Tickets,
 } from './views'
 

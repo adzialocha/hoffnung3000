@@ -30,6 +30,16 @@ class ResourcesEdit extends Component {
     this.props.fetchResource('resources', this.props.resourceSlug)
   }
 
+  componentDidUpdate() {
+    if (!this.props.isLoading && !this.props.resourceData.isOwnerMe) {
+      this.props.flash({
+        redirect: '/',
+        text: translate('flash.unauthorizedView'),
+        type: 'error',
+      })
+    }
+  }
+
   onSubmit(values) {
     const successFlash = {
       text: translate('flash.updateResourceSuccess'),
@@ -61,18 +71,9 @@ class ResourcesEdit extends Component {
     )
   }
 
-
   renderForm() {
     if (this.props.isLoading) {
       return <p>Loading ...</p>
-    }
-
-    if (!this.props.resourceData.isOwnerMe) {
-      this.props.flash({
-        redirect: '/',
-        text: translate('flash.common.unauthorizedView'),
-        type: 'error',
-      })
     }
 
     return (

@@ -1,7 +1,6 @@
 import httpStatus from 'http-status'
 
 import {
-  destroyWithSlug,
   findAllCurated,
   lookupWithSlug,
   prepareResponse,
@@ -10,6 +9,7 @@ import {
 import pick from '../utils/pick'
 import { createDisabledSlots } from '../utils/slots'
 
+import Event from '../models/event'
 import Place, { PlaceBelongsToAnimal, PlaceHasManySlots } from '../models/place'
 import Slot from '../models/slot'
 
@@ -127,7 +127,32 @@ export default {
       .catch(err => next(err))
   },
   destroyWithSlug: (req, res, next) => {
-    return destroyWithSlug(Place, req, res, next)
+    return Place.findById(req.resourceId, {
+      rejectOnEmpty: true,
+    })
+      .then((place) => {
+        return place.destroy()
+      })
+      .then(() => {
+        // delete related events
+        return Event.destroy({
+          where: {
+            placeId: req.resourceId,
+          },
+        })
+      })
+      .then(() => {
+        // delete related slots
+        return Slot.destroy({
+          where: {
+            placeId: req.resourceId,
+          },
+        })
+      })
+      .then(() => {
+        res.json({ message: 'ok' })
+      })
+      .catch(err => next(err))
   },
   findAll: (req, res, next) => {
     return findAllCurated(Place, req, res, next)
@@ -161,6 +186,7 @@ export default {
       .then(() => {
         // update place
         Place.update(values, {
+          include,
           where: {
             slug: req.params.resourceSlug,
           },

@@ -44,6 +44,7 @@ const Event = db.sequelize.define('event', {
 export const EventBelongsToAnimal = Event.belongsTo(Animal, {
   as: 'animal',
   foreignKey: 'animalId',
+  onDelete: 'CASCADE',
 })
 
 export const EventHasManySlots = Event.hasMany(Slot, {

@@ -31,6 +31,16 @@ class EventsEdit extends Component {
     this.props.fetchResource('events', this.props.resourceSlug)
   }
 
+  componentDidUpdate() {
+    if (!this.props.isLoading && !this.props.resourceData.isOwnerMe) {
+      this.props.flash({
+        redirect: '/',
+        text: translate('flash.unauthorizedView'),
+        type: 'error',
+      })
+    }
+  }
+
   onSubmit(values) {
     const updateFlash = {
       text: translate('flash.updateEventSuccess'),
@@ -76,14 +86,6 @@ class EventsEdit extends Component {
   renderForm() {
     if (this.props.isLoading) {
       return <p>Loading ...</p>
-    }
-
-    if (!this.props.resourceData.isOwnerMe) {
-      this.props.flash({
-        redirect: '/',
-        text: translate('flash.common.unauthorizedView'),
-        type: 'error',
-      })
     }
 
     const {

@@ -220,11 +220,17 @@ export function destroy(model, req, res, next) {
 }
 
 export function destroyWithSlug(model, req, res, next) {
-  return model.destroy({
+  return model.findOne({
+    rejectOnEmpty: true,
     where: {
       slug: req.params.resourceSlug,
     },
   })
-    .then(() => res.json({ message: 'ok' }))
+    .then((resource) => {
+      return resource.destroy()
+        .then(() => {
+          res.json({ message: 'ok' })
+        })
+    })
     .catch(err => next(err))
 }

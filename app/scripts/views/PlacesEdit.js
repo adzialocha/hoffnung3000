@@ -34,6 +34,16 @@ class PlacesEdit extends Component {
     this.props.fetchResource('places', this.props.resourceSlug)
   }
 
+  componentDidUpdate() {
+    if (!this.props.isLoading && !this.props.resourceData.isOwnerMe) {
+      this.props.flash({
+        redirect: '/',
+        text: translate('flash.unauthorizedView'),
+        type: 'error',
+      })
+    }
+  }
+
   onSubmit(values) {
     const { title, description, isPublic } = values
     const { slots } = values.slots
@@ -80,14 +90,6 @@ class PlacesEdit extends Component {
   renderForm() {
     if (this.props.isLoading) {
       return <p>Loading ...</p>
-    }
-
-    if (!this.props.resourceData.isOwnerMe) {
-      this.props.flash({
-        redirect: '/',
-        text: translate('flash.common.unauthorizedView'),
-        type: 'error',
-      })
     }
 
     const {
