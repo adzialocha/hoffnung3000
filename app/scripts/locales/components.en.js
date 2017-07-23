@@ -37,8 +37,8 @@ export default {
     profileButton: 'Profile',
     signUpButton: 'Register as participant',
     signUpHeader: 'We invite all activists, artists, theoreticians, performers, musicians, hackers and everyone else to register.',
-    visitorButton: 'Buy a visitor ticket',
-    visitorHeader: 'Or buy a visitor ticket to visit the festival.',
+    visitorButton: 'Buy an audience ticket',
+    visitorHeader: 'Or buy an audience ticket to visit the festival.',
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
   },
   footer: {
