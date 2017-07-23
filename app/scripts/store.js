@@ -4,6 +4,7 @@ import { createLogger } from 'redux-logger'
 import { routerMiddleware } from 'react-router-redux'
 
 import api from './middlewares/api'
+import apiError from './middlewares/apiError'
 import flash from './middlewares/flash'
 import formErrorFlash from './middlewares/formErrorFlash'
 import redirect from './middlewares/redirect'
@@ -16,6 +17,7 @@ export default function configureStore(initialState, history) {
     thunk,
     routerMiddleware(history),
     api,
+    apiError,
     formErrorFlash,
     flash,
     redirect,
