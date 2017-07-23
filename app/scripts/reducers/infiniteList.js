@@ -16,6 +16,7 @@ export default (state = initialState, action) => {
       currentPageIndex: { $set: 0 },
       isLoading: { $set: true },
       listItems: { $set: [] },
+      totalPageCount: { $set: 0 },
     })
   case ActionTypes.INFINITE_LIST_REQUEST:
     return update(state, {
