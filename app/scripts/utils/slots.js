@@ -1,9 +1,8 @@
 import dateFns from 'date-fns'
 
+import config from '../../../config'
 import { translate } from '../services/i18n'
 
-const FESTIVAL_DATE_START = '2017-08-24T00:00:00.000+02:00'
-const FESTIVAL_DATE_END = '2017-08-27T00:00:00.000+02:00'
 const TIME_FORMAT = 'HH:mm'
 
 function addSlotDuration(date, slotSize) {
@@ -13,8 +12,8 @@ function addSlotDuration(date, slotSize) {
 function isInFestivalRange(date) {
   return dateFns.isWithinRange(
     date,
-    FESTIVAL_DATE_START,
-    FESTIVAL_DATE_END
+    config.festivalDateStart,
+    config.festivalDateEnd
   )
 }
 
@@ -61,13 +60,17 @@ export function numberToSlotSizeStrHuman(num) {
   return [hoursStr, andStr, minutesStr].join('')
 }
 
-export function prepareSlotIds(slots) {
+export function getDisabledSlotIndexes(slots) {
   return slots.reduce((acc, slot) => {
-    if (slot.status !== undefined) {
-      acc.push(slot.id)
+    if (slot.isDisabled) {
+      acc.push(slot.slotIndex)
     }
     return acc
   }, [])
+}
+
+export function getSlotWithIndex(slots, slotIndex) {
+  return slots.find((slot) => slot.slotIndex === slotIndex)
 }
 
 export function generateNewSlotItems(slotSize, existingSlots) {
@@ -77,32 +80,37 @@ export function generateNewSlotItems(slotSize, existingSlots) {
     return slotItems
   }
 
-  let existingSlotStates = {}
+  let existingSlotDisabledStates = {}
+  let existingSlotEventIdStates = {}
 
   if (existingSlots) {
-    existingSlotStates = existingSlots.reduce((acc, slot) => {
-      if (slot.isDisabled) {
-        acc[slot.slotIndex] = 'disabled'
-      }
+    existingSlotDisabledStates = existingSlots.reduce((acc, slot) => {
+      acc[slot.slotIndex] = slot.isDisabled
+      return acc
+    }, {})
+
+    existingSlotEventIdStates = existingSlots.reduce((acc, slot) => {
+      acc[slot.slotIndex] = slot.eventId
       return acc
     }, {})
   }
 
-  let id = 0
-  let from = dateFns.parse(FESTIVAL_DATE_START)
+  let slotIndex = 0
+  let from = dateFns.parse(config.festivalDateStart)
   let to = addSlotDuration(from, slotSize)
 
   while (isInFestivalRange(to)) {
     slotItems.push({
+      eventId: existingSlotEventIdStates[slotIndex],
       from,
       fromTimeStr: dateFns.format(from, TIME_FORMAT),
-      id,
+      isDisabled: existingSlotDisabledStates[slotIndex],
+      slotIndex,
       to,
-      status: existingSlotStates[id],
       toTimeStr: dateFns.format(to, TIME_FORMAT),
     })
 
-    id += 1
+    slotIndex += 1
     from = addSlotDuration(from, slotSize)
     to = addSlotDuration(from, slotSize)
   }

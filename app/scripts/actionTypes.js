@@ -61,6 +61,10 @@ export default keyMirror({
   RESOURCE_UPDATE_REQUEST: null,
   RESOURCE_UPDATE_SUCCESS: null,
 
+  SLOTS_FAILURE: null,
+  SLOTS_REQUEST: null,
+  SLOTS_SUCCESS: null,
+
   TICKET_FAILURE: null,
   TICKET_REQUEST: null,
   TICKET_SUCCESS: null,

@@ -2,63 +2,71 @@ import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-export const DISABLED = 'disabled'
-export const BOOKED_BY_ME = 'booked-by-me'
-export const BOOKED = 'booked'
+import { alert } from '../services/dialog'
+import { translate } from '../services/i18n'
 
 class SlotEditorItem extends Component {
   static propTypes = {
     isBookingMode: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired,
+    isSlotBookedByMe: PropTypes.bool.isRequired,
+    onChangeBookedByMeStatus: PropTypes.func.isRequired,
+    onChangeDisabledStatus: PropTypes.func.isRequired,
     slot: PropTypes.object.isRequired,
   }
 
   onClick() {
-    const { status } = this.props.slot
+    const { isDisabled, eventId } = this.props.slot
 
     if (this.props.isBookingMode) {
-      if (status === DISABLED) {
-        window.alert('This slot was disabled by the place owner.') // eslint-disable-line no-alert
-      } else if (status === BOOKED) {
-        window.alert('This slot was booked by someone else.') // eslint-disable-line no-alert
-      } else if (status === BOOKED_BY_ME) {
-        this.changeSlotStatus(undefined)
+      if (isDisabled) {
+        alert(translate('components.slotEditorItem.slotIsDisabledAlert'))
+      } else if (eventId !== undefined && !this.props.isSlotBookedByMe) {
+        alert(translate('components.slotEditorItem.slotIsBookedAlert'))
+      } else if (this.props.isSlotBookedByMe) {
+        this.changeIsBookedStatus(false)
       } else {
-        this.changeSlotStatus(BOOKED_BY_ME)
+        this.changeIsBookedStatus(true)
       }
     } else {
-      if (status === DISABLED) {
-        this.changeSlotStatus(undefined)
+      if (eventId !== undefined) {
+        alert(translate('components.slotEditorItem.cantDisableBookedSlot'))
+      } else if (isDisabled) {
+        this.changeDisabledStatus(false)
       } else {
-        this.changeSlotStatus(DISABLED)
+        this.changeDisabledStatus(true)
       }
     }
   }
 
   render() {
-    const { fromTimeStr, toTimeStr, status } = this.props.slot
-    const slotClassnames = classnames(
+    const {
+      fromTimeStr,
+      toTimeStr,
+      isDisabled,
+      eventId,
+    } = this.props.slot
+
+    const slotItemClasses = classnames(
       'slot-editor__item', {
-        'slot-editor__item--disabled': status === DISABLED,
-        'slot-editor__item--booked': status === BOOKED,
-        'slot-editor__item--booked-by-me': status === BOOKED_BY_ME,
+        'slot-editor__item--disabled': isDisabled,
+        'slot-editor__item--booked': eventId && !this.props.isSlotBookedByMe,
+        'slot-editor__item--booked-by-me': this.props.isSlotBookedByMe,
       }
     )
 
     return (
-      <div
-        className={slotClassnames}
-        onClick={this.onClick}
-      >
+      <div className={slotItemClasses} onClick={this.onClick}>
         { fromTimeStr } - { toTimeStr }
       </div>
     )
   }
 
-  changeSlotStatus(status) {
-    const slot = this.props.slot
-    slot.status = status
-    this.props.onChange(slot)
+  changeDisabledStatus(status) {
+    this.props.onChangeDisabledStatus(this.props.slot, status)
+  }
+
+  changeIsBookedStatus(status) {
+    this.props.onChangeBookedByMeStatus(this.props.slot, status)
   }
 
   constructor(props) {

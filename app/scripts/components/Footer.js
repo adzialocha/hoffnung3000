@@ -34,7 +34,6 @@ class Footer extends Component {
             </NavLink>
           </li>
         </ul>
-
         <div className="sponsors">
           <p className="sponsors__text">
             { translate('components.footer.supportedBy') }

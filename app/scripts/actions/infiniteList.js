@@ -3,7 +3,7 @@ import { getRequest } from '../services/api'
 
 export const ITEMS_PER_PAGE = 10
 
-export function fetchList(resourceName, page = 0) {
+export function fetchList(resourceName, page = 0, params = {}) {
   const offset = page * ITEMS_PER_PAGE
   const limit = ITEMS_PER_PAGE
   const meta = {
@@ -14,7 +14,7 @@ export function fetchList(resourceName, page = 0) {
 
   const type = page === 0 ? ActionTypes.INFINITE_LIST_INITIALIZE : ActionTypes.INFINITE_LIST_REQUEST
 
-  return getRequest([resourceName], { offset, limit }, {
+  return getRequest([resourceName], { offset, limit, ...params }, {
     request: {
       type,
       meta,

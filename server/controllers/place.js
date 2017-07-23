@@ -1,3 +1,5 @@
+import httpStatus from 'http-status'
+
 import {
   destroyWithSlug,
   findAllCurated,
@@ -6,20 +8,20 @@ import {
 } from './base'
 
 import pick from '../utils/pick'
+import { createDisabledSlots } from '../utils/slots'
 
-import Animal from '../models/animal'
-import Place from '../models/place'
+import Place, { PlaceBelongsToAnimal, PlaceHasManySlots } from '../models/place'
 import Slot from '../models/slot'
 
-const include = [{
-  as: 'animal',
-  foreignKey: 'animalId',
-  model: Animal,
-}, {
-  as: 'slots',
-  targetKey: 'placeId',
-  model: Slot,
-}]
+import { APIError } from '../helpers/errors'
+
+const include = [
+  {
+    association: PlaceBelongsToAnimal,
+    attributes: ['name', 'id', 'userId'],
+  },
+  PlaceHasManySlots,
+]
 
 const permittedFields = [
   'city',
@@ -39,7 +41,35 @@ const permittedFieldsCreate = permittedFields.concat([
   'slotSize',
 ])
 
-function preparePlaceValues(body, placeId) {
+function areSlotsBooked(placeId, slotIndexes) {
+  return new Promise((resolve, reject) => {
+    Slot.findAndCountAll({
+      where: {
+        placeId,
+        slotIndex: {
+          $in: slotIndexes,
+        },
+        eventId: {
+          $not: null,
+        },
+      },
+    })
+      .then(result => {
+        if (result.count > 0) {
+          reject(
+            new APIError(
+              'Can\'t disable slots which are already booked by someone',
+              httpStatus.BAD_REQUEST
+            )
+          )
+        } else {
+          resolve()
+        }
+      })
+  })
+}
+
+function preparePlaceValues(body) {
   const {
     description,
     isPublic,
@@ -64,26 +94,12 @@ function preparePlaceValues(body, placeId) {
     values.longitude = body.longitude
   }
 
-  const slots = body.disabledSlots.map((slotIndex) => {
-    const slot = {
-      slotIndex,
-      isDisabled: true,
-    }
-
-    if (placeId) {
-      slot.placeId = placeId
-    }
-
-    return slot
-  })
-
   if (body.slotSize) {
     values.slotSize = body.slotSize
   }
 
   return {
     ...values,
-    slots,
   }
 }
 
@@ -91,6 +107,12 @@ export default {
   create: (req, res, next) => {
     const body = pick(permittedFieldsCreate, req.body)
     const values = preparePlaceValues(body)
+
+    values.slots = createDisabledSlots(
+      body.disabledSlots,
+      null,
+      body.slotSize
+    )
 
     return Place.create({
       ...values,
@@ -101,10 +123,10 @@ export default {
       include,
       returning: true,
     })
-      .then(data => res.json(data))
+      .then(data => res.json(prepareResponse(data, req)))
       .catch(err => next(err))
   },
-  destroy: (req, res, next) => {
+  destroyWithSlug: (req, res, next) => {
     return destroyWithSlug(Place, req, res, next)
   },
   findAll: (req, res, next) => {
@@ -127,31 +149,44 @@ export default {
       })
       .catch(err => next(err))
   },
-  lookup: (req, res, next) => {
+  lookupWithSlug: (req, res, next) => {
     return lookupWithSlug(Place, req, res, next)
   },
-  update: (req, res, next) => {
+  updateWithSlug: (req, res, next) => {
     const body = pick(permittedFields, req.body)
-    const values = preparePlaceValues(body, req.resourceId)
+    const values = preparePlaceValues(body)
 
-    return Place.update(values, {
-      where: {
-        slug: req.params.resourceSlug,
-      },
-      limit: 1,
-      returning: true,
-    })
-      .then(data => {
-        // clean up all slot before
-        return Slot.destroy({
+    // check first if we can disable the requested slots
+    areSlotsBooked(req.resourceId, body.disabledSlots)
+      .then(() => {
+        // update place
+        Place.update(values, {
           where: {
-            placeId: req.resourceId,
+            slug: req.params.resourceSlug,
           },
+          limit: 1,
+          returning: true,
         })
-          .then(() => {
-            return Slot.bulkCreate(values.slots)
+          .then(data => {
+            const place = data[1][0]
+
+            // clean up all slot before
+            return Slot.destroy({
+              where: {
+                isDisabled: true,
+                placeId: place.id,
+              },
+            })
+              .then(() => {
+                const slots = createDisabledSlots(
+                  body.disabledSlots,
+                  place.id,
+                  place.slotSize
+                )
+                return Slot.bulkCreate(slots)
+              })
+              .then(() => res.json(prepareResponse(place, req)))
           })
-          .then(() => res.json(prepareResponse(data[1][0], req)))
       })
       .catch(err => next(err))
   },

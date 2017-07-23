@@ -16,6 +16,17 @@ const Slot = db.sequelize.define('slot', {
     type: db.Sequelize.INTEGER,
     allowNull: false,
   },
+  eventId: {
+    type: db.Sequelize.INTEGER,
+  },
+  from: {
+    type: db.Sequelize.DATE,
+    allowNull: false,
+  },
+  to: {
+    type: db.Sequelize.DATE,
+    allowNull: false,
+  },
   slotIndex: {
     type: db.Sequelize.INTEGER,
     allowNull: false,

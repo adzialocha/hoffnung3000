@@ -9,7 +9,7 @@ import { fetchResource, updateResource } from '../actions/resources'
 import { PlaceForm } from '../forms'
 import {
   generateNewSlotItems,
-  prepareSlotIds,
+  getDisabledSlotIndexes,
 } from '../utils/slots'
 import { translate } from '../services/i18n'
 
@@ -31,7 +31,7 @@ class PlacesEdit extends Component {
   onSubmit(values) {
     const { title, description, isPublic } = values
     const { slots } = values.slots
-    const disabledSlots = slots ? prepareSlotIds(slots) : []
+    const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
 
     const successFlash = {
       text: translate('flash.updatePlaceSuccess'),

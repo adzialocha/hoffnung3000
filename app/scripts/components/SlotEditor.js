@@ -2,35 +2,78 @@ import dateFns from 'date-fns'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import { alert } from '../services/dialog'
 import { SlotEditorItem } from './'
 import { translate } from '../services/i18n'
+
+function addOrRemoveFromArray(arr, slotIndex, status) {
+  if (status) {
+    return arr.concat([slotIndex])
+  }
+  return arr.filter(value => slotIndex !== value)
+}
+
+function isInClosedOrder(arr) {
+  if (arr.length < 2) {
+    return true
+  }
+
+  arr.sort((valA, valB) => valA - valB)
+
+  return !arr.some((currentItem, index) => {
+    const nextItem = arr[index + 1]
+    return nextItem && nextItem !== currentItem + 1
+  })
+}
 
 class SlotEditor extends Component {
   static propTypes = {
     isBookingMode: PropTypes.bool,
-    onSlotStatusChange: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
+    onSlotDisabledChange: PropTypes.func,
+    onSlotSelectionChange: PropTypes.func,
+    selectedSlotsIndexes: PropTypes.array,
     slots: PropTypes.array,
   }
 
   static defaultProps = {
     isBookingMode: false,
+    onSlotDisabledChange: undefined,
+    onSlotSelectionChange: undefined,
+    selectedSlotsIndexes: [],
     slots: [],
   }
 
-  componentDidUpdate() {
-    this.props.onSlotStatusChange(this.state.slots)
-  }
+  onSlotDisabledChange(slot, status) {
+    const slots = this.state.slots.reduce((acc, item) => {
+      if (item.slotIndex === slot.slotIndex) {
+        item.isDisabled = status
+      }
+      acc.push(item)
+      return acc
+    }, [])
 
-  onSubmit() {
-    this.props.onSubmit()
-  }
-
-  onSlotStatusChange(slot) {
-    this.state.slots[slot.id] = slot
     this.setState({
-      slots: this.state.slots,
+      slots,
     })
+
+    this.props.onSlotDisabledChange(this.state.slots)
+  }
+
+  onSlotBookedChange(slot, status) {
+    const selectedSlotsIndexes = addOrRemoveFromArray(
+      this.state.selectedSlotsIndexes, slot.slotIndex, status
+    )
+
+    if (!isInClosedOrder(selectedSlotsIndexes)) {
+      alert(translate('components.slotEditor.slotsHaveToBeInClosedOrder'))
+      return
+    }
+
+    this.setState({
+      selectedSlotsIndexes,
+    })
+
+    this.props.onSlotSelectionChange(selectedSlotsIndexes)
   }
 
   renderSlotDateHeader(item, index) {
@@ -48,9 +91,13 @@ class SlotEditor extends Component {
     return (
       <SlotEditorItem
         isBookingMode={this.props.isBookingMode}
+        isSlotBookedByMe={
+          this.state.selectedSlotsIndexes.indexOf(item.slotIndex) > -1
+        }
         key={`slot-${index}`}
         slot={item}
-        onChange={this.onSlotStatusChange}
+        onChangeBookedByMeStatus={this.onSlotBookedChange}
+        onChangeDisabledStatus={this.onSlotDisabledChange}
       />
     )
   }
@@ -62,6 +109,7 @@ class SlotEditor extends Component {
         this.renderSlotItem(item, index),
       ]
     }
+
     return this.renderSlotItem(item, index)
   }
 
@@ -75,22 +123,7 @@ class SlotEditor extends Component {
   render() {
     return (
       <div className="slot-editor">
-        <div className="slot-editor__header">
-          <h1>{ translate('components.slotEditor.title') }</h1>
-        </div>
-        <div className="slot-editor__content">
-          { this.renderContent() }
-        </div>
-        <div className="slot-editor__footer">
-          <div className="button-group">
-            <button
-              className="button button--green"
-              onClick={this.onSubmit}
-            >
-              { translate('components.slotEditor.submitButton') }
-            </button>
-          </div>
-        </div>
+        { this.renderContent() }
       </div>
     )
   }
@@ -99,11 +132,12 @@ class SlotEditor extends Component {
     super(props)
 
     this.state = {
+      selectedSlotsIndexes: props.selectedSlotsIndexes,
       slots: props.slots,
     }
 
-    this.onSubmit = this.onSubmit.bind(this)
-    this.onSlotStatusChange = this.onSlotStatusChange.bind(this)
+    this.onSlotBookedChange = this.onSlotBookedChange.bind(this)
+    this.onSlotDisabledChange = this.onSlotDisabledChange.bind(this)
   }
 }
 

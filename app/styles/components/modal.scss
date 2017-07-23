@@ -1,0 +1,46 @@
+$_modal-footer-height: 37px;
+$_modal-header-height: 55px;
+
+.modal {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+}
+
+.modal__header {
+  position: absolute;
+
+  top: 0;
+
+  z-index: 1;
+
+  width: 100%;
+  height: $_modal-header-height;
+}
+
+.modal__content {
+  overflow: hidden;
+
+  height: 100%;
+
+  padding-top: $_modal-header-height;
+  padding-bottom: $_modal-footer-height;
+}
+
+.modal__content--full {
+  padding: 0;
+}
+
+.modal__content--scrollable {
+  overflow: auto;
+}
+
+.modal__footer {
+  position: absolute;
+
+  bottom: 0;
+
+  width: 100%;
+}

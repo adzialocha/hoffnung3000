@@ -2,6 +2,7 @@ import express from 'express'
 import validate from 'express-validation'
 
 import placeController from '../controllers/place'
+import placeSlotsController from '../controllers/placeSlots'
 import placeValidation from '../validation/place'
 
 import { canRead, canCreate, canUpdate, canDelete } from '../middlewares/roles'
@@ -21,20 +22,27 @@ router.route('/')
 
 router.route('/:resourceSlug')
   .get(
-    placeController.lookup,
+    placeController.lookupWithSlug,
     canRead,
     placeController.findOneWithSlug
   )
   .put(
-    placeController.lookup,
+    placeController.lookupWithSlug,
     canUpdate,
     validate(placeValidation.updatePlace),
-    placeController.update
+    placeController.updateWithSlug
   )
   .delete(
-    placeController.lookup,
+    placeController.lookupWithSlug,
     canDelete,
-    placeController.destroy
+    placeController.destroyWithSlug
+  )
+
+router.route('/:resourceSlug/slots')
+  .get(
+    placeController.lookupWithSlug,
+    canRead,
+    placeSlotsController.findAll
   )
 
 export default router

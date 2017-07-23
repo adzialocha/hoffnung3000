@@ -81,13 +81,11 @@ slugify.slugifyModel(Place, {
 
 export const PlaceBelongsToAnimal = Place.belongsTo(Animal, {
   as: 'animal',
-  constraints: false,
   foreignKey: 'animalId',
 })
 
 export const PlaceHasManySlots = Place.hasMany(Slot, {
   as: 'slots',
-  constraints: false,
   targetKey: 'placeId',
 })
 

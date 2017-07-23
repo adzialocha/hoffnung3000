@@ -12,11 +12,11 @@ import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
 
 import authRoutes from './auth'
-import itemRoutes from './item'
+import eventRoutes from './event'
 import pageRoutes from './page'
-import performerRoutes from './performer'
 import placeRoutes from './place'
 import profileRoutes from './profile'
+import resourceRoutes from './resource'
 import userRoutes from './user'
 
 const router = express.Router() // eslint-disable-line new-cap
@@ -47,11 +47,10 @@ router.use(
   }
 )
 
-router.use('/profile', profileRoutes)
-
+router.use('/events', eventRoutes)
 router.use('/places', placeRoutes)
-router.use('/items', itemRoutes)
-router.use('/performers', performerRoutes)
+router.use('/profile', profileRoutes)
+router.use('/resources', resourceRoutes)
 
 // admin API routes
 

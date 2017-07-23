@@ -13,8 +13,7 @@ export default {
     contact: 'Contact',
     home: 'Home',
     information: 'Information',
-    items: 'Items',
-    performers: 'Performers',
+    resources: 'Markt',
     places: 'Places',
     tickets: 'Tickets',
   },
@@ -53,17 +52,50 @@ export default {
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
   },
   slotEditor: {
+    slotsHaveToBeInClosedOrder: 'Please select your slots in a closed order',
     submitButton: 'Okay',
     title: 'Slot editor',
   },
+  slotEditorItem: {
+    cantDisableBookedSlot: 'Sorry, you can\'t disable a slot which is already booked',
+    slotIsBookedAlert: 'Sorry, this slot was already booked by someone else',
+    slotIsDisabledAlert: 'Sorry, the owner of this place disabled this slot',
+  },
+  formPlaceSlotSelector: {
+    loadingSlots: 'Loading slot data ...',
+    selectAPlaceFirst: 'Please select a place first!',
+    when: 'When?',
+    where: 'Where?',
+  },
   slotSizeEditor: {
-    editSlotsLabel: 'Enable / disable slots',
+    editSlotsLabel: 'Make slots available',
     editSlotsButton: 'Edit slots',
     slotSizeLabel: 'How long is one slot?',
+  },
+  placeSelector: {
+    openModalButton: 'Select a place',
+    submitButton: 'Close',
+    title: 'Select a place',
+  },
+  slotSelector: {
+    openModalButton: 'Select time slots',
+    submitButton: 'Close',
+    title: 'Select time slots',
   },
   placeListItem: {
     isPrivatePlace: 'This place is not visible to the audience',
     virtualLocation: '@ Virtual location',
+  },
+  formResourceSelector: {
+    openModalButton: 'Select resources',
+    title: 'Select resources for your event',
+    submitButton: 'Okay',
+  },
+  curatedSelectableListItem: {
+    addItem: 'Add',
+    isNotAvailable: 'Not available',
+    isSelected: 'Selected',
+    removeItem: 'Remove',
   },
   footer: {
     about: 'About',

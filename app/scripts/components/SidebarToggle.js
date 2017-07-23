@@ -1,9 +1,8 @@
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 
-import { toggleSidebar } from '../actions/drawer'
+import { withDrawerState, withApiState } from '../containers'
 
 const SPINNER_TRESHOLD = 100
 
@@ -12,7 +11,7 @@ let timeout
 class SidebarToggle extends Component {
   static propTypes = {
     isSidebarExpanded: PropTypes.bool.isRequired,
-    pendingRequests: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
+    pendingRequests: PropTypes.number.isRequired,
     toggleSidebar: PropTypes.func.isRequired,
   }
 
@@ -62,15 +61,4 @@ class SidebarToggle extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    isSidebarExpanded: state.drawer.isSidebarExpanded,
-    pendingRequests: state.api.pendingRequests,
-  }
-}
-
-export default connect(
-  mapStateToProps, {
-    toggleSidebar,
-  }
-)(SidebarToggle)
+export default withApiState(withDrawerState(SidebarToggle))

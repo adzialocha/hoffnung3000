@@ -3,29 +3,37 @@ import marked from 'marked'
 import Animal from '../models/animal'
 import pick from '../utils/pick'
 
-const DEFAULT_LIMIT = 25
-const DEFAULT_OFFSET = 0
+export const DEFAULT_LIMIT = 25
+export const DEFAULT_OFFSET = 0
 
-const include = [{
+const belongsToAnimal = {
   as: 'animal',
   foreignKey: 'animalId',
   model: Animal,
-}]
+}
+
+const include = [belongsToAnimal]
 
 export function prepareResponse(data, req) {
   const response = data.toJSON()
 
   // set owner flag for frontend ui
-  response.isOwnerMe = typeof req.isOwnerMe !== 'undefined' ? req.isOwnerMe : (data.animal.userId === req.user.id)
+  if (typeof req.isOwnerMe !== 'undefined') {
+    response.isOwnerMe = req.isOwnerMe
+  } else {
+    response.isOwnerMe = (data.animal.userId === req.user.id)
+  }
+
+  // remove userId from animal to stay anonymous
+  if (response.animal) {
+    response.animal = {
+      id: response.animal.id,
+      name: response.animal.name,
+    }
+  }
 
   // convert markdown to html
   response.descriptionHtml = marked(response.description)
-
-  // hide animal resource and just return name and id
-  if (response.animal) {
-    response.animalName = response.animal.name
-    delete response.animal
-  }
 
   return response
 }
