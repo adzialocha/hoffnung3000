@@ -82,7 +82,7 @@ class SlotEditor extends Component {
         className="slot-editor__day-header"
         key={`header-${index}`}
       >
-        { dateFns.format(item.to, 'dd DD.MM.YY') }
+        { dateFns.format(item.from, 'dd DD.MM.YY') }
       </div>
     )
   }
