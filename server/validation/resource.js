@@ -10,13 +10,13 @@ export default {
   },
   createResource: {
     body: {
-      description: Joi.string().min(10).max(60).required(),
+      description: Joi.string().min(10).max(120).required(),
       title: Joi.string().min(3).required(),
     },
   },
   updateResource: {
     body: {
-      description: Joi.string().min(10).max(60).required(),
+      description: Joi.string().min(10).max(120).required(),
       title: Joi.string().min(3).required(),
     },
     params: {
