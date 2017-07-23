@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import getIds from '../utils/getIds'
 import flash from '../actions/flash'
 import { cachedResource } from '../services/resources'
 import { EventForm } from '../forms'
@@ -25,15 +26,27 @@ class EventsEdit extends Component {
   }
 
   onSubmit(values) {
-    const successFlash = {
+    const updateFlash = {
       text: translate('flash.updateEventSuccess'),
+    }
+
+    const { title, description, isPublic } = values
+
+    const requestParams = {
+      description,
+      isPublic,
+      items: getIds(values.items),
+      performers: getIds(values.performers),
+      placeId: values.placeSlots.place.id,
+      slots: values.placeSlots.selectedSlotsIndexes,
+      title,
     }
 
     this.props.updateResource(
       'events',
       this.props.resourceSlug,
-      values,
-      successFlash,
+      requestParams,
+      updateFlash,
       '/calendar'
     )
   }
@@ -61,6 +74,9 @@ class EventsEdit extends Component {
       title,
     } = this.props.resourceData
 
+    const selectedSlotsIndexes = slots.map(slot => slot.slotIndex)
+    selectedSlotsIndexes.sort((slotA, slotB) => slotA - slotB)
+
     const initialValues = {
       description,
       isPublic,
@@ -68,7 +84,7 @@ class EventsEdit extends Component {
       performers,
       placeSlots: {
         place,
-        selectedSlotsIndexes: slots.map(slot => slot.slotIndex),
+        selectedSlotsIndexes,
       },
       title,
     }

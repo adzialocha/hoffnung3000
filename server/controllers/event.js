@@ -37,6 +37,33 @@ const permittedFields = [
   'title',
 ]
 
+const include = [{
+  association: EventBelongsToAnimal,
+  attributes: ['name', 'id'],
+}, {
+  association: EventBelongsToManyItem,
+  attributes: { exclude: ['createdAt', 'updatedAt'] },
+  include: [{
+    association: ItemBelongsToAnimal,
+    attributes: ['name', 'id'],
+  }],
+}, {
+  association: EventBelongsToManyPerformer,
+  include: [{
+    association: PerformerBelongsToAnimal,
+    attributes: ['name', 'id'],
+  }],
+}, {
+  association: EventBelongsToPlace,
+  include: [{
+    association: PlaceBelongsToAnimal,
+    attributes: ['name', 'id'],
+  }],
+}, {
+  association: EventHasManySlots,
+  attributes: { exclude: ['createdAt', 'updatedAt'] },
+}]
+
 function areSlotsInClosedRange(req) {
   return new Promise((resolve, reject) => {
     if (isInClosedOrder(req.body.slots)) {
@@ -52,8 +79,13 @@ function areSlotsInClosedRange(req) {
   })
 }
 
-function areSlotsAvailable(req, fields) {
+function areSlotsAvailable(req, fields, existingEventId) {
   const { placeId } = fields
+
+  let eventId = { $not: null }
+  if (existingEventId) {
+    eventId = { $and: [eventId, { $not: existingEventId }] }
+  }
 
   return new Promise((resolve, reject) => {
     Slot.findAndCountAll({
@@ -65,9 +97,7 @@ function areSlotsAvailable(req, fields) {
         $or: [{
           isDisabled: true,
         }, {
-          eventId: {
-            $not: null,
-          },
+          eventId,
         }],
       },
     })
@@ -86,7 +116,7 @@ function areSlotsAvailable(req, fields) {
   })
 }
 
-function areResourcesAvailable(req, model) {
+function areResourcesAvailable(req, model, existingEventId) {
   const slots = createEventSlots(
     req.body.slots,
     null,
@@ -96,6 +126,11 @@ function areResourcesAvailable(req, model) {
 
   const eventFrom = slots[0].from
   const eventTo = slots[slots.length - 1].to
+
+  let eventId = { $not: null }
+  if (existingEventId) {
+    eventId = { $and: [eventId, { $not: existingEventId }] }
+  }
 
   return new Promise((resolve, reject) => {
     model.findAndCountAll({
@@ -114,9 +149,7 @@ function areResourcesAvailable(req, model) {
           required: true,
           where: {
             $and: [{
-              eventId: {
-                $not: null,
-              },
+              eventId,
             }, {
               from: {
                 $lte: eventTo,
@@ -155,10 +188,6 @@ function createEvent(req, fields) {
             userId: req.user.id,
           },
         }, {
-          include: [
-            EventBelongsToAnimal,
-            EventHasManySlots,
-          ],
           returning: true,
         })
           .then(event => {
@@ -194,7 +223,67 @@ function createEvent(req, fields) {
   })
 }
 
-function validateEvent(req, fields) {
+function updateEvent(req, fields) {
+  return new Promise((resolve, reject) => {
+    return Place.findById(fields.placeId)
+      .then(place => {
+        Event.update({
+          ...fields,
+        }, {
+          where: {
+            slug: req.params.resourceSlug,
+          },
+          limit: 1,
+          returning: true,
+        })
+          .then(data => {
+            const event = data[1][0]
+
+            // associate items to event
+            return Item.findAll({
+              where: { id: { $in: req.body.items } },
+            })
+              .then(items => {
+                event.setItems(items)
+
+                // associate performers to event
+                return Performer.findAll({
+                  where: { id: { $in: req.body.performers } },
+                })
+                  .then(performers => {
+                    event.setPerformers(performers)
+
+                    // clean up all slot before
+                    return Slot.destroy({
+                      where: {
+                        eventId: event.id,
+                      },
+                    })
+                      .then(() => {
+                        // create slots for event
+                        const slots = createEventSlots(
+                          req.body.slots,
+                          place.id,
+                          event.id,
+                          place.slotSize
+                        )
+
+                        return Slot.bulkCreate(slots)
+                          .then(() => {
+                            // return the whole event with all associations
+                            return Event.findById(event.id, { include })
+                              .then(updatedEvent => resolve(updatedEvent))
+                          })
+                      })
+                  })
+              })
+          })
+          .catch(err => reject(err))
+      })
+  })
+}
+
+function validateEvent(req, fields, eventId) {
   return Place.findById(fields.placeId)
     .then(place => {
       if (!place) {
@@ -209,9 +298,9 @@ function validateEvent(req, fields) {
 
       return Promise.all([
         areSlotsInClosedRange(req),
-        areSlotsAvailable(req, fields),
-        areResourcesAvailable(req, Item),
-        areResourcesAvailable(req, Performer),
+        areSlotsAvailable(req, fields, eventId),
+        areResourcesAvailable(req, Item, eventId),
+        areResourcesAvailable(req, Performer, eventId),
       ])
     })
 }
@@ -240,34 +329,7 @@ export default {
   },
   findOneWithSlug: (req, res, next) => {
     return Event.findOne({
-      include: [
-        {
-          association: EventBelongsToAnimal,
-          attributes: ['name', 'id'],
-        }, {
-          association: EventBelongsToManyItem,
-          attributes: { exclude: ['createdAt', 'updatedAt'] },
-          include: [{
-            association: ItemBelongsToAnimal,
-            attributes: ['name', 'id'],
-          }],
-        }, {
-          association: EventBelongsToManyPerformer,
-          include: [{
-            association: PerformerBelongsToAnimal,
-            attributes: ['name', 'id'],
-          }],
-        }, {
-          association: EventBelongsToPlace,
-          include: [{
-            association: PlaceBelongsToAnimal,
-            attributes: ['name', 'id'],
-          }],
-        }, {
-          association: EventHasManySlots,
-          attributes: { exclude: ['createdAt', 'updatedAt'] },
-        },
-      ],
+      include,
       rejectOnEmpty: true,
       where: {
         slug: req.params.resourceSlug,
@@ -280,6 +342,18 @@ export default {
     return lookupWithSlug(Event, req, res, next)
   },
   update: (req, res, next) => {
-    return updateCuratedWithSlug(Event, permittedFields, req, res, next)
+    const fields = pick(permittedFields, req.body)
+
+    // check if everything is correct before we do anything
+    return validateEvent(req, fields, req.resourceId)
+      .then(() => {
+        // update event
+        return updateEvent(req, fields)
+          .then(event => res.json(prepareResponse(event, req)))
+      })
+      .catch(err => {
+        next(err)
+        return
+      })
   },
 }

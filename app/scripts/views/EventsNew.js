@@ -3,18 +3,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import getIds from '../utils/getIds'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
 import { EventForm } from '../forms'
 import { translate } from '../services/i18n'
-
-function getIds(arr) {
-  if (!arr) {
-    return []
-  }
-
-  return arr.map(item => item.id)
-}
 
 class EventsNew extends Component {
   static propTypes = {
