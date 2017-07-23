@@ -49,7 +49,7 @@ export default {
       selectTime: 'Please select a time slot for your event',
       titleRequired: 'Please give your event a title',
     },
-    areEventsPublic: 'This event is visible in the calendar',
+    areEventsPublic: 'This event is visible in the calendar and to the public.',
     description: 'Description',
     pickResources: 'Which resources?',
     placeIsPrivate: 'Please note that the selected place is already private',
