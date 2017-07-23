@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { push } from 'react-router-redux'
 
-import { asInfiniteList, withUserState } from '../containers'
+import { asInfiniteList } from '../containers'
 import { CuratedEventListItem } from '../components'
 import { translate } from '../services/i18n'
 
@@ -12,6 +12,7 @@ const WrappedInfiniteList = asInfiniteList(CuratedEventListItem)
 
 class Calendar extends Component {
   static propTypes = {
+    isActive: PropTypes.bool.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     isParticipant: PropTypes.bool.isRequired,
@@ -27,6 +28,12 @@ class Calendar extends Component {
   }
 
   renderItemsList() {
+    if (!this.props.isAuthenticated || !this.props.isActive) {
+      return (
+        <WrappedInfiniteList resourceName="preview" />
+      )
+    }
+
     return (
       <WrappedInfiniteList
         resourceName="events"
@@ -70,8 +77,15 @@ class Calendar extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    ...state.auth,
+    ...state.user,
+  }
+}
+
 export default connect(
-  null, {
+  mapStateToProps, {
     push,
   }
-)(withUserState(Calendar))
+)(Calendar)

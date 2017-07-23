@@ -117,15 +117,13 @@ class PlacesShow extends Component {
   }
 
   renderOwner() {
-    const { name, id } = this.props.resourceData.animal
+    const { name } = this.props.resourceData.animal
 
     return (
       <p>
         { translate('common.by') }
         &nbsp;
-        <Link to={`/inbox/new/${id}`}>
-          { name }
-        </Link>
+        { name }
       </p>
     )
   }
