@@ -8,7 +8,7 @@ import { fetchList } from '../actions/infiniteList'
 import { translate } from '../services/i18n'
 
 const LIST_ITEM_HEIGHT = 175
-const INFINITE_LOAD_OFFSET = 50
+const INFINITE_LOAD_OFFSET = 175
 
 export default function asInfiniteList(WrappedListItemComponent) {
   class InfiniteListContainer extends Component {
