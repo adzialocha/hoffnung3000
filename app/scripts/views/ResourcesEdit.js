@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom'
 import flash from '../actions/flash'
 import { cachedResource } from '../services/resources'
 import { fetchResource, updateResource } from '../actions/resources'
-import { ItemForm } from '../forms'
+import { ResourceForm } from '../forms'
 import { translate } from '../services/i18n'
 
-class PerformersEdit extends Component {
+class ResourcesEdit extends Component {
   static propTypes = {
     errorMessage: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
@@ -21,20 +21,20 @@ class PerformersEdit extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchResource('performers', this.props.resourceSlug)
+    this.props.fetchResource('resources', this.props.resourceSlug)
   }
 
   onSubmit(values) {
     const successFlash = {
-      text: translate('flash.updatePerformerSuccess'),
+      text: translate('flash.updateResourceSuccess'),
     }
 
     this.props.updateResource(
-      'performers',
+      'resources',
       this.props.resourceSlug,
       values,
       successFlash,
-      '/performers'
+      '/resources'
     )
   }
 
@@ -52,7 +52,7 @@ class PerformersEdit extends Component {
     }
 
     return (
-      <ItemForm
+      <ResourceForm
         errorMessage={this.props.errorMessage}
         initialValues={this.props.resourceData}
         isSlotSizeVisible={false}
@@ -63,7 +63,7 @@ class PerformersEdit extends Component {
 
   renderTitle() {
     if (this.props.isLoading) {
-      return <h1>{ translate('views.performers.titlePlaceholder') }</h1>
+      return <h1>{ translate('views.resources.titlePlaceholder') }</h1>
     }
     return <h1>{ this.props.resourceData.title }</h1>
   }
@@ -72,7 +72,7 @@ class PerformersEdit extends Component {
     return (
       <section>
         { this.renderTitle() }
-        <Link className="button" to="/performers">
+        <Link className="button" to="/resources">
           { translate('common.backToOverview') }
         </Link>
         <hr />
@@ -91,7 +91,7 @@ class PerformersEdit extends Component {
 function mapStateToProps(state, ownProps) {
   const resourceSlug = ownProps.match.params.slug
   const { errorMessage } = state.resources
-  const resource = cachedResource('performers', resourceSlug)
+  const resource = cachedResource('resources', resourceSlug)
   const { isLoading, object: resourceData } = resource
 
   return {
@@ -108,4 +108,4 @@ export default connect(
     flash,
     updateResource,
   }
-)(PerformersEdit)
+)(ResourcesEdit)

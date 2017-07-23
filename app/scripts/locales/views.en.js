@@ -9,17 +9,11 @@ export default {
     titlePlaceholder: 'Place',
     virtualLocation: '@ Virtual location',
   },
-  items: {
-    createNewButton: 'Create item',
-    createNewTitle: 'Create new item',
-    titlePlaceholder: 'Item',
-    indexTitle: 'Items',
-  },
-  performers: {
-    createNewButton: 'Create performer',
-    createNewTitle: 'Create new performer',
-    titlePlaceholder: 'Performer',
-    indexTitle: 'Performers',
+  resources: {
+    createNewButton: 'Create resources',
+    createNewTitle: 'Create new resources',
+    titlePlaceholder: 'Resource',
+    indexTitle: 'Markt',
   },
   events: {
     calendarTitle: 'Calendar',

@@ -27,9 +27,8 @@ class EventsNew extends Component {
     const requestParams = {
       description,
       isPublic,
-      items: getIds(values.items),
-      performers: getIds(values.performers),
       placeId: values.placeSlots.place.id,
+      resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
       title,
     }

@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom'
 
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
-import { ItemForm } from '../forms'
+import { ResourceForm } from '../forms'
 import { translate } from '../services/i18n'
 
-class ItemsNew extends Component {
+class ResourcesNew extends Component {
   static propTypes = {
     createResource: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
@@ -18,27 +18,27 @@ class ItemsNew extends Component {
 
   onSubmit(values) {
     const flash = {
-      text: translate('flash.createItemSuccess'),
+      text: translate('flash.createResourceSuccess'),
     }
 
     this.props.createResource(
-      'items',
+      'resources',
       this.props.nextRandomId,
       values,
       flash,
-      '/items'
+      '/resources'
     )
   }
 
   render() {
     return (
       <section>
-        <h1>{ translate('views.items.createNewTitle') }</h1>
-        <Link className="button" to="/items">
+        <h1>{ translate('views.resources.createNewTitle') }</h1>
+        <Link className="button" to="/resources">
           { translate('common.backToOverview') }
         </Link>
         <hr />
-        <ItemForm
+        <ResourceForm
           errorMessage={this.props.errorMessage}
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
@@ -56,7 +56,7 @@ class ItemsNew extends Component {
 
 function mapStateToProps(state) {
   const { errorMessage, nextRandomId } = state.resources
-  const { isLoading } = cachedResource('items', nextRandomId, true)
+  const { isLoading } = cachedResource('resources', nextRandomId, true)
 
   return {
     errorMessage,
@@ -69,4 +69,4 @@ export default connect(
   mapStateToProps, {
     createResource,
   }
-)(ItemsNew)
+)(ResourcesNew)

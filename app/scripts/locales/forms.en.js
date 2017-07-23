@@ -32,23 +32,14 @@ export default {
     title: 'Title of your place',
     where: 'Where is it?',
   },
-  item: {
+  resource: {
     errors: {
-      descriptionRequired: 'Describe your item a little',
-      titleRequired: 'Please give your item a title',
+      descriptionRequired: 'Describe your resource a little',
+      titleRequired: 'Please give your resource a title',
     },
-    description: 'Describe your item briefly',
+    description: 'Describe your resource briefly',
     submit: 'Done. Save it!',
-    title: 'Title of your item',
-  },
-  performer: {
-    errors: {
-      descriptionRequired: 'Describe your performer a little',
-      titleRequired: 'Please give your performer a title',
-    },
-    description: 'Describe it!',
-    submit: 'Ok. Save it!',
-    title: 'Title of your performer',
+    title: 'Title of your resource',
   },
   event: {
     errors: {
@@ -60,8 +51,7 @@ export default {
     },
     areEventsPublic: 'This event is visible in the calendar',
     description: 'Description',
-    pickItems: 'Which items?',
-    pickPerformers: 'Which performers?',
+    pickResources: 'Which resources?',
     placeIsPrivate: 'Please note that the selected place is already private',
     publicOrPrivate: 'Is it public or private?',
     submit: 'Save event',

@@ -16,15 +16,12 @@ import {
   EventsShow,
   ForgotPassword,
   Home,
-  ItemsEdit,
-  ItemsIndex,
-  ItemsNew,
+  ResourcesEdit,
+  ResourcesIndex,
+  ResourcesNew,
   Login,
   NotFound,
   Page,
-  PerformersEdit,
-  PerformersIndex,
-  PerformersNew,
   PlacesEdit,
   PlacesIndex,
   PlacesNew,
@@ -50,18 +47,15 @@ export default class Routes extends Component {
           <Route component={Calendar} path="/calendar" />
           <Route component={isAuthenticated(Profile)} path="/profile" />
           <Route component={isParticipant(PlacesNew)} path="/new/place" />
-          <Route component={isParticipant(ItemsNew)} path="/new/item" />
+          <Route component={isParticipant(ResourcesNew)} path="/new/resource" />
           <Route component={isParticipant(EventsNew)} path="/new/event" />
-          <Route component={isParticipant(PerformersNew)} path="/new/performer" />
           <Route component={isParticipant(EventsEdit)} path="/events/:slug/edit" />
           <Route component={isParticipant(EventsShow)} path="/events/:slug" />
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
           <Route component={isParticipant(PlacesShow)} path="/places/:slug" />
           <Route component={isParticipant(PlacesIndex)} path="/places" />
-          <Route component={isParticipant(ItemsEdit)} path="/items/:slug/edit" />
-          <Route component={isParticipant(ItemsIndex)} path="/items" />
-          <Route component={isParticipant(PerformersEdit)} path="/performers/:slug/edit" />
-          <Route component={isParticipant(PerformersIndex)} path="/performers" />
+          <Route component={isParticipant(ResourcesEdit)} path="/resources/:slug/edit" />
+          <Route component={isParticipant(ResourcesIndex)} path="/resources" />
           <Route component={isAdmin(Admin)} path="/admin" />
           <Route component={NotFound} />
         </Switch>

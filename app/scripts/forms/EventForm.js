@@ -6,8 +6,8 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import {
   FormCheckbox,
   FormInput,
-  FormItemSelector,
   FormPlaceSlotSelector,
+  FormResourceSelector,
   FormTextarea,
 } from '../components'
 import { translate } from '../services/i18n'
@@ -99,13 +99,12 @@ class EventForm extends Component {
 
     return (
       <Field
-        component={FormItemSelector}
+        component={FormResourceSelector}
         disabled={this.props.isLoading}
         eventId={this.props.eventId}
         from={eventFromStr}
-        name="items"
+        name="resources"
         to={eventToStr}
-        type="items"
       />
     )
   }
@@ -139,7 +138,7 @@ class EventForm extends Component {
         <h2>{ translate('forms.event.publicOrPrivate') }</h2>
         { this.renderPrivateField() }
         <hr />
-        <h2>{ translate('forms.event.pickItems') }</h2>
+        <h2>{ translate('forms.event.pickResources') }</h2>
         { this.renderResourcesSelector() }
         <hr />
         <button

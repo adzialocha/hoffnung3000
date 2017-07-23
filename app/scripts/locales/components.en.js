@@ -13,8 +13,7 @@ export default {
     contact: 'Contact',
     home: 'Home',
     information: 'Information',
-    items: 'Items',
-    performers: 'Performers',
+    resources: 'Markt',
     places: 'Places',
     tickets: 'Tickets',
   },
@@ -87,15 +86,9 @@ export default {
     isPrivatePlace: 'This place is not visible to the audience',
     virtualLocation: '@ Virtual location',
   },
-  formItemSelector: {
-    items: {
-      openModalButton: 'Select items',
-      title: 'Select items for your event',
-    },
-    performers: {
-      openModalButton: 'Select performers',
-      title: 'Select performers for your event',
-    },
+  formResourceSelector: {
+    openModalButton: 'Select resources',
+    title: 'Select resources for your event',
     submitButton: 'Okay',
   },
   curatedSelectableListItem: {

@@ -5,7 +5,7 @@ import db from '../database'
 import Animal from './animal'
 import Event from './event'
 
-const Item = db.sequelize.define('item', {
+const Resource = db.sequelize.define('resource', {
   id: {
     type: db.Sequelize.INTEGER,
     primaryKey: true,
@@ -32,25 +32,25 @@ const Item = db.sequelize.define('item', {
   },
 })
 
-export const ItemBelongsToAnimal = Item.belongsTo(Animal, {
+export const ResourceBelongsToAnimal = Resource.belongsTo(Animal, {
   as: 'animal',
   foreignKey: 'animalId',
 })
 
-export const ItemBelongsToManyEvent = Item.belongsToMany(Event, {
-  through: 'itemsEvents',
+export const ResourceBelongsToManyEvent = Resource.belongsToMany(Event, {
+  through: 'resourcesEvents',
   as: 'events',
-  foreignKey: 'itemId',
+  foreignKey: 'resourceId',
 })
 
-export const EventBelongsToManyItem = Event.belongsToMany(Item, {
-  through: 'itemsEvents',
-  as: 'items',
+export const EventBelongsToManyResource = Event.belongsToMany(Resource, {
+  through: 'resourcesEvents',
+  as: 'resources',
   foreignKey: 'eventId',
 })
 
-slugify.slugifyModel(Item, {
+slugify.slugifyModel(Resource, {
   source: ['title'],
 })
 
-export default Item
+export default Resource

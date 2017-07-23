@@ -10,10 +10,7 @@ import {
 import pick from '../utils/pick'
 import { createDisabledSlots } from '../utils/slots'
 
-import Place, {
-  PlaceBelongsToAnimal,
-  PlaceHasManySlots,
-} from '../models/place'
+import Place, { PlaceBelongsToAnimal, PlaceHasManySlots } from '../models/place'
 import Slot from '../models/slot'
 
 import { APIError } from '../helpers/errors'
@@ -21,7 +18,7 @@ import { APIError } from '../helpers/errors'
 const include = [
   {
     association: PlaceBelongsToAnimal,
-    attributes: ['name', 'id'],
+    attributes: ['name', 'id', 'userId'],
   },
   PlaceHasManySlots,
 ]
@@ -126,7 +123,7 @@ export default {
       include,
       returning: true,
     })
-      .then(data => res.json(data))
+      .then(data => res.json(prepareResponse(data, req)))
       .catch(err => next(err))
   },
   destroyWithSlug: (req, res, next) => {

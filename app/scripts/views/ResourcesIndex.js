@@ -5,24 +5,24 @@ import { Link } from 'react-router-dom'
 import { push } from 'react-router-redux'
 
 import { asInfiniteList } from '../containers'
-import { CuratedListItem } from '../components'
+import { CuratedResourcesListItem } from '../components'
 import { translate } from '../services/i18n'
 
-const WrappedInfiniteList = asInfiniteList(CuratedListItem)
+const WrappedInfiniteList = asInfiniteList(CuratedResourcesListItem)
 
-class PerformersIndex extends Component {
+class ResourcesIndex extends Component {
   static propTypes = {
     push: PropTypes.func.isRequired,
   }
 
-  onEditClick(item) {
-    this.props.push(`/performers/${item.slug}/edit`)
+  onEditClick(resource) {
+    this.props.push(`/resources/${resource.slug}/edit`)
   }
 
-  renderItemsList() {
+  renderResourcesList() {
     return (
       <WrappedInfiniteList
-        resourceName="performers"
+        resourceName="resources"
         onEditClick={this.onEditClick}
       />
     )
@@ -31,12 +31,12 @@ class PerformersIndex extends Component {
   render() {
     return (
       <section>
-        <h1>{ translate('views.performers.indexTitle') }</h1>
-        <Link className="button button--green" to="/new/performer">
-          { translate('views.performers.createNewButton') }
+        <h1>{ translate('views.resources.indexTitle') }</h1>
+        <Link className="button button--green" to="/new/resource">
+          { translate('views.resources.createNewButton') }
         </Link>
         <hr />
-        { this.renderItemsList() }
+        { this.renderResourcesList() }
       </section>
     )
   }
@@ -52,4 +52,4 @@ export default connect(
   null, {
     push,
   }
-)(PerformersIndex)
+)(ResourcesIndex)

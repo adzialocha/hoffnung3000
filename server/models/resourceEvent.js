@@ -1,12 +1,12 @@
 import db from '../database'
 
-const ItemEvent = db.sequelize.define('itemEvent', {
+const ResourceEvent = db.sequelize.define('resourceEvent', {
   id: {
     type: db.Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  itemId: {
+  resourceId: {
     type: db.Sequelize.INTEGER,
   },
   eventId: {
@@ -14,4 +14,4 @@ const ItemEvent = db.sequelize.define('itemEvent', {
   },
 })
 
-export default ItemEvent
+export default ResourceEvent

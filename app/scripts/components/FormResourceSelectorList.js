@@ -7,13 +7,12 @@ import { CuratedSelectableListItem } from './'
 
 const WrappedInfiniteList = asInfiniteList(CuratedSelectableListItem)
 
-class FormItemSelectorList extends Component {
+class FormResourceSelectorList extends Component {
   static propTypes = {
     eventId: PropTypes.number,
     from: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     to: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
     value: PropTypes.any,
   }
 
@@ -28,7 +27,7 @@ class FormItemSelectorList extends Component {
     })
   }
 
-  onItemAddClick(item) {
+  onResourceAddClick(item) {
     if (this.isSelected(item)) {
       return
     }
@@ -42,7 +41,7 @@ class FormItemSelectorList extends Component {
     this.props.onChange(this.state.selectedItems)
   }
 
-  onItemRemoveClick(item) {
+  onResourceRemoveClick(item) {
     this.state.selectedItems = this.state.selectedItems.filter(selItem => {
       return selItem.id !== item.id
     })
@@ -73,9 +72,9 @@ class FormItemSelectorList extends Component {
             isSelected: this.isSelected,
           }
         }
-        resourceName={this.props.type}
+        resourceName="resources"
         useWindowAsScrollContainer={false}
-        onClick={this.onItemAddClick}
+        onClick={this.onResourceAddClick}
       />
     )
   }
@@ -93,7 +92,7 @@ class FormItemSelectorList extends Component {
           }
           item={item}
           key={index}
-          onClick={this.onItemRemoveClick}
+          onClick={this.onResourceRemoveClick}
         />
       )
     })
@@ -154,10 +153,10 @@ class FormItemSelectorList extends Component {
 
     this.isAvailable = this.isAvailable.bind(this)
     this.isSelected = this.isSelected.bind(this)
-    this.onItemAddClick = this.onItemAddClick.bind(this)
-    this.onItemRemoveClick = this.onItemRemoveClick.bind(this)
     this.onMeasureResize = this.onMeasureResize.bind(this)
+    this.onResourceAddClick = this.onResourceAddClick.bind(this)
+    this.onResourceRemoveClick = this.onResourceRemoveClick.bind(this)
   }
 }
 
-export default FormItemSelectorList
+export default FormResourceSelectorList

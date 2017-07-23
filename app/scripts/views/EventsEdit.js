@@ -35,9 +35,8 @@ class EventsEdit extends Component {
     const requestParams = {
       description,
       isPublic,
-      items: getIds(values.items),
-      performers: getIds(values.performers),
       placeId: values.placeSlots.place.id,
+      resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
       title,
     }
@@ -68,8 +67,7 @@ class EventsEdit extends Component {
       id,
       description,
       isPublic,
-      items,
-      performers,
+      resources,
       place,
       slots,
       title,
@@ -81,8 +79,7 @@ class EventsEdit extends Component {
     const initialValues = {
       description,
       isPublic,
-      items,
-      performers,
+      resources,
       placeSlots: {
         place,
         selectedSlotsIndexes,

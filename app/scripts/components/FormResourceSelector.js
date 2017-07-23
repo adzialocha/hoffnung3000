@@ -3,17 +3,16 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { asFormField } from '../containers'
-import { FormItemSelectorList } from './'
+import { FormResourceSelectorList } from './'
 import { translate } from '../services/i18n'
 
-class FormItemSelector extends Component {
+class FormResourceSelector extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     eventId: PropTypes.number,
     from: PropTypes.string,
     input: PropTypes.object.isRequired,
     to: PropTypes.string,
-    type: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -48,11 +47,10 @@ class FormItemSelector extends Component {
 
   renderModalContainer() {
     return (
-      <FormItemSelectorList
+      <FormResourceSelectorList
         eventId={this.props.eventId}
         from={this.props.from}
         to={this.props.to}
-        type={this.props.type}
         value={this.props.input.value}
         onChange={this.onChange}
       />
@@ -63,7 +61,7 @@ class FormItemSelector extends Component {
     return (
       <div className="modal">
         <div className="modal__header">
-          <h1>{ this.localeHelper('title') }</h1>
+          <h1>{ translate('components.formResourceSelector.title') }</h1>
         </div>
         { this.renderModalContainer() }
         <div className="modal__footer">
@@ -72,7 +70,7 @@ class FormItemSelector extends Component {
               className="button button--green"
               onClick={this.onCloseClick}
             >
-              { translate('components.formItemSelector.submitButton') }
+              { translate('components.formResourceSelector.submitButton') }
             </button>
           </div>
         </div>
@@ -83,7 +81,7 @@ class FormItemSelector extends Component {
   renderModal() {
     return (
       <Modal
-        contentLabel="FormItemSelectorModal"
+        contentLabel="FormResourceSelectorModal"
         isOpen={this.state.isModalOpen}
       >
         { this.renderModalContent() }
@@ -100,14 +98,10 @@ class FormItemSelector extends Component {
           disabled={this.props.disabled}
           onClick={this.onOpenClick}
         >
-          { this.localeHelper('openModalButton') }
+          { translate('components.formResourceSelector.openModalButton') }
         </button>
       </div>
     )
-  }
-
-  localeHelper(key) {
-    return translate(`components.formItemSelector.${this.props.type}.${key}`)
   }
 
   constructor(props) {
@@ -123,4 +117,4 @@ class FormItemSelector extends Component {
   }
 }
 
-export default asFormField(FormItemSelector)
+export default asFormField(FormResourceSelector)

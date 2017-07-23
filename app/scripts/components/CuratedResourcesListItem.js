@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { asInfiniteListItem } from '../containers'
 import { translate } from '../services/i18n'
 
-class CuratedListItem extends Component {
+class CuratedResourcesListItem extends Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
   }
@@ -32,4 +32,4 @@ class CuratedListItem extends Component {
   }
 }
 
-export default asInfiniteListItem(CuratedListItem)
+export default asInfiniteListItem(CuratedResourcesListItem)

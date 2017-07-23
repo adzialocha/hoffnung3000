@@ -11,7 +11,7 @@ import {
 } from './base'
 
 import Event from '../models/event'
-import Item, { ItemBelongsToAnimal } from '../models/item'
+import Resource, { ResourceBelongsToAnimal } from '../models/resource'
 import Slot from '../models/slot'
 
 const permittedFields = [
@@ -30,13 +30,13 @@ function findAllWithAvailability(req, res, next) {
     eventId = { $and: [eventId, { $not: req.query.eventId }] }
   }
 
-  return Item.findAndCountAll({
+  return Resource.findAndCountAll({
     limit,
     offset,
     order: [
       ['createdAt', 'DESC'],
     ],
-    include: [ ItemBelongsToAnimal, {
+    include: [ ResourceBelongsToAnimal, {
       model: Event,
       as: 'events',
       include: [{
@@ -77,25 +77,25 @@ function findAllWithAvailability(req, res, next) {
 
 export default {
   create: (req, res, next) => {
-    return createCurated(Item, permittedFields, req, res, next)
+    return createCurated(Resource, permittedFields, req, res, next)
   },
   destroy: (req, res, next) => {
-    return destroyWithSlug(Item, req, res, next)
+    return destroyWithSlug(Resource, req, res, next)
   },
   findAll: (req, res, next) => {
     // is there a time filter activated?
     if (req.query.from && req.query.to) {
       return findAllWithAvailability(req, res, next)
     }
-    return findAllCurated(Item, req, res, next)
+    return findAllCurated(Resource, req, res, next)
   },
   findOneWithSlug: (req, res, next) => {
-    return findOneCuratedWithSlug(Item, req, res, next)
+    return findOneCuratedWithSlug(Resource, req, res, next)
   },
   lookup: (req, res, next) => {
-    return lookupWithSlug(Item, req, res, next)
+    return lookupWithSlug(Resource, req, res, next)
   },
   update: (req, res, next) => {
-    return updateCuratedWithSlug(Item, permittedFields, req, res, next)
+    return updateCuratedWithSlug(Resource, permittedFields, req, res, next)
   },
 }

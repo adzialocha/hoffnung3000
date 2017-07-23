@@ -8,7 +8,7 @@ import { translate } from '../services/i18n'
 const validate = values => {
   const errors = {}
   if (!values.title) {
-    errors.title = translate('forms.item.errors.titleRequired')
+    errors.title = translate('forms.resource.errors.titleRequired')
   } else if (values.title.length < 3) {
     errors.title = translate(
       'forms.common.errors.minLength', { len: 3 }
@@ -16,7 +16,7 @@ const validate = values => {
   }
 
   if (!values.description) {
-    errors.description = translate('forms.item.errors.descriptionRequired')
+    errors.description = translate('forms.resource.errors.descriptionRequired')
   } else if (values.description.length < 10) {
     errors.description = translate(
       'forms.common.errors.minLength', { len: 10 }
@@ -30,7 +30,7 @@ const validate = values => {
   return errors
 }
 
-class ItemForm extends Component {
+class ResourceForm extends Component {
   static propTypes = {
     errorMessage: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
@@ -61,14 +61,14 @@ class ItemForm extends Component {
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label={translate('forms.item.title')}
+          label={translate('forms.resource.title')}
           name="title"
           type="text"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label={translate('forms.item.description')}
+          label={translate('forms.resource.description')}
           name="description"
           type="text"
         />
@@ -77,7 +77,7 @@ class ItemForm extends Component {
           disabled={this.props.isLoading}
           type="submit"
         >
-          { translate('forms.item.submit') }
+          { translate('forms.resource.submit') }
         </button>
       </form>
     )
@@ -86,6 +86,6 @@ class ItemForm extends Component {
 
 export default reduxForm({
   enableReinitialize: true,
-  form: 'item',
+  form: 'resource',
   validate,
-})(ItemForm)
+})(ResourceForm)

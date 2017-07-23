@@ -5,9 +5,8 @@ export default {
     body: {
       description: Joi.string().min(20).required(),
       isPublic: Joi.boolean().required(),
-      items: Joi.array().items(Joi.number()).required(),
-      performers: Joi.array().items(Joi.number()).required(),
       placeId: Joi.number().required(),
+      resources: Joi.array().items(Joi.number()).required(),
       slots: Joi.array().min(1).unique().items(Joi.number()).required(),
       title: Joi.string().min(3).required(),
     },
@@ -16,9 +15,8 @@ export default {
     body: {
       description: Joi.string().min(20).required(),
       isPublic: Joi.boolean().required(),
-      items: Joi.array().items(Joi.number()).required(),
-      performers: Joi.array().items(Joi.number()).required(),
       placeId: Joi.number().required(),
+      resources: Joi.array().items(Joi.number()).required(),
       slots: Joi.array().min(1).unique().items(Joi.number()).required(),
       title: Joi.string().min(3).required(),
     },

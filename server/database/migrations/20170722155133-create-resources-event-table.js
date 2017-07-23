@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('itemsEvents', {
+    return queryInterface.createTable('resourcesEvents', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -12,7 +12,7 @@ module.exports = {
       updatedAt: {
         type: Sequelize.DATE,
       },
-      itemId: {
+      resourceId: {
         type: Sequelize.INTEGER,
       },
       eventId: {
@@ -21,6 +21,6 @@ module.exports = {
     })
   },
   down: (queryInterface) => {
-    return queryInterface.dropTable('itemsEvents')
+    return queryInterface.dropTable('resourcesEvents')
   },
 }
