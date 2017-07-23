@@ -25,6 +25,11 @@ function findAllWithAvailability(req, res, next) {
     offset = DEFAULT_OFFSET,
   } = req.query
 
+  let eventId = { $not: null }
+  if (req.query.eventId) {
+    eventId = { $and: [eventId, { $not: req.query.eventId }] }
+  }
+
   return Item.findAndCountAll({
     limit,
     offset,
@@ -39,9 +44,7 @@ function findAllWithAvailability(req, res, next) {
         as: 'slots',
         where: {
           $and: [{
-            eventId: {
-              $not: null,
-            },
+            eventId,
           }, {
             from: {
               $lte: req.query.to,

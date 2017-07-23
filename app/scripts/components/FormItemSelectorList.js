@@ -9,6 +9,7 @@ const WrappedInfiniteList = asInfiniteList(CuratedSelectableListItem)
 
 class FormItemSelectorList extends Component {
   static propTypes = {
+    eventId: PropTypes.number,
     from: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     to: PropTypes.string.isRequired,
@@ -17,6 +18,7 @@ class FormItemSelectorList extends Component {
   }
 
   static defaultProps = {
+    eventId: undefined,
     value: [],
   }
 
@@ -53,12 +55,17 @@ class FormItemSelectorList extends Component {
   }
 
   renderAllItemsList() {
-    const { from, to } = this.props
+    const { from, to, eventId } = this.props
+    const filter = { from, to }
+
+    if (eventId) {
+      filter.eventId = eventId
+    }
 
     return (
       <WrappedInfiniteList
         containerHeight={this.state.containerHeight}
-        filter={ { from, to } }
+        filter={filter}
         input={
           {
             isAvailable: this.isAvailable,
@@ -79,7 +86,7 @@ class FormItemSelectorList extends Component {
         <CuratedSelectableListItem
           input={
             {
-              isAvailable: true,
+              isAvailable: this.isAvailable,
               isRemovable: true,
               isSelected: this.isSelected,
             }
@@ -127,14 +134,14 @@ class FormItemSelectorList extends Component {
   isSelected(item) {
     return this.state.selectedItems.find((selItem) => {
       return selItem.id === item.id
-    })
+    }) !== undefined
   }
 
   isAvailable(item) {
-    const wasSelected = this.state.initiallySelectedItems.find((selItem) => {
-      return selItem.id === item.id
-    })
-    return wasSelected || item.isAvailable
+    if (item.isAvailable === undefined) {
+      return true
+    }
+    return item.isAvailable
   }
 
   constructor(props) {
@@ -142,7 +149,6 @@ class FormItemSelectorList extends Component {
 
     this.state = {
       containerHeight: 500,
-      initiallySelectedItems: props.value || [],
       selectedItems: props.value || [],
     }
 

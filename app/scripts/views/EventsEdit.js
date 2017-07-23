@@ -65,6 +65,7 @@ class EventsEdit extends Component {
     }
 
     const {
+      id,
       description,
       isPublic,
       items,
@@ -92,6 +93,7 @@ class EventsEdit extends Component {
     return (
       <EventForm
         errorMessage={this.props.errorMessage}
+        eventId={id}
         initialValues={initialValues}
         isSlotSizeVisible={false}
         onSubmit={this.onSubmit}

@@ -3,6 +3,7 @@ import Joi from 'joi'
 export default {
   findAll: {
     query: {
+      eventId: Joi.number(),
       from: Joi.date().iso(),
       to: Joi.date().iso(),
     },

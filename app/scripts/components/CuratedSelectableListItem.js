@@ -17,9 +17,19 @@ class CuratedSelectableListItem extends Component {
   }
 
   renderSelectedState() {
-    const { isSelected, isRemovable, isAvailable } = this.props.input
+    const isAvailable = this.props.input.isAvailable(this.props.item)
+    const isSelected = this.props.input.isSelected(this.props.item)
+    const { isRemovable } = this.props.input
 
-    if (isRemovable && isSelected(this.props.item)) {
+    if (isRemovable && isSelected && !isAvailable) {
+      return (
+        <button className="button button--red">
+          { translate('components.curatedSelectableListItem.isNotAvailable') }
+        </button>
+      )
+    }
+
+    if (isRemovable && isSelected) {
       return (
         <button className="button button--red">
           { translate('components.curatedSelectableListItem.removeItem') }
@@ -27,13 +37,13 @@ class CuratedSelectableListItem extends Component {
       )
     }
 
-    if (isSelected(this.props.item)) {
+    if (isSelected) {
       return (
         <button className="button" disabled={true}>
           { translate('components.curatedSelectableListItem.isSelected') }
         </button>
       )
-    } else if (!isAvailable(this.props.item)) {
+    } else if (!isAvailable) {
       return (
         <button className="button" disabled={true}>
           { translate('components.curatedSelectableListItem.isNotAvailable') }

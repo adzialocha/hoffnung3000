@@ -46,6 +46,7 @@ const validate = values => {
 class EventForm extends Component {
   static propTypes = {
     errorMessage: PropTypes.string,
+    eventId: PropTypes.number,
     handleSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     placeSlots: PropTypes.object,
@@ -53,6 +54,7 @@ class EventForm extends Component {
 
   static defaultProps = {
     errorMessage: undefined,
+    eventId: undefined,
     isLoading: false,
     placeSlots: {},
   }
@@ -99,6 +101,7 @@ class EventForm extends Component {
       <Field
         component={FormItemSelector}
         disabled={this.props.isLoading}
+        eventId={this.props.eventId}
         from={eventFromStr}
         name="items"
         to={eventToStr}

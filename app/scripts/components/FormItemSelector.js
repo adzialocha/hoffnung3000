@@ -9,6 +9,7 @@ import { translate } from '../services/i18n'
 class FormItemSelector extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
+    eventId: PropTypes.number,
     from: PropTypes.string,
     input: PropTypes.object.isRequired,
     to: PropTypes.string,
@@ -16,6 +17,7 @@ class FormItemSelector extends Component {
   }
 
   static defaultProps = {
+    eventId: undefined,
     from: '',
     to: '',
   }
@@ -47,6 +49,7 @@ class FormItemSelector extends Component {
   renderModalContainer() {
     return (
       <FormItemSelectorList
+        eventId={this.props.eventId}
         from={this.props.from}
         to={this.props.to}
         type={this.props.type}
