@@ -23,7 +23,7 @@ class CuratedSelectableListItem extends Component {
 
     if (isRemovable && isSelected && !isAvailable) {
       return (
-        <button className="button button--red">
+        <button className="list-item-content__button button button--red">
           { translate('components.curatedSelectableListItem.isNotAvailable') }
         </button>
       )
@@ -31,7 +31,7 @@ class CuratedSelectableListItem extends Component {
 
     if (isRemovable && isSelected) {
       return (
-        <button className="button button--red">
+        <button className="list-item-content__button button button--red">
           { translate('components.curatedSelectableListItem.removeItem') }
         </button>
       )
@@ -39,20 +39,20 @@ class CuratedSelectableListItem extends Component {
 
     if (isSelected) {
       return (
-        <button className="button" disabled={true}>
+        <button className="list-item-content__button button" disabled={true}>
           { translate('components.curatedSelectableListItem.isSelected') }
         </button>
       )
     } else if (!isAvailable) {
       return (
-        <button className="button" disabled={true}>
+        <button className="list-item-content__button button" disabled={true}>
           { translate('components.curatedSelectableListItem.isNotAvailable') }
         </button>
       )
     }
 
     return (
-      <button className="button button--green">
+      <button className="list-item-content__button button button--green">
         { translate('components.curatedSelectableListItem.addItem') }
       </button>
     )
@@ -61,16 +61,16 @@ class CuratedSelectableListItem extends Component {
   render() {
     return (
       <div className="list-item-content">
-        <div className="list-item__title ellipsis">
+        <div className="list-item-content__title ellipsis">
           { this.props.item.title }
         </div>
-        <div className="list-item__subtitle ellipsis">
+        <div className="list-item-content__subtitle ellipsis">
           { this.renderOwner() }
         </div>
-        <div className="list-item__description ellipsis">
+        <div className="list-item-content__description ellipsis">
           { this.props.item.description }
-          { this.renderSelectedState() }
         </div>
+        { this.renderSelectedState() }
       </div>
     )
   }

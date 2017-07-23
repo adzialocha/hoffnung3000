@@ -102,10 +102,10 @@ class FormItemSelectorList extends Component {
   renderItemSelector() {
     return (
       <div className="item-selector">
-        <div className="item-selector__selected-list">
+        <div className="item-selector__list item-selector__list--selection">
           { this.renderSelectedItemsList() }
         </div>
-        <div className="item-selector__all-list">
+        <div className="item-selector__list">
           { this.renderAllItemsList() }
         </div>
       </div>

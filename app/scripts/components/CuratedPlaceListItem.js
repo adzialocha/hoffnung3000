@@ -48,13 +48,13 @@ class PlaceListItem extends Component {
   render() {
     return (
       <div className="list-item-content">
-        <div className="list-item__title ellipsis">
+        <div className="list-item-content__title ellipsis">
           { this.props.item.title }
         </div>
-        <div className="list-item__subtitle ellipsis">
+        <div className="list-item-content__subtitle ellipsis">
           { this.renderOwner() }
         </div>
-        <div className="list-item__description ellipsis">
+        <div className="list-item-content__description ellipsis">
           { this.renderAddress() }
         </div>
         { this.renderPrivacy() }
