@@ -11,6 +11,7 @@ const router = express.Router() // eslint-disable-line new-cap
 router.route('/')
   .get(
     canRead,
+    validate(itemValidation.findAll),
     itemController.findAll
   )
   .post(

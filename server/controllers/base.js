@@ -3,8 +3,8 @@ import marked from 'marked'
 import Animal from '../models/animal'
 import pick from '../utils/pick'
 
-const DEFAULT_LIMIT = 25
-const DEFAULT_OFFSET = 0
+export const DEFAULT_LIMIT = 25
+export const DEFAULT_OFFSET = 0
 
 const belongsToAnimal = {
   as: 'animal',
