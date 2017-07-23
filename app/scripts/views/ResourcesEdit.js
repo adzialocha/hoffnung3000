@@ -5,12 +5,18 @@ import { Link } from 'react-router-dom'
 
 import flash from '../actions/flash'
 import { cachedResource } from '../services/resources'
-import { fetchResource, updateResource } from '../actions/resources'
+import { confirm } from '../services/dialog'
+import {
+  deleteResource,
+  fetchResource,
+  updateResource,
+} from '../actions/resources'
 import { ResourceForm } from '../forms'
 import { translate } from '../services/i18n'
 
 class ResourcesEdit extends Component {
   static propTypes = {
+    deleteResource: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
     flash: PropTypes.func.isRequired,
@@ -37,6 +43,24 @@ class ResourcesEdit extends Component {
       '/resources'
     )
   }
+
+  onDeleteClick() {
+    if (!confirm(translate('common.areYouSure'))) {
+      return
+    }
+
+    const deleteFlash = {
+      text: translate('flash.deleteResourceSuccess'),
+    }
+
+    this.props.deleteResource(
+      'resources',
+      this.props.resourceSlug,
+      deleteFlash,
+      '/resources'
+    )
+  }
+
 
   renderForm() {
     if (this.props.isLoading) {
@@ -75,6 +99,9 @@ class ResourcesEdit extends Component {
         <Link className="button" to="/resources">
           { translate('common.backToOverview') }
         </Link>
+        <button className="button button--red" onClick={this.onDeleteClick}>
+          { translate('common.deleteButton') }
+        </button>
         <hr />
         { this.renderForm() }
       </section>
@@ -84,6 +111,7 @@ class ResourcesEdit extends Component {
   constructor(props) {
     super(props)
 
+    this.onDeleteClick = this.onDeleteClick.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
   }
 }
@@ -104,6 +132,7 @@ function mapStateToProps(state, ownProps) {
 
 export default connect(
   mapStateToProps, {
+    deleteResource,
     fetchResource,
     flash,
     updateResource,

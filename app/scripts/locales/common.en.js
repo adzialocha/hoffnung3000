@@ -9,9 +9,11 @@ export default {
     zero: '{count} minute',
     other: '{count} minutes',
   },
+  areYouSure: 'Are you sure?',
+  backToOverview: 'Back to overview',
+  by: 'by',
+  deleteButton: 'Delete',
   editButton: 'Edit',
   loading: 'Loading ...',
   ownedBy: 'by {name}',
-  by: 'by',
-  backToOverview: 'Back to overview',
 }
