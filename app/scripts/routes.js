@@ -54,8 +54,8 @@ export default class Routes extends Component {
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
           <Route component={isParticipant(PlacesShow)} path="/places/:slug" />
           <Route component={isParticipant(PlacesIndex)} path="/places" />
-          <Route component={isParticipant(ResourcesEdit)} path="/resources/:slug/edit" />
-          <Route component={isParticipant(ResourcesIndex)} path="/resources" />
+          <Route component={isParticipant(ResourcesEdit)} path="/markt/:slug/edit" />
+          <Route component={isParticipant(ResourcesIndex)} path="/markt" />
           <Route component={isAdmin(Admin)} path="/admin" />
           <Route component={NotFound} />
         </Switch>

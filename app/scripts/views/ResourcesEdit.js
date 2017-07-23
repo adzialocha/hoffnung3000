@@ -50,7 +50,7 @@ class ResourcesEdit extends Component {
       this.props.resourceSlug,
       values,
       successFlash,
-      '/resources'
+      '/markt'
     )
   }
 
@@ -67,7 +67,7 @@ class ResourcesEdit extends Component {
       'resources',
       this.props.resourceSlug,
       deleteFlash,
-      '/resources'
+      '/markt'
     )
   }
 
@@ -97,7 +97,7 @@ class ResourcesEdit extends Component {
     return (
       <section>
         { this.renderTitle() }
-        <Link className="button" to="/resources">
+        <Link className="button" to="/markt">
           { translate('common.backToOverview') }
         </Link>
         <button className="button button--red" onClick={this.onDeleteClick}>

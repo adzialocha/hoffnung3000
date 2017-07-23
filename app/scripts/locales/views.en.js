@@ -13,7 +13,7 @@ export default {
     createNewButton: 'Create resources',
     createNewTitle: 'Create new resources',
     titlePlaceholder: 'Resource',
-    indexTitle: 'Markt',
+    indexTitle: 'Der Markt',
   },
   events: {
     calendarTitle: 'Calendar',

@@ -18,7 +18,7 @@ const SECONDARY_NAVIGATION = [
 
 const CURATION_NAVIGATION = [
   { localeKey: 'places', url: '/places' },
-  { localeKey: 'resources', url: '/resources' },
+  { localeKey: 'resources', url: '/markt' },
 ]
 
 const ADMIN_NAVIGATION = CURATION_NAVIGATION.concat([

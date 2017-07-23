@@ -16,7 +16,7 @@ class ResourcesIndex extends Component {
   }
 
   onEditClick(resource) {
-    this.props.push(`/resources/${resource.slug}/edit`)
+    this.props.push(`/markt/${resource.slug}/edit`)
   }
 
   renderResourcesList() {
