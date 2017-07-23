@@ -119,7 +119,7 @@ class EventsShow extends Component {
   renderEventTime() {
     const slots = this.props.resourceData.slots
 
-    if (slots.length === 0) {
+    if (!this.props.resourceData.slots || slots.length === 0) {
       return null
     }
 

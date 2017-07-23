@@ -25,6 +25,11 @@ class CuratedEventListItem extends Component {
 
   renderEventTime() {
     const slots = this.props.item.slots
+
+    if (!this.props.item.slots || this.props.item.slots.length === 0) {
+      return null
+    }
+
     const firstSlot = slots[0]
     const lastSlot = slots[slots.length - 1]
 
