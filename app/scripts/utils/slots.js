@@ -104,7 +104,7 @@ export function generateNewSlotItems(slotSize, existingSlots) {
       eventId: existingSlotEventIdStates[slotIndex],
       from,
       fromTimeStr: dateFns.format(from, TIME_FORMAT),
-      isDisabled: existingSlotDisabledStates[slotIndex],
+      isDisabled: existingSlotDisabledStates[slotIndex] || false,
       slotIndex,
       to,
       toTimeStr: dateFns.format(to, TIME_FORMAT),

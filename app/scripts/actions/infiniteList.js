@@ -30,3 +30,8 @@ export function fetchList(resourceName, page = 0, params = {}) {
   })
 }
 
+export function clearList() {
+  return {
+    type: ActionTypes.INFINITE_LIST_INITIALIZE,
+  }
+}

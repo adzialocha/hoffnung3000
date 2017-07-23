@@ -1,4 +1,10 @@
 export default {
+  apiErrorCodes: {
+    401: 'You are not authorized for this action. Sorry :-(',
+    403: 'Something went wrong, maybe you are not allowed to do that?',
+    404: 'We could not find that thing. Hmn!',
+    500: 'An unknown server error occurred. Sorry!',
+  },
   createEventSuccess: 'Woah! You created successfully your new event!',
   createPlaceSuccess: 'Ja! You successfully created a new place!',
   createResourceSuccess: 'Hurra! You successfully created a new item!',

@@ -4,15 +4,16 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchList } from '../actions/infiniteList'
+import { fetchList, clearList } from '../actions/infiniteList'
 import { translate } from '../services/i18n'
 
 const LIST_ITEM_HEIGHT = 175
-const INFINITE_LOAD_OFFSET = 50
+const INFINITE_LOAD_OFFSET = 175
 
 export default function asInfiniteList(WrappedListItemComponent) {
   class InfiniteListContainer extends Component {
     static propTypes = {
+      clearList: PropTypes.func.isRequired,
       containerHeight: PropTypes.number,
       currentPageIndex: PropTypes.number.isRequired,
       fetchList: PropTypes.func.isRequired,
@@ -37,8 +38,12 @@ export default function asInfiniteList(WrappedListItemComponent) {
       useWindowAsScrollContainer: true,
     }
 
-    componentDidMount() {
+    componentWillMount() {
       this.props.fetchList(this.props.resourceName, 0, this.props.filter)
+    }
+
+    componentWillUnmount() {
+      this.props.clearList()
     }
 
     onInfiniteLoad() {
@@ -118,6 +123,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
 
   return connect(
     mapStateToProps, {
+      clearList,
       fetchList,
     }
   )(InfiniteListContainer)
