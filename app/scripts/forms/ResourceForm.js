@@ -21,9 +21,9 @@ const validate = values => {
     errors.description = translate(
       'forms.common.errors.minLength', { len: 10 }
     )
-  } else if (values.description.length > 60) {
+  } else if (values.description.length > 120) {
     errors.description = translate(
-      'forms.common.errors.maxLength', { len: 60 }
+      'forms.common.errors.maxLength', { len: 120 }
     )
   }
 
