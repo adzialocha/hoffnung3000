@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { push } from 'react-router-redux'
 
 import { asInfiniteList } from '../containers'
-import { CuratedPlaceListItem } from '../components'
+import { CuratedPlaceListItem, StaticPage } from '../components'
 import { translate } from '../services/i18n'
 
 const WrappedInfiniteList = asInfiniteList(CuratedPlaceListItem)
@@ -37,6 +37,7 @@ class PlacesIndex extends Component {
     return (
       <section>
         <h1>{ translate('views.places.indexTitle') }</h1>
+        <StaticPage hideTitle={true} slug="places" />
         <Link className="button button--green" to="/new/place">
           { translate('views.places.createNewButton') }
         </Link>

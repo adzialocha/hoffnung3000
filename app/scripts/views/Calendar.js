@@ -58,10 +58,19 @@ class Calendar extends Component {
     )
   }
 
+  renderText() {
+    if (!this.props.isAuthenticated || !this.props.isActive) {
+      return <StaticPage hideTitle={true} slug="calendar-public" />
+    }
+
+    return <StaticPage hideTitle={true} slug="calendar" />
+  }
+
   render() {
     return (
       <section>
         <h1>{ translate('views.events.calendarTitle') }</h1>
+        { this.renderText() }
         { this.renderCreateButton() }
         <hr />
         { this.renderItemsList() }

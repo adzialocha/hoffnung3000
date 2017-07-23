@@ -7,6 +7,7 @@ import getIds from '../utils/getIds'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
 import { EventForm } from '../forms'
+import { StaticPage } from '../components'
 import { translate } from '../services/i18n'
 
 class EventsNew extends Component {
@@ -46,6 +47,7 @@ class EventsNew extends Component {
     return (
       <section>
         <h1>{ translate('views.events.createNewTitle') }</h1>
+        <StaticPage hideTitle={true} slug="new-event" />
         <Link className="button" to="/calendar">
           { translate('common.backToOverview') }
         </Link>
