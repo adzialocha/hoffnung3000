@@ -68,7 +68,7 @@ export default {
     where: 'Where?',
   },
   slotSizeEditor: {
-    editSlotsLabel: 'Enable / disable slots',
+    editSlotsLabel: 'Make slots available',
     editSlotsButton: 'Edit slots',
     slotSizeLabel: 'How long is one slot?',
   },
