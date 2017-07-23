@@ -3,14 +3,22 @@ import httpStatus from 'http-status'
 import {
   destroyWithSlug,
   findAllCurated,
-  findOneCuratedWithSlug,
   lookupWithSlug,
+  prepareResponse,
   updateCuratedWithSlug,
 } from './base'
 
-import Event, { EventBelongsToAnimal, EventHasManySlots } from '../models/event'
-import Item from '../models/item'
-import Performer from '../models/performer'
+import Event, {
+  EventBelongsToAnimal,
+  EventBelongsToPlace,
+  EventHasManySlots,
+} from '../models/event'
+import Item, {
+  EventBelongsToManyItem,
+} from '../models/item'
+import Performer, {
+  EventBelongsToManyPerformer,
+} from '../models/performer'
 import Slot from '../models/slot'
 import Place from '../models/place'
 
@@ -227,7 +235,21 @@ export default {
     return findAllCurated(Event, req, res, next)
   },
   findOneWithSlug: (req, res, next) => {
-    return findOneCuratedWithSlug(Event, req, res, next)
+    return Event.findOne({
+      include: [
+        EventBelongsToAnimal,
+        EventBelongsToManyItem,
+        EventBelongsToManyPerformer,
+        EventBelongsToPlace,
+        EventHasManySlots,
+      ],
+      rejectOnEmpty: true,
+      where: {
+        slug: req.params.resourceSlug,
+      },
+    })
+      .then(data => res.json(prepareResponse(data, req)))
+      .catch(err => next(err))
   },
   lookup: (req, res, next) => {
     return lookupWithSlug(Event, req, res, next)

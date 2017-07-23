@@ -51,7 +51,9 @@ export const EventHasManySlots = Event.hasMany(Slot, {
   foreignKey: 'eventId',
 })
 
-export const EventBelongsToPlace = Event.belongsTo(Place)
+export const EventBelongsToPlace = Event.belongsTo(Place, {
+  as: 'place',
+})
 
 slugify.slugifyModel(Event, {
   source: ['title'],
