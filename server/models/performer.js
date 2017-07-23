@@ -34,7 +34,6 @@ const Performer = db.sequelize.define('performer', {
 
 export const PerformerBelongsToAnimal = Performer.belongsTo(Animal, {
   as: 'animal',
-  constraints: false,
   foreignKey: 'animalId',
 })
 
