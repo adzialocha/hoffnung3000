@@ -41,7 +41,7 @@ class PlaceListItem extends Component {
 
   renderOwner() {
     return translate('common.ownedBy', {
-      name: this.props.item.animalName,
+      name: this.props.item.animal.name,
     })
   }
 

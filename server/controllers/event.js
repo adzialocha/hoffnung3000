@@ -15,12 +15,16 @@ import Event, {
 } from '../models/event'
 import Item, {
   EventBelongsToManyItem,
+  ItemBelongsToAnimal,
 } from '../models/item'
 import Performer, {
   EventBelongsToManyPerformer,
+  PerformerBelongsToAnimal,
 } from '../models/performer'
 import Slot from '../models/slot'
-import Place from '../models/place'
+import Place, {
+  PlaceBelongsToAnimal,
+} from '../models/place'
 
 import pick from '../utils/pick'
 import { createEventSlots, isInClosedOrder } from '../utils/slots'
@@ -237,11 +241,32 @@ export default {
   findOneWithSlug: (req, res, next) => {
     return Event.findOne({
       include: [
-        EventBelongsToAnimal,
-        EventBelongsToManyItem,
-        EventBelongsToManyPerformer,
-        EventBelongsToPlace,
-        EventHasManySlots,
+        {
+          association: EventBelongsToAnimal,
+          attributes: ['name', 'id'],
+        }, {
+          association: EventBelongsToManyItem,
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          include: [{
+            association: ItemBelongsToAnimal,
+            attributes: ['name', 'id'],
+          }],
+        }, {
+          association: EventBelongsToManyPerformer,
+          include: [{
+            association: PerformerBelongsToAnimal,
+            attributes: ['name', 'id'],
+          }],
+        }, {
+          association: EventBelongsToPlace,
+          include: [{
+            association: PlaceBelongsToAnimal,
+            attributes: ['name', 'id'],
+          }],
+        }, {
+          association: EventHasManySlots,
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+        },
       ],
       rejectOnEmpty: true,
       where: {

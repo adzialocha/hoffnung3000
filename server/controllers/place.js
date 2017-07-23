@@ -8,19 +8,19 @@ import {
 import pick from '../utils/pick'
 import { createDisabledSlots } from '../utils/slots'
 
-import Animal from '../models/animal'
-import Place from '../models/place'
+import Place, {
+  PlaceBelongsToAnimal,
+  PlaceHasManySlots,
+} from '../models/place'
 import Slot from '../models/slot'
 
-const include = [{
-  as: 'animal',
-  foreignKey: 'animalId',
-  model: Animal,
-}, {
-  as: 'slots',
-  targetKey: 'placeId',
-  model: Slot,
-}]
+const include = [
+  {
+    association: PlaceBelongsToAnimal,
+    attributes: ['name', 'id'],
+  },
+  PlaceHasManySlots,
+]
 
 const permittedFields = [
   'city',

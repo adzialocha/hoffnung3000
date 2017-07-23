@@ -1,13 +1,10 @@
-import Measure from 'react-measure'
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { asFormField, asInfiniteList } from '../containers'
-import { CuratedSelectableListItem, FormItemSelectorList } from './'
+import { asFormField } from '../containers'
+import { FormItemSelectorList } from './'
 import { translate } from '../services/i18n'
-
-const WrappedInfiniteList = asInfiniteList(CuratedSelectableListItem)
 
 class FormItemSelector extends Component {
   static propTypes = {

@@ -1,5 +1,3 @@
-import slugify from 'sequelize-slugify'
-
 import db from '../database'
 
 const PerformerEvent = db.sequelize.define('performerEvent', {

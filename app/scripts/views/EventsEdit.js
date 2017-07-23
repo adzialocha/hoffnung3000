@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 
 import flash from '../actions/flash'
 import { cachedResource } from '../services/resources'
-import { fetchResource, updateResource } from '../actions/resources'
 import { EventForm } from '../forms'
+import { fetchResource, updateResource } from '../actions/resources'
 import { translate } from '../services/i18n'
 
 class EventsEdit extends Component {
@@ -51,10 +51,32 @@ class EventsEdit extends Component {
       })
     }
 
+    const {
+      description,
+      isPublic,
+      items,
+      performers,
+      place,
+      slots,
+      title,
+    } = this.props.resourceData
+
+    const initialValues = {
+      description,
+      isPublic,
+      items,
+      performers,
+      placeSlots: {
+        place,
+        selectedSlotsIndexes: slots.map(slot => slot.slotIndex),
+      },
+      title,
+    }
+
     return (
       <EventForm
         errorMessage={this.props.errorMessage}
-        initialValues={this.props.resourceData}
+        initialValues={initialValues}
         isSlotSizeVisible={false}
         onSubmit={this.onSubmit}
       />

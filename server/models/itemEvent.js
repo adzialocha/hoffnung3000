@@ -1,5 +1,3 @@
-import slugify from 'sequelize-slugify'
-
 import db from '../database'
 
 const ItemEvent = db.sequelize.define('itemEvent', {
