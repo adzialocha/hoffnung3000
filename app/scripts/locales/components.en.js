@@ -92,6 +92,7 @@ export default {
     submitButton: 'Okay',
   },
   formImageUploader: {
+    deleteImageButton: 'Remove',
     uploadButton: 'Select files',
   },
   curatedSelectableListItem: {

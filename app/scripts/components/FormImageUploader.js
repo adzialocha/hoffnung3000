@@ -2,16 +2,36 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { asFormField, withImageUpload } from '../containers'
+import { FormImageUploaderImage } from './'
 import { translate } from '../services/i18n'
 
 class FormImageUploader extends Component {
   static propTypes = {
+    clearUploadedImages: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string.isRequired,
     input: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    removeImageFromList: PropTypes.func.isRequired,
+    setUploadedImages: PropTypes.func.isRequired,
     uploadedImages: PropTypes.array.isRequired,
     uploadImages: PropTypes.func.isRequired,
+  }
+
+  componentWillMount() {
+    if (this.props.input.value) {
+      this.props.setUploadedImages(this.props.input.value)
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.uploadedImages.length !== this.props.uploadedImages.length) {
+      this.props.input.onChange(this.props.uploadedImages)
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.clearUploadedImages()
   }
 
   onFilesChange(event) {
@@ -29,12 +49,18 @@ class FormImageUploader extends Component {
     }
 
     this.props.uploadImages(formData)
+
+    event.target.value = ''
   }
 
   onUploadClick(event) {
     event.preventDefault()
 
     this.refs.uploadButton.click()
+  }
+
+  onImageRemoveClick(image) {
+    this.props.removeImageFromList(image.id)
   }
 
   renderErrorMessage() {
@@ -63,10 +89,10 @@ class FormImageUploader extends Component {
   renderUploadedImages() {
     return this.props.uploadedImages.map((image, index) => {
       return (
-        <img
-          className="image-uploader__image"
+        <FormImageUploaderImage
+          image={image}
           key={index}
-          src={image.smallImageUrl}
+          onImageRemoveClick={this.onImageRemoveClick}
         />
       )
     })
@@ -109,11 +135,8 @@ class FormImageUploader extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      images: props.input.value || [],
-    }
-
     this.onFilesChange = this.onFilesChange.bind(this)
+    this.onImageRemoveClick= this.onImageRemoveClick.bind(this)
     this.onUploadClick = this.onUploadClick.bind(this)
   }
 }

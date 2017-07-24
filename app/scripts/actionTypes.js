@@ -71,7 +71,10 @@ export default keyMirror({
   TICKET_REQUEST: null,
   TICKET_SUCCESS: null,
 
+  UPLOAD_IMAGE_CLEAR: null,
   UPLOAD_IMAGE_FAILURE: null,
+  UPLOAD_IMAGE_REMOVE_IMAGE: null,
   UPLOAD_IMAGE_REQUEST: null,
+  UPLOAD_IMAGE_SET_IMAGES: null,
   UPLOAD_IMAGE_SUCCESS: null,
 })

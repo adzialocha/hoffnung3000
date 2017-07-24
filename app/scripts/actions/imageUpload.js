@@ -14,3 +14,27 @@ export function uploadImages(images) {
     },
   })
 }
+
+export function setUploadedImages(images) {
+  return {
+    type: ActionTypes.UPLOAD_IMAGE_SET_IMAGES,
+    meta: {
+      images,
+    },
+  }
+}
+
+export function removeImageFromList(imageId) {
+  return {
+    type: ActionTypes.UPLOAD_IMAGE_REMOVE_IMAGE,
+    meta: {
+      imageId,
+    },
+  }
+}
+
+export function clearUploadedImages() {
+  return {
+    type: ActionTypes.UPLOAD_IMAGE_CLEAR,
+  }
+}

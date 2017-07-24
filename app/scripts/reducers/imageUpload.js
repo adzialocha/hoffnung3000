@@ -25,6 +25,21 @@ export default (state = initialState, action) => {
       errorMessage: { $set: action.error.message },
       isLoading: { $set: false },
     })
+  case ActionTypes.UPLOAD_IMAGE_SET_IMAGES:
+    return update(state, {
+      uploadedImages: { $set: action.meta.images },
+    })
+  case ActionTypes.UPLOAD_IMAGE_REMOVE_IMAGE:
+    const index = state.uploadedImages.findIndex(image => {
+      return image.id === action.meta.imageId
+    })
+    return update(state, {
+      uploadedImages: { $splice: [[index, 1]] },
+    })
+  case ActionTypes.UPLOAD_IMAGE_CLEAR:
+    return update(state, {
+      $set: initialState,
+    })
   default:
     return state
   }
