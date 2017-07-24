@@ -1,14 +1,19 @@
 import crypto from 'crypto'
 import fs from 'fs'
+import httpStatus from 'http-status'
 import mime from 'mime'
 import multer  from 'multer'
 import path from 'path'
+
+import { APIError } from '../helpers/errors'
 
 const VALID_FILE_TYPES = [
   'jpeg',
   'jpg',
   'png',
 ]
+
+const MAX_FILE_SIZE = 5242880
 
 function generateFileName(file) {
   return new Promise(resolve => {
@@ -31,7 +36,7 @@ const storage = multer.diskStorage({
     cb(null, uploadFolder)
   },
   filename: (req, file, cb) => {
-    generateFileName(file).then((name) => {
+    generateFileName(file).then(name => {
       cb(null, name)
     })
   },
@@ -39,7 +44,29 @@ const storage = multer.diskStorage({
 
 function fileFilter(req, file, cb) {
   const type = mime.extension(file.mimetype)
-  cb(null, VALID_FILE_TYPES.includes(type))
+  const isValid = VALID_FILE_TYPES.includes(type)
+
+  if (!isValid) {
+    cb(new APIError('Invalid file format', httpStatus.BAD_REQUEST), false)
+  } else if (file.size > MAX_FILE_SIZE) {
+    cb(new APIError('File is too large', httpStatus.BAD_REQUEST), false)
+  } else {
+    cb(null, true)
+  }
 }
 
-export default multer({ storage, fileFilter })
+const upload = multer({
+  fileFilter,
+  storage,
+}).array('images')
+
+export default {
+  imageUpload: (req, res, next) => {
+    upload(req, res, (err) => {
+      if (err) {
+        return next(err)
+      }
+      return next()
+    })
+  },
+}

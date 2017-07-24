@@ -7,6 +7,7 @@ import { translate } from '../services/i18n'
 class FormImageUploader extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
+    errorMessage: PropTypes.string.isRequired,
     input: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired,
     uploadedImages: PropTypes.array.isRequired,
@@ -34,6 +35,17 @@ class FormImageUploader extends Component {
     event.preventDefault()
 
     this.refs.uploadButton.click()
+  }
+
+  renderErrorMessage() {
+    if (this.props.errorMessage) {
+      return (
+        <div className="form__error">
+          { this.props.errorMessage }
+        </div>
+      )
+    }
+    return null
   }
 
   renderLoadingIndicator() {
@@ -85,6 +97,7 @@ class FormImageUploader extends Component {
     return (
       <div className="image-uploader">
         { this.renderLoadingIndicator() }
+        { this.renderErrorMessage() }
         <div className="image-uploader__image-list">
           { this.renderUploadedImages() }
         </div>
