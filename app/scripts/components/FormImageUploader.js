@@ -9,6 +9,7 @@ class FormImageUploader extends Component {
     disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    uploadedImages: PropTypes.array.isRequired,
     uploadImages: PropTypes.func.isRequired,
   }
 
@@ -35,19 +36,26 @@ class FormImageUploader extends Component {
     this.refs.uploadButton.click()
   }
 
-  renderUploadedImages() {
+  renderLoadingIndicator() {
     if (this.props.isLoading) {
-      return <p>{ translate('common.loading') }</p>
+      return (
+        <p className="image-uploader__loading-indicator">
+          { translate('common.loading') }
+        </p>
+      )
     }
 
-    return this.state.images.map((image, index) => {
+    return null
+  }
+
+  renderUploadedImages() {
+    return this.props.uploadedImages.map((image, index) => {
       return (
-        <div
+        <img
           className="image-uploader__image"
           key={index}
-        >
-          { image }
-        </div>
+          src={image.smallImageUrl}
+        />
       )
     })
   }
@@ -76,6 +84,7 @@ class FormImageUploader extends Component {
   render() {
     return (
       <div className="image-uploader">
+        { this.renderLoadingIndicator() }
         <div className="image-uploader__image-list">
           { this.renderUploadedImages() }
         </div>
