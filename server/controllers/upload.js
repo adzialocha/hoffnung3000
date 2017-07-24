@@ -26,19 +26,14 @@ const IMAGE_VERSIONS = [{
 }]
 
 function resizeAndUpload(path, key, width, height, quality) {
-  return new Promise((resolve, reject) => {
-    sharp(path)
-      .resize(width, height)
-      .max()
-      .toFormat(IMAGE_FILE_FORMAT, { quality })
-      .toBuffer()
-      .then(buffer => {
-        putObject(buffer, key)
-          .then(resolve)
-          .catch(reject)
-      })
-      .catch(reject)
-  })
+  return sharp(path)
+    .resize(width, height)
+    .max()
+    .toFormat(IMAGE_FILE_FORMAT, { quality })
+    .toBuffer()
+    .then(buffer => {
+      return putObject(buffer, key)
+    })
 }
 
 function addSuffix(name, suffix = 'original', ext = 'jpg') {
@@ -90,7 +85,6 @@ function storeImageInDatabase(resizeResults) {
   })
 
   return Image.bulkCreate(images)
-    .then(result => resolve(result))
 }
 
 export default {
