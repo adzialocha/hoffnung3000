@@ -84,7 +84,7 @@ function storeImageInDatabase(resizeResults) {
     return data
   })
 
-  return Image.bulkCreate(images)
+  return Image.bulkCreate(images, { returning: true })
 }
 
 export default {
