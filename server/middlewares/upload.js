@@ -1,4 +1,5 @@
 import crypto from 'crypto'
+import fs from 'fs'
 import mime from 'mime'
 import multer  from 'multer'
 import path from 'path'
@@ -22,10 +23,9 @@ function generateFileName(file) {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // take the system default tmp folder and our own when in development
-    let uploadFolder = undefined
-    if (process.env.NODE_ENV === 'development') {
-      uploadFolder = './tmp/uploads'
+    const uploadFolder = path.join(__dirname, '..', '..', '.tmp', 'uploads')
+    if (!fs.existsSync(uploadFolder)) {
+      fs.mkdirSync(uploadFolder)
     }
 
     cb(null, uploadFolder)

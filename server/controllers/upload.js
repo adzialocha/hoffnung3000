@@ -2,7 +2,7 @@ import fs from 'fs'
 import sharp  from 'sharp'
 
 import Image from '../models/Image'
-import s3 from '../services/s3'
+import { putObject } from '../services/s3'
 
 const BUCKET_PATH = 'uploads/'
 const IMAGE_FILE_FORMAT = 'jpeg'
@@ -33,7 +33,7 @@ function resizeAndUpload(path, key, width, height, quality) {
       .toFormat(IMAGE_FILE_FORMAT, { quality })
       .toBuffer()
       .then(buffer => {
-        s3.putObject(buffer, key)
+        putObject(buffer, key)
           .then(resolve)
           .catch(reject)
       })

@@ -67,11 +67,7 @@ router.use('/events', eventRoutes)
 router.use('/places', placeRoutes)
 router.use('/profile', profileRoutes)
 router.use('/resources', resourceRoutes)
-router.route('/upload')
-  .post(
-    upload.array('images'),
-    uploadController.uploadImages
-  )
+router.post('/upload', upload.array('images'), uploadController.uploadImages)
 
 // admin API routes
 

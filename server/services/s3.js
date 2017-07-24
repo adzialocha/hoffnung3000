@@ -2,11 +2,11 @@ import AWS from 'aws-sdk'
 
 const BASE_PATH = `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_BUCKET_NAME}/`
 
-export function urlToKey(url) {
+function urlToKey(url) {
   return url.replace(BASE_PATH, '')
 }
 
-export function request(method, Key, customParams, customMethod) {
+function request(method, Key, customParams, customMethod) {
   const defaultParams = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key,
@@ -55,21 +55,21 @@ export function putObject(Body, Key) {
     ACL: 'public-read',
   }
 
-  return this.request('putObject', Key, params)
+  return request('putObject', Key, params)
 }
 
 export function deleteObjects(urls) {
   const params = {
     Delete: {
-      Objects: urls.map((url) => this.urlToKey(url)),
+      Objects: urls.map((url) => urlToKey(url)),
     },
   }
 
-  return this.request('deleteObjects', null, params)
+  return request('deleteObjects', null, params)
 }
 
 export function deleteObject(url) {
-  return this.deleteObjects([url])
+  return deleteObjects([url])
 }
 
 export function getObjectSigned(url) {
@@ -77,7 +77,7 @@ export function getObjectSigned(url) {
     Expires: 60,
   }
 
-  return this.request('getSignedUrl', this.urlToKey(url), params, 'getObject')
+  return request('getSignedUrl', urlToKey(url), params, 'getObject')
 }
 
 export function putObjectSigned(key) {
@@ -86,5 +86,5 @@ export function putObjectSigned(key) {
     ACL: 'authenticated-read',
   }
 
-  return this.request('getSignedUrl', key, params, 'putObject')
+  return request('getSignedUrl', key, params, 'putObject')
 }

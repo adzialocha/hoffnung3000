@@ -91,6 +91,9 @@ export default {
     title: 'Select resources for your event',
     submitButton: 'Okay',
   },
+  formImageUploader: {
+    uploadButton: 'Select files',
+  },
   curatedSelectableListItem: {
     addItem: 'Add',
     isNotAvailable: 'Not available',

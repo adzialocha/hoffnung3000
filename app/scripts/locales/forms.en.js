@@ -6,6 +6,7 @@ export default {
       maxLength: 'This field can\'t be longer than {len} characters',
     },
     basicInformation: 'Basic information',
+    uploadImages: 'Upload images',
   },
   place: {
     errors: {

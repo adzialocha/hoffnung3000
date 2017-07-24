@@ -5,6 +5,7 @@ import flash from '../actions/flash'
 import { translate } from '../services/i18n'
 
 const ERROR_CODES = [401, 403, 404, 500]
+const CRITICAL_ERROR_CODES = [401]
 const REDIRECT_PATH = '/'
 
 export default store => next => action => {
@@ -17,7 +18,9 @@ export default store => next => action => {
   }
 
   if (ERROR_CODES.includes(action.error.status)) {
-    store.dispatch(replace(REDIRECT_PATH))
+    if (CRITICAL_ERROR_CODES.includes(action.error.status)) {
+      store.dispatch(replace(REDIRECT_PATH))
+    }
 
     store.dispatch(flash({
       text: translate(`flash.apiErrorCodes.${action.error.status}`),

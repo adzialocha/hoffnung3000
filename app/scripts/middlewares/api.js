@@ -26,8 +26,10 @@ function getErrorMessage(error) {
 }
 
 function request(path, method = 'GET', body = {}) {
-  const defaultHeaders = {
-    'Content-Type': 'application/json',
+  const defaultHeaders = {}
+
+  if (!(body instanceof FormData)) {
+    defaultHeaders['Content-Type'] = 'application/json'
   }
 
   const token = getItem('token')
@@ -48,7 +50,11 @@ function request(path, method = 'GET', body = {}) {
   if (method === 'GET') {
     paramsStr = parameterize(body)
   } else {
-    options.body = JSON.stringify(body)
+    if (body instanceof FormData) {
+      options.body = body
+    } else {
+      options.body = JSON.stringify(body)
+    }
   }
 
   return new Promise((resolve, reject) => {
