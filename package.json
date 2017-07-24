@@ -105,6 +105,7 @@
     "dotenv": "4.0.0",
     "express": "4.15.2",
     "express-validation": "1.0.2",
+    "fs": "0.0.1-security",
     "gulp-imagemin": "3.3.0",
     "helmet": "3.6.1",
     "http-status": "1.0.1",
@@ -126,6 +127,7 @@
     "save-dev": "2.0.0",
     "sequelize": "4.3.1",
     "sequelize-slugify": "https://github.com/gleuch/sequelize-slugify#master",
+    "sharp": "^0.18.2",
     "winston": "2.3.1"
   }
 }
