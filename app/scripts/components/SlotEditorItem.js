@@ -28,7 +28,7 @@ class SlotEditorItem extends Component {
         this.changeIsBookedStatus(true)
       }
     } else {
-      if (eventId !== undefined) {
+      if (eventId) {
         alert(translate('components.slotEditorItem.cantDisableBookedSlot'))
       } else if (isDisabled) {
         this.changeDisabledStatus(false)
