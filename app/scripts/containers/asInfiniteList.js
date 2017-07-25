@@ -83,8 +83,28 @@ export default function asInfiniteList(WrappedListItemComponent) {
       )
     }
 
+    renderListItemContent(item) {
+      return (
+        <WrappedListItemComponent
+          className={this.props.listItemClassName}
+          input={this.props.input}
+          item={item}
+          onClick={this.props.onClick}
+          onEditClick={this.props.onEditClick}
+        />
+      )
+    }
+
     renderListItems() {
       return this.props.listItems.map((item, index) => {
+        if (index > 0) {
+          return (
+            <div className="infinite-list-container__item" key={index}>
+              { this.renderListItemContent(item) }
+            </div>
+          )
+        }
+
         return (
           <Measure bounds={true} key={index} onResize={this.onMeasureResize}>
             {
@@ -94,13 +114,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
                     className="infinite-list-container__item"
                     ref={measureRef}
                   >
-                    <WrappedListItemComponent
-                      className={this.props.listItemClassName}
-                      input={this.props.input}
-                      item={item}
-                      onClick={this.props.onClick}
-                      onEditClick={this.props.onEditClick}
-                    />
+                    { this.renderListItemContent(item) }
                   </div>
                 )
               }
