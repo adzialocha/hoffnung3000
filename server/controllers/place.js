@@ -82,6 +82,7 @@ function areSlotsBooked(placeId, slotIndexes) {
 function preparePlaceValues(body) {
   const {
     description,
+    images,
     isPublic,
     mode,
     title,
@@ -89,6 +90,7 @@ function preparePlaceValues(body) {
 
   const values = {
     description,
+    images,
     isPublic,
     mode,
     title,
@@ -123,6 +125,8 @@ export default {
       null,
       body.slotSize
     )
+
+    console.log(values)
 
     return Place.create({
       ...values,
