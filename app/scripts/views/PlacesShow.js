@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
-import { LocationMap } from '../components'
+import { LocationMap, ImageGallery } from '../components'
 import { numberToSlotSizeStrHuman } from '../utils/slots'
 import { translate } from '../services/i18n'
 
@@ -128,6 +128,22 @@ class PlacesShow extends Component {
     )
   }
 
+  renderImageGallery() {
+    if (this.props.resourceData.images.length === 0) {
+      return null
+    }
+
+    return (
+      <div>
+        <hr />
+        <strong>
+          { translate('views.common.imageGalleryTitle') }
+        </strong>
+        <ImageGallery images={this.props.resourceData.images} />
+      </div>
+    )
+  }
+
   renderContent() {
     if (this.props.isLoading) {
       return <p>{ translate('common.loading') }</p>
@@ -138,6 +154,7 @@ class PlacesShow extends Component {
         { this.renderOwner() }
         { this.renderPrivacy() }
         { this.renderDescription() }
+        { this.renderImageGallery() }
         <hr />
         { this.renderAddress() }
         <hr />

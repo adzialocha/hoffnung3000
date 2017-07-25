@@ -1,0 +1,15 @@
+.image-gallery {
+  margin-top: 20px;
+}
+
+.image-gallery__image {
+  display: block;
+
+  max-width: 500px;
+
+  margin: 0 auto;
+
+  + .image-gallery__image {
+    margin-top: 20px;
+  }
+}
