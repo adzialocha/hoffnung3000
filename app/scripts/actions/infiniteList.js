@@ -3,9 +3,9 @@ import { getRequest } from '../services/api'
 
 export const ITEMS_PER_PAGE = 10
 
-export function fetchList(resourceName, page = 0, params = {}) {
-  const offset = page * ITEMS_PER_PAGE
-  const limit = ITEMS_PER_PAGE
+export function fetchList(resourceName, page = 0, params = {}, itemsPerPage = ITEMS_PER_PAGE) {
+  const offset = page * itemsPerPage
+  const limit = itemsPerPage
   const meta = {
     page,
     offset,

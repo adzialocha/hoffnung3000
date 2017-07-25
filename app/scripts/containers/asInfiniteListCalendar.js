@@ -27,7 +27,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     }
 
     componentWillMount() {
-      this.props.fetchList(this.props.resourceName, 0)
+      this.props.fetchList(this.props.resourceName, 0, {}, 100)
     }
 
     componentWillUnmount() {
@@ -38,6 +38,8 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       this.props.fetchList(
         this.props.resourceName,
         this.props.currentPageIndex + 1,
+        {},
+        100
       )
     }
 
@@ -84,23 +86,26 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       const { listItems } = this.props
 
       return listItems.map((item, index) => {
-        const nextItem = index < listItems.length ? listItems[index + 1] : null
+        const previousItem = index > 0 ? listItems[index - 1] : null
 
-        const isSameDay = nextItem ? dateFns.isSameDay(
-          item.slots[item.slots.length - 1].to,
-          nextItem.slots[0].from,
+        const dateA = dateFns.parse(item.slots[0].from)
+        const dateB = previousItem && dateFns.parse(previousItem.slots[0].from)
+
+        const isSameDay = previousItem ? dateFns.isSameDay(
+          dateA,
+          dateB,
         ) : false
 
         let headerComponent
 
-        if (!isSameDay || index === 0) {
+        if (!isSameDay) {
           headerComponent = (
             <div
               className="infinite-list-container__item infinite-list-container__item--full"
               key={`header-${index}`}
             >
               <h2 className="infinite-list-container__heading">
-                { dateFns.format(item.slots[0].to, 'DD.MM.YY') }
+                { dateFns.format(item.slots[0].from, 'DD.MM.YY') }
               </h2>
               { index > 0 ? <hr /> : null }
             </div>
