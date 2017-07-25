@@ -12,9 +12,10 @@ import { translate } from '../services/i18n'
 class EventsShow extends Component {
   static propTypes = {
     fetchResource: PropTypes.func.isRequired,
+    isError: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    resourceSlug: PropTypes.string.isRequired,
     resourceData: PropTypes.object.isRequired,
+    resourceSlug: PropTypes.string.isRequired,
   }
 
   componentWillMount() {
@@ -150,6 +151,10 @@ class EventsShow extends Component {
   }
 
   render() {
+    if (this.props.isError) {
+      return <p>{ translate('common.somethingWentWrong') }</p>
+    }
+
     return (
       <section>
         { this.renderTitle() }
@@ -171,9 +176,10 @@ class EventsShow extends Component {
 function mapStateToProps(state, ownProps) {
   const resourceSlug = ownProps.match.params.slug
   const resource = cachedResource('events', resourceSlug)
-  const { isLoading, object: resourceData } = resource
+  const { isLoading, isError, object: resourceData } = resource
 
   return {
+    isError,
     isLoading,
     resourceData,
     resourceSlug,

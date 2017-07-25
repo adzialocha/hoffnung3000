@@ -135,7 +135,7 @@ function login(req, res, next) {
 
       if (!user.comparePasswords(password)) {
         return next(
-          new APIError('Invalid credentials', httpStatus.UNAUTHORIZED)
+          new APIError('Invalid credentials', httpStatus.BAD_REQUEST)
         )
       }
 

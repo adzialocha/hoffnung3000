@@ -16,4 +16,5 @@ export default {
   editButton: 'Edit',
   loading: 'Loading ...',
   ownedBy: 'by {name}',
+  somethingWentWrong: 'Oups.. something went wrong!',
 }
