@@ -7,16 +7,18 @@ import { translate } from '../services/i18n'
 export default function asInfiniteListItem(WrappedListItemComponent) {
   return class InfiniteListItemContainer extends Component {
     static propTypes = {
+      className: PropTypes.string,
+      input: PropTypes.object,
       item: PropTypes.object.isRequired,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
-      input: PropTypes.object,
     }
 
     static defaultProps = {
+      className: '',
+      input: undefined,
       onClick: undefined,
       onEditClick: undefined,
-      input: undefined,
     }
 
     onClick() {
@@ -50,7 +52,8 @@ export default function asInfiniteListItem(WrappedListItemComponent) {
 
     render() {
       const listClasses = classnames(
-        'list-item', {
+        'list-item',
+        this.props.className, {
           'list-item--clickable': (this.props.onClick !== undefined),
         }
       )

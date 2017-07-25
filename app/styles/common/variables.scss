@@ -23,6 +23,7 @@ $page-margin-mobile: 18px;
 // z-index
 
 $z-index: (
+  header: 3000,
   flash-message-stage: 4000,
   navigation-overlay: 5000,
   drawer: 10000,

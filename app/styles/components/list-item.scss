@@ -1,5 +1,5 @@
 $_list-item-height: 150px;
-$_list-item-mobile-height: 100px;
+$_list-item-mobile-height: 150px;
 
 .list-item {
   display: flex;
@@ -10,6 +10,26 @@ $_list-item-mobile-height: 100px;
 
   + .list-item {
     margin-top: 25px;
+  }
+}
+
+.list-item--half {
+  width: 50%;
+  min-width: 50%;
+  height: auto;
+
+  margin-top: 25px;
+
+  flex-wrap: wrap;
+
+  .list-item__cover-image {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+
+    height: 250px;
+
+    flex: 1 100%;
   }
 }
 
@@ -26,6 +46,16 @@ $_list-item-mobile-height: 100px;
 @include media-breakpoint(xs) {
   .list-item {
     height: $_list-item-mobile-height;
+  }
+
+  .list-item--half {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+
+    .list-item__cover-image {
+      margin-bottom: 10px;
+    }
   }
 }
 

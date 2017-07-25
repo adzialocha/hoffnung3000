@@ -36,6 +36,8 @@ class Calendar extends Component {
 
     return (
       <WrappedInfiniteList
+        className="infinite-list-container--half-items"
+        listItemClassName="list-item--half"
         resourceName="events"
         onClick={this.onClick}
         onEditClick={this.onEditClick}

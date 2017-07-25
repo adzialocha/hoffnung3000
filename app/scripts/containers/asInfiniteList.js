@@ -7,12 +7,10 @@ import { connect } from 'react-redux'
 import { fetchList, clearList } from '../actions/infiniteList'
 import { translate } from '../services/i18n'
 
-const LIST_ITEM_HEIGHT = 175
-const INFINITE_LOAD_OFFSET = 175
-
 export default function asInfiniteList(WrappedListItemComponent) {
   class InfiniteListContainer extends Component {
     static propTypes = {
+      className: PropTypes.string,
       clearList: PropTypes.func.isRequired,
       containerHeight: PropTypes.number,
       currentPageIndex: PropTypes.number.isRequired,
@@ -20,6 +18,8 @@ export default function asInfiniteList(WrappedListItemComponent) {
       filter: PropTypes.object,
       input: PropTypes.object,
       isLoading: PropTypes.bool.isRequired,
+      listItemClassName: PropTypes.string,
+      listItemHeight: PropTypes.number,
       listItems: PropTypes.array.isRequired,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
@@ -29,9 +29,12 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
 
     static defaultProps = {
+      className: '',
       containerHeight: undefined,
       filter: {},
       input: undefined,
+      listItemClassName: '',
+      listItemHeight: 175,
       onClick: undefined,
       onEditClick: undefined,
       totalPageCount: undefined,
@@ -77,6 +80,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
       return this.props.listItems.map((item, index) => {
         return (
           <WrappedListItemComponent
+            className={this.props.listItemClassName}
             input={this.props.input}
             item={item}
             key={index}
@@ -89,7 +93,8 @@ export default function asInfiniteList(WrappedListItemComponent) {
 
     render() {
       const infiniteListClasses = classnames(
-        'infinite-list-container', {
+        'infinite-list-container',
+        this.props.className, {
           'infinite-list-container--in-modal': (
             !this.props.useWindowAsScrollContainer
           ),
@@ -100,8 +105,8 @@ export default function asInfiniteList(WrappedListItemComponent) {
         <Infinite
           className={infiniteListClasses}
           containerHeight={this.props.containerHeight}
-          elementHeight={LIST_ITEM_HEIGHT}
-          infiniteLoadBeginEdgeOffset={INFINITE_LOAD_OFFSET}
+          elementHeight={this.props.listItemHeight}
+          infiniteLoadBeginEdgeOffset={this.props.listItemHeight}
           isInfiniteLoading={this.props.isLoading}
           loadingSpinnerDelegate={this.renderSpinner()}
           useWindowAsScrollContainer={
