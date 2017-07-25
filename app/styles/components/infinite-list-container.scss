@@ -5,11 +5,27 @@ $_modal-header-height: 55px;
   width: 100%;
 }
 
+.infinite-list-container__item {
+  width: 100%;
+}
+
 .infinite-list-container--half-items {
   & > div {
     display: flex;
 
     flex-wrap: wrap;
+  }
+
+  .infinite-list-container__item {
+    width: 50%;
+  }
+}
+
+@include media-breakpoint(xs) {
+  .infinite-list-container--half-items {
+    .infinite-list-container__item {
+      width: 100%;
+    }
   }
 }
 

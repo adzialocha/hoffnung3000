@@ -30,7 +30,11 @@ class Calendar extends Component {
   renderItemsList() {
     if (!this.props.isAuthenticated || !this.props.isActive) {
       return (
-        <WrappedInfiniteList resourceName="preview" />
+        <WrappedInfiniteList
+          className="infinite-list-container--half-items"
+          listItemClassName="list-item--half"
+          resourceName="preview"
+        />
       )
     }
 

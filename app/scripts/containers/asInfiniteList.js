@@ -1,11 +1,14 @@
 import classnames from 'classnames'
 import Infinite from 'react-infinite'
+import Measure from 'react-measure'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { fetchList, clearList } from '../actions/infiniteList'
 import { translate } from '../services/i18n'
+
+const LIST_ITEM_HEIGHT_DEFAULT = 175
 
 export default function asInfiniteList(WrappedListItemComponent) {
   class InfiniteListContainer extends Component {
@@ -19,7 +22,6 @@ export default function asInfiniteList(WrappedListItemComponent) {
       input: PropTypes.object,
       isLoading: PropTypes.bool.isRequired,
       listItemClassName: PropTypes.string,
-      listItemHeight: PropTypes.number,
       listItems: PropTypes.array.isRequired,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
@@ -34,7 +36,6 @@ export default function asInfiniteList(WrappedListItemComponent) {
       filter: {},
       input: undefined,
       listItemClassName: '',
-      listItemHeight: 175,
       onClick: undefined,
       onEditClick: undefined,
       totalPageCount: undefined,
@@ -47,6 +48,12 @@ export default function asInfiniteList(WrappedListItemComponent) {
 
     componentWillUnmount() {
       this.props.clearList()
+    }
+
+    onMeasureResize(contentRect) {
+      this.setState({
+        elementHeight: contentRect.bounds.height,
+      })
     }
 
     onInfiniteLoad() {
@@ -79,14 +86,26 @@ export default function asInfiniteList(WrappedListItemComponent) {
     renderListItems() {
       return this.props.listItems.map((item, index) => {
         return (
-          <WrappedListItemComponent
-            className={this.props.listItemClassName}
-            input={this.props.input}
-            item={item}
-            key={index}
-            onClick={this.props.onClick}
-            onEditClick={this.props.onEditClick}
-          />
+          <Measure bounds={true} key={index} onResize={this.onMeasureResize}>
+            {
+              ({ measureRef }) => {
+                return (
+                  <div
+                    className="infinite-list-container__item"
+                    ref={measureRef}
+                  >
+                    <WrappedListItemComponent
+                      className={this.props.listItemClassName}
+                      input={this.props.input}
+                      item={item}
+                      onClick={this.props.onClick}
+                      onEditClick={this.props.onEditClick}
+                    />
+                  </div>
+                )
+              }
+            }
+          </Measure>
         )
       })
     }
@@ -105,8 +124,8 @@ export default function asInfiniteList(WrappedListItemComponent) {
         <Infinite
           className={infiniteListClasses}
           containerHeight={this.props.containerHeight}
-          elementHeight={this.props.listItemHeight}
-          infiniteLoadBeginEdgeOffset={this.props.listItemHeight}
+          elementHeight={this.state.elementHeight}
+          infiniteLoadBeginEdgeOffset={LIST_ITEM_HEIGHT_DEFAULT}
           isInfiniteLoading={this.props.isLoading}
           loadingSpinnerDelegate={this.renderSpinner()}
           useWindowAsScrollContainer={
@@ -122,7 +141,12 @@ export default function asInfiniteList(WrappedListItemComponent) {
     constructor(props) {
       super(props)
 
+      this.state = {
+        elementHeight: LIST_ITEM_HEIGHT_DEFAULT,
+      }
+
       this.onInfiniteLoad = this.onInfiniteLoad.bind(this)
+      this.onMeasureResize = this.onMeasureResize.bind(this)
     }
   }
 

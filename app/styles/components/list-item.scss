@@ -8,17 +8,11 @@ $_list-item-mobile-height: 150px;
   min-width: 100%;
   height: $_list-item-height;
 
-  + .list-item {
-    margin-top: 25px;
-  }
+  margin-bottom: 25px;
 }
 
 .list-item--half {
-  width: 50%;
-  min-width: 50%;
   height: auto;
-
-  margin-top: 25px;
 
   flex-wrap: wrap;
 
@@ -49,9 +43,9 @@ $_list-item-mobile-height: 150px;
   }
 
   .list-item--half {
-    width: 100%;
-    min-width: 100%;
     height: auto;
+
+    padding-bottom: 10px;
 
     .list-item__cover-image {
       margin-bottom: 10px;
