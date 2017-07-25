@@ -1,9 +1,25 @@
 import ActionTypes from '../actionTypes'
+import flash from './flash'
 import { FLASH } from '../middlewares/flash'
 import { jwtDecode } from '../utils/jwt'
 import { postRequest } from '../services/api'
 import { REDIRECT } from '../middlewares/redirect'
+import { routerActions } from 'react-router-redux'
 import { translate } from '../services/i18n'
+
+export function redirectWhenUnauthenticated(location) {
+  return (dispatch) => {
+    dispatch(
+      flash({
+        lifetime: 5000,
+        text: translate('flash.redirectedUnauthenticated'),
+        type: 'error',
+      })
+    )
+
+    dispatch(routerActions.replace(location))
+  }
+}
 
 export function checkExistingToken(token) {
   const jwtPayload = jwtDecode(token)

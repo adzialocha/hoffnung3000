@@ -14,6 +14,7 @@ export default {
   formSubmitError: 'Some information is missing, please check the form again!',
   loginSuccess: 'Welcome!',
   logout: 'Goodbye! See you soon!',
+  redirectedUnauthenticated: 'You have to login before you can see that page.',
   requestPasswordToken: 'We just sent you an email with a link to reset your password. Check your spam folder if you can\'t find it.',
   resetPassword: 'Yes! Your password has been reset!',
   signUpPaypalSuccess: 'Thank you and welcome to HOFFNUNG 3000! You successfully created your account!',

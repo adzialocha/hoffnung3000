@@ -1,7 +1,9 @@
 import { connectedReduxRedirect } from 'redux-auth-wrapper/history4/redirect'
 import { routerActions } from 'react-router-redux'
 
-const redirectAction = routerActions.replace
+import { redirectWhenUnauthenticated } from './actions/auth'
+
+const redirectAction = redirectWhenUnauthenticated
 const redirectPath = '/login'
 
 /* eslint-disable new-cap */
@@ -15,7 +17,7 @@ export const isAuthenticated = connectedReduxRedirect({
 export const shouldNotBeAuthenticated = connectedReduxRedirect({
   allowRedirectBack: false,
   authenticatedSelector: state => !state.auth.isAuthenticated,
-  redirectAction,
+  redirectAction: routerActions.replace,
   redirectPath: '/',
   wrapperDisplayName: 'UserIsNotAuthenticated',
 })
