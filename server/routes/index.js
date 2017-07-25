@@ -6,9 +6,11 @@ import { EmptyResultError, ValidationError } from 'sequelize'
 
 import passport from '../services/passport'
 import { APIError } from '../helpers/errors'
+
+import upload from '../middlewares/upload'
 import { onlyAdmin } from '../middlewares/roles'
 
-import eventController from '../controllers/event'
+import eventPreviewController from '../controllers/eventPreview'
 import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
 
@@ -40,7 +42,7 @@ router.route('/meta')
 
 router.route('/preview')
   .get(
-    eventController.findAll
+    eventPreviewController.findAll
   )
 
 // private API routes
@@ -64,6 +66,9 @@ router.use('/events', eventRoutes)
 router.use('/places', placeRoutes)
 router.use('/profile', profileRoutes)
 router.use('/resources', resourceRoutes)
+
+router.route('/upload')
+  .post(upload)
 
 // admin API routes
 

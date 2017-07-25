@@ -1,0 +1,42 @@
+// .image-uploader {
+// }
+
+.image-uploader__image-list {
+  display: flex;
+
+  margin-bottom: 20px;
+
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.image-uploader__image {
+  position: relative;
+
+  width: 50%;
+  max-width: 50%;
+  height: 150px;
+
+  border: 15px solid $gray-lighter;
+
+  background-color: $gray-lighter;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+
+  &:hover {
+    .image-uploader__image-button {
+      display: block;
+    }
+  }
+}
+
+.image-uploader__image-button {
+  position: absolute;
+
+  bottom: 0;
+
+  display: none;
+
+  width: 100%;
+}

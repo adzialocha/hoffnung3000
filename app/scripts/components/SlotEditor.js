@@ -65,7 +65,9 @@ class SlotEditor extends Component {
     )
 
     if (!isInClosedOrder(selectedSlotsIndexes)) {
-      alert(translate('components.slotEditor.slotsHaveToBeInClosedOrder'))
+      alert(
+        translate('components.slotEditor.slotsHaveToBeInClosedOrder')
+      )
       return
     }
 

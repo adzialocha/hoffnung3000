@@ -1,6 +1,7 @@
 import marked from 'marked'
 
 import Animal from '../models/animal'
+import Image from '../models/image'
 import pick from '../utils/pick'
 
 export const DEFAULT_LIMIT = 25
@@ -12,7 +13,57 @@ const belongsToAnimal = {
   model: Animal,
 }
 
-const include = [belongsToAnimal]
+const include = [
+  belongsToAnimal,
+]
+
+export function handleImagesUpdate(resource, req) {
+  // remove images when needed
+  const keptImages = req.body.images.filter(img => img.id)
+  const keptImageIds = keptImages.map(img => img.id)
+
+  const removeImagesPromise = resource.getImages()
+    .then(currentImages => {
+      const removeImages = currentImages.filter(image => {
+        return !keptImageIds.includes(image.id)
+      })
+
+      const removePromises = removeImages.map(image => {
+        return Promise.all([
+          image.destroy(),
+          resource.removeImage(image),
+        ])
+      })
+
+      return Promise.all(removePromises)
+    })
+
+  // add new images when given
+  const newImages = req.body.images.filter(img => !img.id)
+
+  const addNewImagesPromise = Promise.all(newImages.map(image => {
+    return Image.create(image, { returning: true })
+      .then(newImage => {
+        return resource.addImage(newImage)
+      })
+  }))
+
+  return Promise.all([removeImagesPromise, addNewImagesPromise])
+}
+
+export function handleImagesDelete(resource) {
+  return resource.setImages([])
+    .then(() => {
+      return Image.destroy({
+        where: {
+          id: {
+            $in: resource.images.map(image => image.id),
+          },
+        },
+        individualHooks: true,
+      })
+    })
+}
 
 export function prepareResponse(data, req) {
   const response = data.toJSON()
@@ -67,6 +118,7 @@ export function lookupWithSlug(model, req, res, next) {
       req.resourceId = data.id
       req.ownerId = data.animal.userId
       req.isOwnerMe = (data.animal.userId === req.user.id)
+
       next()
       return null
     })
@@ -81,15 +133,6 @@ export function findOne(model, req, res, next) {
     .catch(err => next(err))
 }
 
-export function findOneCurated(model, req, res, next) {
-  return model.findById(req.params.resourceId, {
-    include,
-    rejectOnEmpty: true,
-  })
-    .then(data => res.json(prepareResponse(data, req)))
-    .catch(err => next(err))
-}
-
 export function findOneWithSlug(model, req, res, next) {
   return model.findOne({
     rejectOnEmpty: true,
@@ -98,18 +141,6 @@ export function findOneWithSlug(model, req, res, next) {
     },
   })
     .then(data => res.json(data))
-    .catch(err => next(err))
-}
-
-export function findOneCuratedWithSlug(model, req, res, next) {
-  return model.findOne({
-    include,
-    rejectOnEmpty: true,
-    where: {
-      slug: req.params.resourceSlug,
-    },
-  })
-    .then(data => res.json(prepareResponse(data, req)))
     .catch(err => next(err))
 }
 
@@ -137,31 +168,6 @@ export function findAll(model, req, res, next) {
     .catch(err => next(err))
 }
 
-export function findAllCurated(model, req, res, next) {
-  const {
-    limit = DEFAULT_LIMIT,
-    offset = DEFAULT_OFFSET,
-  } = req.query
-
-  return model.findAndCountAll({
-    include,
-    limit,
-    offset,
-    order: [
-      ['createdAt', 'DESC'],
-    ],
-  })
-    .then(result => {
-      res.json({
-        data: prepareResponseAll(result.rows, req),
-        limit: parseInt(limit, 10),
-        offset: parseInt(offset, 10),
-        total: result.count,
-      })
-    })
-    .catch(err => next(err))
-}
-
 export function update(model, fields, req, res, next) {
   return model.update(pick(fields, req.body), {
     where: {
@@ -174,35 +180,8 @@ export function update(model, fields, req, res, next) {
     .catch(err => next(err))
 }
 
-export function updateCuratedWithSlug(model, fields, req, res, next) {
-  return model.update(pick(fields, req.body), {
-    include,
-    where: {
-      slug: req.params.resourceSlug,
-    },
-    limit: 1,
-    returning: true,
-  })
-    .then(data => res.json(prepareResponse(data[1][0], req)))
-    .catch(err => next(err))
-}
-
 export function create(model, fields, req, res, next) {
   return model.create(pick(fields, req.body), {
-    returning: true,
-  })
-    .then(data => res.json(data))
-    .catch(err => next(err))
-}
-
-export function createCurated(model, fields, req, res, next) {
-  return model.create({
-    ...pick(fields, req.body),
-    animal: {
-      userId: req.user.id,
-    },
-  }, {
-    include,
     returning: true,
   })
     .then(data => res.json(data))
@@ -216,21 +195,5 @@ export function destroy(model, req, res, next) {
     },
   })
     .then(() => res.json({ message: 'ok' }))
-    .catch(err => next(err))
-}
-
-export function destroyWithSlug(model, req, res, next) {
-  return model.findOne({
-    rejectOnEmpty: true,
-    where: {
-      slug: req.params.resourceSlug,
-    },
-  })
-    .then((resource) => {
-      return resource.destroy()
-        .then(() => {
-          res.json({ message: 'ok' })
-        })
-    })
     .catch(err => next(err))
 }

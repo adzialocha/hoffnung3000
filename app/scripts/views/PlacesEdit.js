@@ -45,7 +45,7 @@ class PlacesEdit extends Component {
   }
 
   onSubmit(values) {
-    const { title, description, isPublic } = values
+    const { title, description, isPublic, images } = values
     const { slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
 
@@ -57,6 +57,7 @@ class PlacesEdit extends Component {
       ...values.location,
       description,
       disabledSlots,
+      images,
       isPublic,
       title,
     }
@@ -94,6 +95,7 @@ class PlacesEdit extends Component {
 
     const {
       description,
+      images,
       isPublic,
       mode,
       slots: slotData,
@@ -121,6 +123,7 @@ class PlacesEdit extends Component {
     }
     const initialValues = {
       description,
+      images,
       isPublic,
       location,
       slots,

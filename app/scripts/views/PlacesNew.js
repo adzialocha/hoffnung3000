@@ -18,7 +18,7 @@ class PlacesNew extends Component {
   }
 
   onSubmit(values) {
-    const { title, description, isPublic } = values
+    const { title, description, isPublic, images } = values
     const { slotSize, slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
 
@@ -30,6 +30,7 @@ class PlacesNew extends Component {
       ...values.location,
       description,
       disabledSlots,
+      images,
       isPublic,
       slotSize,
       title,

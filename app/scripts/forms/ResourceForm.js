@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormInput } from '../components'
+import { FormInput, FormImageUploader } from '../components'
 import { translate } from '../services/i18n'
 
 const validate = values => {
@@ -72,6 +72,15 @@ class ResourceForm extends Component {
           name="description"
           type="text"
         />
+        <hr />
+        <h2>{ translate('forms.common.uploadImages') }</h2>
+        <Field
+          component={FormImageUploader}
+          disabled={this.props.isLoading}
+          maxImagesCount={1}
+          name="images"
+        />
+        <hr />
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}

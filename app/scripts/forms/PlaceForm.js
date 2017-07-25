@@ -5,6 +5,7 @@ import { Field, reduxForm } from 'redux-form'
 import { checkSlotSize } from '../utils/slots'
 import {
   FormCheckbox,
+  FormImageUploader,
   FormInput,
   FormLocationSelector,
   FormSlotSizeEditor,
@@ -101,6 +102,13 @@ class PlaceForm extends Component {
           label={translate('forms.place.description')}
           name="description"
           type="text"
+        />
+        <hr />
+        <h2>{ translate('forms.common.uploadImages') }</h2>
+        <Field
+          component={FormImageUploader}
+          disabled={this.props.isLoading}
+          name="images"
         />
         <hr />
         <h2>{ translate('forms.place.where') }</h2>

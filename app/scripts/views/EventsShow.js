@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
 import { formatEventTime } from '../utils/dateFormat'
+import { ImageGallery } from '../components'
 import { translate } from '../services/i18n'
 
 class EventsShow extends Component {
@@ -79,25 +80,6 @@ class EventsShow extends Component {
     )
   }
 
-  renderContent() {
-    if (this.props.isLoading) {
-      return <p>{ translate('common.loading') }</p>
-    }
-
-    return (
-      <div>
-        { this.renderOwner() }
-        { this.renderPrivacy() }
-        { this.renderEventTime() }
-        <h4>
-          { this.renderPlace() }
-        </h4>
-        { this.renderDescription() }
-        <hr />
-      </div>
-    )
-  }
-
   renderAddress() {
     const {
       city,
@@ -129,6 +111,42 @@ class EventsShow extends Component {
       return <h1>{ translate('views.events.titlePlaceholder') }</h1>
     }
     return <h1>{ this.props.resourceData.title }</h1>
+  }
+
+  renderImageGallery() {
+    if (this.props.resourceData.images.length === 0) {
+      return null
+    }
+
+    return (
+      <div>
+        <hr />
+        <strong>
+          { translate('views.common.imageGalleryTitle') }
+        </strong>
+        <ImageGallery images={this.props.resourceData.images} />
+      </div>
+    )
+  }
+
+  renderContent() {
+    if (this.props.isLoading) {
+      return <p>{ translate('common.loading') }</p>
+    }
+
+    return (
+      <div>
+        { this.renderOwner() }
+        { this.renderPrivacy() }
+        { this.renderEventTime() }
+        <h4>
+          { this.renderPlace() }
+        </h4>
+        { this.renderDescription() }
+        { this.renderImageGallery() }
+        <hr />
+      </div>
+    )
   }
 
   render() {

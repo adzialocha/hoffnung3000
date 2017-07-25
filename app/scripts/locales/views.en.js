@@ -1,4 +1,7 @@
 export default {
+  common: {
+    imageGalleryTitle: 'Images',
+  },
   places: {
     createNewButton: 'Create place',
     createNewTitle: 'Create new place',

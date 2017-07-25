@@ -4,6 +4,7 @@ export default {
   createEvent: {
     body: {
       description: Joi.string().min(20).required(),
+      images: Joi.array().required(),
       isPublic: Joi.boolean().required(),
       placeId: Joi.number().required(),
       resources: Joi.array().items(Joi.number()).required(),
@@ -14,6 +15,7 @@ export default {
   updateEvent: {
     body: {
       description: Joi.string().min(20).required(),
+      images: Joi.array().required(),
       isPublic: Joi.boolean().required(),
       placeId: Joi.number().required(),
       resources: Joi.array().items(Joi.number()).required(),

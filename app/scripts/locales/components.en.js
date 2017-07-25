@@ -91,6 +91,15 @@ export default {
     title: 'Select resources for your event',
     submitButton: 'Okay',
   },
+  formImageUploader: {
+    deleteImageButton: 'Remove',
+    uploadButton: 'Select files',
+    maxImageReached: {
+      one: 'You can only upload {count} image',
+      zero: 'You can only upload {count} image',
+      other: 'You can only upload {count} images',
+    },
+  },
   curatedSelectableListItem: {
     addItem: 'Add',
     isNotAvailable: 'Not available',

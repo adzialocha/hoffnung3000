@@ -1,16 +1,24 @@
 import httpStatus from 'http-status'
 
 import {
-  findAllCurated,
+  DEFAULT_LIMIT,
+  DEFAULT_OFFSET,
+  handleImagesDelete,
+  handleImagesUpdate,
   lookupWithSlug,
   prepareResponse,
+  prepareResponseAll,
 } from './base'
 
 import pick from '../utils/pick'
 import { createDisabledSlots } from '../utils/slots'
 
 import Event from '../models/event'
-import Place, { PlaceBelongsToAnimal, PlaceHasManySlots } from '../models/place'
+import Place, {
+  PlaceBelongsToAnimal,
+  PlaceBelongsToManyImage,
+  PlaceHasManySlots,
+} from '../models/place'
 import Slot from '../models/slot'
 
 import { APIError } from '../helpers/errors'
@@ -21,6 +29,7 @@ const include = [
     attributes: ['name', 'id', 'userId'],
   },
   PlaceHasManySlots,
+  PlaceBelongsToManyImage,
 ]
 
 const permittedFields = [
@@ -29,6 +38,7 @@ const permittedFields = [
   'country',
   'description',
   'disabledSlots',
+  'images',
   'isPublic',
   'latitude',
   'longitude',
@@ -72,6 +82,7 @@ function areSlotsBooked(placeId, slotIndexes) {
 function preparePlaceValues(body) {
   const {
     description,
+    images,
     isPublic,
     mode,
     title,
@@ -79,6 +90,7 @@ function preparePlaceValues(body) {
 
   const values = {
     description,
+    images,
     isPublic,
     mode,
     title,
@@ -128,10 +140,16 @@ export default {
   },
   destroyWithSlug: (req, res, next) => {
     return Place.findById(req.resourceId, {
+      include,
       rejectOnEmpty: true,
     })
       .then((place) => {
-        return place.destroy()
+        // delete all related images
+        return handleImagesDelete(place)
+          .then(() => {
+            // delete the place
+            return place.destroy()
+          })
       })
       .then(() => {
         // delete related events
@@ -155,7 +173,28 @@ export default {
       .catch(err => next(err))
   },
   findAll: (req, res, next) => {
-    return findAllCurated(Place, req, res, next)
+    const {
+      limit = DEFAULT_LIMIT,
+      offset = DEFAULT_OFFSET,
+    } = req.query
+
+    return Place.findAndCountAll({
+      include,
+      limit,
+      offset,
+      order: [
+        ['createdAt', 'DESC'],
+      ],
+    })
+      .then(result => {
+        res.json({
+          data: prepareResponseAll(result.rows, req),
+          limit: parseInt(limit, 10),
+          offset: parseInt(offset, 10),
+          total: result.count,
+        })
+      })
+      .catch(err => next(err))
   },
   findOneWithSlug: (req, res, next) => {
     return Place.findOne({
@@ -194,24 +233,32 @@ export default {
           returning: true,
         })
           .then(data => {
-            const place = data[1][0]
+            const previousPlace = data[1][0]
 
-            // clean up all slot before
-            return Slot.destroy({
-              where: {
-                isDisabled: true,
-                placeId: place.id,
-              },
-            })
+            return handleImagesUpdate(previousPlace, req)
+              .then(() => {
+                // clean up all slot before
+                return Slot.destroy({
+                  where: {
+                    isDisabled: true,
+                    placeId: previousPlace.id,
+                  },
+                })
+              })
               .then(() => {
                 const slots = createDisabledSlots(
                   body.disabledSlots,
-                  place.id,
-                  place.slotSize
+                  previousPlace.id,
+                  previousPlace.slotSize
                 )
                 return Slot.bulkCreate(slots)
               })
-              .then(() => res.json(prepareResponse(place, req)))
+              .then(() => {
+                return Place.findById(previousPlace.id, { include })
+                  .then(place => {
+                    res.json(prepareResponse(place, req))
+                  })
+              })
           })
       })
       .catch(err => next(err))

@@ -5,6 +5,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 
 import {
   FormCheckbox,
+  FormImageUploader,
   FormInput,
   FormPlaceSlotSelector,
   FormResourceSelector,
@@ -127,6 +128,13 @@ class EventForm extends Component {
           label={translate('forms.event.description')}
           name="description"
           type="text"
+        />
+        <hr />
+        <h2>{ translate('forms.common.uploadImages') }</h2>
+        <Field
+          component={FormImageUploader}
+          disabled={this.props.isLoading}
+          name="images"
         />
         <hr />
         <Field
