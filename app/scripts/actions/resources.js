@@ -7,6 +7,8 @@ import {
 } from '../services/api'
 import { FLASH } from '../middlewares/flash'
 import { REDIRECT } from '../middlewares/redirect'
+import { SCROLL_TO_TOP } from '../middlewares/scroll'
+import { translate } from '../services/i18n'
 
 export function fetchResource(resourceType, resourceId) {
   const meta = {
@@ -57,8 +59,13 @@ export function createResource(resourceType, resourceId, data, flash, redirect) 
     },
     success,
     failure: {
-      type: ActionTypes.RESOURCE_CREATE_FAILURE,
+      [FLASH]: {
+        text: translate('flash.resourceCreateFailure'),
+        type: 'error',
+      },
+      [SCROLL_TO_TOP]: true,
       meta,
+      type: ActionTypes.RESOURCE_CREATE_FAILURE,
     },
   })
 }
@@ -94,8 +101,13 @@ export function updateResource(resourceType, resourceId, data, flash, redirect) 
     },
     success,
     failure: {
-      type: ActionTypes.RESOURCE_UPDATE_FAILURE,
+      [FLASH]: {
+        text: translate('flash.resourceUpdateFailure'),
+        type: 'error',
+      },
+      [SCROLL_TO_TOP]: true,
       meta,
+      type: ActionTypes.RESOURCE_UPDATE_FAILURE,
     },
   })
 }

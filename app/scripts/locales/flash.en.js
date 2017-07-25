@@ -17,6 +17,8 @@ export default {
   redirectedUnauthenticated: 'You have to login before you can see that page.',
   requestPasswordToken: 'We just sent you an email with a link to reset your password. Check your spam folder if you can\'t find it.',
   resetPassword: 'Yes! Your password has been reset!',
+  resourceCreateFailure: 'Ouch, I couldn\'t create this, please check your fields again.',
+  resourceUpdateFailure: 'Ouch, I couldn\'t update this, please check your fields again.',
   signUpPaypalSuccess: 'Thank you and welcome to HOFFNUNG 3000! You successfully created your account!',
   signUpTransferFailure: 'Something with the registration went wrong',
   signUpTransferSuccess: 'Thank you for your registration! We just sent you an email with our bank account details! Please contact us if you didn\'t receive the mail in the next minutes or you have any questions.',

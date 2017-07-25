@@ -9,6 +9,7 @@ import flash from './middlewares/flash'
 import formErrorFlash from './middlewares/formErrorFlash'
 import redirect from './middlewares/redirect'
 import reducers from './reducers'
+import scroll from './middlewares/scroll'
 
 let store
 
@@ -19,6 +20,7 @@ export default function configureStore(initialState, history) {
     api,
     apiError,
     formErrorFlash,
+    scroll,
     flash,
     redirect,
   ]
