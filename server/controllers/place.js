@@ -82,7 +82,6 @@ function areSlotsBooked(placeId, slotIndexes) {
 function preparePlaceValues(body) {
   const {
     description,
-    images,
     isPublic,
     mode,
     title,
@@ -90,7 +89,7 @@ function preparePlaceValues(body) {
 
   const values = {
     description,
-    images,
+    images: body.images || [],
     isPublic,
     mode,
     title,

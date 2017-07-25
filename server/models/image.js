@@ -33,6 +33,12 @@ const Image = db.sequelize.define('image', {
 })
 
 Image.hook('beforeValidate', (image) => {
+  if (!image.fileName) {
+    return sequelize.Promise.reject(
+      new Error('Invalid image object')
+    )
+  }
+
   return new Promise((resolve, reject) => {
     createAndUploadImageVersions(image.fileName)
       .then(result => {
