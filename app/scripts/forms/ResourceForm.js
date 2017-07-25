@@ -77,6 +77,7 @@ class ResourceForm extends Component {
         <Field
           component={FormImageUploader}
           disabled={this.props.isLoading}
+          maxImagesCount={1}
           name="images"
         />
         <hr />

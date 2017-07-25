@@ -94,6 +94,11 @@ export default {
   formImageUploader: {
     deleteImageButton: 'Remove',
     uploadButton: 'Select files',
+    maxImageReached: {
+      one: 'You can only upload {count} image',
+      zero: 'You can only upload {count} image',
+      other: 'You can only upload {count} images',
+    },
   },
   curatedSelectableListItem: {
     addItem: 'Add',

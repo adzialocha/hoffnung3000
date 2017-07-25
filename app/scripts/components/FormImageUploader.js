@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import { alert } from '../services/dialog'
 import { asFormField, withImageUpload } from '../containers'
 import { FormImageUploaderImage } from './'
 import { translate } from '../services/i18n'
@@ -33,10 +34,15 @@ class FormImageUploader extends Component {
     errorMessage: PropTypes.string.isRequired,
     input: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    maxImagesCount: PropTypes.number,
     removeImageFromList: PropTypes.func.isRequired,
     setUploadedImages: PropTypes.func.isRequired,
     uploadedImages: PropTypes.array.isRequired,
     uploadImages: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    maxImagesCount: undefined,
   }
 
   componentWillMount() {
@@ -69,6 +75,16 @@ class FormImageUploader extends Component {
     const files = event.target.files
 
     if (files.length === 0) {
+      return
+    }
+
+    const totalFilesCount = files.length + this.props.uploadedImages.length
+    if (this.props.maxImagesCount && totalFilesCount > this.props.maxImagesCount) {
+      alert(
+        translate('components.formImageUploader.maxImageReached', {
+          count: this.props.maxImagesCount,
+        })
+      )
       return
     }
 
@@ -134,6 +150,23 @@ class FormImageUploader extends Component {
   }
 
   renderUploadButton() {
+    const isMaxReached = (
+      this.props.maxImagesCount &&
+      this.props.uploadedImages.length >= this.props.maxImagesCount
+    )
+
+    let uploadButtonLabel = translate(
+      'components.formImageUploader.uploadButton'
+    )
+
+    if (isMaxReached) {
+      uploadButtonLabel = translate(
+        'components.formImageUploader.maxImageReached', {
+          count: this.props.maxImagesCount,
+        }
+      )
+    }
+
     return (
       <div className="image-uploader__footer">
         <input
@@ -145,10 +178,14 @@ class FormImageUploader extends Component {
         />
         <button
           className="button button--green"
-          disabled={this.props.disabled || this.props.isLoading}
+          disabled={
+            this.props.disabled ||
+            this.props.isLoading ||
+            isMaxReached
+          }
           onClick={this.onUploadClick}
         >
-          { translate('components.formImageUploader.uploadButton') }
+          { uploadButtonLabel }
         </button>
       </div>
     )
