@@ -3,6 +3,8 @@ import slugify from 'sequelize-slugify'
 import db from '../database'
 
 import Animal from './animal'
+import Image from './image'
+import ResourceImage from './resourceImage'
 import Slot from './slot'
 
 const Place = db.sequelize.define('place', {
@@ -88,6 +90,19 @@ export const PlaceBelongsToAnimal = Place.belongsTo(Animal, {
 export const PlaceHasManySlots = Place.hasMany(Slot, {
   as: 'slots',
   targetKey: 'placeId',
+})
+
+export const PlaceBelongsToManyImage = Place.belongsToMany(Image, {
+  through: {
+    model: ResourceImage,
+    unique: false,
+    scope: {
+      resourceName: 'place',
+    },
+  },
+  as: 'images',
+  foreignKey: 'resourceId',
+  constraints: false,
 })
 
 export default Place

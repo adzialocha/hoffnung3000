@@ -3,6 +3,8 @@ import httpStatus from 'http-status'
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
+  handleImagesDelete,
+  handleImagesUpdate,
   lookupWithSlug,
   prepareResponse,
   prepareResponseAll,
@@ -10,6 +12,7 @@ import {
 
 import Event, {
   EventBelongsToAnimal,
+  EventBelongsToManyImage,
   EventBelongsToPlace,
   EventHasManySlots,
 } from '../models/event'
@@ -28,6 +31,7 @@ import { APIError } from '../helpers/errors'
 
 const permittedFields = [
   'description',
+  'images',
   'isPublic',
   'placeId',
   'title',
@@ -64,6 +68,7 @@ const include = [
   belongsToAnimal,
   belongsToManyResources,
   belongsToPlace,
+  EventBelongsToManyImage,
   hasManySlots,
 ]
 
@@ -193,6 +198,7 @@ function createEvent(req, fields) {
         }, {
           include: [
             EventBelongsToAnimal,
+            EventBelongsToManyImage,
           ],
           returning: true,
         })
@@ -228,6 +234,9 @@ function updateEvent(req, fields) {
         Event.update({
           ...fields,
         }, {
+          include: [
+            EventBelongsToManyImage,
+          ],
           where: {
             slug: req.params.resourceSlug,
           },
@@ -237,33 +246,37 @@ function updateEvent(req, fields) {
           .then(data => {
             const event = data[1][0]
 
-            // associate resources to event
-            return Resource.findAll({
-              where: { id: { $in: req.body.resources } },
-            })
-              .then(resources => {
-                event.setResources(resources)
-
-                // clean up all slot before
-                return Slot.destroy({
-                  where: {
-                    eventId: event.id,
-                  },
+            // update images
+            return handleImagesUpdate(event, req)
+              .then(() => {
+                // associate resources to event
+                return Resource.findAll({
+                  where: { id: { $in: req.body.resources } },
                 })
-                  .then(() => {
-                    // create slots for event
-                    const slots = createEventSlots(
-                      req.body.slots,
-                      place.id,
-                      event.id,
-                      place.slotSize
-                    )
+                  .then(resources => {
+                    event.setResources(resources)
 
-                    return Slot.bulkCreate(slots)
+                    // clean up all slot before
+                    return Slot.destroy({
+                      where: {
+                        eventId: event.id,
+                      },
+                    })
                       .then(() => {
-                        // return the whole event with all associations
-                        return Event.findById(event.id, { include })
-                          .then(updatedEvent => resolve(updatedEvent))
+                        // create slots for event
+                        const slots = createEventSlots(
+                          req.body.slots,
+                          place.id,
+                          event.id,
+                          place.slotSize
+                        )
+
+                        return Slot.bulkCreate(slots)
+                          .then(() => {
+                            // return the whole event with all associations
+                            return Event.findById(event.id, { include })
+                              .then(updatedEvent => resolve(updatedEvent))
+                          })
                       })
                   })
               })
@@ -312,10 +325,16 @@ export default {
   },
   destroy: (req, res, next) => {
     return Event.findById(req.resourceId, {
+      include: [
+        EventBelongsToManyImage,
+      ],
       rejectOnEmpty: true,
     })
       .then((event) => {
-        return event.destroy()
+        return handleImagesDelete(event)
+          .then(() => {
+            return event.destroy()
+          })
       })
       .then(() => {
         // delete related slots
@@ -336,31 +355,17 @@ export default {
       offset = DEFAULT_OFFSET,
     } = req.query
 
-    const isAuthorized = req.user && req.user.isActive
-
-    const includeAssociations = [hasManySlots]
-    const where = {}
-    if (isAuthorized) {
-      includeAssociations.push(belongsToAnimal)
-      includeAssociations.push(belongsToPlace)
-    } else {
-      where.isPublic = true
-    }
-
     return Event.findAndCountAll({
-      include: includeAssociations,
+      include,
       limit,
       offset,
-      where,
       order: [
         [EventHasManySlots, 'from', 'ASC'],
       ],
     })
       .then(result => {
-        const data = isAuthorized ? prepareResponseAll(result.rows, req) : result.rows
-
         res.json({
-          data,
+          data: prepareResponseAll(result.rows, req),
           limit: parseInt(limit, 10),
           offset: parseInt(offset, 10),
           total: result.count,

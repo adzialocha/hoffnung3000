@@ -10,7 +10,7 @@ import { APIError } from '../helpers/errors'
 import upload from '../middlewares/upload'
 import { onlyAdmin } from '../middlewares/roles'
 
-import eventController from '../controllers/event'
+import eventPreviewController from '../controllers/eventPreview'
 import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
 
@@ -42,7 +42,7 @@ router.route('/meta')
 
 router.route('/preview')
   .get(
-    eventController.findAll
+    eventPreviewController.findAll
   )
 
 // private API routes

@@ -1,13 +1,14 @@
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
+  handleImagesDelete,
+  handleImagesUpdate,
   lookupWithSlug,
   prepareResponse,
   prepareResponseAll,
 } from './base'
 
 import Event from '../models/event'
-import Image from '../models/image'
 import Resource, {
   ResourceBelongsToAnimal,
   ResourceBelongsToManyImage,
@@ -109,17 +110,7 @@ export default {
     })
       .then(resource => {
         // delete all related images
-        resource.setImages([])
-          .then(() => {
-            return Image.destroy({
-              where: {
-                id: {
-                  $in: resource.images.map(image => image.id),
-                },
-              },
-              individualHooks: true,
-            })
-          })
+        return handleImagesDelete(resource)
           .then(() => {
             // delete the resource
             return resource.destroy()
@@ -187,38 +178,7 @@ export default {
       .then(data => {
         const previousResource = data[1][0]
 
-        // remove images when needed
-        const keptImages = req.body.images.filter(img => img.id)
-        const keptImageIds = keptImages.map(img => img.id)
-
-        const removeImagesPromise = previousResource.getImages()
-          .then(currentImages => {
-            const removeImages = currentImages.filter(image => {
-              return !keptImageIds.includes(image.id)
-            })
-
-            const removePromises = removeImages.map(image => {
-              return Promise.all([
-                image.destroy(),
-                previousResource.removeImage(image),
-              ])
-            })
-
-            return Promise.all(removePromises)
-          })
-
-        // add new images when given
-        const newImages = req.body.images.filter(img => !img.id)
-
-        const addNewImagesPromise = Promise.all(newImages.map(image => {
-          return Image.create(image, { returning: true })
-            .then(newImage => {
-              return previousResource.addImage(newImage)
-            })
-        }))
-
-        // return updated resource
-        return Promise.all([removeImagesPromise, addNewImagesPromise])
+        return handleImagesUpdate(previousResource, req)
           .then(() => {
             return Resource.findById(previousResource.id, { include })
               .then(resource => {
