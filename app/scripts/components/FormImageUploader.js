@@ -90,7 +90,7 @@ class FormImageUploader extends Component {
     return this.props.uploadedImages.map((image, index) => {
       return (
         <FormImageUploaderImage
-          image={image}
+          imageId={image.id}
           key={index}
           onImageRemoveClick={this.onImageRemoveClick}
         />

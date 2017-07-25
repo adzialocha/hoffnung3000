@@ -9,8 +9,12 @@ function urlToKey(url) {
 function request(method, Key, customParams, customMethod) {
   const defaultParams = {
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key,
   }
+
+  if (Key) {
+    defaultParams.Key = Key
+  }
+
   const params = Object.assign({}, defaultParams, customParams)
   const s3 = new AWS.S3({ signatureVersion: 'v4' })
 
@@ -39,7 +43,7 @@ function request(method, Key, customParams, customMethod) {
     }
 
     promise
-      .then((data) => {
+      .then(data => {
         resolve({
           data,
           url: `${BASE_PATH}${Key}`,
@@ -61,7 +65,7 @@ export function putObject(Body, Key) {
 export function deleteObjects(urls) {
   const params = {
     Delete: {
-      Objects: urls.map((url) => urlToKey(url)),
+      Objects: urls.map(url => { Key: urlToKey(url) }),
     },
   }
 

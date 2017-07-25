@@ -11,12 +11,14 @@ export default {
   createResource: {
     body: {
       description: Joi.string().min(10).max(120).required(),
+      images: Joi.array(),
       title: Joi.string().min(3).required(),
     },
   },
   updateResource: {
     body: {
       description: Joi.string().min(10).max(120).required(),
+      images: Joi.array(),
       title: Joi.string().min(3).required(),
     },
     params: {

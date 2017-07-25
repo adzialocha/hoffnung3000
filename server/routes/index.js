@@ -13,7 +13,6 @@ import { onlyAdmin } from '../middlewares/roles'
 import eventController from '../controllers/event'
 import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
-import uploadController from '../controllers/upload'
 
 import authRoutes from './auth'
 import eventRoutes from './event'
@@ -69,10 +68,7 @@ router.use('/profile', profileRoutes)
 router.use('/resources', resourceRoutes)
 
 router.route('/upload')
-  .post(
-    upload.imageUpload,
-    uploadController.uploadImages
-  )
+  .post(upload)
 
 // admin API routes
 

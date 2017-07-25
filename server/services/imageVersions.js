@@ -1,7 +1,6 @@
 import fs from 'fs'
 import sharp  from 'sharp'
 
-import Image from '../models/Image'
 import { putObject } from '../services/s3'
 
 const BUCKET_PATH = 'uploads/'
@@ -73,8 +72,8 @@ function createImageVersions(file) {
   return Promise.all(promises)
 }
 
-function storeImageInDatabase(resizeResults) {
-  const images = resizeResults.map(image => {
+function prepareImageData(resizeResults) {
+  return resizeResults.map(image => {
     const data = {}
 
     image.forEach(imageVersion => {
@@ -83,8 +82,6 @@ function storeImageInDatabase(resizeResults) {
 
     return data
   })
-
-  return Image.bulkCreate(images, { returning: true })
 }
 
 export default {
@@ -102,11 +99,7 @@ export default {
           fs.unlink(file.path)
         })
 
-        // store in database
-        return storeImageInDatabase(resizeResults)
-      })
-      .then(data => {
-        res.json({ data })
+        res.json(prepareImageData(resizeResults))
       })
       .catch(err => next(err))
   },

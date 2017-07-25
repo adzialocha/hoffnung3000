@@ -1,4 +1,5 @@
 import db from '../database'
+import { deleteObjects } from '../services/s3'
 
 const Image = db.sequelize.define('image', {
   id: {
@@ -24,6 +25,22 @@ const Image = db.sequelize.define('image', {
     type: db.Sequelize.STRING,
     allowNull: false,
   },
+})
+
+Image.hook('beforeCreate', (image) => {
+  return deleteObjects([
+    image.largeImageUrl,
+    image.mediumImageUrl,
+    image.smallImageUrl,
+  ])
+})
+
+Image.hook('beforeDestroy', (image) => {
+  return deleteObjects([
+    image.largeImageUrl,
+    image.mediumImageUrl,
+    image.smallImageUrl,
+  ])
 })
 
 export default Image

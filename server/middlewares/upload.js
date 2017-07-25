@@ -15,13 +15,10 @@ const VALID_FILE_TYPES = [
 
 const MAX_FILE_SIZE = 5242880
 
-function generateFileName(file) {
+function generateFileName(ext = 'jpg') {
   return new Promise(resolve => {
-    let ext = path.extname(file.originalname)
-    ext = ext.length > 1 ? ext : '.' + mime.extension(file.mimetype)
-
     crypto.pseudoRandomBytes(16, (err, raw) => {
-      resolve((err ? undefined : raw.toString('hex')) + ext)
+      resolve((err ? undefined : raw.toString('hex')) + '.' + ext)
     })
   })
 }
@@ -36,7 +33,7 @@ const storage = multer.diskStorage({
     cb(null, uploadFolder)
   },
   filename: (req, file, cb) => {
-    generateFileName(file).then(name => {
+    generateFileName().then(name => {
       cb(null, name)
     })
   },
@@ -60,13 +57,13 @@ const upload = multer({
   storage,
 }).array('images')
 
-export default {
-  imageUpload: (req, res, next) => {
-    upload(req, res, (err) => {
-      if (err) {
-        return next(err)
-      }
-      return next()
-    })
-  },
+export default function(req, res, next) {
+  upload(req, res, (err) => {
+    if (err) {
+      return next(err)
+    }
+
+    const response = req.files.map(file => file.filename)
+    return res.json(response)
+  })
 }

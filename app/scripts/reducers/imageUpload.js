@@ -1,6 +1,7 @@
 import update from 'immutability-helper'
 
 import ActionTypes from '../actionTypes'
+import randomId from '../utils/randomId'
 
 const initialState = {
   errorMessage: '',
@@ -16,8 +17,15 @@ export default (state = initialState, action) => {
       isLoading: { $set: true },
     })
   case ActionTypes.UPLOAD_IMAGE_SUCCESS:
+    const newImages = action.payload.map(fileName => {
+      return {
+        id: randomId(),
+        fileName,
+      }
+    })
+
     return update(state, {
-      uploadedImages: { $push: action.payload.data },
+      uploadedImages: { $push: newImages },
       isLoading: { $set: false },
     })
   case ActionTypes.UPLOAD_IMAGE_FAILURE:

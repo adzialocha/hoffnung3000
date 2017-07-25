@@ -5,21 +5,22 @@ import { translate } from '../services/i18n'
 
 class FormImageUploaderImage extends Component {
   static propTypes = {
-    image: PropTypes.object.isRequired,
+    backgroundImage: PropTypes.string.isRequired,
+    imageId: PropTypes.number.isRequired,
     onImageRemoveClick: PropTypes.func.isRequired,
   }
 
   onImageRemoveClick(event) {
     event.preventDefault()
 
-    this.props.onImageRemoveClick(this.props.image)
+    this.props.onImageRemoveClick(this.props.imageId)
   }
 
   render() {
     return (
       <div
         className="image-uploader__image"
-        style={ { backgroundImage: `url(${this.props.image.smallImageUrl})` } }
+        style={ { backgroundImage: `url(${this.props.backgroundImage})` } }
       >
         <button
           className="image-uploader__image-button button button--red"

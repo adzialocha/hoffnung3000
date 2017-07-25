@@ -2,10 +2,7 @@ import update from 'immutability-helper'
 import { LOCATION_CHANGE } from 'react-router-redux'
 
 import ActionTypes from '../actionTypes'
-
-function randomId() {
-  return `new-${Date.now()}-${Math.random().toString(36).substring(7)}`
-}
+import randomId from '../utils/randomId'
 
 const initialState = {
   errorMessage: '',
