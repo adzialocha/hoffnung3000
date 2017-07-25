@@ -38,6 +38,8 @@ $_list-item-mobile-height: 100px;
   height: $_list-item-height;
 
   background-color: $gray-light;
+  background-position: center;
+  background-size: cover;
 
   flex: 1 $_list-item-height;
 }

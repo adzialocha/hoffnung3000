@@ -1,13 +1,16 @@
 import ActionTypes from '../actionTypes'
 import { postRequest } from '../services/api'
 
-export function uploadImages(images) {
+export function uploadImages(images, base64Strings) {
   return postRequest(['upload'], images, {
     request: {
       type: ActionTypes.UPLOAD_IMAGE_REQUEST,
     },
     success: {
       type: ActionTypes.UPLOAD_IMAGE_SUCCESS,
+      meta: {
+        base64Strings,
+      },
     },
     failure: {
       type: ActionTypes.UPLOAD_IMAGE_FAILURE,

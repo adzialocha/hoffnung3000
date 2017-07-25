@@ -1,8 +1,6 @@
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
-  destroyWithSlug,
-  findAllCurated,
   lookupWithSlug,
   prepareResponse,
   prepareResponseAll,
@@ -46,27 +44,30 @@ function findAllWithAvailability(req, res, next) {
     order: [
       ['createdAt', 'DESC'],
     ],
-    include: [ ResourceBelongsToAnimal, {
-      model: Event,
-      as: 'events',
-      include: [{
-        model: Slot,
-        as: 'slots',
-        where: {
-          $and: [{
-            eventId,
-          }, {
-            from: {
-              $lte: req.query.to,
-            },
-          }, {
-            to: {
-              $gte: req.query.from,
-            },
-          }],
-        },
-      }],
-    }],
+    include: [
+      ResourceBelongsToManyImage,
+      ResourceBelongsToAnimal, {
+        model: Event,
+        as: 'events',
+        include: [{
+          model: Slot,
+          as: 'slots',
+          where: {
+            $and: [{
+              eventId,
+            }, {
+              from: {
+                $lte: req.query.to,
+              },
+            }, {
+              to: {
+                $gte: req.query.from,
+              },
+            }],
+          },
+        }],
+      },
+    ],
   })
     .then(result => {
       const extendedReponse = prepareResponseAll(result.rows, req).map(row => {
@@ -102,7 +103,32 @@ export default {
       .catch(err => next(err))
   },
   destroy: (req, res, next) => {
-    return destroyWithSlug(Resource, req, res, next)
+    return Resource.findById(req.resourceId, {
+      include,
+      rejectOnEmpty: true,
+    })
+      .then(resource => {
+        // delete all related images
+        resource.setImages([])
+          .then(() => {
+            return Image.destroy({
+              where: {
+                id: {
+                  $in: resource.images.map(image => image.id),
+                },
+              },
+              individualHooks: true,
+            })
+          })
+          .then(() => {
+            // delete the resource
+            return resource.destroy()
+          })
+      })
+      .then(() => {
+        res.json({ message: 'ok' })
+      })
+      .catch(err => next(err))
   },
   findAll: (req, res, next) => {
     // is there a time filter activated?
@@ -110,7 +136,28 @@ export default {
       return findAllWithAvailability(req, res, next)
     }
 
-    return findAllCurated(Resource, req, res, next)
+    const {
+      limit = DEFAULT_LIMIT,
+      offset = DEFAULT_OFFSET,
+    } = req.query
+
+    return Resource.findAndCountAll({
+      include,
+      limit,
+      offset,
+      order: [
+        ['createdAt', 'DESC'],
+      ],
+    })
+      .then(result => {
+        res.json({
+          data: prepareResponseAll(result.rows, req),
+          limit: parseInt(limit, 10),
+          offset: parseInt(offset, 10),
+          total: result.count,
+        })
+      })
+      .catch(err => next(err))
   },
   findOneWithSlug: (req, res, next) => {
     return Resource.findOne({
@@ -163,16 +210,12 @@ export default {
         // add new images when given
         const newImages = req.body.images.filter(img => !img.id)
 
-        const addNewImagesPromise = Image.bulkCreate(newImages, {
-          returning: true,
-        })
-          .then(createdImages => {
-            const addPromises = createdImages.map(image => {
-              return previousResource.addImage(image)
+        const addNewImagesPromise = Promise.all(newImages.map(image => {
+          return Image.create(image, { returning: true })
+            .then(newImage => {
+              return previousResource.addImage(newImage)
             })
-
-            return Promise.all(addPromises)
-          })
+        }))
 
         // return updated resource
         return Promise.all([removeImagesPromise, addNewImagesPromise])

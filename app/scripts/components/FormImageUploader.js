@@ -5,6 +5,27 @@ import { asFormField, withImageUpload } from '../containers'
 import { FormImageUploaderImage } from './'
 import { translate } from '../services/i18n'
 
+function convertFileToBase64(file) {
+  return new Promise(resolve => {
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      resolve(reader.result)
+    }
+    reader.readAsDataURL(file)
+  })
+}
+
+function convertFilesToBase64(files) {
+  const promises = []
+  for (let i = 0; i < files.length; i++) {
+    promises.push(
+      convertFileToBase64(files[i])
+    )
+  }
+
+  return Promise.all(promises)
+}
+
 class FormImageUploader extends Component {
   static propTypes = {
     clearUploadedImages: PropTypes.func.isRequired,
@@ -26,7 +47,17 @@ class FormImageUploader extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.uploadedImages.length !== this.props.uploadedImages.length) {
-      this.props.input.onChange(this.props.uploadedImages)
+      const preparedImages = this.props.uploadedImages.map(image => {
+        if (image.base64String) {
+          return Object.assign({}, {
+            fileName: image.fileName,
+          })
+        }
+
+        return image
+      })
+
+      this.props.input.onChange(preparedImages)
     }
   }
 
@@ -48,7 +79,10 @@ class FormImageUploader extends Component {
       formData.append('images', file, file.name)
     }
 
-    this.props.uploadImages(formData)
+    convertFilesToBase64(files)
+      .then(base64Strings => {
+        this.props.uploadImages(formData, base64Strings)
+      })
 
     event.target.value = ''
   }
@@ -90,6 +124,7 @@ class FormImageUploader extends Component {
     return this.props.uploadedImages.map((image, index) => {
       return (
         <FormImageUploaderImage
+          backgroundImage={image.smallImageUrl || image.base64String}
           imageId={image.id}
           key={index}
           onImageRemoveClick={this.onImageRemoveClick}
@@ -136,7 +171,7 @@ class FormImageUploader extends Component {
     super(props)
 
     this.onFilesChange = this.onFilesChange.bind(this)
-    this.onImageRemoveClick= this.onImageRemoveClick.bind(this)
+    this.onImageRemoveClick = this.onImageRemoveClick.bind(this)
     this.onUploadClick = this.onUploadClick.bind(this)
   }
 }

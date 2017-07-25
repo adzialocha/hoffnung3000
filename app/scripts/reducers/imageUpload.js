@@ -17,10 +17,11 @@ export default (state = initialState, action) => {
       isLoading: { $set: true },
     })
   case ActionTypes.UPLOAD_IMAGE_SUCCESS:
-    const newImages = action.payload.map(fileName => {
+    const newImages = action.payload.map((fileName, index) => {
       return {
-        id: randomId(),
+        base64String: action.meta.base64Strings[index],
         fileName,
+        id: randomId(),
       }
     })
 

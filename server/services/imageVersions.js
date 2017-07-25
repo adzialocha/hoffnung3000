@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 import sharp  from 'sharp'
 
 import { putObject } from '../services/s3'
@@ -24,8 +25,8 @@ const IMAGE_VERSIONS = [{
   width: 400,
 }]
 
-function resizeAndUpload(path, key, width, height, quality) {
-  return sharp(path)
+function resizeAndUpload(filePath, key, width, height, quality) {
+  return sharp(filePath)
     .resize(width, height)
     .max()
     .toFormat(IMAGE_FILE_FORMAT, { quality })
@@ -43,15 +44,15 @@ function addSuffix(name, suffix = 'original', ext = 'jpg') {
   return `${name.substring(0, name.lastIndexOf('.'))}-${suffix}.${ext}`
 }
 
-function createImageVersions(file) {
+function createImageVersions(fileName, filePath) {
   const promises = []
 
   IMAGE_VERSIONS.forEach(version => {
     const promise = new Promise((resolve, reject) => {
-      const key = `${BUCKET_PATH}${addSuffix(file.filename, version.name)}`
+      const key = `${BUCKET_PATH}${addSuffix(fileName, version.name)}`
 
       resizeAndUpload(
-        file.path,
+        filePath,
         key,
         version.width,
         version.height,
@@ -73,34 +74,39 @@ function createImageVersions(file) {
 }
 
 function prepareImageData(resizeResults) {
-  return resizeResults.map(image => {
-    const data = {}
+  const data = {}
 
-    image.forEach(imageVersion => {
-      data[`${imageVersion.name}ImageUrl`] = imageVersion.key
-    })
-
-    return data
+  resizeResults.forEach(imageVersion => {
+    data[`${imageVersion.name}ImageUrl`] = imageVersion.key
   })
+
+  return data
 }
 
-export default {
-  uploadImages: (req, res, next) => {
-    const resizePromises = []
+export function createAndUploadImageVersions(fileName) {
+  return new Promise((resolve, reject) => {
+    const filePath = path.join(
+      __dirname,
+      '..',
+      '..',
+      '.tmp',
+      'uploads',
+      fileName
+    )
 
-    req.files.forEach(originalImage => {
-      resizePromises.push(createImageVersions(originalImage))
-    })
+    if (!fs.existsSync(filePath)) {
+      return reject(
+        new Error('Temporary file does not exist')
+      )
+    }
 
-    return Promise.all(resizePromises)
+    return createImageVersions(fileName, filePath)
       .then(resizeResults => {
-        // remove temporary files
-        req.files.forEach(file => {
-          fs.unlink(file.path)
-        })
+        // remove temporary file
+        fs.unlink(filePath)
 
-        res.json(prepareImageData(resizeResults))
+        resolve(prepareImageData(resizeResults))
       })
-      .catch(err => next(err))
-  },
+      .catch(err => reject(err))
+  })
 }

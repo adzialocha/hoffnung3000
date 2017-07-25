@@ -12,6 +12,10 @@ module.exports = {
       updatedAt: {
         type: Sequelize.DATE,
       },
+      fileName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       largeImageUrl: {
         type: Sequelize.STRING,
         allowNull: false,

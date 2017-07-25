@@ -65,7 +65,7 @@ export function putObject(Body, Key) {
 export function deleteObjects(urls) {
   const params = {
     Delete: {
-      Objects: urls.map(url => { Key: urlToKey(url) }),
+      Objects: urls.map(url => { return { Key: urlToKey(url) } }),
     },
   }
 
@@ -74,21 +74,4 @@ export function deleteObjects(urls) {
 
 export function deleteObject(url) {
   return deleteObjects([url])
-}
-
-export function getObjectSigned(url) {
-  const params = {
-    Expires: 60,
-  }
-
-  return request('getSignedUrl', urlToKey(url), params, 'getObject')
-}
-
-export function putObjectSigned(key) {
-  const params = {
-    Expires: 600000,
-    ACL: 'authenticated-read',
-  }
-
-  return request('getSignedUrl', key, params, 'putObject')
 }
