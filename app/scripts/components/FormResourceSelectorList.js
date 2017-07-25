@@ -28,7 +28,7 @@ class FormResourceSelectorList extends Component {
   }
 
   onResourceAddClick(item) {
-    if (this.isSelected(item)) {
+    if (this.isSelected(item) || !this.isAvailable(item)) {
       return
     }
 
