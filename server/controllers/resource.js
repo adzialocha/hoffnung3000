@@ -40,6 +40,7 @@ function findAllWithAvailability(req, res, next) {
   }
 
   return Resource.findAndCountAll({
+    distinct: true,
     limit,
     offset,
     order: [
@@ -133,6 +134,7 @@ export default {
     } = req.query
 
     return Resource.findAndCountAll({
+      distinct: true,
       include,
       limit,
       offset,

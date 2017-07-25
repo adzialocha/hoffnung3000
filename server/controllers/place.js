@@ -178,6 +178,7 @@ export default {
     } = req.query
 
     return Place.findAndCountAll({
+      distinct: true,
       include,
       limit,
       offset,

@@ -142,6 +142,7 @@ function areResourcesAvailable(req, existingEventId) {
 
   return new Promise((resolve, reject) => {
     Resource.findAndCountAll({
+      distinct: true,
       where: {
         id: {
           $in: req.body.resources,
@@ -356,6 +357,7 @@ export default {
     } = req.query
 
     return Event.findAndCountAll({
+      distinct: true,
       include,
       limit,
       offset,

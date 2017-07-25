@@ -47,6 +47,10 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
 
     onInfiniteLoad() {
+      if (this.props.isLoading) {
+        return
+      }
+
       if (this.props.currentPageIndex === this.props.totalPageCount) {
         return
       }
