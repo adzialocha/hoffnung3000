@@ -23,5 +23,6 @@ export default {
     createNewButton: 'Create event',
     createNewTitle: 'Create new event',
     titlePlaceholder: 'Event',
+    loadMoreEvents: 'Load more events',
   },
 }

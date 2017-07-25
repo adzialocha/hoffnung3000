@@ -10,15 +10,27 @@ $_modal-header-height: 55px;
 }
 
 .infinite-list-container--half-items {
-  & > div {
-    display: flex;
+  display: flex;
 
-    flex-wrap: wrap;
-  }
+  flex-wrap: wrap;
 
   .infinite-list-container__item {
     width: 50%;
   }
+
+  .infinite-list-container__item--full {
+    width: 100%;
+
+    margin-bottom: 50px;
+
+    text-align: center;
+  }
+}
+
+.infinite-list-container__heading {
+  margin-bottom: 50px;
+
+  font-size: $font-size-xl;
 }
 
 @include media-breakpoint(xs) {
@@ -26,6 +38,10 @@ $_modal-header-height: 55px;
     .infinite-list-container__item {
       width: 100%;
     }
+  }
+
+  .infinite-list-container__heading {
+    font-size: $font-size-xl;
   }
 }
 

@@ -13,7 +13,6 @@ const LIST_ITEM_HEIGHT_DEFAULT = 175
 export default function asInfiniteList(WrappedListItemComponent) {
   class InfiniteListContainer extends Component {
     static propTypes = {
-      className: PropTypes.string,
       clearList: PropTypes.func.isRequired,
       containerHeight: PropTypes.number,
       currentPageIndex: PropTypes.number.isRequired,
@@ -21,7 +20,6 @@ export default function asInfiniteList(WrappedListItemComponent) {
       filter: PropTypes.object,
       input: PropTypes.object,
       isLoading: PropTypes.bool.isRequired,
-      listItemClassName: PropTypes.string,
       listItems: PropTypes.array.isRequired,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
@@ -31,11 +29,9 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
 
     static defaultProps = {
-      className: '',
       containerHeight: undefined,
       filter: {},
       input: undefined,
-      listItemClassName: '',
       onClick: undefined,
       onEditClick: undefined,
       totalPageCount: undefined,
@@ -51,9 +47,13 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
 
     onMeasureResize(contentRect) {
-      this.setState({
-        elementHeight: contentRect.bounds.height,
-      })
+      const height = contentRect.bounds.height
+
+      if (this.state.elementHeight !== height) {
+        this.setState({
+          elementHeight: height,
+        })
+      }
     }
 
     onInfiniteLoad() {
@@ -86,7 +86,6 @@ export default function asInfiniteList(WrappedListItemComponent) {
     renderListItemContent(item) {
       return (
         <WrappedListItemComponent
-          className={this.props.listItemClassName}
           input={this.props.input}
           item={item}
           onClick={this.props.onClick}
@@ -126,8 +125,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
 
     render() {
       const infiniteListClasses = classnames(
-        'infinite-list-container',
-        this.props.className, {
+        'infinite-list-container', {
           'infinite-list-container--in-modal': (
             !this.props.useWindowAsScrollContainer
           ),

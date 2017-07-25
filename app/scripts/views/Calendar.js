@@ -4,11 +4,11 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { push } from 'react-router-redux'
 
-import { asInfiniteList } from '../containers'
+import { asInfiniteListCalendar } from '../containers'
 import { CuratedEventListItem, StaticPage } from '../components'
 import { translate } from '../services/i18n'
 
-const WrappedInfiniteList = asInfiniteList(CuratedEventListItem)
+const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
 
 class Calendar extends Component {
   static propTypes = {
