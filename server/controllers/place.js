@@ -126,8 +126,6 @@ export default {
       body.slotSize
     )
 
-    console.log(values)
-
     return Place.create({
       ...values,
       animal: {
@@ -235,26 +233,31 @@ export default {
           returning: true,
         })
           .then(data => {
-            const place = data[1][0]
+            const previousPlace = data[1][0]
 
-            return handleImagesUpdate(place, req)
+            return handleImagesUpdate(previousPlace, req)
               .then(() => {
                 // clean up all slot before
                 return Slot.destroy({
                   where: {
                     isDisabled: true,
-                    placeId: place.id,
+                    placeId: previousPlace.id,
                   },
                 })
-                  .then(() => {
-                    const slots = createDisabledSlots(
-                      body.disabledSlots,
-                      place.id,
-                      place.slotSize
-                    )
-                    return Slot.bulkCreate(slots)
+              })
+              .then(() => {
+                const slots = createDisabledSlots(
+                  body.disabledSlots,
+                  previousPlace.id,
+                  previousPlace.slotSize
+                )
+                return Slot.bulkCreate(slots)
+              })
+              .then(() => {
+                return Place.findById(previousPlace.id, { include })
+                  .then(place => {
+                    res.json(prepareResponse(place, req))
                   })
-                  .then(() => res.json(prepareResponse(place, req)))
               })
           })
       })
