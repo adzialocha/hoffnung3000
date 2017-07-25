@@ -93,8 +93,8 @@ class FormImageUploader extends Component {
     this.refs.uploadButton.click()
   }
 
-  onImageRemoveClick(image) {
-    this.props.removeImageFromList(image.id)
+  onImageRemoveClick(imageId) {
+    this.props.removeImageFromList(imageId)
   }
 
   renderErrorMessage() {

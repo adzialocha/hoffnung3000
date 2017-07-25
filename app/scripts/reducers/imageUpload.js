@@ -24,7 +24,6 @@ export default (state = initialState, action) => {
         id: randomId(),
       }
     })
-
     return update(state, {
       uploadedImages: { $push: newImages },
       isLoading: { $set: false },
