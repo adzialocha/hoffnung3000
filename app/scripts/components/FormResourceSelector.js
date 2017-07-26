@@ -21,12 +21,6 @@ class FormResourceSelector extends Component {
     to: '',
   }
 
-  onMeasureResize(contentRect) {
-    this.setState({
-      containerHeight: contentRect.bounds.height,
-    })
-  }
-
   onChange(selectedItems) {
     this.props.input.onChange(selectedItems)
   }
