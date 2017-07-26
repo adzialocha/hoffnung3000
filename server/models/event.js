@@ -63,7 +63,7 @@ export const EventBelongsToManyImage = Event.belongsToMany(Image, {
     model: ResourceImage,
     unique: false,
     scope: {
-      resourceName: 'place',
+      resourceName: 'event',
     },
   },
   as: 'images',
