@@ -46,8 +46,20 @@ $_modal-header-height: 55px;
 }
 
 .infinite-list-container--in-modal {
+  overflow: auto;
+
+  height: 100%;
+
   padding-top: $_modal-header-height;
-  padding-bottom: $_modal-footer-height;
+  padding-bottom: 12px;
+}
+
+.infinite-list-container__more-button {
+  display: block;
+
+  margin-right: auto;
+  margin-bottom: 60px;
+  margin-left: auto;
 }
 
 .infinite-list-container__spinner {

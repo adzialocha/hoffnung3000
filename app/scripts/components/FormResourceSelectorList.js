@@ -1,4 +1,3 @@
-import Measure from 'react-measure'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
@@ -19,12 +18,6 @@ class FormResourceSelectorList extends Component {
   static defaultProps = {
     eventId: undefined,
     value: [],
-  }
-
-  onMeasureResize(contentRect) {
-    this.setState({
-      containerHeight: contentRect.bounds.height,
-    })
   }
 
   onResourceAddClick(item) {
@@ -63,7 +56,6 @@ class FormResourceSelectorList extends Component {
 
     return (
       <WrappedInfiniteList
-        containerHeight={this.state.containerHeight}
         filter={filter}
         input={
           {
@@ -72,8 +64,8 @@ class FormResourceSelectorList extends Component {
             isSelected: this.isSelected,
           }
         }
+        isInModal={true}
         resourceName="resources"
-        useWindowAsScrollContainer={false}
         onClick={this.onResourceAddClick}
       />
     )
@@ -98,7 +90,7 @@ class FormResourceSelectorList extends Component {
     })
   }
 
-  renderItemSelector() {
+  render() {
     return (
       <div className="item-selector">
         <div className="item-selector__list item-selector__list--selection">
@@ -108,25 +100,6 @@ class FormResourceSelectorList extends Component {
           { this.renderAllItemsList() }
         </div>
       </div>
-    )
-  }
-
-  render() {
-    return (
-      <Measure bounds={true} onResize={this.onMeasureResize}>
-        {
-          ({ measureRef }) => {
-            return (
-              <div
-                className="modal__content modal__content--full"
-                ref={measureRef}
-              >
-                { this.renderItemSelector() }
-              </div>
-            )
-          }
-        }
-      </Measure>
     )
   }
 
@@ -147,13 +120,11 @@ class FormResourceSelectorList extends Component {
     super(props)
 
     this.state = {
-      containerHeight: 500,
       selectedItems: props.value || [],
     }
 
     this.isAvailable = this.isAvailable.bind(this)
     this.isSelected = this.isSelected.bind(this)
-    this.onMeasureResize = this.onMeasureResize.bind(this)
     this.onResourceAddClick = this.onResourceAddClick.bind(this)
     this.onResourceRemoveClick = this.onResourceRemoveClick.bind(this)
   }

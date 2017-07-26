@@ -1,18 +1,21 @@
 import ActionTypes from '../actionTypes'
 import { getRequest } from '../services/api'
 
-export const ITEMS_PER_PAGE = 10
+export const ITEMS_PER_PAGE = 50
 
-export function fetchList(resourceName, page = 0, params = {}, itemsPerPage = ITEMS_PER_PAGE) {
-  const offset = page * itemsPerPage
-  const limit = itemsPerPage
+export function fetchList(resourceName, page = 0, params = {}) {
+  const offset = page * ITEMS_PER_PAGE
+  const limit = ITEMS_PER_PAGE
   const meta = {
     page,
     offset,
     limit,
   }
 
-  const type = page === 0 ? ActionTypes.INFINITE_LIST_INITIALIZE : ActionTypes.INFINITE_LIST_REQUEST
+  let type = ActionTypes.INFINITE_LIST_INITIALIZE
+  if (page > 0) {
+    type = ActionTypes.INFINITE_LIST_REQUEST
+  }
 
   return getRequest([resourceName], { offset, limit, ...params }, {
     request: {

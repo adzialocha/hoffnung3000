@@ -1,4 +1,3 @@
-import Measure from 'react-measure'
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -13,12 +12,6 @@ class FormPlaceSlotSelectorPlace extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
-  }
-
-  onMeasureResize(contentRect) {
-    this.setState({
-      containerHeight: contentRect.bounds.height,
-    })
   }
 
   onPlaceClick(place) {
@@ -46,30 +39,10 @@ class FormPlaceSlotSelectorPlace extends Component {
   renderPlacesList() {
     return (
       <WrappedInfiniteList
-        containerHeight={this.state.containerHeight}
+        isInModal={true}
         resourceName="places"
-        useWindowAsScrollContainer={false}
         onClick={this.onPlaceClick}
       />
-    )
-  }
-
-  renderModalContainer() {
-    return (
-      <Measure bounds={true} onResize={this.onMeasureResize}>
-        {
-          ({ measureRef }) => {
-            return (
-              <div
-                className="modal__content modal__content--full"
-                ref={measureRef}
-              >
-                { this.renderPlacesList() }
-              </div>
-            )
-          }
-        }
-      </Measure>
     )
   }
 
@@ -79,7 +52,7 @@ class FormPlaceSlotSelectorPlace extends Component {
         <div className="modal__header">
           <h1>{ translate('components.placeSelector.title') }</h1>
         </div>
-        { this.renderModalContainer() }
+        { this.renderPlacesList() }
         <div className="modal__footer">
           <div className="button-group">
             <button
@@ -124,12 +97,10 @@ class FormPlaceSlotSelectorPlace extends Component {
     super(props)
 
     this.state = {
-      containerHeight: 500,
       isModalOpen: false,
     }
 
     this.onCloseClick = this.onCloseClick.bind(this)
-    this.onMeasureResize = this.onMeasureResize.bind(this)
     this.onOpenClick = this.onOpenClick.bind(this)
     this.onPlaceClick = this.onPlaceClick.bind(this)
   }

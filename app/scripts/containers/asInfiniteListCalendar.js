@@ -27,19 +27,20 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     }
 
     componentWillMount() {
-      this.props.fetchList(this.props.resourceName, 0, {}, 100)
+      this.props.fetchList(
+        this.props.resourceName,
+        0
+      )
     }
 
     componentWillUnmount() {
       this.props.clearList()
     }
 
-    onClickMore() {
+    onLoadMoreClick() {
       this.props.fetchList(
         this.props.resourceName,
-        this.props.currentPageIndex + 1,
-        {},
-        100
+        this.props.currentPageIndex + 1
       )
     }
 
@@ -76,7 +77,10 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       }
 
       return (
-        <button onClick={this.onClickMore}>
+        <button
+          className="button infinite-list-container__more-button"
+          onClick={this.onLoadMoreClick}
+        >
           { translate('views.events.loadMoreEvents') }
         </button>
       )
@@ -96,32 +100,34 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
           dateB,
         ) : false
 
-        let headerComponent
+        const itemComponent = (
+          <div
+            className="infinite-list-container__item"
+            key={index}
+          >
+            { this.renderListItemContent(item) }
+          </div>
+        )
 
-        if (!isSameDay) {
-          headerComponent = (
-            <div
-              className="infinite-list-container__item infinite-list-container__item--full"
-              key={`header-${index}`}
-            >
-              <h2 className="infinite-list-container__heading">
-                { dateFns.format(item.slots[0].from, 'DD.MM.YY') }
-              </h2>
-              { index > 0 ? <hr /> : null }
-            </div>
-          )
+        if (isSameDay) {
+          return itemComponent
         }
+
+        const headerComponent = (
+          <div
+            className="infinite-list-container__item infinite-list-container__item--full"
+            key={`header-${index}`}
+          >
+            <h2 className="infinite-list-container__heading">
+              { dateFns.format(item.slots[0].from, 'DD.MM.YY') }
+            </h2>
+            { index > 0 ? <hr /> : null }
+          </div>
+        )
 
         return [
           headerComponent,
-          (
-            <div
-              className="infinite-list-container__item"
-              key={index}
-            >
-              { this.renderListItemContent(item) }
-            </div>
-          ),
+          itemComponent,
         ]
       })
     }
@@ -144,7 +150,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     constructor(props) {
       super(props)
 
-      this.onClickMore = this.onClickMore.bind(this)
+      this.onLoadMoreClick = this.onLoadMoreClick.bind(this)
     }
   }
 

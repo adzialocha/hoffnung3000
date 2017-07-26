@@ -1,6 +1,4 @@
 import classnames from 'classnames'
-import Infinite from 'react-infinite'
-import Measure from 'react-measure'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -8,63 +6,45 @@ import { connect } from 'react-redux'
 import { fetchList, clearList } from '../actions/infiniteList'
 import { translate } from '../services/i18n'
 
-const LIST_ITEM_HEIGHT_DEFAULT = 175
-
 export default function asInfiniteList(WrappedListItemComponent) {
   class InfiniteListContainer extends Component {
     static propTypes = {
       clearList: PropTypes.func.isRequired,
-      containerHeight: PropTypes.number,
       currentPageIndex: PropTypes.number.isRequired,
       fetchList: PropTypes.func.isRequired,
       filter: PropTypes.object,
       input: PropTypes.object,
+      isInModal: PropTypes.bool,
       isLoading: PropTypes.bool.isRequired,
       listItems: PropTypes.array.isRequired,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
       resourceName: PropTypes.string.isRequired,
       totalPageCount: PropTypes.number,
-      useWindowAsScrollContainer: PropTypes.bool,
     }
 
     static defaultProps = {
-      containerHeight: undefined,
       filter: {},
       input: undefined,
+      isInModal: false,
       onClick: undefined,
       onEditClick: undefined,
       totalPageCount: undefined,
-      useWindowAsScrollContainer: true,
     }
 
     componentWillMount() {
-      this.props.fetchList(this.props.resourceName, 0, this.props.filter)
+      this.props.fetchList(
+        this.props.resourceName,
+        0,
+        this.props.filter
+      )
     }
 
     componentWillUnmount() {
       this.props.clearList()
     }
 
-    onMeasureResize(contentRect) {
-      const height = contentRect.bounds.height
-
-      if (this.state.elementHeight !== height) {
-        this.setState({
-          elementHeight: height,
-        })
-      }
-    }
-
-    onInfiniteLoad() {
-      if (this.props.isLoading) {
-        return
-      }
-
-      if (this.props.currentPageIndex === this.props.totalPageCount) {
-        return
-      }
-
+    onLoadMoreClick() {
       this.props.fetchList(
         this.props.resourceName,
         this.props.currentPageIndex + 1,
@@ -96,69 +76,53 @@ export default function asInfiniteList(WrappedListItemComponent) {
 
     renderListItems() {
       return this.props.listItems.map((item, index) => {
-        if (index > 0) {
-          return (
-            <div className="infinite-list-container__item" key={index}>
-              { this.renderListItemContent(item) }
-            </div>
-          )
-        }
-
         return (
-          <Measure bounds={true} key={index} onResize={this.onMeasureResize}>
-            {
-              ({ measureRef }) => {
-                return (
-                  <div
-                    className="infinite-list-container__item"
-                    ref={measureRef}
-                  >
-                    { this.renderListItemContent(item) }
-                  </div>
-                )
-              }
-            }
-          </Measure>
+          <div className="infinite-list-container__item" key={index}>
+            { this.renderListItemContent(item) }
+          </div>
         )
       })
     }
 
+    renderLoadMoreButton() {
+      if (this.props.isLoading) {
+        return null
+      }
+
+      if (this.props.currentPageIndex === this.props.totalPageCount) {
+        return null
+      }
+
+      return (
+        <button
+          className="button infinite-list-container__more-button"
+          onClick={this.onLoadMoreClick}
+        >
+          { translate('common.loadMore') }
+        </button>
+      )
+    }
+
     render() {
-      const infiniteListClasses = classnames(
+      const listClasses = classnames(
         'infinite-list-container', {
-          'infinite-list-container--in-modal': (
-            !this.props.useWindowAsScrollContainer
-          ),
+          'infinite-list-container--in-modal': this.props.isInModal,
         }
       )
 
       return (
-        <Infinite
-          className={infiniteListClasses}
-          containerHeight={this.props.containerHeight}
-          elementHeight={this.state.elementHeight}
-          infiniteLoadBeginEdgeOffset={LIST_ITEM_HEIGHT_DEFAULT}
-          isInfiniteLoading={this.props.isLoading}
-          loadingSpinnerDelegate={this.renderSpinner()}
-          useWindowAsScrollContainer={
-            this.props.useWindowAsScrollContainer
-          }
-          onInfiniteLoad={this.onInfiniteLoad}
-        >
+        <div className={listClasses}>
           { this.renderListItems() }
-        </Infinite>
+          { this.renderSpinner() }
+          { this.renderLoadMoreButton() }
+        </div>
       )
     }
 
     constructor(props) {
       super(props)
 
-      this.state = {
-        elementHeight: LIST_ITEM_HEIGHT_DEFAULT,
-      }
-
-      this.onInfiniteLoad = this.onInfiniteLoad.bind(this)
-      this.onMeasureResize = this.onMeasureResize.bind(this)
+      this.onLoadMoreClick = this.onLoadMoreClick.bind(this)
     }
   }
 

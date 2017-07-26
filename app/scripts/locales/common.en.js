@@ -15,6 +15,7 @@ export default {
   deleteButton: 'Delete',
   editButton: 'Edit',
   loading: 'Loading ...',
+  loadMore: 'Load more',
   ownedBy: 'by {name}',
   somethingWentWrong: 'Oups.. something went wrong!',
 }
