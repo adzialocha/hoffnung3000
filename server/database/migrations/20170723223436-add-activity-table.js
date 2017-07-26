@@ -14,20 +14,23 @@ module.exports = {
       },
       receiverAnimalId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       senderAnimalId: {
         type: Sequelize.INTEGER,
+        allowNull: true,
       },
-      targetType: {
-        type: DataTypes.STRING,
-      },
-      targetId: {
-        type: DataTypes.INTEGER,
-        references: null,
-      },
-      activityType: {
+      type: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      resourceName: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      resourceId: {
+        allowNull: true,
+        type: Sequelize.INTEGER,
       },
     })
   },

@@ -12,20 +12,40 @@ const Activity = db.sequelize.define('activity', {
   updatedAt: {
     type: Sequelize.DATE,
   },
-  animalId: {
+  receiverAnimalId: {
     type: Sequelize.INTEGER,
+    allowNull: false,
   },
-  targetType: {
-    type: DataTypes.STRING,
+  senderAnimalId: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
   },
-  targetId: {
-    type: DataTypes.INTEGER,
-    references: null,
-  },
-  activityType: {
+  type: {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  resourceName: {
+    allowNull: true,
+    type: Sequelize.STRING,
+  },
+  resourceId: {
+    allowNull: true,
+    type: Sequelize.INTEGER,
+  },
+  imageId: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+  },
+})
+
+export const ActivityBelongsToReceiverAnimal = Activity.belongsTo(Animal, {
+  as: 'receiverAnimal',
+  foreignKey: 'receiverAnimalId',
+})
+
+export const ActivityBelongsToSenderAnimal = Activity.belongsTo(Animal, {
+  as: 'senderAnimal',
+  foreignKey: 'senderAnimalId',
 })
 
 export default Activity

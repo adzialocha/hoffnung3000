@@ -2,6 +2,7 @@ import slugify from 'sequelize-slugify'
 
 import db from '../database'
 
+import Activity from './activity'
 import Animal from './animal'
 import Image from './image'
 import Place from './place'
@@ -63,10 +64,19 @@ export const EventBelongsToManyImage = Event.belongsToMany(Image, {
     model: ResourceImage,
     unique: false,
     scope: {
-      resourceName: 'place',
+      resourceName: 'event',
     },
   },
   as: 'images',
+  foreignKey: 'resourceId',
+  constraints: false,
+})
+
+export const EventBelongsToManyActivity = Event.belongsToMany(Activity, {
+  scope: {
+    resourceName: 'event',
+  },
+  as: 'activities',
   foreignKey: 'resourceId',
   constraints: false,
 })
