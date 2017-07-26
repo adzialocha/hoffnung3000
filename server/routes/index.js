@@ -16,6 +16,7 @@ import pageController from '../controllers/page'
 
 import authRoutes from './auth'
 import eventRoutes from './event'
+import inboxRoutes from './inbox'
 import pageRoutes from './page'
 import placeRoutes from './place'
 import profileRoutes from './profile'
@@ -63,6 +64,7 @@ router.use('/*', (req, res, next) => {
 })
 
 router.use('/events', eventRoutes)
+router.use('/inbox', inboxRoutes)
 router.use('/places', placeRoutes)
 router.use('/profile', profileRoutes)
 router.use('/resources', resourceRoutes)
