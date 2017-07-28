@@ -37,10 +37,14 @@ function prepareResponse(conversation, req) {
       req.conversation ? req.conversation.animals[0] : conversation.animals[0]
     )
     const lastCheckedAt = animalMe.conversationsAnimals.updatedAt
-    response.isRead = dateFns.isAfter(
-      lastCheckedAt,
-      response.lastMessage.createdAt
-    )
+    if (response.lastMessage.animalId === animalMe.id) {
+      response.isRead = true
+    } else {
+      response.isRead = dateFns.isAfter(
+        lastCheckedAt,
+        response.lastMessage.createdAt
+      )
+    }
   }
 
   return response

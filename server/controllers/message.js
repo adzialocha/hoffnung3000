@@ -26,10 +26,14 @@ function prepareResponse(message, req) {
   )
 
   const lastCheckedAt = animalMe.conversationsAnimals.updatedAt
-  response.isRead = dateFns.isAfter(
-    lastCheckedAt,
-    response.createdAt
-  )
+  if (response.animal.id === animalMe.id) {
+    response.isRead = true
+  } else {
+    response.isRead = dateFns.isAfter(
+      lastCheckedAt,
+      response.createdAt
+    )
+  }
 
   if (response.animal) {
     response.animal = prepareAnimalResponse(response.animal)
@@ -83,7 +87,7 @@ export default {
           lastCheckedAt: db.sequelize.fn('NOW'),
         }, {
           where: {
-            animalId: req.conversation.animalId,
+            animalId: req.conversation.animals[0].id,
             conversationId: req.conversation.id,
           },
         })
