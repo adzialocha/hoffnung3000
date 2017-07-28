@@ -3,6 +3,7 @@ import httpStatus from 'http-status'
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
+  prepareAnimalResponseAll,
 } from './base'
 
 import Animal from '../models/animal'
@@ -19,6 +20,25 @@ const permittedFields = [
   'text',
   'title',
 ]
+
+function prepareResponse(conversation) {
+  const response = conversation.toJSON()
+
+  if (response.animals) {
+    response.animals = prepareAnimalResponseAll(response.animals)
+  }
+
+  if (response.messages) {
+    response.lastMessage = response.messages[0]
+    delete response.messages
+  }
+
+  return response
+}
+
+function prepareResponseAll(rows) {
+  return rows.map(row => prepareResponse(row))
+}
 
 export default {
   create: (req, res, next) => {
@@ -108,7 +128,10 @@ export default {
             userId: req.user.id,
           },
         },
-        ConversationHasManyMessage,
+        {
+          association: ConversationHasManyMessage,
+          group: 'conversationId',
+        },
       ],
       limit,
       offset,
@@ -119,7 +142,7 @@ export default {
     })
       .then(result => {
         res.json({
-          data: result.rows,
+          data: prepareResponseAll(result.rows),
           limit: parseInt(limit, 10),
           offset: parseInt(offset, 10),
           total: result.count,
@@ -157,7 +180,7 @@ export default {
       ],
       rejectOnEmpty: true,
     })
-      .then(conversation => res.json(conversation))
+      .then(conversation => res.json(prepareResponse(conversation)))
       .catch(err => next(err))
   },
 }

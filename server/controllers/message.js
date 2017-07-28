@@ -1,6 +1,7 @@
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
+  prepareAnimalResponse,
 } from './base'
 
 import Message, { MessageBelongsToAnimal } from '../models/message'
@@ -10,6 +11,20 @@ import pick from '../utils/pick'
 const permittedFields = [
   'text',
 ]
+
+function prepareResponse(message) {
+  const response = message.toJSON()
+
+  if (response.animal) {
+    response.animal = prepareAnimalResponse(response.animal)
+  }
+
+  return response
+}
+
+function prepareResponseAll(rows) {
+  return rows.map(row => prepareResponse(row))
+}
 
 export default {
   create: (req, res, next) => {
@@ -48,7 +63,7 @@ export default {
     })
       .then(result => {
         res.json({
-          data: result.rows,
+          data: prepareResponseAll(result.rows, req),
           limit: parseInt(limit, 10),
           offset: parseInt(offset, 10),
           total: result.count,

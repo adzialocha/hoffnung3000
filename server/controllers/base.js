@@ -66,6 +66,19 @@ export function handleImagesDelete(resource) {
     })
 }
 
+export function prepareAnimalResponse(animal) {
+  const { id, name } = animal
+
+  return {
+    id,
+    name,
+  }
+}
+
+export function prepareAnimalResponseAll(animals) {
+  return animals.map(animal => prepareAnimalResponse(animal))
+}
+
 export function prepareResponse(data, req) {
   const response = data.toJSON()
 
@@ -102,7 +115,6 @@ export function lookup(model, req, res, next) {
     .then(data => {
       req.ownerId = data.animal.userId
       next()
-      return null
     })
     .catch(err => next(err))
 }
@@ -121,7 +133,6 @@ export function lookupWithSlug(model, req, res, next) {
       req.isOwnerMe = (data.animal.userId === req.user.id)
 
       next()
-      return null
     })
     .catch(err => next(err))
 }
