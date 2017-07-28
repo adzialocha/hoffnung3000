@@ -60,7 +60,7 @@ export default class Routes extends Component {
           <Route component={isParticipant(ResourcesEdit)} path="/resources/:slug/edit" />
           <Route component={isParticipant(ResourcesIndex)} path="/resources" />
           <Route component={isParticipant(ConversationsNew)} path="/inbox/new" />
-          <Route component={isParticipant(ConversationsShow)} path="/inbox/conversation/:id" />
+          <Route component={isParticipant(ConversationsShow)} path="/inbox/conversations/:id" />
           <Route component={isParticipant(ConversationsIndex)} path="/inbox" />
           <Route component={isAdmin(Admin)} path="/admin" />
           <Route component={NotFound} />

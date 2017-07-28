@@ -101,7 +101,6 @@ class PlaceForm extends Component {
           disabled={this.props.isLoading}
           label={translate('forms.place.description')}
           name="description"
-          type="text"
         />
         <hr />
         <h2>{ translate('forms.common.uploadImages') }</h2>

@@ -1,7 +1,6 @@
 import db from '../database'
 
 import Animal from './animal'
-import Conversation from './conversation'
 
 const Message = db.sequelize.define('message', {
   id: {
@@ -32,11 +31,6 @@ const Message = db.sequelize.define('message', {
 export const MessageBelongsToAnimal = Message.belongsTo(Animal, {
   as: 'animal',
   foreignKey: 'animalId',
-})
-
-export const MessageBelongsToConversation = Message.belongsTo(Conversation, {
-  as: 'conversation',
-  foreignKey: 'conversationId',
 })
 
 export default Message

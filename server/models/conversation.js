@@ -15,6 +15,9 @@ const Conversation = db.sequelize.define('conversation', {
   updatedAt: {
     type: db.Sequelize.DATE,
   },
+  animalId: {
+    type: db.Sequelize.INTEGER,
+  },
   title: {
     type: db.Sequelize.STRING,
     allowNull: false,
@@ -29,11 +32,20 @@ export const ConversationBelongsToManyAnimal = Conversation.belongsToMany(
   }
 )
 
-export const ConversationBelongsToManyMessage = Conversation.belongsToMany(
-  Message, {
-    as: 'messages',
-    foreignKey: 'conversationId',
-  }
-)
+export const ConversationBelongsToAnimal = Conversation.belongsTo(Animal, {
+  as: 'animal',
+  foreignKey: 'animalId',
+  onDelete: 'CASCADE',
+})
+
+export const ConversationHasManyMessage = Conversation.hasMany(Message, {
+  as: 'messages',
+  foreignKey: 'conversationId',
+})
+
+export const MessageBelongsToConversation = Message.belongsTo(Conversation, {
+  as: 'conversation',
+  foreignKey: 'conversationId',
+})
 
 export default Conversation

@@ -85,7 +85,7 @@
     "react-youtube": "7.4.0",
     "redux": "3.7.1",
     "redux-auth-wrapper": "2.0.1",
-    "redux-form": "7.0.1",
+    "redux-form": "7.0.3",
     "redux-logger": "3.0.1",
     "redux-thunk": "2.2.0",
     "run-sequence": "2.0.0",

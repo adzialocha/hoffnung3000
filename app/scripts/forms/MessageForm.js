@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormInput } from '../components'
+import { FormInput, FormTextarea } from '../components'
 import { translate } from '../services/i18n'
 
 const validate = values => {
@@ -10,14 +10,12 @@ const validate = values => {
   if (!values.title) {
     errors.title = translate('forms.message.errors.titleRequired')
   } else if (values.title.length < 3) {
-    errors.title = translate(
-      'forms.common.errors.minLength', { len: 3 }
-    )
+    errors.title = translate('forms.common.errors.minLength', { len: 3 })
   }
 
-  if (!values.text || values.length === 0) {
-    errors.text = translate('forms.message.errors.textRequired')
-  }
+  // if (!values.text || values.length === 0) {
+  //   errors.text = translate('forms.message.errors.textRequired')
+  // }
 
   return errors
 }
@@ -27,11 +25,13 @@ class MessageForm extends Component {
     errorMessage: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
+    isWithTitle: PropTypes.bool,
   }
 
   static defaultProps = {
     errorMessage: undefined,
     isLoading: false,
+    isWithTitle: true,
   }
 
   renderErrorMessage() {
@@ -45,24 +45,33 @@ class MessageForm extends Component {
     return null
   }
 
+  renderTitleField() {
+    if (!this.props.isWithTitle) {
+      return null
+    }
+
+    return (
+      <Field
+        component={FormInput}
+        disabled={this.props.isLoading}
+        label={translate('forms.message.title')}
+        name="title"
+        type="text"
+      />
+    )
+  }
+
   render() {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
         <h2>{ translate('forms.message.formTitle') }</h2>
+        { this.renderTitleField() }
         <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.message.title')}
-          name="title"
-          type="text"
-        />
-        <Field
-          component={FormInput}
+          component={FormTextarea}
           disabled={this.props.isLoading}
           label={translate('forms.message.text')}
           name="text"
-          type="text"
         />
         <hr />
         <button

@@ -19,7 +19,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
       listItems: PropTypes.array.isRequired,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
-      resourceName: PropTypes.string.isRequired,
+      resourceName: PropTypes.any.isRequired,
       totalPageCount: PropTypes.number,
     }
 

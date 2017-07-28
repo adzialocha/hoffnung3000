@@ -2,9 +2,10 @@ import marked from 'marked'
 
 import Animal from '../models/animal'
 import Image from '../models/image'
+
 import pick from '../utils/pick'
 
-export const DEFAULT_LIMIT = 25
+export const DEFAULT_LIMIT = 50
 export const DEFAULT_OFFSET = 0
 
 const belongsToAnimal = {

@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
-import { sendNewMessage } from '../actions/inbox'
-import { fetchResource } from '../actions/resources'
 import { asInfiniteList } from '../containers'
+import { cachedResource } from '../services/resources'
+import { fetchResource } from '../actions/resources'
 import { MessageForm } from '../forms'
 import { MessageListItem } from '../components'
+import { sendNewMessage } from '../actions/inbox'
 import { translate } from '../services/i18n'
 
 const WrappedInfiniteList = asInfiniteList(MessageListItem)
@@ -17,7 +19,8 @@ class ConversationsShow extends Component {
     conversationId: PropTypes.number.isRequired,
     errorMessage: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired,
+    isLoadingConversation: PropTypes.bool.isRequired,
+    isLoadingMessage: PropTypes.bool.isRequired,
     sendNewMessage: PropTypes.func.isRequired,
   }
 
@@ -29,11 +32,16 @@ class ConversationsShow extends Component {
   }
 
   onSubmit(values) {
-    this.props.sendNewMessage(values.text)
+    this.props.sendNewMessage(
+      this.props.conversationId,
+      values.text
+    )
   }
 
   renderReceiverNames() {
-    const names = this.props.conversationData.animals.map(animal => animal.name)
+    const names = this.props.conversationData.animals.map(
+      animal => animal.name
+    )
 
     return (
       <p>
@@ -43,6 +51,18 @@ class ConversationsShow extends Component {
         &nbsp;
         { names.join(', ') }
       </p>
+    )
+  }
+
+  renderConversationHeader() {
+    if (this.props.isLoadingConversation) {
+      return <p>{ translate('common.loading') }</p>
+    }
+
+    return (
+      <div>
+        { this.renderReceiverNames() }
+      </div>
     )
   }
 
@@ -58,7 +78,8 @@ class ConversationsShow extends Component {
     return (
       <MessageForm
         errorMessage={this.props.errorMessage}
-        isLoading={this.props.isLoading}
+        isLoading={this.props.isLoadingMessage}
+        isWithTitle={false}
         onSubmit={this.onSubmit}
       />
     )
@@ -68,8 +89,15 @@ class ConversationsShow extends Component {
     return (
       <section>
         <h1>{ translate('views.inbox.conversationTitle') }</h1>
+        <Link className="button" to="/inbox">
+          { translate('views.inbox.backToConversations') }
+        </Link>
+        <hr />
+        { this.renderConversationHeader() }
         <hr />
         { this.renderMessages() }
+        <hr />
+        { this.renderMessageForm() }
       </section>
     )
   }
@@ -83,14 +111,22 @@ class ConversationsShow extends Component {
 
 function mapStateToProps(state, ownProps) {
   const conversationId = ownProps.match.params.id
-  const resource = cachedResource('converstaions', conversationId)
-  const { isLoading, object: conversationData } = resource
+  const resource = cachedResource('conversations', conversationId)
+  const {
+    isLoading: isLoadingConversation,
+    object: conversationData,
+  } = resource
+  const {
+    errorMessage,
+    isLoading: isLoadingMessage,
+  } = state.inbox
 
   return {
     conversationData,
-    conversationId,
+    conversationId: parseInt(conversationId, 10),
     errorMessage,
-    isLoading,
+    isLoadingConversation,
+    isLoadingMessage,
   }
 }
 

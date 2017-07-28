@@ -14,7 +14,7 @@ class MessageListItem extends Component {
   renderDate() {
     const dateStr = dateFns.format(
       this.props.item.createdAt,
-      'YY.MM.DD mm:hh'
+      'DD.MM.YY HH:mm'
     )
 
     return (

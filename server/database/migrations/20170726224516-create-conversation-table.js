@@ -12,6 +12,9 @@ module.exports = {
       updatedAt: {
         type: Sequelize.DATE,
       },
+      animalId: {
+        type: Sequelize.INTEGER,
+      },
       title: {
         type: Sequelize.STRING,
         allowNull: false,

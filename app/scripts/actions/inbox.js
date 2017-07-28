@@ -11,7 +11,7 @@ export function createNewConversation(animalIds, title, text) {
     title,
   }
 
-  return postRequest(['inbox'], params, {
+  return postRequest(['conversations'], params, {
     request: {
       type: ActionTypes.INBOX_NEW_CONVERSATION_REQUEST,
     },
@@ -33,7 +33,7 @@ export function sendNewMessage(conversationId, text) {
     text,
   }
 
-  return postRequest(['conversations', conversationId], params, {
+  return postRequest(['conversations', conversationId, 'messages'], params, {
     request: {
       type: ActionTypes.INBOX_NEW_MESSAGE_REQUEST,
     },
@@ -42,6 +42,7 @@ export function sendNewMessage(conversationId, text) {
       [FLASH]: {
         text: translate('flash.newMessageSuccess'),
       },
+      [REDIRECT]: '/inbox',
     },
     failure: {
       type: ActionTypes.INBOX_NEW_MESSAGE_FAILURE,
