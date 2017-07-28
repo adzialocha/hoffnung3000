@@ -1,3 +1,5 @@
+import dateFns from 'date-fns'
+
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
@@ -16,10 +18,17 @@ const permittedFields = [
 
 function prepareResponse(message, req) {
   const response = message.toJSON()
+  const animalMe = req.conversation.animals[0]
 
   response.isWrittenByMe = (
-    req.conversation.animals[0].userId === req.user.id &&
-    req.conversation.animals[0].id === message.animal.id
+    animalMe.userId === req.user.id &&
+    animalMe.id === message.animal.id
+  )
+
+  const lastCheckedAt = animalMe.conversationsAnimals.updatedAt
+  response.isRead = dateFns.isAfter(
+    lastCheckedAt,
+    response.createdAt
   )
 
   if (response.animal) {

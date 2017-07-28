@@ -22,6 +22,7 @@ class MessageListItem extends Component {
         &nbsp;
         <AnimalLink animal={this.props.item.animal} />
         { this.props.item.isWrittenByMe ? ' (me)' : null }
+        { !this.props.item.isRead ? ' *' : null }
       </div>
     )
   }

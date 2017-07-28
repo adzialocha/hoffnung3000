@@ -1,3 +1,4 @@
+import dateFns from 'date-fns'
 import httpStatus from 'http-status'
 
 import {
@@ -21,7 +22,7 @@ const permittedFields = [
   'title',
 ]
 
-function prepareResponse(conversation) {
+function prepareResponse(conversation, req) {
   const response = conversation.toJSON()
 
   if (response.animals) {
@@ -31,13 +32,22 @@ function prepareResponse(conversation) {
   if (response.messages) {
     response.lastMessage = response.messages[0]
     delete response.messages
+
+    const animalMe = (
+      req.conversation ? req.conversation.animals[0] : conversation.animals[0]
+    )
+    const lastCheckedAt = animalMe.conversationsAnimals.updatedAt
+    response.isRead = dateFns.isAfter(
+      lastCheckedAt,
+      response.lastMessage.createdAt
+    )
   }
 
   return response
 }
 
-function prepareResponseAll(rows) {
-  return rows.map(row => prepareResponse(row))
+function prepareResponseAll(rows, req) {
+  return rows.map(row => prepareResponse(row, req))
 }
 
 export default {
@@ -142,7 +152,7 @@ export default {
     })
       .then(result => {
         res.json({
-          data: prepareResponseAll(result.rows),
+          data: prepareResponseAll(result.rows, req),
           limit: parseInt(limit, 10),
           offset: parseInt(offset, 10),
           total: result.count,
@@ -155,6 +165,11 @@ export default {
       include: [
         {
           association: ConversationBelongsToManyAnimal,
+          through: {
+            attributes: [
+              'updatedAt',
+            ],
+          },
           where: {
             userId: req.user.id,
           },
@@ -176,7 +191,7 @@ export default {
       ],
       rejectOnEmpty: true,
     })
-      .then(conversation => res.json(prepareResponse(conversation)))
+      .then(conversation => res.json(prepareResponse(conversation, req)))
       .catch(err => next(err))
   },
 }

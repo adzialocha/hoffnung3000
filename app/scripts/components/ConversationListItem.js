@@ -27,6 +27,7 @@ class ConversationListItem extends Component {
       <div className="list-item-content">
         <div className="list-item-content__title ellipsis">
           { this.props.item.title }
+          { !this.props.item.isRead ? ' *' : null }
         </div>
         { this.renderDate() }
         <div className="list-item-content__description">
