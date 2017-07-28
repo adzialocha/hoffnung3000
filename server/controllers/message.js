@@ -70,7 +70,7 @@ export default {
     })
       .then(result => {
         // update last checked at date
-        ConversationAnimal.update({
+        return ConversationAnimal.update({
           lastCheckedAt: db.sequelize.fn('NOW'),
         }, {
           where: {

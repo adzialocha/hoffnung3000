@@ -115,6 +115,7 @@ export function lookup(model, req, res, next) {
     .then(data => {
       req.ownerId = data.animal.userId
       next()
+      return null
     })
     .catch(err => next(err))
 }
@@ -133,6 +134,7 @@ export function lookupWithSlug(model, req, res, next) {
       req.isOwnerMe = (data.animal.userId === req.user.id)
 
       next()
+      return null
     })
     .catch(err => next(err))
 }

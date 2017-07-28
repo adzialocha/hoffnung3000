@@ -151,7 +151,7 @@ export default {
       .catch(err => next(err))
   },
   lookup: (req, res, next) => {
-    Conversation.findById(req.params.resourceId, {
+    return Conversation.findById(req.params.resourceId, {
       include: [
         {
           association: ConversationBelongsToManyAnimal,
@@ -165,6 +165,7 @@ export default {
       .then(conversation => {
         req.conversation = conversation
         next()
+        return null
       })
       .catch(err => next(err))
   },
