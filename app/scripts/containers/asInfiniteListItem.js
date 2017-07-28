@@ -50,6 +50,28 @@ export default function asInfiniteListItem(WrappedListItemComponent) {
       )
     }
 
+    renderCoverImage() {
+      if (!('images' in this.props.item)) {
+        return null
+      }
+
+      const coverImageStyle = {}
+
+      if (this.props.item.images.length > 0) {
+        const url = this.props.item.images[0].smallImageUrl
+        coverImageStyle.backgroundImage = `url('${url}')`
+      }
+
+      return (
+        <div
+          className="list-item__cover-image"
+          style={coverImageStyle}
+        >
+          { this.renderEditButton() }
+        </div>
+      )
+    }
+
     render() {
       const listClasses = classnames(
         'list-item',
@@ -58,20 +80,9 @@ export default function asInfiniteListItem(WrappedListItemComponent) {
         }
       )
 
-      const coverImageStyle = {}
-      if (this.props.item.images && this.props.item.images.length > 0) {
-        const url = this.props.item.images[0].smallImageUrl
-        coverImageStyle.backgroundImage = `url('${url}')`
-      }
-
       return (
         <div className={listClasses} onClick={this.onClick}>
-          <div
-            className="list-item__cover-image"
-            style={coverImageStyle}
-          >
-            { this.renderEditButton() }
-          </div>
+          { this.renderCoverImage() }
           <WrappedListItemComponent
             input={this.props.input}
             item={this.props.item}

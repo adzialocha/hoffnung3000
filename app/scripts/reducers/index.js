@@ -7,6 +7,7 @@ import auth from './auth'
 import drawer from './drawer'
 import flash from './flash'
 import imageUpload from './imageUpload'
+import inbox from './inbox'
 import infiniteList from './infiniteList'
 import meta from './meta'
 import page from './page'
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   flash,
   form,
   imageUpload,
+  inbox,
   infiniteList,
   meta,
   page,

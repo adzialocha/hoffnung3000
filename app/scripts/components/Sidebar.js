@@ -39,13 +39,21 @@ class Sidebar extends Component {
     const { firstname } = this.props
 
     return (
-      <section
-        dangerouslySetInnerHTML={
-          {
-            __html: translate('components.sidebar.welcomeUser', { firstname }),
+      <section>
+        <div
+          dangerouslySetInnerHTML={
+            {
+              __html: translate('components.sidebar.welcomeUser', { firstname }),
+            }
           }
-        }
-      />
+        />
+        <hr className="separator separator--white" />
+        <div className="button-group">
+          <Link className="button" to="/inbox">
+            { translate('components.sidebar.inboxButton', { count: 0 }) }
+          </Link>
+        </div>
+      </section>
     )
   }
 

@@ -7,12 +7,4 @@ export default {
       title: Joi.string().min(3).required(),
     },
   },
-  createMessage: {
-    body: {
-      text: Joi.string().min(20).required(),
-    },
-    params: {
-      resourceId: Joi.number().required(),
-    },
-  },
 }

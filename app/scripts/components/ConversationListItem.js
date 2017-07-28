@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { AnimalLink } from './'
 import { asInfiniteListItem } from '../containers'
 
-class CuratedResourcesListItem extends Component {
+class ConversationListItem extends Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
   }
@@ -15,15 +14,9 @@ class CuratedResourcesListItem extends Component {
         <div className="list-item-content__title ellipsis">
           { this.props.item.title }
         </div>
-        <div className="list-item-content__subtitle ellipsis">
-          <AnimalLink animal={this.props.item.animal} />
-        </div>
-        <div className="list-item-content__description ellipsis">
-          { this.props.item.description }
-        </div>
       </div>
     )
   }
 }
 
-export default asInfiniteListItem(CuratedResourcesListItem)
+export default asInfiniteListItem(ConversationListItem)

@@ -1,6 +1,7 @@
 import db from '../database'
 
 import Animal from './animal'
+import Message from './message'
 
 const Conversation = db.sequelize.define('conversation', {
   id: {
@@ -20,10 +21,19 @@ const Conversation = db.sequelize.define('conversation', {
   },
 })
 
-export const ConversationBelongsToManyAnimal = Conversation.belongsToMany(Animal, {
-  as: 'animals',
-  foreignKey: 'conversationId',
-  through: 'conversationsAnimals',
-})
+export const ConversationBelongsToManyAnimal = Conversation.belongsToMany(
+  Animal, {
+    as: 'animals',
+    foreignKey: 'conversationId',
+    through: 'conversationsAnimals',
+  }
+)
+
+export const ConversationBelongsToManyMessage = Conversation.belongsToMany(
+  Message, {
+    as: 'messages',
+    foreignKey: 'conversationId',
+  }
+)
 
 export default Conversation

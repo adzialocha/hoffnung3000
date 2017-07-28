@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import { AnimalLink } from './'
 import { asInfiniteListItem } from '../containers'
 import { translate } from '../services/i18n'
 
@@ -39,12 +40,6 @@ class PlaceListItem extends Component {
     return translate('components.placeListItem.virtualLocation')
   }
 
-  renderOwner() {
-    return translate('common.ownedBy', {
-      name: this.props.item.animal.name,
-    })
-  }
-
   render() {
     return (
       <div className="list-item-content">
@@ -52,7 +47,7 @@ class PlaceListItem extends Component {
           { this.props.item.title }
         </div>
         <div className="list-item-content__subtitle ellipsis">
-          { this.renderOwner() }
+          <AnimalLink animal={this.props.item.animal} />
         </div>
         <div className="list-item-content__description ellipsis">
           { this.renderAddress() }
