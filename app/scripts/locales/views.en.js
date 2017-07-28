@@ -25,4 +25,11 @@ export default {
     titlePlaceholder: 'Event',
     loadMoreEvents: 'Load more events',
   },
+  inbox: {
+    backToConversations: 'Back to inbox',
+    conversationNewTitle: 'Start a new conversation',
+    indexTitle: 'Inbox',
+    messageTo: 'With',
+    titlePlaceholder: 'Conversation',
+  },
 }

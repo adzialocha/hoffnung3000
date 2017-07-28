@@ -38,6 +38,13 @@ class ConversationsShow extends Component {
     )
   }
 
+  renderTitle() {
+    if (this.props.isLoadingConversation) {
+      return <h1>{ translate('views.inbox.titlePlaceholder') }</h1>
+    }
+    return <h1>{ this.props.conversationData.title }</h1>
+  }
+
   renderReceiverNames() {
     const names = this.props.conversationData.animals.map(
       animal => animal.name
@@ -88,7 +95,7 @@ class ConversationsShow extends Component {
   render() {
     return (
       <section>
-        <h1>{ translate('views.inbox.conversationTitle') }</h1>
+        { this.renderTitle() }
         <Link className="button" to="/inbox">
           { translate('views.inbox.backToConversations') }
         </Link>

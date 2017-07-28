@@ -29,6 +29,20 @@ export const ConversationBelongsToManyAnimal = Conversation.belongsToMany(
     as: 'animals',
     foreignKey: 'conversationId',
     through: 'conversationsAnimals',
+    attributes: [
+      'lastCheckedAt',
+    ],
+  }
+)
+
+export const AnimalBelongsToManyConversation = Animal.belongsToMany(
+  Conversation, {
+    as: 'conversations',
+    foreignKey: 'animalId',
+    through: 'conversationsAnimals',
+    attributes: [
+      'lastCheckedAt',
+    ],
   }
 )
 

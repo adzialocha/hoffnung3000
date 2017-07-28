@@ -14,19 +14,19 @@
     "npm": "~5.3.0"
   },
   "scripts": {
-    "postinstall": "gulp build",
-    "start": "babel-node server/index.js",
-    "serve": "nodemon --watch server --exec NODE_ENV=development babel-node server/index.js",
-    "watch": "cross-env NODE_ENV=development gulp watch",
     "build": "cross-env NODE_ENV=production gulp build",
+    "db:migrate": "./node_modules/.bin/sequelize db:migrate",
+    "db:migrate:create": "./node_modules/.bin/sequelize migration:create",
+    "db:migrate:undo": "./node_modules/.bin/sequelize db:migrate:undo",
+    "db:seed": "./node_modules/.bin/sequelize db:seed:all",
+    "db:seed:create": "./node_modules/.bin/sequelize seed:create",
     "lint": "gulp lint",
     "lint:js": "gulp lint:js",
     "lint:scss": "gulp lint:scss",
-    "db:seed": "./node_modules/.bin/sequelize db:seed:all",
-    "db:seed:create": "./node_modules/.bin/sequelize seed:create",
-    "db:migrate": "./node_modules/.bin/sequelize db:migrate",
-    "db:migrate:undo": "./node_modules/.bin/sequelize db:migrate:undo",
-    "db:migrate:create": "./node_modules/.bin/sequelize migration:create"
+    "postinstall": "gulp build",
+    "serve": "nodemon --watch server --exec NODE_ENV=development babel-node server/index.js",
+    "start": "babel-node server/index.js",
+    "watch": "cross-env NODE_ENV=development gulp watch"
   },
   "devDependencies": {
     "babel-cli": "6.24.1",

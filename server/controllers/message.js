@@ -3,7 +3,9 @@ import {
   DEFAULT_OFFSET,
   prepareAnimalResponse,
 } from './base'
+import db from '../database'
 
+import ConversationAnimal from '../models/conversationAnimal'
 import Message, { MessageBelongsToAnimal } from '../models/message'
 
 import pick from '../utils/pick'
@@ -12,8 +14,13 @@ const permittedFields = [
   'text',
 ]
 
-function prepareResponse(message) {
+function prepareResponse(message, req) {
   const response = message.toJSON()
+
+  response.isWrittenByMe = (
+    req.conversation.animals[0].userId === req.user.id &&
+    req.conversation.animals[0].id === message.animal.id
+  )
 
   if (response.animal) {
     response.animal = prepareAnimalResponse(response.animal)
@@ -22,8 +29,8 @@ function prepareResponse(message) {
   return response
 }
 
-function prepareResponseAll(rows) {
-  return rows.map(row => prepareResponse(row))
+function prepareResponseAll(rows, req) {
+  return rows.map(row => prepareResponse(row, req))
 }
 
 export default {
@@ -32,7 +39,7 @@ export default {
 
     // create a message in that conversation
     return Message.create({
-      animalId: req.conversation.animalId,
+      animalId: req.conversation.animals[0].id,
       conversationId: req.conversation.id,
       text: values.text,
     })
@@ -62,12 +69,24 @@ export default {
       ],
     })
       .then(result => {
-        res.json({
-          data: prepareResponseAll(result.rows, req),
-          limit: parseInt(limit, 10),
-          offset: parseInt(offset, 10),
-          total: result.count,
+        // update last checked at date
+        ConversationAnimal.update({
+          lastCheckedAt: db.sequelize.fn('NOW'),
+        }, {
+          where: {
+            animalId: req.conversation.animalId,
+            conversationId: req.conversation.id,
+          },
         })
+          .then(() => {
+            // return messages
+            res.json({
+              data: prepareResponseAll(result.rows, req),
+              limit: parseInt(limit, 10),
+              offset: parseInt(offset, 10),
+              total: result.count,
+            })
+          })
       })
       .catch(err => next(err))
   },

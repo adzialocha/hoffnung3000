@@ -57,18 +57,19 @@ export default {
     })
       .then(receivingAnimals => {
         // check if receiving animal is not myself
-        receivingAnimals.forEach(animal => {
-          if (animal.userId === req.user.id) {
-            next(
-              new APIError(
-                'You can\'t send a message to yourself',
-                httpStatus.BAD_REQUEST
-              )
-            )
-            return null
-          }
-          return true
+        const isMyself = receivingAnimals.find(animal => {
+          return animal.userId === req.user.id
         })
+
+        if (isMyself) {
+          next(
+            new APIError(
+              'You can\'t send a message to yourself',
+              httpStatus.BAD_REQUEST
+            )
+          )
+          return null
+        }
 
         // are all receiving animals given?
         if (receivingAnimals.length !== animalIds.length) {
@@ -171,12 +172,7 @@ export default {
   findOne: (req, res, next) => {
     return Conversation.findById(req.params.resourceId, {
       include: [
-        {
-          association: ConversationBelongsToManyAnimal,
-          where: {
-            userId: req.user.id,
-          },
-        },
+        ConversationBelongsToManyAnimal,
       ],
       rejectOnEmpty: true,
     })

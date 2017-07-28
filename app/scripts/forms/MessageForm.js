@@ -13,9 +13,9 @@ const validate = values => {
     errors.title = translate('forms.common.errors.minLength', { len: 3 })
   }
 
-  // if (!values.text || values.length === 0) {
-  //   errors.text = translate('forms.message.errors.textRequired')
-  // }
+  if (!values.text || values.length === 0) {
+    errors.text = translate('forms.message.errors.textRequired')
+  }
 
   return errors
 }

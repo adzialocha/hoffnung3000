@@ -61,4 +61,14 @@ export default {
     what: 'What?',
     whereAndWhen: 'Where and when?',
   },
+  message: {
+    errors: {
+      textRequired: 'Please write a text',
+      titleRequired: 'Please give your conversation a title',
+    },
+    formTitle: 'Write a message',
+    submit: 'Send message',
+    text: 'Your text',
+    title: 'Title of conversation',
+  },
 }

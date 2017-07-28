@@ -24,6 +24,7 @@ router.route('/')
 router.route('/:resourceId')
   .get(
     canRead,
+    conversationController.lookup,
     conversationController.findOne
   )
 

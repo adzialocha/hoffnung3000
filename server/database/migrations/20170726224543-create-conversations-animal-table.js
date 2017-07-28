@@ -7,6 +7,10 @@ module.exports = {
       updatedAt: {
         type: Sequelize.DATE,
       },
+      lastCheckedAt: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
       conversationId: {
         type: Sequelize.INTEGER,
         primaryKey: true,

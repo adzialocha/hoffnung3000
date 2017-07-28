@@ -50,6 +50,11 @@ export default {
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
+    inboxButton: {
+      one: 'Inbox ({count})',
+      zero: 'Inbox',
+      other: 'Inbox ({count})',
+    },
   },
   slotEditor: {
     slotsHaveToBeInClosedOrder: 'Please select your slots in a closed order',

@@ -89,7 +89,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
         return null
       }
 
-      if (this.props.currentPageIndex === this.props.totalPageCount) {
+      if (this.props.currentPageIndex + 1 >= this.props.totalPageCount) {
         return null
       }
 
