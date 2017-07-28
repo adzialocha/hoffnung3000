@@ -137,7 +137,6 @@ export default {
       limit,
       offset,
       order: [
-        ['createdAt', 'ASC'],
         [ConversationHasManyMessage, 'createdAt', 'DESC'],
       ],
     })
