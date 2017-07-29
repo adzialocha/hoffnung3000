@@ -145,7 +145,6 @@ export default {
         },
         {
           association: ConversationHasManyMessage,
-          group: 'conversationId',
         },
       ],
       limit,

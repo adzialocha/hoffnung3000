@@ -1,5 +1,6 @@
 import ActionTypes from '../actionTypes'
 import { getRequest } from '../services/api'
+import { UPDATE_USER_STATUS } from '../middlewares/userStatus'
 
 export const ITEMS_PER_PAGE = 50
 
@@ -19,15 +20,21 @@ export function fetchList(path, page = 0, params = {}) {
 
   const requestPath = (typeof path === 'string') ? [path] : path
 
+  const success = {
+    type: ActionTypes.INFINITE_LIST_SUCCESS,
+    meta,
+  }
+
+  if (requestPath[0] === 'conversations') {
+    success[UPDATE_USER_STATUS] = true
+  }
+
   return getRequest(requestPath, { offset, limit, ...params }, {
     request: {
       type,
       meta,
     },
-    success: {
-      type: ActionTypes.INFINITE_LIST_SUCCESS,
-      meta,
-    },
+    success,
     failure: {
       type: ActionTypes.INFINITE_LIST_FAILURE,
       meta,

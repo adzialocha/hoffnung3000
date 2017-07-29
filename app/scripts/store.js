@@ -10,6 +10,7 @@ import formErrorFlash from './middlewares/formErrorFlash'
 import redirect from './middlewares/redirect'
 import reducers from './reducers'
 import scroll from './middlewares/scroll'
+import userStatus from './middlewares/userStatus'
 
 let store
 
@@ -18,6 +19,7 @@ export default function configureStore(initialState, history) {
     thunk,
     routerMiddleware(history),
     api,
+    userStatus,
     apiError,
     formErrorFlash,
     scroll,

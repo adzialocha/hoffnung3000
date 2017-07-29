@@ -16,6 +16,10 @@ export default {
   loginSuccess: 'Welcome!',
   logout: 'Goodbye! See you soon!',
   newMessageSuccess: 'Your message was sent!',
+  notificationNewMessages: {
+    one: 'You have {count} new message, click on the INBOX button in your right sidebar to read it.',
+    other: 'You have {count} new messages, click on the INBOX button in your right sidebar to read them.',
+  },
   redirectedUnauthenticated: 'You have to login before you can see that page.',
   requestPasswordToken: 'We just sent you an email with a link to reset your password. Check your spam folder if you can\'t find it.',
   resetPassword: 'Yes! Your password has been reset!',

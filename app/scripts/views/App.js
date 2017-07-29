@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Header, Footer, FlashMessageStage, Navigation } from '../components'
+import {
+  FlashMessageStage,
+  Footer,
+  Header,
+  Navigation,
+  UserStatusUpdater,
+} from '../components'
 
 class App extends Component {
   static propTypes = {
@@ -13,6 +19,7 @@ class App extends Component {
       <div className="wrapper" role="application">
         <Header />
         <FlashMessageStage />
+        <UserStatusUpdater />
         <Navigation />
         { this.props.children }
         <Footer />

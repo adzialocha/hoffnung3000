@@ -87,4 +87,9 @@ export default keyMirror({
   UPLOAD_IMAGE_REQUEST: null,
   UPLOAD_IMAGE_SET_IMAGES: null,
   UPLOAD_IMAGE_SUCCESS: null,
+
+  USER_STATUS_FAILURE: null,
+  USER_STATUS_REQUEST: null,
+  USER_STATUS_SUCCESS: null,
+
 })

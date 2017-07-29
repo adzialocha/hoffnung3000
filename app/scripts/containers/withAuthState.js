@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { logout } from '../actions/auth'
 
-export default function withUserState(WrappedComponent) {
+export default function withAuthState(WrappedComponent) {
   function mapStateToProps(state) {
     return {
       ...state.auth,

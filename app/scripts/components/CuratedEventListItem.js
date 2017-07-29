@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { asInfiniteListItem, withUserState } from '../containers'
+import { asInfiniteListItem, withAuthState } from '../containers'
 import { formatEventTime } from '../utils/dateFormat'
 
 class CuratedEventListItem extends Component {
@@ -46,4 +46,4 @@ class CuratedEventListItem extends Component {
   }
 }
 
-export default asInfiniteListItem(withUserState(CuratedEventListItem))
+export default asInfiniteListItem(withAuthState(CuratedEventListItem))

@@ -16,6 +16,7 @@ import resources from './resources'
 import slots from './slots'
 import ticket from './ticket'
 import user from './user'
+import userStatus from './userStatus'
 
 const rootReducer = combineReducers({
   api,
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   slots,
   ticket,
   user,
+  userStatus,
 })
 
 export default rootReducer
