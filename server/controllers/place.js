@@ -3,25 +3,29 @@ import httpStatus from 'http-status'
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
-  handleImagesDelete,
-  handleImagesUpdate,
   lookupWithSlug,
   prepareResponse,
   prepareResponseAll,
 } from './base'
 
-import pick from '../utils/pick'
-import { createDisabledSlots } from '../utils/slots'
+import {
+  deleteImagesForObject,
+  updateImagesForObject,
+} from '../actions/image'
 
-import Event from '../models/event'
-import Place, {
+import {
   PlaceBelongsToAnimal,
   PlaceBelongsToManyImage,
   PlaceHasManySlots,
-} from '../models/place'
-import Slot from '../models/slot'
+} from '../database/associations'
 
+import pick from '../utils/pick'
 import { APIError } from '../helpers/errors'
+import { createDisabledSlots } from '../utils/slots'
+
+import Event from '../models/event'
+import Place from '../models/place'
+import Slot from '../models/slot'
 
 const include = [
   {
@@ -144,7 +148,7 @@ export default {
     })
       .then((place) => {
         // delete all related images
-        return handleImagesDelete(place)
+        return deleteImagesForObject(place)
           .then(() => {
             // delete the place
             return place.destroy()
@@ -235,7 +239,7 @@ export default {
           .then(data => {
             const previousPlace = data[1][0]
 
-            return handleImagesUpdate(previousPlace, req)
+            return updateImagesForObject(previousPlace, req.body.images)
               .then(() => {
                 // clean up all slot before
                 return Slot.destroy({

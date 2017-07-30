@@ -18,13 +18,13 @@ export default function configureStore(initialState, history) {
   const middleware = [
     thunk,
     routerMiddleware(history),
+    flash,
+    redirect,
     api,
     userStatus,
     apiError,
     formErrorFlash,
     scroll,
-    flash,
-    redirect,
   ]
 
   if (process.env.NODE_ENV === 'development') {

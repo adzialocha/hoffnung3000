@@ -6,8 +6,10 @@ import {
   findOne,
   update,
 } from './base'
-import Page from '../models/page'
+
 import { APIError } from '../helpers/errors'
+
+import Page from '../models/page'
 
 const permittedFields = [
   'content',

@@ -1,70 +1,11 @@
 import marked from 'marked'
 
 import Animal from '../models/animal'
-import Image from '../models/image'
 
 import pick from '../utils/pick'
 
 export const DEFAULT_LIMIT = 50
 export const DEFAULT_OFFSET = 0
-
-const belongsToAnimal = {
-  as: 'animal',
-  foreignKey: 'animalId',
-  model: Animal,
-}
-
-const include = [
-  belongsToAnimal,
-]
-
-export function handleImagesUpdate(resource, req) {
-  // remove images when needed
-  const keptImages = req.body.images.filter(img => img.id)
-  const keptImageIds = keptImages.map(img => img.id)
-
-  const removeImagesPromise = resource.getImages()
-    .then(currentImages => {
-      const removeImages = currentImages.filter(image => {
-        return !keptImageIds.includes(image.id)
-      })
-
-      const removePromises = removeImages.map(image => {
-        return Promise.all([
-          image.destroy(),
-          resource.removeImage(image),
-        ])
-      })
-
-      return Promise.all(removePromises)
-    })
-
-  // add new images when given
-  const newImages = req.body.images.filter(img => !img.id)
-
-  const addNewImagesPromise = Promise.all(newImages.map(image => {
-    return Image.create(image, { returning: true })
-      .then(newImage => {
-        return resource.addImage(newImage)
-      })
-  }))
-
-  return Promise.all([removeImagesPromise, addNewImagesPromise])
-}
-
-export function handleImagesDelete(resource) {
-  return resource.setImages([])
-    .then(() => {
-      return Image.destroy({
-        where: {
-          id: {
-            $in: resource.images.map(image => image.id),
-          },
-        },
-        individualHooks: true,
-      })
-    })
-}
 
 export function prepareAnimalResponse(animal) {
   const { id, name } = animal
@@ -109,7 +50,13 @@ export function prepareResponseAll(rows, req) {
 
 export function lookup(model, req, res, next) {
   return model.findById(req.params.resourceId, {
-    include,
+    include: [
+      {
+        as: 'animal',
+        foreignKey: 'animalId',
+        model: Animal,
+      },
+    ],
     rejectOnEmpty: true,
   })
     .then(data => {

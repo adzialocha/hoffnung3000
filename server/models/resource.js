@@ -2,11 +2,6 @@ import slugify from 'sequelize-slugify'
 
 import db from '../database'
 
-import Animal from './animal'
-import Event from './event'
-import Image from './image'
-import ResourceImage from './resourceImage'
-
 const Resource = db.sequelize.define('resource', {
   id: {
     type: db.Sequelize.INTEGER,
@@ -32,39 +27,6 @@ const Resource = db.sequelize.define('resource', {
     allowNull: false,
     defaultValue: '',
   },
-})
-
-export const ResourceBelongsToAnimal = Resource.belongsTo(Animal, {
-  as: 'animal',
-  foreignKey: 'animalId',
-  onDelete: 'CASCADE',
-})
-
-export const ResourceBelongsToManyEvent = Resource.belongsToMany(Event, {
-  as: 'events',
-  foreignKey: 'resourceId',
-  onDelete: 'CASCADE',
-  through: 'resourcesEvents',
-})
-
-export const EventBelongsToManyResource = Event.belongsToMany(Resource, {
-  as: 'resources',
-  foreignKey: 'eventId',
-  onDelete: 'CASCADE',
-  through: 'resourcesEvents',
-})
-
-export const ResourceBelongsToManyImage = Resource.belongsToMany(Image, {
-  through: {
-    model: ResourceImage,
-    unique: false,
-    scope: {
-      resourceName: 'resource',
-    },
-  },
-  as: 'images',
-  foreignKey: 'resourceId',
-  constraints: false,
 })
 
 slugify.slugifyModel(Resource, {

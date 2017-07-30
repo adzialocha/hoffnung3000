@@ -3,7 +3,7 @@ import dateFns from 'date-fns'
 import {
   MessageBelongsToConversation,
   ConversationBelongsToManyAnimal,
-} from '../models/conversation'
+} from '../database/associations'
 
 import Message from '../models/message'
 

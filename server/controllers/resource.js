@@ -1,21 +1,26 @@
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
-  handleImagesDelete,
-  handleImagesUpdate,
   lookupWithSlug,
   prepareResponse,
   prepareResponseAll,
 } from './base'
 
-import Event from '../models/event'
-import Resource, {
-  ResourceBelongsToAnimal,
-  ResourceBelongsToManyImage,
-} from '../models/resource'
-import Slot from '../models/slot'
+import {
+  deleteImagesForObject,
+  updateImagesForObject,
+} from '../actions/image'
 
 import pick from '../utils/pick'
+
+import {
+  ResourceBelongsToAnimal,
+  ResourceBelongsToManyImage,
+} from '../database/associations'
+
+import Event from '../models/event'
+import Resource from '../models/resource'
+import Slot from '../models/slot'
 
 const permittedFields = [
   'description',
@@ -59,11 +64,11 @@ function findAllWithAvailability(req, res, next) {
               eventId,
             }, {
               from: {
-                $lte: req.query.to,
+                $lt: req.query.to,
               },
             }, {
               to: {
-                $gte: req.query.from,
+                $gt: req.query.from,
               },
             }],
           },
@@ -111,7 +116,7 @@ export default {
     })
       .then(resource => {
         // delete all related images
-        return handleImagesDelete(resource)
+        return deleteImagesForObject(resource)
           .then(() => {
             // delete the resource
             return resource.destroy()
@@ -180,7 +185,7 @@ export default {
       .then(data => {
         const previousResource = data[1][0]
 
-        return handleImagesUpdate(previousResource, req)
+        return updateImagesForObject(previousResource, req.body.images)
           .then(() => {
             return Resource.findById(previousResource.id, { include })
               .then(resource => {

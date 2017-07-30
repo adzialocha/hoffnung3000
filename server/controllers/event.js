@@ -3,31 +3,34 @@ import httpStatus from 'http-status'
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
-  handleImagesDelete,
-  handleImagesUpdate,
   lookupWithSlug,
   prepareResponse,
   prepareResponseAll,
 } from './base'
 
-import Event, {
-  EventBelongsToAnimal,
-  EventBelongsToManyImage,
-  EventBelongsToPlace,
-  EventHasManySlots,
-} from '../models/event'
-import Resource, {
-  EventBelongsToManyResource,
-  ResourceBelongsToAnimal,
-} from '../models/resource'
-import Slot from '../models/slot'
-import Place, {
-  PlaceBelongsToAnimal,
-} from '../models/place'
+import {
+  deleteImagesForObject,
+  updateImagesForObject,
+} from '../actions/image'
 
 import pick from '../utils/pick'
 import { createEventSlots, isInClosedOrder } from '../utils/slots'
 import { APIError } from '../helpers/errors'
+
+import {
+  EventBelongsToAnimal,
+  EventBelongsToManyImage,
+  EventBelongsToManyResource,
+  EventBelongsToPlace,
+  EventHasManySlots,
+  PlaceBelongsToAnimal,
+  ResourceBelongsToAnimal,
+} from '../database/associations'
+
+import Event from '../models/event'
+import Place from '../models/place'
+import Resource from '../models/resource'
+import Slot from '../models/slot'
 
 const permittedFields = [
   'description',
@@ -161,11 +164,11 @@ function areResourcesAvailable(req, existingEventId) {
               eventId,
             }, {
               from: {
-                $lte: eventTo,
+                $lt: eventTo,
               },
             }, {
               to: {
-                $gte: eventFrom,
+                $gt: eventFrom,
               },
             }],
           },
@@ -248,7 +251,7 @@ function updateEvent(req, fields) {
             const event = data[1][0]
 
             // update images
-            return handleImagesUpdate(event, req)
+            return updateImagesForObject(event, req.body.images)
               .then(() => {
                 // associate resources to event
                 return Resource.findAll({
@@ -332,7 +335,7 @@ export default {
       rejectOnEmpty: true,
     })
       .then((event) => {
-        return handleImagesDelete(event)
+        return deleteImagesForObject(event)
           .then(() => {
             return event.destroy()
           })

@@ -1,11 +1,15 @@
 import {
   create,
-  destroy,
   findAll,
   findOne,
-  findOneWithSlug,
   update,
 } from './base'
+
+import { deleteAnimals } from '../actions/animal'
+import { deleteConversations } from '../actions/conversation'
+import { deleteEvents } from '../actions/event'
+import { deletePlaces } from '../actions/place'
+import { deleteResources } from '../actions/resource'
 
 import User from '../models/user'
 
@@ -28,31 +32,39 @@ const permittedFields = [
 ]
 
 export default {
-  lookup: (req, res, next) => {
-    User.findById(req.params.resourceId, {
-      rejectOnEmpty: true,
-    })
-      .then(user => {
-        req.ownerId = user.id
-        next()
-        return null
-      })
-      .catch(err => next(err))
-  },
   create: (req, res, next) => {
     return create(User, permittedFields, req, res, next)
   },
   destroy: (req, res, next) => {
-    return destroy(User, req, res, next)
+    const userId = req.params.resourceId
+
+    return User.findById(userId, {
+      rejectOnEmpty: true,
+    })
+      .then(user => {
+        const where = {
+          userId,
+        }
+
+        return Promise.all([
+          deleteConversations(where),
+          deleteResources(where),
+          deleteEvents(where),
+          deletePlaces(where),
+          deleteAnimals(where),
+          user.destroy(),
+        ])
+          .then(() => {
+            res.json({ message: 'ok' })
+          })
+      })
+      .catch(err => next(err))
   },
   findAll: (req, res, next) => {
     return findAll(User, req, res, next)
   },
   findOne: (req, res, next) => {
     return findOne(User, req, res, next)
-  },
-  findOneWithSlug: (req, res, next) => {
-    return findOneWithSlug(User, req, res, next)
   },
   update: (req, res, next) => {
     return update(User, permittedFields, req, res, next)

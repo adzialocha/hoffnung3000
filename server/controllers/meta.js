@@ -1,4 +1,5 @@
 import config from '../../config'
+
 import User from '../models/user'
 
 function information(req, res, next) {

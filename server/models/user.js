@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt'
 
-import Animal from './animal'
-
 import db from '../database'
 
 export function generateHash(str) {
@@ -113,15 +111,5 @@ User.prototype.toJSON = function convert() {
     ...data,
   })
 }
-
-export const UserHasManyAnimal = User.hasMany(Animal, {
-  as: 'animals',
-  foreignKey: 'userId',
-})
-
-export const AnimalBelongsToUser = Animal.belongsTo(User, {
-  as: 'user',
-  foreignKey: 'userId',
-})
 
 export default User

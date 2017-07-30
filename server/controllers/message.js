@@ -5,12 +5,16 @@ import {
   DEFAULT_OFFSET,
   prepareAnimalResponse,
 } from './base'
+
 import db from '../database'
+import pick from '../utils/pick'
+
+import {
+  MessageBelongsToAnimal,
+} from '../database/associations'
 
 import ConversationAnimal from '../models/conversationAnimal'
-import Message, { MessageBelongsToAnimal } from '../models/message'
-
-import pick from '../utils/pick'
+import Message from '../models/message'
 
 const permittedFields = [
   'text',

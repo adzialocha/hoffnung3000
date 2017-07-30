@@ -8,12 +8,6 @@ const Image = db.sequelize.define('image', {
     primaryKey: true,
     autoIncrement: true,
   },
-  createdAt: {
-    type: db.Sequelize.DATE,
-  },
-  updatedAt: {
-    type: db.Sequelize.DATE,
-  },
   fileName: {
     type: db.Sequelize.STRING,
     allowNull: false,

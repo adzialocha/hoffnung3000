@@ -58,6 +58,7 @@ export function login(email, password) {
 export function logout() {
   return {
     type: ActionTypes.AUTH_LOGOUT,
+    [REDIRECT]: '/',
     [FLASH]: {
       text: translate('flash.logout'),
     },

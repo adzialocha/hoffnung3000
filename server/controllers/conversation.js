@@ -1,21 +1,23 @@
 import dateFns from 'date-fns'
 import httpStatus from 'http-status'
 
+import pick from '../utils/pick'
+import { APIError } from '../helpers/errors'
+
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
   prepareAnimalResponseAll,
 } from './base'
 
-import Animal from '../models/animal'
-import Conversation, {
+import {
   ConversationBelongsToManyAnimal,
   ConversationHasManyMessage,
-} from '../models/conversation'
-import Message from '../models/message'
+} from '../database/associations'
 
-import pick from '../utils/pick'
-import { APIError } from '../helpers/errors'
+import Animal from '../models/animal'
+import Conversation from '../models/conversation'
+import Message from '../models/message'
 
 const permittedFields = [
   'text',
