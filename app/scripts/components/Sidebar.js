@@ -8,7 +8,11 @@ import { withAuthState, withDrawerState, withUserStatus } from '../containers'
 
 class Sidebar extends Component {
   static propTypes = {
+    firstname: PropTypes.string,
+    isActive: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
+    isParticipant: PropTypes.bool.isRequired,
     isSidebarExpanded: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
     unreadMessagesCount: PropTypes.number.isRequired,
@@ -32,6 +36,20 @@ class Sidebar extends Component {
           { translate('components.sidebar.logoutButton' )}
         </button>
       </div>
+    )
+  }
+
+  renderWelcome() {
+    return (
+      <div
+        dangerouslySetInnerHTML={
+          {
+            __html: translate('components.sidebar.welcomeUser', {
+              firstname: this.props.firstname,
+            }),
+          }
+        }
+      />
     )
   }
 
@@ -65,15 +83,25 @@ class Sidebar extends Component {
   }
 
   renderAuthenticatedContent() {
+    const { isActive, isParticipant, isAdmin } = this.props
+
+    if (isActive && (isParticipant || isAdmin)) {
+      return (
+        <section>
+          <h5 className="sidebar__title">
+            { translate('components.sidebar.activityTitle') }
+          </h5>
+          { this.renderActivity() }
+          <br />
+          { this.renderInbox() }
+          <hr className="separator separator--white" />
+        </section>
+      )
+    }
+
     return (
       <section>
-        <h5 className="sidebar__title">
-          { translate('components.sidebar.activityTitle') }
-        </h5>
-        { this.renderActivity() }
-        <br />
-        { this.renderInbox() }
-        <hr className="separator separator--white" />
+        { this.renderWelcome() }
       </section>
     )
   }

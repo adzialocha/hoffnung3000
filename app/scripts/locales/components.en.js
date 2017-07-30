@@ -46,6 +46,7 @@ export default {
     comingSoon: 'Coming soon!',
     defaultHeader: '<p>Welcome dear visitor,</p><p>please <em>register</em> or <em>login</em> below to use the platform.</p>',
     gifDocumentationTitle: '.gif-documentation',
+    inboxButton: { one: 'Inbox ({count})', zero: 'Inbox', other: 'Inbox ({count})' },
     loginButton: 'Login',
     loginHeader: 'Already have a login?',
     logoutButton: 'Logout',
@@ -57,11 +58,7 @@ export default {
     startDocumentationButton: 'Start documentation',
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
-    inboxButton: {
-      one: 'Inbox ({count})',
-      zero: 'Inbox',
-      other: 'Inbox ({count})',
-    },
+    welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
   },
   slotEditor: {
     slotsHaveToBeInClosedOrder: 'Please select your slots in a closed order',
@@ -105,12 +102,8 @@ export default {
   },
   formImageUploader: {
     deleteImageButton: 'Remove',
+    maxImageReached: { one: 'You can only upload {count} image', zero: 'You can only upload {count} image', other: 'You can only upload {count} images' },
     uploadButton: 'Select files',
-    maxImageReached: {
-      one: 'You can only upload {count} image',
-      zero: 'You can only upload {count} image',
-      other: 'You can only upload {count} images',
-    },
   },
   curatedSelectableListItem: {
     addItem: 'Add',
