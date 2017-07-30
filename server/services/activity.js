@@ -8,6 +8,22 @@ function addActivity(data) {
   })
 }
 
+export function addMessageActivity(data) {
+  return new Promise((resolve, reject) => {
+    const activities = data.receivingAnimals.map(animal => {
+      return {
+        animalId: data.sendingAnimal.id,
+        userId: animal.userId,
+        type: 'RECEIVED_MESSAGE',
+      }
+    })
+
+    Activity.bulkCreate(activities)
+      .then(() => resolve())
+      .catch(err => reject(err))
+  })
+}
+
 export function addCreateActivity(data) {
   return addActivity(Object.assign({}, { type: 'CREATE_OBJECT' }, data))
 }

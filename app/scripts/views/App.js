@@ -6,6 +6,7 @@ import {
   Footer,
   Header,
   Navigation,
+  UserStatusUpdater,
 } from '../components'
 
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
     return (
       <div className="wrapper" role="application">
         <Header />
+        <UserStatusUpdater />
         <FlashMessageStage />
         <Navigation />
         { this.props.children }

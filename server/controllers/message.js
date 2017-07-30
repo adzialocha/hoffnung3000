@@ -9,12 +9,10 @@ import {
 import db from '../database'
 import pick from '../utils/pick'
 
-import {
-  MessageBelongsToAnimal,
-} from '../database/associations'
-
 import ConversationAnimal from '../models/conversationAnimal'
 import Message from '../models/message'
+import { addMessageActivity } from '../services/activity'
+import { MessageBelongsToAnimal} from '../database/associations'
 
 const permittedFields = [
   'text',
@@ -22,7 +20,7 @@ const permittedFields = [
 
 function prepareResponse(message, req) {
   const response = message.toJSON()
-  const animalMe = req.conversation.animals[0]
+  const animalMe = req.meAnimal
 
   response.isWrittenByMe = (
     animalMe.userId === req.user.id &&
@@ -56,10 +54,16 @@ export default {
 
     // create a message in that conversation
     return Message.create({
-      animalId: req.conversation.animals[0].id,
+      animalId: req.meAnimal.id,
       conversationId: req.conversation.id,
       text: values.text,
     })
+      .then(() => {
+        return addMessageActivity({
+          sendingAnimal: req.meAnimal,
+          receivingAnimals: req.otherAnimals,
+        })
+      })
       .then(() => {
         res.json({ status: 'ok' })
       })
@@ -91,7 +95,7 @@ export default {
           lastCheckedAt: db.sequelize.fn('NOW'),
         }, {
           where: {
-            animalId: req.conversation.animals[0].id,
+            animalId: req.meAnimal.id,
             conversationId: req.conversation.id,
           },
         })
