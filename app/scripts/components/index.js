@@ -1,3 +1,4 @@
+export { default as ActivityListItem } from './ActivityListItem'
 export { default as AnimalLink } from './AnimalLink'
 export { default as ConversationListItem } from './ConversationListItem'
 export { default as CuratedEventListItem } from './CuratedEventListItem'

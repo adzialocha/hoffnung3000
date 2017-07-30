@@ -1,6 +1,7 @@
 export default {
   common: {
     agreeWithTerms: 'I agree with the terms',
+    emptyList: 'Nothing to do here yet ...',
     nextStep: 'Next step',
     payViaPayPal: 'Pay via PayPal',
     payViaTransfer: 'Pay via transfer',
@@ -40,6 +41,8 @@ export default {
     stepTitle: 'Registration (Step {currentStep} of {totalSteps})',
   },
   sidebar: {
+    activityButton: 'All activites',
+    activityTitle: 'Recent activities',
     defaultHeader: '<p>Welcome dear visitor,</p><p>please <em>register</em> or <em>login</em> below to use the platform.</p>',
     loginButton: 'Login',
     loginHeader: 'Already have a login?',
@@ -49,7 +52,6 @@ export default {
     signUpHeader: 'We invite all activists, artists, theoreticians, performers, musicians, hackers and everyone else to register.',
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
-    welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
     inboxButton: {
       one: 'Inbox ({count})',
       zero: 'Inbox',

@@ -10,6 +10,7 @@ import { APIError } from '../helpers/errors'
 import upload from '../middlewares/upload'
 import { onlyAdmin } from '../middlewares/roles'
 
+import activityController from '../controllers/activity'
 import eventPreviewController from '../controllers/eventPreview'
 import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
@@ -75,6 +76,9 @@ router.route('/status')
 
 router.route('/upload')
   .post(upload)
+
+router.route('/activity')
+  .get(activityController.findAll)
 
 // admin API routes
 

@@ -14,6 +14,9 @@ export default {
   profile: {
     title: 'Profile',
   },
+  activity: {
+    title: 'All activities',
+  },
   places: {
     createNewButton: 'Create place',
     createNewTitle: 'Create new place',

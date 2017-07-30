@@ -15,6 +15,14 @@
   color: $white;
 }
 
+.sidebar__title {
+  margin-top: 15px;
+
+  font-size: $font-size-base;
+
+  text-align: left;
+}
+
 @include media-breakpoint(xs) {
   .sidebar__content {
     padding-right: $page-margin-mobile;

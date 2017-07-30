@@ -8,7 +8,6 @@ import { withAuthState, withDrawerState, withUserStatus } from '../containers'
 
 class Sidebar extends Component {
   static propTypes = {
-    firstname: PropTypes.string,
     isAuthenticated: PropTypes.bool.isRequired,
     isSidebarExpanded: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
@@ -36,28 +35,42 @@ class Sidebar extends Component {
     )
   }
 
-  renderAuthenticatedContent() {
-    const { firstname } = this.props
+  renderActivity() {
+    return (
+      <div className="button-group">
+        <Link className="button" to="/activity">
+          {
+            translate('components.sidebar.activityButton')
+          }
+        </Link>
+      </div>
+    )
+  }
 
+  renderInbox() {
+    return (
+      <div className="button-group">
+        <Link className="button" to="/inbox">
+          {
+            translate('components.sidebar.inboxButton', {
+              count: this.props.unreadMessagesCount,
+            })
+          }
+        </Link>
+      </div>
+    )
+  }
+
+  renderAuthenticatedContent() {
     return (
       <section>
-        <div
-          dangerouslySetInnerHTML={
-            {
-              __html: translate('components.sidebar.welcomeUser', { firstname }),
-            }
-          }
-        />
+        <h5 className="sidebar__title">
+          { translate('components.sidebar.activityTitle') }
+        </h5>
+        { this.renderActivity() }
+        <br />
+        { this.renderInbox() }
         <hr className="separator separator--white" />
-        <div className="button-group">
-          <Link className="button" to="/inbox">
-            {
-              translate('components.sidebar.inboxButton', {
-                count: this.props.unreadMessagesCount,
-              })
-            }
-          </Link>
-        </div>
       </section>
     )
   }
