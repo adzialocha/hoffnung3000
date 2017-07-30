@@ -27,8 +27,6 @@ export function addMessageActivity(data) {
 export function addRequestResourcesActivity(data) {
   const { event, resources } = data
 
-  console.log(data)
-
   return new Promise((resolve, reject) => {
     const activities = resources.map(resource => {
       return {
@@ -50,8 +48,6 @@ export function addRequestResourcesActivity(data) {
 
 export function addRequestPlaceActivity(data) {
   const { event, place } = data
-
-  console.log(data)
 
   const activity = {
     animalId: event.animalId,

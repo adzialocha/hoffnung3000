@@ -34,6 +34,11 @@ export const ActivityBelongsToEvent = Activity.belongsTo(Event, {
   foreignKey: 'objectId',
 })
 
+export const ActivityRequestBelongsToEvent = Activity.belongsTo(Event, {
+  as: 'requestedEvent',
+  foreignKey: 'eventId',
+})
+
 export const ActivityBelongsToPlace = Activity.belongsTo(Place, {
   through: {
     scope: {

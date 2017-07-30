@@ -9,6 +9,7 @@ import {
   ActivityBelongsToEvent,
   ActivityBelongsToPlace,
   ActivityBelongsToResource,
+  ActivityRequestBelongsToEvent,
 } from '../database/associations'
 
 import Activity from '../models/activity'
@@ -36,11 +37,18 @@ function prepareResponse(conversation) {
     title: item.title,
   }) : null
 
+  const event = response.requestedEvent ? Object.assign({}, {
+    id: response.requestedEvent.id,
+    slug: response.requestedEvent.slug,
+    title: response.requestedEvent.title,
+  }) : null
+
   const { id, createdAt, type, animal, objectTitle, objectType } = response
 
   return Object.assign({}, {
     animal,
     createdAt,
+    event,
     id,
     object,
     objectTitle,
@@ -66,6 +74,7 @@ export default {
         ActivityBelongsToEvent,
         ActivityBelongsToPlace,
         ActivityBelongsToResource,
+        ActivityRequestBelongsToEvent,
       ],
       limit,
       offset,
