@@ -32,6 +32,7 @@ export { default as PaginatedListActionButton } from './PaginatedListActionButto
 export { default as PaginatedListNavigation } from './PaginatedListNavigation'
 export { default as RegistrationWizard } from './RegistrationWizard'
 export { default as Sidebar } from './Sidebar'
+export { default as SidebarActivity } from './SidebarActivity'
 export { default as SidebarToggle } from './SidebarToggle'
 export { default as SlotEditor } from './SlotEditor'
 export { default as SlotEditorItem } from './SlotEditorItem'

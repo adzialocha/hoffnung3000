@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Drawer, SidebarToggle } from './'
+import { Drawer, SidebarToggle, SidebarActivity } from './'
 import { translate } from '../services/i18n'
 import { withAuthState, withDrawerState, withUserStatus } from '../containers'
 
@@ -37,12 +37,15 @@ class Sidebar extends Component {
 
   renderActivity() {
     return (
-      <div className="button-group">
-        <Link className="button" to="/activity">
-          {
-            translate('components.sidebar.activityButton')
-          }
-        </Link>
+      <div>
+        <SidebarActivity />
+        <div className="button-group">
+          <Link className="button" to="/activity">
+            {
+              translate('components.sidebar.activityButton')
+            }
+          </Link>
+        </div>
       </div>
     )
   }

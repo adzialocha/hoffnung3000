@@ -43,6 +43,7 @@ Resource.afterCreate(resource => {
   return addCreateActivity({
     animalId: resource.animalId,
     objectId: resource.id,
+    objectTitle: resource.title,
     objectType: 'resource',
   })
 })

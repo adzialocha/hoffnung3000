@@ -43,13 +43,18 @@ export default {
   sidebar: {
     activityButton: 'All activites',
     activityTitle: 'Recent activities',
+    comingSoon: 'Coming soon!',
     defaultHeader: '<p>Welcome dear visitor,</p><p>please <em>register</em> or <em>login</em> below to use the platform.</p>',
+    gifDocumentationTitle: '.gif-documentation',
     loginButton: 'Login',
     loginHeader: 'Already have a login?',
     logoutButton: 'Logout',
     profileButton: 'Profile',
+    randomMeetingTitle: 'Random meetings',
+    requestRandomMeetingButton: 'Request random meeting',
     signUpButton: 'Register as participant',
     signUpHeader: 'We invite all activists, artists, theoreticians, performers, musicians, hackers and everyone else to register.',
+    startDocumentationButton: 'Start documentation',
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
     inboxButton: {

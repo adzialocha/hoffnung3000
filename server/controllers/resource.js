@@ -162,11 +162,12 @@ export default {
     return Resource.update(
       pick(permittedFields, req.body), {
         include,
+        individualHooks: true,
+        limit: 1,
+        returning: true,
         where: {
           slug: req.params.resourceSlug,
         },
-        limit: 1,
-        returning: true,
       }
     )
       .then(data => {
