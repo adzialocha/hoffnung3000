@@ -239,11 +239,12 @@ function updateEvent(req, fields) {
           include: [
             EventBelongsToManyImage,
           ],
+          individualHooks: true,
+          limit: 1,
+          returning: true,
           where: {
             slug: req.params.resourceSlug,
           },
-          limit: 1,
-          returning: true,
         })
           .then(data => {
             const event = data[1][0]

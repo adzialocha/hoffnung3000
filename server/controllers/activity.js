@@ -21,27 +21,22 @@ function prepareResponse(conversation) {
   }
 
   let item
-  let itemType
 
   if (response.resource) {
     item = response.resource
-    itemType = 'resource'
   } else if (response.event) {
     item = response.event
-    itemType = 'event'
   } else if (response.place) {
     item = response.place
-    itemType = 'place'
   }
 
   const object = item ? Object.assign({}, {
     id: item.id,
     slug: item.slug,
     title: item.title,
-    type: itemType,
   }) : null
 
-  const { id, createdAt, type, animal, objectTitle } = response
+  const { id, createdAt, type, animal, objectTitle, objectType } = response
 
   return Object.assign({}, {
     animal,
@@ -49,6 +44,7 @@ function prepareResponse(conversation) {
     id,
     object,
     objectTitle,
+    objectType,
     type,
   })
 }
