@@ -4,41 +4,45 @@ import { Field, reduxForm } from 'redux-form'
 
 import { FormInput } from '../components'
 
+import { translate } from '../services/i18n'
+
 const validate = values => {
   const errors = {}
   if (!values.email) {
-    errors.email = 'Please enter your email address'
+    errors.email = translate('forms.auth.errors.mailRequired')
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address'
+    errors.email = translate('forms.auth.errors.invalidMail')
   }
   if (!values.firstname) {
-    errors.firstname = 'Please enter your first name'
+    errors.firstname = translate('forms.auth.errors.firstnameRequired')
   }
   if (!values.lastname) {
-    errors.lastname = 'Please enter your last name'
+    errors.lastname = translate('forms.auth.errors.lastnameRequired')
   }
   if (!values.password) {
-    errors.password = 'Please enter your password'
+    errors.password = translate('forms.auth.errors.passwordRequired')
   } else if (values.password.length < 8) {
-    errors.password = 'Must be 8 characters or more'
+    errors.password = translate('forms.auth.errors.passwordLength', {
+      len: 8,
+    })
   }
   if (!values.passwordRepeat) {
-    errors.passwordRepeat = 'Please repeat your password'
+    errors.passwordRepeat = translate('forms.auth.errors.passwordRepeat')
   }
   if (values.passwordRepeat !== values.password) {
-    errors.passwordRepeat = 'The given passwords do not match'
+    errors.passwordRepeat = translate('forms.auth.errors.passwordMatch')
   }
   if (!values.street) {
-    errors.street = 'Please enter your street and number'
+    errors.street = translate('forms.auth.errors.streetRequired')
   }
   if (!values.cityCode) {
-    errors.cityCode = 'Please enter your city code'
+    errors.cityCode = translate('forms.auth.errors.cityCodeRequired')
   }
   if (!values.city) {
-    errors.city = 'Please enter your city'
+    errors.city = translate('forms.auth.errors.cityRequired')
   }
   if (!values.country) {
-    errors.country = 'Please enter your country'
+    errors.country = translate('forms.auth.errors.countryRequired')
   }
   return errors
 }
@@ -70,85 +74,82 @@ class TicketForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
-        <h2>Basic Information</h2>
+        <h2>{ translate('forms.common.basicInformation') }</h2>
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Firstname"
+          label={translate('forms.auth.firstname')}
           name="firstname"
           type="text"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Lastname"
+          label={translate('forms.auth.lastname')}
           name="lastname"
           type="text"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Email-Address"
+          label={translate('forms.auth.email')}
           name="email"
           type="email"
         />
         <hr />
-
-        <h2>Your Password</h2>
+        <h2>{ translate('forms.auth.yourPassword') }</h2>
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Password"
+          label={translate('forms.auth.password')}
           name="password"
           type="password"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Repeat password"
+          label={translate('forms.auth.passwordRepeat')}
           name="passwordRepeat"
           type="password"
         />
         <hr />
-
-        <h2>Your Address</h2>
+        <h2>{ translate('forms.auth.yourAddress') }</h2>
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Street and number"
+          label={translate('forms.auth.streetAndNumber')}
           name="street"
           type="text"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="City code"
+          label={translate('forms.auth.cityCode')}
           name="cityCode"
           type="text"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="City"
+          label={translate('forms.auth.city')}
           name="city"
           type="text"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Country"
+          label={translate('forms.auth.country')}
           name="country"
           type="text"
         />
-        <small>We need your address only to send you an invoice.</small>
+        <small>{ translate('forms.auth.whyAddress') }</small>
         <hr />
-
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}
           type="submit"
         >
-          Next Step
+          {translate('forms.auth.nextStepButton')}
         </button>
       </form>
     )

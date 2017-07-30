@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import { ForgotPasswordForm } from '../forms'
 import { requestPasswordToken } from '../actions/auth'
+import { translate } from '../services/i18n'
 
 class ForgotPassword extends Component {
   static propTypes = {
@@ -19,7 +20,7 @@ class ForgotPassword extends Component {
   render() {
     return (
       <section>
-        <h1>Reset your password</h1>
+        <h1>{ translate('views.forgotPassword.title') }</h1>
         <ForgotPasswordForm
           errorMessage={this.props.errorMessage}
           isLoading={this.props.isLoading}

@@ -4,18 +4,24 @@ import { Field, reduxForm } from 'redux-form'
 
 import { FormInput } from '../components'
 
+import { translate } from '../services/i18n'
+
 const validate = values => {
   const errors = {}
   if (!values.password) {
-    errors.password = 'Please enter your password'
+    errors.password = translate('forms.auth.errors.passwordRequired')
   } else if (values.password.length < 8) {
-    errors.password = 'Must be 8 characters or more'
+    errors.password = translate(
+      'forms.auth.errors.passwordLength', {
+        len: 8,
+      }
+    )
   }
   if (!values.passwordRepeat) {
-    errors.passwordRepeat = 'Please repeat your password'
+    errors.passwordRepeat = translate('forms.auth.errors.passwordRepeat')
   }
   if (values.passwordRepeat !== values.password) {
-    errors.passwordRepeat = 'The given passwords do not match'
+    errors.passwordRepeat = translate('forms.auth.errors.passwordMatch')
   }
   return errors
 }
@@ -50,14 +56,14 @@ class ResetPasswordForm extends Component {
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="New Password"
+          label={translate('forms.auth.newPassword')}
           name="password"
           type="password"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Repeat new password"
+          label={translate('forms.auth.newPasswordRepeat')}
           name="passwordRepeat"
           type="password"
         />
@@ -68,7 +74,7 @@ class ResetPasswordForm extends Component {
           disabled={this.props.isLoading}
           type="submit"
         >
-          Update
+          {translate('forms.auth.resetPasswordButton')}
         </button>
       </form>
     )

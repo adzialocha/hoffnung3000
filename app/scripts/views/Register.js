@@ -21,9 +21,11 @@ class Register extends Component {
     if (this.props.isLoading) {
       return <p>{ translate('common.loading') }</p>
     }
+
     if (this.props.isRegistrationFull) {
       return <StaticPage slug="registration-full" />
     }
+
     return <RegistrationWizard />
   }
 

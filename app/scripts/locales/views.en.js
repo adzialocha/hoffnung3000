@@ -2,6 +2,18 @@ export default {
   common: {
     imageGalleryTitle: 'Images',
   },
+  login: {
+    title: 'Login',
+    registerAsVisitor: 'Register as visitor',
+    registerAsParticipant: 'Register as participant',
+    forgotPassword: 'Forgot password?',
+  },
+  forgotPassword: {
+    title: 'Reset your password',
+  },
+  profile: {
+    title: 'Profile',
+  },
   places: {
     createNewButton: 'Create place',
     createNewTitle: 'Create new place',

@@ -11,6 +11,7 @@ import {
   FormResourceSelector,
   FormTextarea,
 } from '../components'
+
 import { translate } from '../services/i18n'
 
 const validate = values => {
