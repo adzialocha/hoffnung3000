@@ -16,7 +16,7 @@ export default store => next => action => {
 
     const hasUnreadMessages = unreadMessagesCount > 0
     const hasChanged = (
-      unreadMessagesCount !== state.userStatus.unreadMessagesCount
+      unreadMessagesCount > state.userStatus.unreadMessagesCount
     )
 
     if (hasUnreadMessages && hasChanged) {

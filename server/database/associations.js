@@ -30,6 +30,7 @@ export const AnimalBelongsToManyConversation = Animal.belongsToMany(Conversation
   through: 'conversationsAnimals',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
+  hooks: true,
 })
 
 export const MessageBelongsToConversation = Message.belongsTo(Conversation, {
@@ -37,6 +38,7 @@ export const MessageBelongsToConversation = Message.belongsTo(Conversation, {
   foreignKey: 'conversationId',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
+  hooks: true,
 })
 
 export const EventBelongsToAnimal = Event.belongsTo(Animal, {
@@ -44,6 +46,7 @@ export const EventBelongsToAnimal = Event.belongsTo(Animal, {
   foreignKey: 'animalId',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
+  hooks: true,
 })
 
 export const EventHasManySlots = Event.hasMany(Slot, {
@@ -54,8 +57,6 @@ export const EventHasManySlots = Event.hasMany(Slot, {
 export const EventBelongsToPlace = Event.belongsTo(Place, {
   as: 'place',
   foreignKey: 'placeId',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
 })
 
 export const EventBelongsToManyImage = Event.belongsToMany(Image, {
@@ -76,6 +77,7 @@ export const MessageBelongsToAnimal = Message.belongsTo(Animal, {
   foreignKey: 'animalId',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
+  hooks: true,
 })
 
 export const PlaceBelongsToAnimal = Place.belongsTo(Animal, {
@@ -83,6 +85,7 @@ export const PlaceBelongsToAnimal = Place.belongsTo(Animal, {
   foreignKey: 'animalId',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
+  hooks: true,
 })
 
 export const PlaceHasManySlots = Place.hasMany(Slot, {
@@ -108,6 +111,7 @@ export const ResourceBelongsToAnimal = Resource.belongsTo(Animal, {
   foreignKey: 'animalId',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
+  hooks: true,
 })
 
 export const ResourceBelongsToManyEvent = Resource.belongsToMany(Event, {
@@ -116,6 +120,7 @@ export const ResourceBelongsToManyEvent = Resource.belongsToMany(Event, {
   through: 'resourcesEvents',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
+  hooks: true,
 })
 
 export const EventBelongsToManyResource = Event.belongsToMany(Resource, {
@@ -124,6 +129,7 @@ export const EventBelongsToManyResource = Event.belongsToMany(Resource, {
   through: 'resourcesEvents',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
+  hooks: true,
 })
 
 export const ResourceBelongsToManyImage = Resource.belongsToMany(Image, {

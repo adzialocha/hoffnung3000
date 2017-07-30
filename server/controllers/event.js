@@ -8,10 +8,8 @@ import {
   prepareResponseAll,
 } from './base'
 
-import {
-  deleteImagesForObject,
-  updateImagesForObject,
-} from '../actions/image'
+import { deleteEventsByIds } from '../handlers/event'
+import { updateImagesForObject } from '../handlers/image'
 
 import pick from '../utils/pick'
 import { createEventSlots, isInClosedOrder } from '../utils/slots'
@@ -328,26 +326,7 @@ export default {
       })
   },
   destroy: (req, res, next) => {
-    return Event.findById(req.resourceId, {
-      include: [
-        EventBelongsToManyImage,
-      ],
-      rejectOnEmpty: true,
-    })
-      .then((event) => {
-        return deleteImagesForObject(event)
-          .then(() => {
-            return event.destroy()
-          })
-      })
-      .then(() => {
-        // delete related slots
-        return Slot.destroy({
-          where: {
-            eventId: req.resourceId,
-          },
-        })
-      })
+    return deleteEventsByIds([req.resourceId])
       .then(() => {
         res.json({ message: 'ok' })
       })

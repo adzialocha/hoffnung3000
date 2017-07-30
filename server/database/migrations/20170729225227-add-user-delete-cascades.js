@@ -33,17 +33,6 @@ module.exports = {
       onUpdate: 'CASCADE',
     })
 
-    queryInterface.addConstraint('events', ['placeId'], {
-      name: 'event_place_id_fkey',
-      type: 'FOREIGN KEY',
-      references: {
-        field: 'id',
-        table: 'places',
-      },
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-    })
-
     queryInterface.addConstraint('conversations', ['animalId'], {
       name: 'conversation_animal_id_fkey',
       type: 'FOREIGN KEY',
@@ -81,7 +70,6 @@ module.exports = {
     queryInterface.removeConstraint('animals', 'animal_user_id_fkey')
     queryInterface.removeConstraint('slots', 'slot_place_id_fkey')
     queryInterface.removeConstraint('slots', 'slot_event_id_fkey')
-    queryInterface.removeConstraint('events', 'event_place_id_fkey')
     queryInterface.removeConstraint('conversations', 'conversation_animal_id_fkey')
     queryInterface.removeConstraint('messages', 'message_animal_id_fkey')
     queryInterface.removeConstraint('messages', 'message_conversation_id_fkey')

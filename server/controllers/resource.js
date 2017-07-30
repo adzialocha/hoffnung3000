@@ -6,10 +6,8 @@ import {
   prepareResponseAll,
 } from './base'
 
-import {
-  deleteImagesForObject,
-  updateImagesForObject,
-} from '../actions/image'
+import { updateImagesForObject } from '../handlers/image'
+import { deleteResourcesByIds } from '../handlers/resource'
 
 import pick from '../utils/pick'
 
@@ -110,18 +108,7 @@ export default {
       .catch(err => next(err))
   },
   destroy: (req, res, next) => {
-    return Resource.findById(req.resourceId, {
-      include,
-      rejectOnEmpty: true,
-    })
-      .then(resource => {
-        // delete all related images
-        return deleteImagesForObject(resource)
-          .then(() => {
-            // delete the resource
-            return resource.destroy()
-          })
-      })
+    return deleteResourcesByIds([req.resourceId])
       .then(() => {
         res.json({ message: 'ok' })
       })

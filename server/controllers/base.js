@@ -7,6 +7,12 @@ import pick from '../utils/pick'
 export const DEFAULT_LIMIT = 50
 export const DEFAULT_OFFSET = 0
 
+const include = [{
+  as: 'animal',
+  foreignKey: 'animalId',
+  model: Animal,
+}]
+
 export function prepareAnimalResponse(animal) {
   const { id, name } = animal
 
@@ -50,13 +56,7 @@ export function prepareResponseAll(rows, req) {
 
 export function lookup(model, req, res, next) {
   return model.findById(req.params.resourceId, {
-    include: [
-      {
-        as: 'animal',
-        foreignKey: 'animalId',
-        model: Animal,
-      },
-    ],
+    include,
     rejectOnEmpty: true,
   })
     .then(data => {

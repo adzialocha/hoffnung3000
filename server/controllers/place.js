@@ -8,10 +8,8 @@ import {
   prepareResponseAll,
 } from './base'
 
-import {
-  deleteImagesForObject,
-  updateImagesForObject,
-} from '../actions/image'
+import { deletePlacesByIds } from '../handlers/place'
+import { updateImagesForObject } from '../handlers/image'
 
 import {
   PlaceBelongsToAnimal,
@@ -142,34 +140,7 @@ export default {
       .catch(err => next(err))
   },
   destroyWithSlug: (req, res, next) => {
-    return Place.findById(req.resourceId, {
-      include,
-      rejectOnEmpty: true,
-    })
-      .then((place) => {
-        // delete all related images
-        return deleteImagesForObject(place)
-          .then(() => {
-            // delete the place
-            return place.destroy()
-          })
-      })
-      .then(() => {
-        // delete related events
-        return Event.destroy({
-          where: {
-            placeId: req.resourceId,
-          },
-        })
-      })
-      .then(() => {
-        // delete related slots
-        return Slot.destroy({
-          where: {
-            placeId: req.resourceId,
-          },
-        })
-      })
+    return deletePlacesByIds([req.resourceId])
       .then(() => {
         res.json({ message: 'ok' })
       })
