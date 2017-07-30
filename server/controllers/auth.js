@@ -42,7 +42,7 @@ function signup(req, res, next) {
 
   const { email, paymentMethod } = fields
 
-  User.count({ where: { isParticipant: true } })
+  return User.count({ where: { isParticipant: true } })
     .then(count => {
       if (count >= config.maximumParticipantsCount) {
         next(
@@ -51,10 +51,10 @@ function signup(req, res, next) {
             httpStatus.LOCKED
           )
         )
-        return
+        return null
       }
 
-      User.findOne({ where: { email } })
+      return User.findOne({ where: { email } })
         .then(existingUser => {
           if (existingUser) {
             next(
@@ -63,10 +63,10 @@ function signup(req, res, next) {
                 httpStatus.BAD_REQUEST
               )
             )
-            return
+            return null
           }
 
-          User.create(fields, { returning: true })
+          return User.create(fields, { returning: true })
             .then((user) => {
               return checkout(paymentMethod, user, product)
                 .then((data) => {
@@ -95,7 +95,7 @@ function paypalCheckoutSuccess(req, res, next) {
     rejectOnEmpty: true,
   }
 
-  User.findOne(queryParams)
+  return User.findOne(queryParams)
     .then((user) => {
       executePayment(paymentId, PayerID)
         .then(() => {
@@ -105,6 +105,7 @@ function paypalCheckoutSuccess(req, res, next) {
                 product,
                 user,
               }, user.email)
+
               res.redirect('/?paypalSuccess')
             })
             .catch(err => next(err))
@@ -125,21 +126,23 @@ function paypalCheckoutCancel(req, res) {
 function login(req, res, next) {
   const { email, password } = req.body
 
-  User.findOne({ where: { email } })
+  return User.findOne({ where: { email } })
     .then(user => {
       if (!user) {
-        return next(
+        next(
           new APIError('User does not exist', httpStatus.BAD_REQUEST)
         )
+        return
       }
 
       if (!user.comparePasswords(password)) {
-        return next(
+        next(
           new APIError('Invalid credentials', httpStatus.BAD_REQUEST)
         )
+        return
       }
 
-      return res.json({
+      res.json({
         data: user,
         message: 'ok',
         token: generateToken(user),
@@ -160,12 +163,14 @@ function requestResetToken(req, res, next) {
 
   generateRandomHash().then((passwordResetToken) => {
     const passwordResetAt = db.sequelize.fn('NOW')
-    User.update({ passwordResetAt, passwordResetToken }, queryParams)
+
+    return User.update({ passwordResetAt, passwordResetToken }, queryParams)
       .then((data) => {
         if (data[0] === 0) {
-          return next(
+          next(
             new APIError('User does not exist', httpStatus.BAD_REQUEST)
           )
+          return
         }
 
         const user = data[1][0]
@@ -176,7 +181,7 @@ function requestResetToken(req, res, next) {
           user,
         }, user.email)
 
-        return res.json({
+        res.json({
           message: 'ok',
         })
       })
@@ -200,15 +205,16 @@ function resetPassword(req, res, next) {
 
   const passwordResetToken = null
 
-  User.update({ password, passwordResetToken }, queryParams)
+  return User.update({ password, passwordResetToken }, queryParams)
     .then((data) => {
       if (data[0] === 0) {
-        return next(
+        next(
           new APIError('Expired or invalid token', httpStatus.BAD_REQUEST)
         )
+        return
       }
 
-      return res.json({
+      res.json({
         message: 'ok',
       })
     })

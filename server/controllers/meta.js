@@ -3,7 +3,7 @@ import config from '../../config'
 import User from '../models/user'
 
 function information(req, res, next) {
-  User.count({
+  return User.count({
     where: {
       isParticipant: true,
     },
