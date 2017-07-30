@@ -11,9 +11,14 @@ import {
 import { deleteEventsByIds } from '../handlers/event'
 import { updateImagesForObject } from '../handlers/image'
 
+import {
+  addRequestPlaceActivity,
+  addRequestResourcesActivity,
+} from '../services/activity'
+
 import pick from '../utils/pick'
-import { createEventSlots, isInClosedOrder } from '../utils/slots'
 import { APIError } from '../helpers/errors'
+import { createEventSlots, isInClosedOrder } from '../utils/slots'
 
 import {
   EventBelongsToAnimal,
@@ -190,7 +195,11 @@ function areResourcesAvailable(req, existingEventId) {
 
 function createEvent(req, fields) {
   return new Promise((resolve, reject) => {
-    return Place.findById(fields.placeId)
+    return Place.findById(fields.placeId, {
+      include: [
+        PlaceBelongsToAnimal,
+      ],
+    })
       .then(place => {
         Event.create({
           ...fields,
@@ -208,6 +217,10 @@ function createEvent(req, fields) {
             // associate resources to event
             return Resource.findAll({
               where: { id: { $in: req.body.resources } },
+              include: [{
+                association: ResourceBelongsToAnimal,
+                required: true,
+              }],
             })
               .then(resources => {
                 event.setResources(resources)
@@ -221,6 +234,18 @@ function createEvent(req, fields) {
                 )
 
                 return Slot.bulkCreate(slots)
+                  .then(() => {
+                    return addRequestResourcesActivity({
+                      event,
+                      resources,
+                    })
+                  })
+                  .then(() => {
+                    return addRequestPlaceActivity({
+                      event,
+                      place,
+                    })
+                  })
                   .then(() => resolve(event))
               })
           })
@@ -231,12 +256,17 @@ function createEvent(req, fields) {
 
 function updateEvent(req, fields) {
   return new Promise((resolve, reject) => {
-    return Place.findById(fields.placeId)
+    return Place.findById(fields.placeId, {
+      include: [
+        PlaceBelongsToAnimal,
+      ],
+    })
       .then(place => {
         Event.update({
           ...fields,
         }, {
           include: [
+            EventBelongsToAnimal,
             EventBelongsToManyImage,
           ],
           individualHooks: true,
@@ -255,6 +285,10 @@ function updateEvent(req, fields) {
                 // associate resources to event
                 return Resource.findAll({
                   where: { id: { $in: req.body.resources } },
+                  include: [{
+                    association: ResourceBelongsToAnimal,
+                    required: true,
+                  }],
                 })
                   .then(resources => {
                     event.setResources(resources)
@@ -275,6 +309,18 @@ function updateEvent(req, fields) {
                         )
 
                         return Slot.bulkCreate(slots)
+                          .then(() => {
+                            return addRequestResourcesActivity({
+                              event,
+                              resources,
+                            })
+                          })
+                          .then(() => {
+                            return addRequestPlaceActivity({
+                              event,
+                              place,
+                            })
+                          })
                           .then(() => {
                             // return the whole event with all associations
                             return Event.findById(event.id, { include })
