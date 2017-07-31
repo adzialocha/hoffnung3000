@@ -1,0 +1,9 @@
+.activity-list-item {
+  margin-bottom: 20px;
+}
+
+.activity-list-item__part {
+  + .activity-list-item__part {
+    margin-left: 5px;
+  }
+}

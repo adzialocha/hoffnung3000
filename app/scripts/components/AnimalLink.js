@@ -7,6 +7,24 @@ import { translate } from '../services/i18n'
 class AnimalLink extends Component {
   static propTypes = {
     animal: PropTypes.object.isRequired,
+    isWithoutBy: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    isWithoutBy: false,
+  }
+
+  renderBy() {
+    if (this.props.isWithoutBy) {
+      return null
+    }
+
+    return (
+      <span>
+        { translate('common.by') }
+        &nbsp;
+      </span>
+    )
   }
 
   render() {
@@ -16,8 +34,7 @@ class AnimalLink extends Component {
 
     return (
       <span>
-        { translate('common.by') }
-        &nbsp;
+        { this.renderBy() }
         <Link to={ { pathname: '/inbox/new', query } }>
           { this.props.animal.name }
         </Link>

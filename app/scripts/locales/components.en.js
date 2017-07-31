@@ -111,6 +111,40 @@ export default {
     isSelected: 'Selected',
     removeItem: 'Remove',
   },
+  activityListItem: {
+    activity: {
+      RECEIVED_REQUEST: {
+        place: 'requested your place "{objectTitle}" for the event "{eventTitle}"',
+        placeDeleted: 'requested once your place "{objectTitle}" for a now deleted event',
+        resource: 'requested your resource "{objectTitle}" for the event "{eventTitle}"',
+        resourceDeleted: 'requested once your resource "{objectTitle}" for a now deleted event',
+      },
+      CREATE_OBJECT: {
+        event: 'created a new event "{objectTitle}"',
+        place: 'created a new place "{objectTitle}"',
+        resource: 'created a new resource "{objectTitle}"',
+      },
+      UPDATE_OBJECT: {
+        event: 'updated an event "{objectTitle}"',
+        place: 'updated a place "{objectTitle}"',
+        resource: 'updated a resource "{objectTitle}"',
+      },
+      DELETE_OBJECT: {
+        event: 'deleted an event "{objectTitle}"',
+        place: 'deleted a place "{objectTitle}"',
+        resource: 'deleted a resource "{objectTitle}"',
+      },
+      RECEIVED_MESSAGE: 'sent you a message',
+    },
+    link: {
+      event: 'See event',
+      message: 'Go to INBOX',
+      place: 'See place',
+      resource: 'Go to DER MARKT',
+    },
+    someone: 'Someone',
+    wasDeleted: 'which was deleted',
+  },
   footer: {
     about: 'About',
     contact: 'Contact',
