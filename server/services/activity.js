@@ -1,4 +1,8 @@
 import Activity from '../models/activity'
+import Animal from '../models/animal'
+import User from '../models/user'
+
+import { sendActivityNotification } from '../helpers/mailTemplate'
 
 function addActivity(data) {
   return new Promise((resolve, reject) => {
@@ -6,6 +10,45 @@ function addActivity(data) {
       .then(() => resolve())
       .catch(err => reject(err))
   })
+}
+
+function sendMail(data) {
+  return new Promise((resolve, reject) => {
+    Animal.findById(data.animalId)
+      .then(animal => {
+        return User.findById(data.userId)
+          .then(user => {
+            let subject = ''
+            let message = ''
+
+            if (data.type === 'RECEIVED_MESSAGE') {
+              subject = 'YOU RECEIVED A NEW MESSAGE'
+              message = `${animal.name} sent you a message on the platform!`
+            } else if (data.type === 'RECEIVED_REQUEST') {
+              subject = 'YOU RECEIVED A REQUEST'
+              message = `${animal.name} requests your ${data.objectType} "${data.objectTitle}" for an event!`
+            }
+
+            const locals = {
+              message,
+            }
+
+            return sendActivityNotification(
+              subject,
+              locals,
+              user.email
+            )
+          })
+      })
+      .then(() => resolve())
+      .catch(err => reject(err))
+  })
+}
+
+function sendMails(data) {
+  return Promise.all(data.map(item => {
+    return sendMail(item)
+  }))
 }
 
 export function addMessageActivity(data) {
@@ -19,6 +62,7 @@ export function addMessageActivity(data) {
     })
 
     Activity.bulkCreate(activities)
+      .then(() => sendMails(activities))
       .then(() => resolve())
       .catch(err => reject(err))
   })
@@ -41,6 +85,7 @@ export function addRequestResourcesActivity(data) {
     })
 
     Activity.bulkCreate(activities)
+      .then(() => sendMails(activities))
       .then(() => resolve())
       .catch(err => reject(err))
   })
@@ -58,7 +103,10 @@ export function addRequestPlaceActivity(data) {
     userId: place.animal.userId,
   }
 
-  return addActivity(Object.assign({}, { type: 'RECEIVED_REQUEST' }, activity))
+  return Promise.all([
+    sendMail(activity),
+    addActivity(Object.assign({}, { type: 'RECEIVED_REQUEST' }, activity)),
+  ])
 }
 
 export function addCreateActivity(data) {

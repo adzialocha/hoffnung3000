@@ -1,0 +1,6 @@
+${message}
+
+Go to the platform and log in to check the details: ${config.basePath}
+
+Love,
+${config.title}

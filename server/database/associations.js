@@ -8,6 +8,7 @@ import Place from '../models/place'
 import Resource from '../models/resource'
 import ResourceImage from '../models/resourceImage'
 import Slot from '../models/slot'
+import User from '../models/user'
 
 export const ActivityBelongsToAnimal = Activity.belongsTo(Animal, {
   as: 'animal',
@@ -37,6 +38,11 @@ export const ActivityBelongsToEvent = Activity.belongsTo(Event, {
 export const ActivityRequestBelongsToEvent = Activity.belongsTo(Event, {
   as: 'requestedEvent',
   foreignKey: 'eventId',
+})
+
+export const AnimalBelongsToUser = Animal.belongsTo(User, {
+  as: 'user',
+  foreignKey: 'userId',
 })
 
 export const ActivityBelongsToPlace = Activity.belongsTo(Place, {

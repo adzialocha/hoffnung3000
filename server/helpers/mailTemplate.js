@@ -86,3 +86,7 @@ export function sendPasswordReset(locals, receiver) {
   const subject = 'PASSWORD RESET'
   return sendMail(locals, subject, receiver, 'passwordReset')
 }
+
+export function sendActivityNotification(subject, locals, receiver) {
+  return sendMail(locals, subject, receiver, 'activityNotification')
+}
