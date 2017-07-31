@@ -53,10 +53,10 @@ class ActivityListItem extends Component {
 
   renderDateAndTime() {
     return (
-      <span className="activity-list-item__part">
-        <strong>
-          { dateFns.format(this.props.item.createdAt, 'DD.MM.YY HH:mm') }
-        </strong>
+      <span
+        className="activity-list-item__part activity-list-item__part--emphasized"
+      >
+        { dateFns.format(this.props.item.createdAt, 'DD.MM.YY HH:mm') }
       </span>
     )
   }

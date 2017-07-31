@@ -1,12 +1,21 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { asInfiniteList } from '../containers'
+import { asInfiniteList, withUserStatus } from '../containers'
 import { ActivityListItem } from '../components'
 import { translate } from '../services/i18n'
 
 const WrappedInfiniteList = asInfiniteList(ActivityListItem)
 
 class Activity extends Component {
+  static propTypes = {
+    updateStatus: PropTypes.func.isRequired,
+  }
+
+  componentDidMount() {
+    this.props.updateStatus()
+  }
+
   render() {
     return (
       <section>
@@ -18,4 +27,4 @@ class Activity extends Component {
   }
 }
 
-export default Activity
+export default withUserStatus(Activity)
