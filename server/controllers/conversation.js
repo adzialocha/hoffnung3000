@@ -2,6 +2,7 @@ import dateFns from 'date-fns'
 import httpStatus from 'http-status'
 
 import pick from '../utils/pick'
+import { addMessageActivity } from '../services/activity'
 import { APIError } from '../helpers/errors'
 
 import {
@@ -122,6 +123,12 @@ export default {
                       text: values.text,
                     })
                       .then(() => {
+                        return addMessageActivity({
+                          sendingAnimal,
+                          receivingAnimals,
+                        })
+                      })
+                      .then(() => {
                         res.json({ status: 'ok' })
                       })
                   })
@@ -175,15 +182,21 @@ export default {
               'updatedAt',
             ],
           },
-          where: {
-            userId: req.user.id,
-          },
         },
       ],
       rejectOnEmpty: true,
     })
       .then(conversation => {
+        req.otherAnimals = conversation.animals.filter(animal => {
+          return req.user.id !== animal.userId
+        })
+
+        req.meAnimal = conversation.animals.find(animal => {
+          return req.user.id === animal.userId
+        })
+
         req.conversation = conversation
+
         next()
         return null
       })

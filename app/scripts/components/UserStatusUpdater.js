@@ -10,7 +10,12 @@ class UserStatusUpdater extends Component {
     isAdmin: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     isParticipant: PropTypes.bool.isRequired,
+    isWithInterval: PropTypes.bool,
     updateStatus: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    isWithInterval: false,
   }
 
   componentDidMount() {
@@ -49,6 +54,10 @@ class UserStatusUpdater extends Component {
   }
 
   startInterval() {
+    if (!this.props.isWithInterval) {
+      return
+    }
+
     this.interval = window.setInterval(
       this.onTick,
       UPDATE_STATUS_FREQUENCY
@@ -56,6 +65,10 @@ class UserStatusUpdater extends Component {
   }
 
   stopInterval() {
+    if (!this.props.isWithInterval) {
+      return
+    }
+
     window.clearInterval(this.interval)
   }
 

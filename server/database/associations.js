@@ -1,3 +1,4 @@
+import Activity from '../models/activity'
 import Animal from '../models/animal'
 import Conversation from '../models/conversation'
 import Event from '../models/event'
@@ -7,6 +8,52 @@ import Place from '../models/place'
 import Resource from '../models/resource'
 import ResourceImage from '../models/resourceImage'
 import Slot from '../models/slot'
+import User from '../models/user'
+
+export const ActivityBelongsToAnimal = Activity.belongsTo(Animal, {
+  as: 'animal',
+  foreignKey: 'animalId',
+})
+
+export const ActivityBelongsToResource = Activity.belongsTo(Resource, {
+  through: {
+    scope: {
+      objectType: 'resource',
+    },
+  },
+  as: 'resource',
+  foreignKey: 'objectId',
+})
+
+export const ActivityBelongsToEvent = Activity.belongsTo(Event, {
+  through: {
+    scope: {
+      objectType: 'event',
+    },
+  },
+  as: 'event',
+  foreignKey: 'objectId',
+})
+
+export const ActivityRequestBelongsToEvent = Activity.belongsTo(Event, {
+  as: 'requestedEvent',
+  foreignKey: 'eventId',
+})
+
+export const AnimalBelongsToUser = Animal.belongsTo(User, {
+  as: 'user',
+  foreignKey: 'userId',
+})
+
+export const ActivityBelongsToPlace = Activity.belongsTo(Place, {
+  through: {
+    scope: {
+      objectType: 'place',
+    },
+  },
+  as: 'place',
+  foreignKey: 'objectId',
+})
 
 export const ConversationBelongsToManyAnimal = Conversation.belongsToMany(Animal, {
   as: 'animals',

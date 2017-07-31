@@ -89,6 +89,14 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     renderListItems() {
       const { listItems } = this.props
 
+      if (!this.props.isLoading && listItems.length === 0) {
+        return (
+          <p className="infinite-list-container__spinner">
+            { translate('components.common.emptyList') }
+          </p>
+        )
+      }
+
       return listItems.map((item, index) => {
         const previousItem = index > 0 ? listItems[index - 1] : null
 

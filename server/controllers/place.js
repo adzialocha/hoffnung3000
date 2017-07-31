@@ -201,11 +201,12 @@ export default {
         // update place
         Place.update(values, {
           include,
+          individualHooks: true,
+          limit: 1,
+          returning: true,
           where: {
             slug: req.params.resourceSlug,
           },
-          limit: 1,
-          returning: true,
         })
           .then(data => {
             const previousPlace = data[1][0]

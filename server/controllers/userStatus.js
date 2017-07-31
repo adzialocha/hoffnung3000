@@ -5,7 +5,11 @@ import {
   ConversationBelongsToManyAnimal,
 } from '../database/associations'
 
+import { getMyActivities } from '../handlers/activity'
+
 import Message from '../models/message'
+
+const LATEST_ACTIVITIES_COUNT = 3
 
 function getUnreadMessageCount(req) {
   return new Promise((resolve, reject) => {
@@ -51,10 +55,23 @@ function getUnreadMessageCount(req) {
   })
 }
 
+function getLatestActivities() {
+  return new Promise((resolve, reject) => {
+    getMyActivities(LATEST_ACTIVITIES_COUNT, 0)
+      .then(result => {
+        resolve({
+          latestActivities: result.data,
+        })
+      })
+      .catch(err => reject(err))
+  })
+}
+
 export default {
   status: (req, res, next) => {
     const promises = [
       getUnreadMessageCount(req),
+      getLatestActivities(),
     ]
 
     return Promise.all(promises)

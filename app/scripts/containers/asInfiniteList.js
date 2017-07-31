@@ -75,6 +75,10 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
 
     renderListItems() {
+      if (!this.props.isLoading && this.props.listItems.length === 0) {
+        return <p>{ translate('components.common.emptyList') }</p>
+      }
+
       return this.props.listItems.map((item, index) => {
         return (
           <div className="infinite-list-container__item" key={index}>

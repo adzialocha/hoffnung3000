@@ -2,14 +2,17 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Drawer, SidebarToggle } from './'
+import { Drawer, SidebarToggle, SidebarActivity } from './'
 import { translate } from '../services/i18n'
 import { withAuthState, withDrawerState, withUserStatus } from '../containers'
 
 class Sidebar extends Component {
   static propTypes = {
     firstname: PropTypes.string,
+    isActive: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
+    isParticipant: PropTypes.bool.isRequired,
     isSidebarExpanded: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
     unreadMessagesCount: PropTypes.number.isRequired,
@@ -36,28 +39,69 @@ class Sidebar extends Component {
     )
   }
 
-  renderAuthenticatedContent() {
-    const { firstname } = this.props
-
+  renderWelcome() {
     return (
-      <section>
-        <div
-          dangerouslySetInnerHTML={
-            {
-              __html: translate('components.sidebar.welcomeUser', { firstname }),
-            }
+      <div
+        dangerouslySetInnerHTML={
+          {
+            __html: translate('components.sidebar.welcomeUser', {
+              firstname: this.props.firstname,
+            }),
           }
-        />
-        <hr className="separator separator--white" />
+        }
+      />
+    )
+  }
+
+  renderActivity() {
+    return (
+      <div>
+        <SidebarActivity />
         <div className="button-group">
-          <Link className="button" to="/inbox">
+          <Link className="button" to="/activity">
             {
-              translate('components.sidebar.inboxButton', {
-                count: this.props.unreadMessagesCount,
-              })
+              translate('components.sidebar.activityButton')
             }
           </Link>
         </div>
+      </div>
+    )
+  }
+
+  renderInbox() {
+    return (
+      <div className="button-group">
+        <Link className="button" to="/inbox">
+          {
+            translate('components.sidebar.inboxButton', {
+              count: this.props.unreadMessagesCount,
+            })
+          }
+        </Link>
+      </div>
+    )
+  }
+
+  renderAuthenticatedContent() {
+    const { isActive, isParticipant, isAdmin } = this.props
+
+    if (isActive && (isParticipant || isAdmin)) {
+      return (
+        <section>
+          <h5 className="sidebar__title">
+            { translate('components.sidebar.activityTitle') }
+          </h5>
+          { this.renderActivity() }
+          <br />
+          { this.renderInbox() }
+          <hr className="separator separator--white" />
+        </section>
+      )
+    }
+
+    return (
+      <section>
+        { this.renderWelcome() }
       </section>
     )
   }

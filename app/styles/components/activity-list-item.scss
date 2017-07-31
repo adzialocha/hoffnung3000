@@ -1,0 +1,15 @@
+.activity-list-item {
+  margin-bottom: 20px;
+}
+
+.activity-list-item__part {
+  display: inline;
+
+  + .activity-list-item__part {
+    margin-left: 5px;
+  }
+}
+
+.activity-list-item__part--emphasized {
+  font-weight: $font-weight-bold;
+}

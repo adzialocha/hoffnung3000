@@ -1,6 +1,7 @@
 export default {
   common: {
     agreeWithTerms: 'I agree with the terms',
+    emptyList: 'Nothing to do here yet ...',
     nextStep: 'Next step',
     payViaPayPal: 'Pay via PayPal',
     payViaTransfer: 'Pay via transfer',
@@ -40,21 +41,24 @@ export default {
     stepTitle: 'Registration (Step {currentStep} of {totalSteps})',
   },
   sidebar: {
+    activityButton: 'All activites',
+    activityTitle: 'Recent activities',
+    comingSoon: 'Coming soon!',
     defaultHeader: '<p>Welcome dear visitor,</p><p>please <em>register</em> or <em>login</em> below to use the platform.</p>',
+    gifDocumentationTitle: '.gif-documentation',
+    inboxButton: { one: 'Inbox ({count})', zero: 'Inbox', other: 'Inbox ({count})' },
     loginButton: 'Login',
     loginHeader: 'Already have a login?',
     logoutButton: 'Logout',
     profileButton: 'Profile',
+    randomMeetingTitle: 'Random meetings',
+    requestRandomMeetingButton: 'Request random meeting',
     signUpButton: 'Register as participant',
     signUpHeader: 'We invite all activists, artists, theoreticians, performers, musicians, hackers and everyone else to register.',
+    startDocumentationButton: 'Start documentation',
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
-    inboxButton: {
-      one: 'Inbox ({count})',
-      zero: 'Inbox',
-      other: 'Inbox ({count})',
-    },
   },
   slotEditor: {
     slotsHaveToBeInClosedOrder: 'Please select your slots in a closed order',
@@ -98,18 +102,48 @@ export default {
   },
   formImageUploader: {
     deleteImageButton: 'Remove',
+    maxImageReached: { one: 'You can only upload {count} image', zero: 'You can only upload {count} image', other: 'You can only upload {count} images' },
     uploadButton: 'Select files',
-    maxImageReached: {
-      one: 'You can only upload {count} image',
-      zero: 'You can only upload {count} image',
-      other: 'You can only upload {count} images',
-    },
   },
   curatedSelectableListItem: {
     addItem: 'Add',
     isNotAvailable: 'Not available',
     isSelected: 'Selected',
     removeItem: 'Remove',
+  },
+  activityListItem: {
+    activity: {
+      RECEIVED_REQUEST: {
+        place: 'requested your place "{objectTitle}" for the event "{eventTitle}"',
+        placeDeleted: 'requested once your place "{objectTitle}" for a now deleted event',
+        resource: 'requested your resource "{objectTitle}" for the event "{eventTitle}"',
+        resourceDeleted: 'requested once your resource "{objectTitle}" for a now deleted event',
+      },
+      CREATE_OBJECT: {
+        event: 'created a new event "{objectTitle}"',
+        place: 'created a new place "{objectTitle}"',
+        resource: 'created a new resource "{objectTitle}"',
+      },
+      UPDATE_OBJECT: {
+        event: 'updated an event "{objectTitle}"',
+        place: 'updated a place "{objectTitle}"',
+        resource: 'updated a resource "{objectTitle}"',
+      },
+      DELETE_OBJECT: {
+        event: 'deleted an event "{objectTitle}"',
+        place: 'deleted a place "{objectTitle}"',
+        resource: 'deleted a resource "{objectTitle}"',
+      },
+      RECEIVED_MESSAGE: 'sent you a message',
+    },
+    link: {
+      event: 'See event',
+      message: 'Go to INBOX',
+      place: 'See place',
+      resource: 'Go to DER MARKT',
+    },
+    someone: 'Someone',
+    wasDeleted: 'which was deleted',
   },
   footer: {
     about: 'About',

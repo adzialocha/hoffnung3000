@@ -1,3 +1,4 @@
+export { default as ActivityListItem } from './ActivityListItem'
 export { default as AnimalLink } from './AnimalLink'
 export { default as ConversationListItem } from './ConversationListItem'
 export { default as CuratedEventListItem } from './CuratedEventListItem'
@@ -31,6 +32,7 @@ export { default as PaginatedListActionButton } from './PaginatedListActionButto
 export { default as PaginatedListNavigation } from './PaginatedListNavigation'
 export { default as RegistrationWizard } from './RegistrationWizard'
 export { default as Sidebar } from './Sidebar'
+export { default as SidebarActivity } from './SidebarActivity'
 export { default as SidebarToggle } from './SidebarToggle'
 export { default as SlotEditor } from './SlotEditor'
 export { default as SlotEditorItem } from './SlotEditorItem'

@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { withDrawerState, withApiState } from '../containers'
+import { withDrawerState, withApiState, withUserStatus } from '../containers'
 
 const SPINNER_TRESHOLD = 100
 
@@ -13,6 +13,7 @@ class SidebarToggle extends Component {
     isSidebarExpanded: PropTypes.bool.isRequired,
     pendingRequests: PropTypes.number.isRequired,
     toggleSidebar: PropTypes.func.isRequired,
+    unreadMessagesCount: PropTypes.number.isRequired,
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -34,11 +35,13 @@ class SidebarToggle extends Component {
   }
 
   render() {
+    const hasUnreadMessages = this.props.unreadMessagesCount > 0
+
     const sidebarToggleClasses = classnames(
       'sidebar-toggle', {
         'sidebar-toggle--active': this.props.isSidebarExpanded,
         'sidebar-toggle--spinning': this.state.hasPendingRequests,
-        'sidebar-toggle--notified': false,
+        'sidebar-toggle--notified': hasUnreadMessages,
       }
     )
 
@@ -61,4 +64,4 @@ class SidebarToggle extends Component {
   }
 }
 
-export default withApiState(withDrawerState(SidebarToggle))
+export default withApiState(withDrawerState(withUserStatus(SidebarToggle)))

@@ -2,6 +2,12 @@ import slugify from 'sequelize-slugify'
 
 import db from '../database'
 
+import {
+  addCreateActivity,
+  addDeleteActivity,
+  addUpdateActivity,
+} from '../services/activity'
+
 const Place = db.sequelize.define('place', {
   id: {
     type: db.Sequelize.INTEGER,
@@ -68,6 +74,32 @@ const Place = db.sequelize.define('place', {
 
 slugify.slugifyModel(Place, {
   source: ['title'],
+})
+
+Place.afterCreate(place => {
+  return addCreateActivity({
+    animalId: place.animalId,
+    objectId: place.id,
+    objectTitle: place.title,
+    objectType: 'place',
+  })
+})
+
+Place.afterUpdate(place => {
+  return addUpdateActivity({
+    animalId: place.animalId,
+    objectId: place.id,
+    objectTitle: place.title,
+    objectType: 'place',
+  })
+})
+
+Place.afterDestroy(place => {
+  return addDeleteActivity({
+    animalId: place.animalId,
+    objectTitle: place.title,
+    objectType: 'place',
+  })
 })
 
 export default Place
