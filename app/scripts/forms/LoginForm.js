@@ -4,15 +4,17 @@ import { Field, reduxForm } from 'redux-form'
 
 import { FormInput } from '../components'
 
+import { translate } from '../services/i18n'
+
 const validate = values => {
   const errors = {}
   if (!values.email) {
-    errors.email = 'Please enter your email address'
+    errors.email = translate('forms.auth.errors.mailRequired')
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address'
+    errors.email = translate('forms.auth.errors.invalidMail')
   }
   if (!values.password) {
-    errors.password = 'Please enter your password'
+    errors.password = translate('forms.auth.errors.passwordRequired')
   }
   return errors
 }
@@ -47,14 +49,14 @@ class LoginForm extends Component {
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Email-Address"
+          label={translate('forms.auth.email')}
           name="email"
           type="email"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Password"
+          label={translate('forms.auth.password')}
           name="password"
           type="password"
         />
@@ -63,7 +65,7 @@ class LoginForm extends Component {
           disabled={this.props.isLoading}
           type="submit"
         >
-          Login
+          { translate('forms.auth.loginButton') }
         </button>
       </form>
     )

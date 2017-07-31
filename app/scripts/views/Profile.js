@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import { changeProfile } from '../actions/user'
 import { ProfileForm } from '../forms'
+import { translate } from '../services/i18n'
 
 class Profile extends Component {
   static propTypes = {
@@ -33,7 +34,7 @@ class Profile extends Component {
   render() {
     return (
       <section className="form">
-        <h1>Profile</h1>
+        <h1>{ translate('views.profile.title') }</h1>
         <hr />
         { this.renderForm() }
       </section>

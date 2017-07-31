@@ -4,21 +4,27 @@ import { Field, reduxForm } from 'redux-form'
 
 import { FormInput } from '../components'
 
+import { translate } from '../services/i18n'
+
 const validate = values => {
   const errors = {}
   if (!values.password) {
-    errors.password = 'Please enter your current password'
+    errors.password = translate('forms.auth.errors.passwordRequired')
   }
   if (!values.newPassword) {
-    errors.newPassword = 'Please enter your password'
+    errors.newPassword = translate('forms.auth.errors.passwordRequired')
   } else if (values.newPassword.length < 8) {
-    errors.newPassword = 'Must be 8 characters or more'
+    errors.password = translate(
+      'forms.auth.errors.passwordLength', {
+        len: 8,
+      }
+    )
   }
   if (!values.newPasswordRepeat) {
-    errors.newPasswordRepeat = 'Please repeat your password'
+    errors.newPasswordRepeat = translate('forms.auth.errors.passwordRepeat')
   }
   if (values.newPasswordRepeat !== values.newPassword) {
-    errors.newPasswordRepeat = 'The given passwords do not match'
+    errors.newPasswordRepeat = translate('forms.auth.errors.passwordMatch')
   }
   return errors
 }
@@ -50,25 +56,25 @@ class ProfileForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
-        <h2>Change your password</h2>
+        <h2>{ translate('forms.auth.changePassword') }</h2>
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Your current password"
+          label={translate('forms.auth.password')}
           name="password"
           type="password"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="New Password"
+          label={translate('forms.auth.newPassword')}
           name="newPassword"
           type="password"
         />
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Repeat new password"
+          label={translate('forms.auth.newPasswordRepeat')}
           name="newPasswordRepeat"
           type="password"
         />
@@ -79,7 +85,7 @@ class ProfileForm extends Component {
           disabled={this.props.isLoading}
           type="submit"
         >
-          Update
+          { translate('forms.auth.changePasswordButton') }
         </button>
       </form>
     )

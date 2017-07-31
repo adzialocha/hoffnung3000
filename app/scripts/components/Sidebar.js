@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { Drawer, SidebarToggle } from './'
 import { translate } from '../services/i18n'
-import { withUserState, withDrawerState } from '../containers'
+import { withAuthState, withDrawerState, withUserStatus } from '../containers'
 
 class Sidebar extends Component {
   static propTypes = {
@@ -12,6 +12,7 @@ class Sidebar extends Component {
     isAuthenticated: PropTypes.bool.isRequired,
     isSidebarExpanded: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
+    unreadMessagesCount: PropTypes.number.isRequired,
   }
 
   static defaultProps = {
@@ -39,13 +40,25 @@ class Sidebar extends Component {
     const { firstname } = this.props
 
     return (
-      <section
-        dangerouslySetInnerHTML={
-          {
-            __html: translate('components.sidebar.welcomeUser', { firstname }),
+      <section>
+        <div
+          dangerouslySetInnerHTML={
+            {
+              __html: translate('components.sidebar.welcomeUser', { firstname }),
+            }
           }
-        }
-      />
+        />
+        <hr className="separator separator--white" />
+        <div className="button-group">
+          <Link className="button" to="/inbox">
+            {
+              translate('components.sidebar.inboxButton', {
+                count: this.props.unreadMessagesCount,
+              })
+            }
+          </Link>
+        </div>
+      </section>
     )
   }
 
@@ -113,4 +126,4 @@ class Sidebar extends Component {
   }
 }
 
-export default withUserState(withDrawerState(Sidebar))
+export default withAuthState(withDrawerState(withUserStatus(Sidebar)))

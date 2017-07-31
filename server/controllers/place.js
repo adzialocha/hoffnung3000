@@ -3,25 +3,27 @@ import httpStatus from 'http-status'
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
-  handleImagesDelete,
-  handleImagesUpdate,
   lookupWithSlug,
   prepareResponse,
   prepareResponseAll,
 } from './base'
 
-import pick from '../utils/pick'
-import { createDisabledSlots } from '../utils/slots'
+import { deletePlacesByIds } from '../handlers/place'
+import { updateImagesForObject } from '../handlers/image'
 
-import Event from '../models/event'
-import Place, {
+import {
   PlaceBelongsToAnimal,
   PlaceBelongsToManyImage,
   PlaceHasManySlots,
-} from '../models/place'
-import Slot from '../models/slot'
+} from '../database/associations'
 
+import pick from '../utils/pick'
 import { APIError } from '../helpers/errors'
+import { createDisabledSlots } from '../utils/slots'
+
+import Event from '../models/event'
+import Place from '../models/place'
+import Slot from '../models/slot'
 
 const include = [
   {
@@ -138,34 +140,7 @@ export default {
       .catch(err => next(err))
   },
   destroyWithSlug: (req, res, next) => {
-    return Place.findById(req.resourceId, {
-      include,
-      rejectOnEmpty: true,
-    })
-      .then((place) => {
-        // delete all related images
-        return handleImagesDelete(place)
-          .then(() => {
-            // delete the place
-            return place.destroy()
-          })
-      })
-      .then(() => {
-        // delete related events
-        return Event.destroy({
-          where: {
-            placeId: req.resourceId,
-          },
-        })
-      })
-      .then(() => {
-        // delete related slots
-        return Slot.destroy({
-          where: {
-            placeId: req.resourceId,
-          },
-        })
-      })
+    return deletePlacesByIds([req.resourceId])
       .then(() => {
         res.json({ message: 'ok' })
       })
@@ -235,7 +210,7 @@ export default {
           .then(data => {
             const previousPlace = data[1][0]
 
-            return handleImagesUpdate(previousPlace, req)
+            return updateImagesForObject(previousPlace, req.body.images)
               .then(() => {
                 // clean up all slot before
                 return Slot.destroy({

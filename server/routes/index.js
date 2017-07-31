@@ -13,8 +13,10 @@ import { onlyAdmin } from '../middlewares/roles'
 import eventPreviewController from '../controllers/eventPreview'
 import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
+import userStatusController from '../controllers/userStatus'
 
 import authRoutes from './auth'
+import conversationRoutes from './conversation'
 import eventRoutes from './event'
 import pageRoutes from './page'
 import placeRoutes from './place'
@@ -62,10 +64,14 @@ router.use('/*', (req, res, next) => {
   })(req, res, next)
 })
 
+router.use('/conversations', conversationRoutes)
 router.use('/events', eventRoutes)
 router.use('/places', placeRoutes)
 router.use('/profile', profileRoutes)
 router.use('/resources', resourceRoutes)
+
+router.route('/status')
+  .get(userStatusController.status)
 
 router.route('/upload')
   .post(upload)

@@ -6,12 +6,6 @@ const Slot = db.sequelize.define('slot', {
     primaryKey: true,
     autoIncrement: true,
   },
-  createdAt: {
-    type: db.Sequelize.DATE,
-  },
-  updatedAt: {
-    type: db.Sequelize.DATE,
-  },
   placeId: {
     type: db.Sequelize.INTEGER,
     allowNull: false,

@@ -11,6 +11,9 @@ import {
 import {
   Admin,
   Calendar,
+  ConversationsIndex,
+  ConversationsNew,
+  ConversationsShow,
   EventsEdit,
   EventsNew,
   EventsShow,
@@ -46,9 +49,9 @@ export default class Routes extends Component {
           <Route component={Page} path="/pages/:slug" />
           <Route component={Calendar} path="/calendar" />
           <Route component={isAuthenticated(Profile)} path="/profile" />
+          <Route component={isParticipant(EventsNew)} path="/new/event" />
           <Route component={isParticipant(PlacesNew)} path="/new/place" />
           <Route component={isParticipant(ResourcesNew)} path="/new/resource" />
-          <Route component={isParticipant(EventsNew)} path="/new/event" />
           <Route component={isParticipant(EventsEdit)} path="/events/:slug/edit" />
           <Route component={isParticipant(EventsShow)} path="/events/:slug" />
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
@@ -56,6 +59,9 @@ export default class Routes extends Component {
           <Route component={isParticipant(PlacesIndex)} path="/places" />
           <Route component={isParticipant(ResourcesEdit)} path="/resources/:slug/edit" />
           <Route component={isParticipant(ResourcesIndex)} path="/resources" />
+          <Route component={isParticipant(ConversationsNew)} path="/inbox/new" />
+          <Route component={isParticipant(ConversationsShow)} path="/inbox/conversations/:id" />
+          <Route component={isParticipant(ConversationsIndex)} path="/inbox" />
           <Route component={isAdmin(Admin)} path="/admin" />
           <Route component={NotFound} />
         </Switch>

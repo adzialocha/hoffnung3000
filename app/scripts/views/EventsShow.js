@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
 import { formatEventTime } from '../utils/dateFormat'
-import { ImageGallery } from '../components'
+import { ImageGallery, AnimalLink } from '../components'
 import { translate } from '../services/i18n'
 
 class EventsShow extends Component {
@@ -62,15 +62,7 @@ class EventsShow extends Component {
   }
 
   renderOwner() {
-    const { name } = this.props.resourceData.animal
-
-    return (
-      <p>
-        { translate('common.by') }
-        &nbsp;
-        { name }
-      </p>
-    )
+    return <AnimalLink animal={this.props.resourceData.animal} />
   }
 
   renderPlace() {

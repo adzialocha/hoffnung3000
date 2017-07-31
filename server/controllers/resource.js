@@ -1,21 +1,24 @@
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
-  handleImagesDelete,
-  handleImagesUpdate,
   lookupWithSlug,
   prepareResponse,
   prepareResponseAll,
 } from './base'
 
-import Event from '../models/event'
-import Resource, {
-  ResourceBelongsToAnimal,
-  ResourceBelongsToManyImage,
-} from '../models/resource'
-import Slot from '../models/slot'
+import { updateImagesForObject } from '../handlers/image'
+import { deleteResourcesByIds } from '../handlers/resource'
 
 import pick from '../utils/pick'
+
+import {
+  ResourceBelongsToAnimal,
+  ResourceBelongsToManyImage,
+} from '../database/associations'
+
+import Event from '../models/event'
+import Resource from '../models/resource'
+import Slot from '../models/slot'
 
 const permittedFields = [
   'description',
@@ -59,11 +62,11 @@ function findAllWithAvailability(req, res, next) {
               eventId,
             }, {
               from: {
-                $lte: req.query.to,
+                $lt: req.query.to,
               },
             }, {
               to: {
-                $gte: req.query.from,
+                $gt: req.query.from,
               },
             }],
           },
@@ -105,18 +108,7 @@ export default {
       .catch(err => next(err))
   },
   destroy: (req, res, next) => {
-    return Resource.findById(req.resourceId, {
-      include,
-      rejectOnEmpty: true,
-    })
-      .then(resource => {
-        // delete all related images
-        return handleImagesDelete(resource)
-          .then(() => {
-            // delete the resource
-            return resource.destroy()
-          })
-      })
+    return deleteResourcesByIds([req.resourceId])
       .then(() => {
         res.json({ message: 'ok' })
       })
@@ -180,7 +172,7 @@ export default {
       .then(data => {
         const previousResource = data[1][0]
 
-        return handleImagesUpdate(previousResource, req)
+        return updateImagesForObject(previousResource, req.body.images)
           .then(() => {
             return Resource.findById(previousResource.id, { include })
               .then(resource => {

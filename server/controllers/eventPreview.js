@@ -3,10 +3,12 @@ import {
   DEFAULT_OFFSET,
 } from './base'
 
-import Event, {
+import {
   EventBelongsToManyImage,
   EventHasManySlots,
-} from '../models/event'
+} from '../database/associations'
+
+import Event from '../models/event'
 
 const include = [
   EventBelongsToManyImage,

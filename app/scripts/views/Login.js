@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { login } from '../actions/auth'
 import { LoginForm } from '../forms'
+import { translate } from '../services/i18n'
 
 class Login extends Component {
   static propTypes = {
@@ -20,7 +21,7 @@ class Login extends Component {
   render() {
     return (
       <section>
-        <h1>Login</h1>
+        <h1>{ translate('views.login.title') }</h1>
         <LoginForm
           errorMessage={this.props.errorMessage}
           isLoading={this.props.isLoading}
@@ -29,13 +30,19 @@ class Login extends Component {
         <hr />
         <ul className="inline-navigation inline-navigation--vertical">
           <li className="inline-navigation__item">
-            <Link to="/tickets">Register as visitor</Link>
+            <Link to="/tickets">
+              { translate('views.login.registerAsVisitor') }
+            </Link>
           </li>
           <li className="inline-navigation__item">
-            <Link to="/register">Register as participant</Link>
+            <Link to="/register">
+              { translate('views.login.registerAsParticipant') }
+            </Link>
           </li>
           <li className="inline-navigation__item">
-            <Link to="/forgot">Forgot password?</Link>
+            <Link to="/forgot">
+              { translate('views.login.forgotPassword') }
+            </Link>
           </li>
         </ul>
       </section>

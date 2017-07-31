@@ -8,12 +8,6 @@ const Animal = db.sequelize.define('animal', {
     primaryKey: true,
     autoIncrement: true,
   },
-  createdAt: {
-    type: db.Sequelize.DATE,
-  },
-  updatedAt: {
-    type: db.Sequelize.DATE,
-  },
   userId: {
     type: db.Sequelize.INTEGER,
     allowNull: false,

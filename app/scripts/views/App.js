@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Header, Footer, FlashMessageStage, Navigation } from '../components'
+import {
+  FlashMessageStage,
+  Footer,
+  Header,
+  Navigation,
+} from '../components'
 
 class App extends Component {
   static propTypes = {

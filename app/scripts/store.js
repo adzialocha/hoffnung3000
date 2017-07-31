@@ -10,6 +10,7 @@ import formErrorFlash from './middlewares/formErrorFlash'
 import redirect from './middlewares/redirect'
 import reducers from './reducers'
 import scroll from './middlewares/scroll'
+import userStatus from './middlewares/userStatus'
 
 let store
 
@@ -17,12 +18,13 @@ export default function configureStore(initialState, history) {
   const middleware = [
     thunk,
     routerMiddleware(history),
+    flash,
+    redirect,
     api,
+    userStatus,
     apiError,
     formErrorFlash,
     scroll,
-    flash,
-    redirect,
   ]
 
   if (process.env.NODE_ENV === 'development') {

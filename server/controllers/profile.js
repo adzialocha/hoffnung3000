@@ -1,8 +1,9 @@
 import httpStatus from 'http-status'
 
-import User from '../models/user'
 import { APIError } from '../helpers/errors'
 import { generateToken } from '../services/passport'
+
+import User from '../models/user'
 
 export function update(req, res, next) {
   const { password, newPassword } = req.body

@@ -22,12 +22,14 @@ function textTemplate(url, locals) {
 
     fs.readFile(filePath, 'utf8', (err, content) => {
       if (err) {
-        return reject(err)
+        reject(err)
+        return
       }
 
       const template = generateTemplateString(content)
       const str = template(locals)
-      return resolve(str)
+
+      resolve(str)
     })
   })
 }
@@ -47,11 +49,12 @@ function sendMail(locals, subject, receiver, templateName, sender) {
           mailOptions.from = sender
         }
 
-        mail.sendMail(mailOptions, (err) => {
+        return mail.sendMail(mailOptions, (err) => {
           if (err) {
-            return reject(err)
+            reject(err)
+            return
           }
-          return resolve()
+          resolve()
         })
       })
       .catch(reject)

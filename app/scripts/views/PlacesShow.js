@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
-import { LocationMap, ImageGallery } from '../components'
+import { LocationMap, ImageGallery, AnimalLink } from '../components'
 import { numberToSlotSizeStrHuman } from '../utils/slots'
 import { translate } from '../services/i18n'
 
@@ -118,15 +118,7 @@ class PlacesShow extends Component {
   }
 
   renderOwner() {
-    const { name } = this.props.resourceData.animal
-
-    return (
-      <p>
-        { translate('common.by') }
-        &nbsp;
-        { name }
-      </p>
-    )
+    return <AnimalLink animal={this.props.resourceData.animal} />
   }
 
   renderImageGallery() {
