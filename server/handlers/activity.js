@@ -12,18 +12,15 @@ import Activity from '../models/activity'
 
 function prepareResponse(conversation) {
   const response = conversation.toJSON()
-
-  if (response.animal) {
-    response.animal = prepareAnimalResponse(response.animal)
-  }
+  const { id, createdAt, type, animal, objectTitle, objectType } = response
 
   let item
 
-  if (response.resource) {
+  if (objectType === 'resource') {
     item = response.resource
-  } else if (response.event) {
+  } else if (objectType === 'event') {
     item = response.event
-  } else if (response.place) {
+  } else if (objectType === 'place') {
     item = response.place
   }
 
@@ -39,7 +36,9 @@ function prepareResponse(conversation) {
     title: response.requestedEvent.title,
   }) : null
 
-  const { id, createdAt, type, animal, objectTitle, objectType } = response
+  if (response.animal) {
+    response.animal = prepareAnimalResponse(response.animal)
+  }
 
   return Object.assign({}, {
     animal,
