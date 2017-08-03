@@ -40,12 +40,14 @@ class Home extends Component {
           <StaticPage slug="home-with-video" />
           <hr />
           <h2>{ translate('views.home.platformTutorial') }</h2>
-          <div className="youtube">
-            <YouTube
-              className="youtube__container"
-              opts={videoOptions}
-              videoId={videoId}
-            />
+          <div className="form">
+            <div className="youtube">
+              <YouTube
+                className="youtube__container"
+                opts={videoOptions}
+                videoId={videoId}
+              />
+            </div>
           </div>
         </section>
       )
