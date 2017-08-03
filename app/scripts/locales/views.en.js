@@ -2,6 +2,9 @@ export default {
   common: {
     imageGalleryTitle: 'Images',
   },
+  home: {
+    platformTutorial: 'Platform tutorial',
+  },
   login: {
     title: 'Login',
     registerAsVisitor: 'Register as visitor',

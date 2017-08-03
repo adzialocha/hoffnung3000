@@ -28,6 +28,7 @@ const config = {
   },
   video: {
     registration: process.env.CONFIG_VIDEO_REGISTRATION || 'KRYVH7fGa68',
+    tutorial: process.env.CONFIG_VIDEO_TUTORIAL || 'ux2R9jwEIgw',
   },
   googleMapApiKey: process.env.GOOGLE_MAP_API_KEY,
   festivalDateStart: process.env.CONFIG_FESTIVAL_DATE_START || '2017-08-24T00:00:00.000+02:00',
