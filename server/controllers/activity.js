@@ -12,7 +12,7 @@ export default {
       offset = DEFAULT_OFFSET,
     } = req.query
 
-    return getMyActivities(limit, offset)
+    return getMyActivities(limit, offset, req.user.id)
       .then(result => {
         res.json(result)
       })

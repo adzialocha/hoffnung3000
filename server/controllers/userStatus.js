@@ -55,9 +55,9 @@ function getUnreadMessageCount(req) {
   })
 }
 
-function getLatestActivities() {
+function getLatestActivities(req) {
   return new Promise((resolve, reject) => {
-    getMyActivities(LATEST_ACTIVITIES_COUNT, 0)
+    getMyActivities(LATEST_ACTIVITIES_COUNT, 0, req.user.id)
       .then(result => {
         resolve({
           latestActivities: result.data,
@@ -71,7 +71,7 @@ export default {
   status: (req, res, next) => {
     const promises = [
       getUnreadMessageCount(req),
-      getLatestActivities(),
+      getLatestActivities(req),
     ]
 
     return Promise.all(promises)

@@ -56,7 +56,7 @@ function prepareResponseAll(rows) {
   return rows.map(row => prepareResponse(row))
 }
 
-export function getMyActivities(limit, offset) {
+export function getMyActivities(limit, offset, userId) {
   return new Promise((resolve, reject) => {
     Activity.findAndCountAll({
       include: [
@@ -71,6 +71,14 @@ export function getMyActivities(limit, offset) {
       order: [
         ['createdAt', 'DESC'],
       ],
+      where: {
+        userId: {
+          $or: [
+            null,
+            userId,
+          ],
+        },
+      },
     })
       .then(result => {
         resolve({
