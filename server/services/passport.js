@@ -4,6 +4,8 @@ import passportJwt from 'passport-jwt'
 
 import User from '../models/user'
 
+const TOKEN_EXPIRY = '96 hours'
+
 const options = {
   jwtFromRequest: passportJwt.ExtractJwt.fromAuthHeader(),
   secretOrKey: process.env.JWT_SECRET,
@@ -11,7 +13,7 @@ const options = {
 
 const tokenOptions = {
   algorithm: 'HS512',
-  expiresIn: '12 hours',
+  expiresIn: TOKEN_EXPIRY,
 }
 
 const strategy = new passportJwt.Strategy(options, (payload, next) => {
