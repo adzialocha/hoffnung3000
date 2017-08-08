@@ -1,5 +1,6 @@
-$_markdown-content-color: $gray;
 $_markdown-background: $gray-lighter;
+$_markdown-code-font-family: "Courier New", Courier, monospace;
+$_markdown-content-color: $gray;
 
 .markdown {
   display: inline-block;
@@ -27,6 +28,8 @@ $_markdown-background: $gray-lighter;
   }
 
   p {
+    font-size: $font-size-base;
+
     word-wrap: break-word;
   }
 
@@ -38,6 +41,34 @@ $_markdown-background: $gray-lighter;
     padding: 0;
 
     list-style: none;
+  }
+
+  pre,
+  code {
+    padding-top: 2px;
+    padding-right: 7px;
+    padding-bottom: 2px;
+    padding-left: 7px;
+
+    border-radius: 3px;
+
+    background-color: $white;
+
+    font-weight: $font-weight-bold;
+    font-size: $font-size-base;
+    font-family: $_markdown-code-font-family;
+
+    line-height: 1.5;
+  }
+
+  pre {
+    text-align: left;
+
+    code {
+      padding: 0;
+
+      border: 0;
+    }
   }
 
   li {
