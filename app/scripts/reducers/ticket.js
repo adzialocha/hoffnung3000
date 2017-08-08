@@ -14,12 +14,12 @@ export default (state = initialState, action) => {
     return update(state, {
       errorMessage: { $set: '' },
     })
-  case ActionTypes.TICKET_REQUEST:
+  case ActionTypes.AUTH_TICKET_REQUEST:
     return update(state, {
       errorMessage: { $set: '' },
       isLoading: { $set: true },
     })
-  case ActionTypes.TICKET_SUCCESS:
+  case ActionTypes.AUTH_TICKET_SUCCESS:
     if (action.meta.paymentMethod === 'paypal') {
       window.setTimeout(() => {
         window.location.assign(action.payload.redirect)
@@ -29,7 +29,7 @@ export default (state = initialState, action) => {
     return update(state, {
       isLoading: { $set: false },
     })
-  case ActionTypes.TICKET_FAILURE:
+  case ActionTypes.AUTH_TICKET_FAILURE:
     return update(state, {
       isLoading: { $set: false },
       errorMessage: { $set: action.error.message },

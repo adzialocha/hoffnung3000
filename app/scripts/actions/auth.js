@@ -1,10 +1,11 @@
+import { routerActions } from 'react-router-redux'
+
 import ActionTypes from '../actionTypes'
 import flash from './flash'
 import { FLASH } from '../middlewares/flash'
 import { jwtDecode } from '../utils/jwt'
 import { postRequest } from '../services/api'
 import { REDIRECT } from '../middlewares/redirect'
-import { routerActions } from 'react-router-redux'
 import { translate } from '../services/i18n'
 
 export function redirectWhenUnauthenticated(location) {
@@ -115,7 +116,7 @@ export function buyTicket(paymentMethod = 'paypal', data) {
   }
 
   const success = {
-    type: ActionTypes.TICKET_SUCCESS,
+    type: ActionTypes.AUTH_TICKET_SUCCESS,
     meta,
   }
 
@@ -129,12 +130,12 @@ export function buyTicket(paymentMethod = 'paypal', data) {
 
   return postRequest(['auth', 'signup', 'ticket'], payload, {
     request: {
-      type: ActionTypes.TICKET_REQUEST,
+      type: ActionTypes.AUTH_TICKET_REQUEST,
       meta,
     },
     success,
     failure: {
-      type: ActionTypes.TICKET_FAILURE,
+      type: ActionTypes.AUTH_TICKET_FAILURE,
       meta,
       [FLASH]: {
         text: translate('flash.signUpTransferFailure'),
@@ -146,10 +147,10 @@ export function buyTicket(paymentMethod = 'paypal', data) {
 export function requestPasswordToken(email) {
   return postRequest(['auth', 'reset', 'request'], { email }, {
     request: {
-      type: ActionTypes.RESET_PASSWORD_REQUEST,
+      type: ActionTypes.AUTH_RESET_PASSWORD_REQUEST,
     },
     success: {
-      type: ActionTypes.RESET_PASSWORD_SUCCESS,
+      type: ActionTypes.AUTH_RESET_PASSWORD_SUCCESS,
       [FLASH]: {
         lifetime: 30000,
         text: translate('flash.requestPasswordToken'),
@@ -157,7 +158,7 @@ export function requestPasswordToken(email) {
       [REDIRECT]: '/',
     },
     failure: {
-      type: ActionTypes.RESET_PASSWORD_FAILURE,
+      type: ActionTypes.AUTH_RESET_PASSWORD_FAILURE,
     },
   })
 }
@@ -165,17 +166,17 @@ export function requestPasswordToken(email) {
 export function resetPassword(password, token) {
   return postRequest(['auth', 'reset'], { password, token }, {
     request: {
-      type: ActionTypes.RESET_PASSWORD_REQUEST,
+      type: ActionTypes.AUTH_RESET_PASSWORD_REQUEST,
     },
     success: {
-      type: ActionTypes.RESET_PASSWORD_SUCCESS,
+      type: ActionTypes.AUTH_RESET_PASSWORD_SUCCESS,
       [FLASH]: {
         text: translate('flash.resetPassword'),
       },
       [REDIRECT]: '/',
     },
     failure: {
-      type: ActionTypes.RESET_PASSWORD_FAILURE,
+      type: ActionTypes.AUTH_RESET_PASSWORD_FAILURE,
     },
   })
 }

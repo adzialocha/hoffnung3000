@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
-import { reducer as form } from 'redux-form'
 import { routerReducer as routing } from 'react-router-redux'
 
 import api from './api'
 import auth from './auth'
 import drawer from './drawer'
 import flash from './flash'
+import form from './form'
 import imageUpload from './imageUpload'
 import inbox from './inbox'
 import infiniteList from './infiniteList'
