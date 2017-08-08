@@ -4,9 +4,9 @@ import Conversation from '../models/conversation'
 import Event from '../models/event'
 import Image from '../models/image'
 import Message from '../models/message'
+import ObjectImage from '../models/objectImage'
 import Place from '../models/place'
 import Resource from '../models/resource'
-import ResourceImage from '../models/resourceImage'
 import Slot from '../models/slot'
 import User from '../models/user'
 
@@ -108,14 +108,14 @@ export const EventBelongsToPlace = Event.belongsTo(Place, {
 
 export const EventBelongsToManyImage = Event.belongsToMany(Image, {
   through: {
-    model: ResourceImage,
+    model: ObjectImage,
     unique: false,
     scope: {
-      resourceName: 'event',
+      objectType: 'event',
     },
   },
   as: 'images',
-  foreignKey: 'resourceId',
+  foreignKey: 'objectId',
   constraints: false,
 })
 
@@ -142,14 +142,14 @@ export const PlaceHasManySlots = Place.hasMany(Slot, {
 
 export const PlaceBelongsToManyImage = Place.belongsToMany(Image, {
   through: {
-    model: ResourceImage,
+    model: ObjectImage,
     unique: false,
     scope: {
-      resourceName: 'place',
+      objectType: 'place',
     },
   },
   as: 'images',
-  foreignKey: 'resourceId',
+  foreignKey: 'objectId',
   constraints: false,
 })
 
@@ -181,13 +181,13 @@ export const EventBelongsToManyResource = Event.belongsToMany(Resource, {
 
 export const ResourceBelongsToManyImage = Resource.belongsToMany(Image, {
   through: {
-    model: ResourceImage,
+    model: ObjectImage,
     unique: false,
     scope: {
-      resourceName: 'resource',
+      objectType: 'resource',
     },
   },
   as: 'images',
-  foreignKey: 'resourceId',
+  foreignKey: 'objectId',
   constraints: false,
 })

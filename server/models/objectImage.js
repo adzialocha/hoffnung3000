@@ -1,11 +1,11 @@
 import db from '../database'
 
-const ResourceImage = db.sequelize.define('resourcesImages', {
-  resourceName: {
+const ObjectImage = db.sequelize.define('objectsImages', {
+  objectType: {
     type: db.Sequelize.STRING,
     primaryKey: true,
   },
-  resourceId: {
+  objectId: {
     type: db.Sequelize.INTEGER,
     primaryKey: true,
   },
@@ -15,4 +15,4 @@ const ResourceImage = db.sequelize.define('resourcesImages', {
   },
 })
 
-export default ResourceImage
+export default ObjectImage
