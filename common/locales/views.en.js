@@ -40,7 +40,7 @@ export default {
     calendarTitle: 'Calendar',
     createNewButton: 'Create event',
     createNewTitle: 'Create new event',
-    isPrivateEvent: 'This place is not visible to the audience',
+    isPrivateEvent: 'This event is not visible to the audience',
     loadMoreEvents: 'Load more events',
     titlePlaceholder: 'Event',
   },
