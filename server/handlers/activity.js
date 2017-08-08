@@ -12,7 +12,7 @@ import Activity from '../models/activity'
 
 function prepareResponse(conversation) {
   const response = conversation.toJSON()
-  const { id, createdAt, type, animal, objectTitle, objectType } = response
+  const { id, createdAt, type, objectTitle, objectType } = response
 
   let item
 
@@ -36,9 +36,7 @@ function prepareResponse(conversation) {
     title: response.requestedEvent.title,
   }) : null
 
-  if (response.animal) {
-    response.animal = prepareAnimalResponse(response.animal)
-  }
+  const animal = prepareAnimalResponse(response.animal)
 
   return Object.assign({}, {
     animal,
@@ -52,7 +50,7 @@ function prepareResponse(conversation) {
   })
 }
 
-function prepareResponseAll(rows) {
+export function prepareResponseAll(rows) {
   return rows.map(row => prepareResponse(row))
 }
 
