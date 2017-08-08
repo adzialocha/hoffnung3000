@@ -5,15 +5,11 @@ import {
 
 import {
   EventBelongsToManyImage,
+  EventBelongsToPlace,
   EventHasManySlots,
 } from '../database/associations'
 
 import Event from '../models/event'
-
-const include = [
-  EventBelongsToManyImage,
-  EventHasManySlots,
-]
 
 export default {
   findAll: (req, res, next) => {
@@ -23,7 +19,16 @@ export default {
     } = req.query
 
     return Event.findAndCountAll({
-      include,
+      include: [
+        EventBelongsToManyImage,
+        EventHasManySlots, {
+          association: EventBelongsToPlace,
+          required: true,
+          where: {
+            isPublic: true,
+          },
+        },
+      ],
       limit,
       offset,
       where: {
