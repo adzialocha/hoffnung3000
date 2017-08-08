@@ -37,8 +37,10 @@ if (!fs.existsSync(path.join(__dirname, '..', publicDirPath))) {
 
 // markdown settings
 marked.setOptions({
-  gfm: true,
   breaks: true,
+  gfm: true,
+  sanitize: true,
+  smartypants: true,
   tables: false,
 })
 
