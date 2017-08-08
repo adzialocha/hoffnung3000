@@ -40,8 +40,9 @@ export default {
     calendarTitle: 'Calendar',
     createNewButton: 'Create event',
     createNewTitle: 'Create new event',
-    titlePlaceholder: 'Event',
+    isPrivateEvent: 'This place is not visible to the audience',
     loadMoreEvents: 'Load more events',
+    titlePlaceholder: 'Event',
   },
   inbox: {
     backToConversations: 'Back to inbox',
