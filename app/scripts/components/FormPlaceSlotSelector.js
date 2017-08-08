@@ -6,13 +6,13 @@ import { connect } from 'react-redux'
 import { asFormField } from '../containers'
 import { fetchSlots } from '../actions/slots'
 import { formatEventTime } from '../utils/dateFormat'
-import { generateNewSlotItems, getSlotWithIndex } from '../utils/slots'
+import { generateNewSlotItems, getSlotWithIndex } from '../../../common/utils/slots'
 import {
   CuratedPlaceListItem,
   FormPlaceSlotSelectorPlace,
   FormPlaceSlotSelectorSlot,
 } from './'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class FormPlaceSlotSelector extends Component {
   static propTypes = {

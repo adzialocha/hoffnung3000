@@ -1,7 +1,7 @@
 import httpStatus from 'http-status'
 
 import checkout from '../services/checkout'
-import config from '../../config'
+import config from '../../common/config'
 import db from '../database'
 import pick from '../utils/pick'
 import User from '../models/user'
@@ -14,6 +14,7 @@ import {
   sendPasswordReset,
   sendRegistrationComplete,
 } from '../helpers/mailTemplate'
+import { translate } from '../../common/services/i18n'
 
 const PASSWORD_RESET_EXPIRY = 15 // min
 
@@ -32,7 +33,7 @@ const permittedFields = [
 
 const product = {
   name: config.title,
-  description: 'Participation fee',
+  description: translate('api.products.participation'),
   price: config.participationPrice,
 }
 
@@ -47,7 +48,7 @@ function signup(req, res, next) {
       if (count >= config.maximumParticipantsCount) {
         next(
           new APIError(
-            'Registration limit was exceeded',
+            translate('api.errors.auth.registrationLimitExceeded'),
             httpStatus.LOCKED
           )
         )
@@ -59,7 +60,7 @@ function signup(req, res, next) {
           if (existingUser) {
             next(
               new APIError(
-                'A user with this email address already exists',
+                translate('api.errors.auth.userExistsAlready'),
                 httpStatus.BAD_REQUEST
               )
             )
@@ -111,11 +112,17 @@ function paypalCheckoutSuccess(req, res, next) {
             .catch(err => next(err))
         })
         .catch(() => next(
-          new APIError('Payment error', httpStatus.INTERNAL_SERVER_ERROR)
+          new APIError(
+            translate('api.errors.auth.paymentError'),
+            httpStatus.INTERNAL_SERVER_ERROR
+          )
         ))
     })
     .catch(() => next(
-      new APIError('Invalid payment error', httpStatus.BAD_REQUEST)
+      new APIError(
+        translate('api.errors.auth.paymentMethodError'),
+        httpStatus.BAD_REQUEST
+      )
     ))
 }
 
@@ -130,14 +137,20 @@ function login(req, res, next) {
     .then(user => {
       if (!user) {
         next(
-          new APIError('User does not exist', httpStatus.BAD_REQUEST)
+          new APIError(
+            translate('api.errors.auth.userNotExisting'),
+            httpStatus.BAD_REQUEST
+          )
         )
         return
       }
 
       if (!user.comparePasswords(password)) {
         next(
-          new APIError('Invalid credentials', httpStatus.BAD_REQUEST)
+          new APIError(
+            translate('api.errors.auth.invalidCredentials'),
+            httpStatus.BAD_REQUEST
+          )
         )
         return
       }
@@ -168,7 +181,10 @@ function requestResetToken(req, res, next) {
       .then((data) => {
         if (data[0] === 0) {
           next(
-            new APIError('User does not exist', httpStatus.BAD_REQUEST)
+            new APIError(
+              translate('api.errors.auth.userNotExisting'),
+              httpStatus.BAD_REQUEST
+            )
           )
           return
         }
@@ -209,7 +225,10 @@ function resetPassword(req, res, next) {
     .then((data) => {
       if (data[0] === 0) {
         next(
-          new APIError('Expired or invalid token', httpStatus.BAD_REQUEST)
+          new APIError(
+            translate('api.errors.auth.invalidResetToken'),
+            httpStatus.BAD_REQUEST
+          )
         )
         return
       }

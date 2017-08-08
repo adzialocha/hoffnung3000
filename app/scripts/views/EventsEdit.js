@@ -13,7 +13,7 @@ import {
   fetchResource,
   updateResource,
 } from '../actions/resources'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class EventsEdit extends Component {
   static propTypes = {

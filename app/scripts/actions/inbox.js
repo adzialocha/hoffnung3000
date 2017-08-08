@@ -2,7 +2,7 @@ import ActionTypes from '../actionTypes'
 import { FLASH } from '../middlewares/flash'
 import { postRequest } from '../services/api'
 import { REDIRECT } from '../middlewares/redirect'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 export function createNewConversation(animalIds, title, text) {
   const params = {

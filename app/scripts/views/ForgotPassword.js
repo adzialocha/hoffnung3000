@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { ForgotPasswordForm } from '../forms'
 import { requestPasswordToken } from '../actions/auth'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class ForgotPassword extends Component {
   static propTypes = {

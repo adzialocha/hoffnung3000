@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class AnimalLink extends Component {
   static propTypes = {

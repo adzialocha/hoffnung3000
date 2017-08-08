@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { buyTicket } from '../actions/auth'
 import { StaticPage } from './'
 import { TicketForm } from '../forms'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 const totalSteps = 2
 

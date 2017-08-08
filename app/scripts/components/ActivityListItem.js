@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import { AnimalLink } from './'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class ActivityListItem extends Component {
   static propTypes = {

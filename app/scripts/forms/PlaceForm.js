@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { checkSlotSize } from '../utils/slots'
+import { checkSlotSize } from '../../../common/utils/slots'
 import {
   FormCheckbox,
   FormImageUploader,
@@ -11,7 +11,7 @@ import {
   FormSlotSizeEditor,
   FormTextarea,
 } from '../components'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 const validate = values => {
   const errors = {}

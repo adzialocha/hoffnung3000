@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 
 import { asInfiniteList, withUserStatus } from '../containers'
 import { ActivityListItem } from '../components'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 const WrappedInfiniteList = asInfiniteList(ActivityListItem)
 

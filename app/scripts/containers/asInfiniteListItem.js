@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 export default function asInfiniteListItem(WrappedListItemComponent) {
   return class InfiniteListItemContainer extends Component {

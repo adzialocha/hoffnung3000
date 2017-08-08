@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
 import { LocationMap, ImageGallery, AnimalLink } from '../components'
-import { numberToSlotSizeStrHuman } from '../utils/slots'
-import { translate } from '../services/i18n'
+import { numberToSlotSizeStrHuman } from '../../../common/utils/slots'
+import { translate } from '../../../common/services/i18n'
 
 class PlacesShow extends Component {
   static propTypes = {

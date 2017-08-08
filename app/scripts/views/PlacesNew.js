@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
 import { PlaceForm } from '../forms'
-import { getDisabledSlotIndexes } from '../utils/slots'
-import { translate } from '../services/i18n'
+import { getDisabledSlotIndexes } from '../../../common/utils/slots'
+import { translate } from '../../../common/services/i18n'
 
 class PlacesNew extends Component {
   static propTypes = {

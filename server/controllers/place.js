@@ -19,7 +19,7 @@ import {
 
 import pick from '../utils/pick'
 import { APIError } from '../helpers/errors'
-import { createDisabledSlots } from '../utils/slots'
+import { createDisabledSlots } from '../../common/utils/slots'
 
 import Place from '../models/place'
 import Slot from '../models/slot'

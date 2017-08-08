@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { login } from '../actions/auth'
 import { LoginForm } from '../forms'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class Login extends Component {
   static propTypes = {

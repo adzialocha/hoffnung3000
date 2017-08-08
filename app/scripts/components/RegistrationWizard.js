@@ -4,11 +4,11 @@ import Scroll from 'react-scroll'
 import YouTube from 'react-youtube'
 import { connect } from 'react-redux'
 
-import config from '../../../config'
+import config from '../../../common/config'
 import { register } from '../actions/auth'
 import { RegistrationForm } from '../forms'
 import { StaticPage } from './'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 const totalSteps = 3
 

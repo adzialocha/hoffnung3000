@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { fetchHtmlPage } from '../actions/pages'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class StaticPage extends Component {
   static propTypes = {

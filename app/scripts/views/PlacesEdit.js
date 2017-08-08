@@ -15,8 +15,8 @@ import { PlaceForm } from '../forms'
 import {
   generateNewSlotItems,
   getDisabledSlotIndexes,
-} from '../utils/slots'
-import { translate } from '../services/i18n'
+} from '../../../common/utils/slots'
+import { translate } from '../../../common/services/i18n'
 
 class PlacesEdit extends Component {
   static propTypes = {

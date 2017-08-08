@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { SlotEditor } from './'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class FormPlaceSlotSelectorSlot extends Component {
   static propTypes = {

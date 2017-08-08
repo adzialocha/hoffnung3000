@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { ITEMS_PER_PAGE } from '../actions/paginatedList'
 import { PaginatedListActionButton } from './'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class PaginatedList extends Component {
   static propTypes = {

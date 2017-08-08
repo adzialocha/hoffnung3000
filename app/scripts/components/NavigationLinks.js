@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 const PRIMARY_NAVIGATION = [
   { localeKey: 'home', url: '/' },

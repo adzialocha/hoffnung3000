@@ -18,7 +18,7 @@ import {
 
 import pick from '../utils/pick'
 import { APIError } from '../helpers/errors'
-import { createEventSlots, isInClosedOrder } from '../utils/slots'
+import { createEventSlots, isInClosedOrder } from '../../common/utils/slots'
 
 import {
   EventBelongsToAnimal,

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
 import { ResourceForm } from '../forms'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class ResourcesNew extends Component {
   static propTypes = {

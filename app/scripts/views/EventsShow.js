@@ -7,7 +7,7 @@ import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
 import { formatEventTime } from '../utils/dateFormat'
 import { ImageGallery, AnimalLink } from '../components'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class EventsShow extends Component {
   static propTypes = {

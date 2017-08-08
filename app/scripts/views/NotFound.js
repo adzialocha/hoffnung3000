@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class NotFound extends Component {
   render() {

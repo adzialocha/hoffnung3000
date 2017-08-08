@@ -6,7 +6,7 @@ import { push } from 'react-router-redux'
 
 import { asInfiniteListCalendar } from '../containers'
 import { CuratedEventListItem, StaticPage } from '../components'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
 

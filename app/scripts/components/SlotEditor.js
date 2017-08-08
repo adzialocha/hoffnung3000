@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 
 import { alert } from '../services/dialog'
 import { SlotEditorItem } from './'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 function addOrRemoveFromArray(arr, slotIndex, status) {
   if (status) {

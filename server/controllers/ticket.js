@@ -1,11 +1,12 @@
 import httpStatus from 'http-status'
 
 import checkout from '../services/checkout'
-import config from '../../config'
+import config from '../../common/config'
 import pick from '../utils/pick'
 import User from '../models/user'
 import { APIError } from '../helpers/errors'
 import { sendAdminRegistrationNotification } from '../helpers/mailTemplate'
+import { translate } from '../../common/services/i18n'
 
 const permittedFields = [
   'city',
@@ -21,7 +22,7 @@ const permittedFields = [
 
 const product = {
   name: config.title,
-  description: 'Festival ticket',
+  description: translate('api.products.ticket'),
   price: config.festivalTicketPrice,
 }
 
@@ -36,7 +37,7 @@ function signup(req, res, next) {
       if (existingUser) {
         next(
           new APIError(
-            'A user with this email address already exists',
+            translate('api.errors.auth.userExistsAlready'),
             httpStatus.BAD_REQUEST
           )
         )

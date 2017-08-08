@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 
 import { asFormField } from '../containers'
 import { FormResourceSelectorList } from './'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class FormResourceSelector extends Component {
   static propTypes = {

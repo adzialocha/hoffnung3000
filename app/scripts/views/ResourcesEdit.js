@@ -12,7 +12,7 @@ import {
   updateResource,
 } from '../actions/resources'
 import { ResourceForm } from '../forms'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class ResourcesEdit extends Component {
   static propTypes = {

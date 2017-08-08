@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import YouTube from 'react-youtube'
 
-import config from '../../../config'
+import config from '../../../common/config'
 import { StaticPage } from '../components'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 import { withAuthState } from '../containers'
 
 const videoOptions = {

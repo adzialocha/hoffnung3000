@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { resetPassword } from '../actions/auth'
 import { ResetPasswordForm } from '../forms'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class ResetPassword extends Component {
   static propTypes = {

@@ -1,6 +1,6 @@
 import paypal from 'paypal-rest-sdk'
 
-import config from '../../config'
+import config from '../../common/config'
 
 function extractLink(links, key) {
   for (let i = 0; i < links.length; i += 1) {

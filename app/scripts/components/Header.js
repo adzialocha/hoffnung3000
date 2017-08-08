@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import config from '../../../config'
+import config from '../../../common/config'
 
 class Header extends Component {
   render() {

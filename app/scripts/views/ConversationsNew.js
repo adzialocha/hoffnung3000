@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { initializeForm, createNewConversation } from '../actions/inbox'
 import { MessageForm } from '../forms'
 import { replaceTo } from '../actions/redirect'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class ConversationsNew extends Component {
   static propTypes = {

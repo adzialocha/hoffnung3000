@@ -1,6 +1,6 @@
 import ActionTypes from '../actionTypes'
 import flash from '../actions/flash'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 import { updateStatus } from '../actions/userStatus'
 
 export const UPDATE_USER_STATUS = Symbol('app-update-user-status')

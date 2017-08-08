@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { alert } from '../services/dialog'
 import { asFormField, withImageUpload } from '../containers'
 import { FormImageUploaderImage } from './'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 function convertFileToBase64(file) {
   return new Promise(resolve => {

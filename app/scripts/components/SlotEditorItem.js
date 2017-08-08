@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { alert } from '../services/dialog'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class SlotEditorItem extends Component {
   static propTypes = {

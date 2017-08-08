@@ -4,9 +4,9 @@ import withScriptjs from 'react-google-maps/lib/async/withScriptjs'
 import { GoogleMap, Marker, withGoogleMap } from 'react-google-maps'
 
 import { asFormField } from '../containers'
-import config from '../../../config'
+import config from '../../../common/config'
 import styles from '../utils/googleMapStyle.json'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 const DEFAULT_MODE = 'address'
 const DEFAULT_ZOOM = 17

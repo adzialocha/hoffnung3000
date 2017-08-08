@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 
-import config from '../../config'
+import config from '../../common/config'
 
 export default nodemailer.createTransport({
   host: process.env.SMTP_HOST,

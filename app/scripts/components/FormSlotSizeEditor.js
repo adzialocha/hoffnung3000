@@ -8,9 +8,9 @@ import {
   checkSlotSize,
   generateNewSlotItems,
   numberToSlotSizeStrHuman,
-} from '../utils/slots'
+} from '../../../common/utils/slots'
 import { SlotEditor } from './'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class FormSlotSizeEditor extends Component {
   static propTypes = {

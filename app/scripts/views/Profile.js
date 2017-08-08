@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { changeProfile } from '../actions/user'
 import { ProfileForm } from '../forms'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class Profile extends Component {
   static propTypes = {

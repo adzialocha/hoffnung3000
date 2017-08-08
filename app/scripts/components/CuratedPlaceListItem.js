@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 
 import { AnimalLink } from './'
 import { asInfiniteListItem } from '../containers'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class PlaceListItem extends Component {
   static propTypes = {

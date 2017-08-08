@@ -9,7 +9,7 @@ import { fetchResource } from '../actions/resources'
 import { MessageForm } from '../forms'
 import { MessageListItem } from '../components'
 import { sendNewMessage } from '../actions/inbox'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 const WrappedInfiniteList = asInfiniteList(MessageListItem)
 

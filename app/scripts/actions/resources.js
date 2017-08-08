@@ -8,7 +8,7 @@ import {
 import { FLASH } from '../middlewares/flash'
 import { REDIRECT } from '../middlewares/redirect'
 import { SCROLL_TO_TOP } from '../middlewares/scroll'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 export function fetchResource(resourceType, resourceId) {
   const meta = {

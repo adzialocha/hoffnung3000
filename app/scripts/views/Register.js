@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { RegistrationWizard, StaticPage } from '../components'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 import { updateMetaInformation } from '../actions/meta'
 
 class Register extends Component {

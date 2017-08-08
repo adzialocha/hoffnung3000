@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { ActivityListItem } from './'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 import { withUserStatus } from '../containers'
 
 class SidebarActivity extends Component {

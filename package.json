@@ -24,7 +24,7 @@
     "lint:js": "gulp lint:js",
     "lint:scss": "gulp lint:scss",
     "postinstall": "gulp build",
-    "serve": "nodemon --watch server --exec NODE_ENV=development babel-node server/index.js",
+    "serve": "nodemon --watch server --watch common --exec NODE_ENV=development babel-node server/index.js",
     "start": "babel-node server/index.js",
     "watch": "cross-env NODE_ENV=development gulp watch"
   },

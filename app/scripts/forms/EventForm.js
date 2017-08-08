@@ -12,7 +12,7 @@ import {
   FormTextarea,
 } from '../components'
 
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 const validate = values => {
   const errors = {}

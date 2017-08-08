@@ -338,6 +338,7 @@ gulp.task('build', (done) => {
 gulp.task('watch', ['clean:tmp', 'assets'], () => {
   gulp.watch(`${APP_PATH}/styles/**/*.scss`, ['assets:styles', 'lint:scss'])
   gulp.watch(`${APP_PATH}/scripts/**/*.js`, ['assets:scripts:app', 'lint:js'])
+  gulp.watch('./common/**/*.js', ['assets:scripts:app', 'lint:js'])
   gulp.watch(`${APP_PATH}/images/**/*`, ['assets:images'])
   gulp.watch(`${APP_PATH}/fonts/**/*`, ['assets:fonts'])
   gulp.watch(`${APP_PATH}/index.html`, ['assets:html'])

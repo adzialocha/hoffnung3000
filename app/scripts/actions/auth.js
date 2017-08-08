@@ -6,7 +6,7 @@ import { FLASH } from '../middlewares/flash'
 import { jwtDecode } from '../utils/jwt'
 import { postRequest } from '../services/api'
 import { REDIRECT } from '../middlewares/redirect'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 export function redirectWhenUnauthenticated(location) {
   return (dispatch) => {

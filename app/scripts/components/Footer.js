@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class Footer extends Component {
   render() {

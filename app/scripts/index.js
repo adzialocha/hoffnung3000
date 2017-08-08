@@ -10,7 +10,7 @@ import Routes from './routes'
 import { App } from './views'
 import { checkExistingToken } from './actions/auth'
 import { getItem, hasItem } from './services/storage'
-import { translate } from './services/i18n'
+import { translate } from '../../common/services/i18n'
 
 const initialState = {}
 const history = createBrowserHistory()

@@ -2,7 +2,7 @@ import { replace } from 'react-router-redux'
 
 import ActionTypes from '../actionTypes'
 import flash from '../actions/flash'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 const CRITICAL_ERROR_CODES = [401, 403]
 const ERROR_CODES = [404, 500]

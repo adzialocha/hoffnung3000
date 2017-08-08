@@ -8,7 +8,7 @@ import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
 import { EventForm } from '../forms'
 import { StaticPage } from '../components'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 class EventsNew extends Component {
   static propTypes = {

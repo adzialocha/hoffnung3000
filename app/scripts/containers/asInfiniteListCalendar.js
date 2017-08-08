@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { fetchList, clearList } from '../actions/infiniteList'
-import { translate } from '../services/i18n'
+import { translate } from '../../../common/services/i18n'
 
 export default function asInfiniteListCalendar(WrappedListItemComponent) {
   class InfiniteListContainer extends Component {
