@@ -21,7 +21,6 @@ import pick from '../utils/pick'
 import { APIError } from '../helpers/errors'
 import { createDisabledSlots } from '../utils/slots'
 
-import Event from '../models/event'
 import Place from '../models/place'
 import Slot from '../models/slot'
 
