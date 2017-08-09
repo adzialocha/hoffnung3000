@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
       isLoading: { $set: false },
       listItems: { $push: action.payload.data },
       totalPageCount: {
-        $set: Math.floor(action.payload.total / action.payload.limit),
+        $set: Math.ceil(action.payload.total / action.payload.limit),
       },
     })
   case ActionTypes.INFINITE_LIST_FAILURE:
