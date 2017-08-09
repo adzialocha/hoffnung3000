@@ -38,10 +38,7 @@ export function prepareResponse(data, req) {
 
   // remove userId from animal to stay anonymous
   if (response.animal) {
-    response.animal = {
-      id: response.animal.id,
-      name: response.animal.name,
-    }
+    response.animal = prepareAnimalResponse(response.animal)
   }
 
   // convert markdown to html
