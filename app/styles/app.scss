@@ -5,7 +5,6 @@
 // common
 
 @import "common/variables";
-@import "common/global";
 @import "common/mixins";
 @import "common/utils";
 
@@ -14,7 +13,9 @@
 @import "base/animations";
 @import "base/buttons";
 @import "base/form";
+@import "base/global";
 @import "base/hr";
+@import "base/images";
 @import "base/layout";
 @import "base/links";
 @import "base/tables";
