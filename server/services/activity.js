@@ -45,9 +45,9 @@ function sendMail(data) {
   })
 }
 
-function sendMails(data) {
-  return Promise.all(data.map(item => {
-    return sendMail(item)
+function sendMails(activities) {
+  return Promise.all(activities.map(data => {
+    return sendMail(data)
   }))
 }
 
@@ -100,12 +100,13 @@ export function addRequestPlaceActivity(data) {
     objectId: place.id,
     objectTitle: place.title,
     objectType: 'place',
+    type: 'RECEIVED_REQUEST',
     userId: place.animal.userId,
   }
 
   return Promise.all([
     sendMail(activity),
-    addActivity(Object.assign({}, { type: 'RECEIVED_REQUEST' }, activity)),
+    addActivity(activity),
   ])
 }
 
