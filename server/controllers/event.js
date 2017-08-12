@@ -411,6 +411,9 @@ export default {
       where: {
         slug: req.params.resourceSlug,
       },
+      order: [
+        [EventHasManySlots, 'from', 'ASC'],
+      ],
     })
       .then(data => res.json(prepareResponse(data, req)))
       .catch(err => next(err))
