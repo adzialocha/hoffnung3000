@@ -8,7 +8,7 @@ import {
 export default function withSocialFeatures(WrappedComponent) {
   function mapStateToProps(state) {
     return {
-      // ...state.imageUpload,
+      ...state.meeting,
     }
   }
 

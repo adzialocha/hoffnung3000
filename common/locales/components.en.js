@@ -52,13 +52,16 @@ export default {
     logoutButton: 'Logout',
     profileButton: 'Profile',
     randomMeetingTitle: 'Random meetings',
-    requestRandomMeetingButton: 'Request random meeting',
+    randomMeetingDescription: 'Randomly meet other participants at a random place',
     signUpButton: 'Register as participant',
     signUpHeader: 'We invite all activists, artists, theoreticians, performers, musicians, hackers and everyone else to register.',
     startDocumentationButton: 'Start documentation',
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
+  },
+  sidebarRandomMeeting: {
+    requestButton: 'Request random meeting',
   },
   slotEditor: {
     slotsHaveToBeInClosedOrder: 'Please select your slots in a closed order',

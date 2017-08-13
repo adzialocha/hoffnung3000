@@ -10,6 +10,8 @@ import {
 
 class SidebarRandomMeeting extends Component {
   static propTypes = {
+    isMeetingLoading: PropTypes.bool.isRequired,
+    meetingErrorMessage: PropTypes.string.isRequired,
     requestRandomMeeting: PropTypes.func.isRequired,
   }
 
@@ -18,13 +20,31 @@ class SidebarRandomMeeting extends Component {
     this.props.requestRandomMeeting(date)
   }
 
+  renderErrorMessage() {
+    if (this.props.meetingErrorMessage) {
+      return (
+        <div className="form__error">
+          { this.props.meetingErrorMessage }
+        </div>
+      )
+    }
+    return null
+  }
+
   render() {
     return (
-      <button className="button" onClick={this.onClick}>
-        {
-          translate('components.sidebar.randomMeetingButton')
-        }
-      </button>
+      <div className="button-group">
+        { this.renderErrorMessage() }
+        <button
+          className="button"
+          disabled={this.props.isMeetingLoading}
+          onClick={this.onClick}
+        >
+          {
+            translate('components.sidebarRandomMeeting.requestButton')
+          }
+        </button>
+      </div>
     )
   }
 

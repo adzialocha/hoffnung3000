@@ -93,14 +93,6 @@ class Sidebar extends Component {
     )
   }
 
-  renderRandomMeetings() {
-    return (
-      <div className="button-group">
-        <SidebarRandomMeeting />
-      </div>
-    )
-  }
-
   renderAuthenticatedContent() {
     const { isActive, isParticipant, isAdmin } = this.props
 
@@ -114,7 +106,11 @@ class Sidebar extends Component {
           <br />
           { this.renderInbox() }
           <hr className="separator separator--white" />
-          { this.renderRandomMeetings() }
+          <h5 className="sidebar__title">
+            { translate('components.sidebar.randomMeetingTitle') }
+          </h5>
+          <p>{ translate('components.sidebar.randomMeetingDescription' )}</p>
+          <SidebarRandomMeeting />
         </section>
       )
     }
