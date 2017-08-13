@@ -27,6 +27,9 @@ function sendMail(data) {
             } else if (data.type === 'RECEIVED_REQUEST') {
               subject = 'YOU RECEIVED A REQUEST'
               message = `${animal.name} requests your ${data.objectType} "${data.objectTitle}" for an event!`
+            } else if (data.type === 'RANDOM_MEETING_JOINED') {
+              subject = 'YOU JOINED A RANDOM MEETING'
+              message = 'You joined a random meeting!\n\nA conversation related to this random meeting was just openend in your inbox, check it on the platform for further details about time and place.\n\nThere you can start the dialogue with other attending participants you might eventually meet soon <3'
             }
 
             const locals = {
@@ -108,6 +111,51 @@ export function addRequestPlaceActivity(data) {
     sendMail(activity),
     addActivity(activity),
   ])
+}
+
+export function addCreateMeetingActivity(data) {
+  const { place, animalId, userId } = data
+
+  // send a message to creating user
+  const activity = {
+    animalId,
+    objectId: place.id,
+    objectTitle: place.title,
+    objectType: 'place',
+    type: 'CREATE_RANDOM_MEETING',
+    userId,
+  }
+
+  return Promise.all([
+    addActivity(activity),
+  ])
+}
+
+export function addJoinMeetingActivity(data) {
+  return new Promise((resolve, reject) => {
+    // send a message to all currently participating users
+    const activities = data.receivingAnimals.map(animal => {
+      return {
+        animalId: data.joiningAnimal.id,
+        userId: animal.userId,
+        type: 'RANDOM_MEETING_JOINED',
+      }
+    })
+
+    // send a message to joining user
+    const ownActivity = {
+      animalId: data.joiningAnimal.id,
+      type: 'JOIN_RANDOM_MEETING',
+      userId: data.joiningAnimal.userId,
+    }
+
+    activities.push(ownActivity)
+
+    Activity.bulkCreate(activities)
+      .then(() => sendMails(activities))
+      .then(() => resolve())
+      .catch(err => reject(err))
+  })
 }
 
 export function addCreateActivity(data) {
