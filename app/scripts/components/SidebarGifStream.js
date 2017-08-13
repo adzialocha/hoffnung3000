@@ -7,7 +7,7 @@ import { withFlash } from '../containers'
 import config from '../../../common/config'
 import { translate } from '../../../common/services/i18n'
 
-const STREAM_INTERVAL = 2500
+const STREAM_INTERVAL = 5000
 const PREVIEW_IMAGES_COUNT = 3
 
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
