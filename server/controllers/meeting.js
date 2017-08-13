@@ -227,6 +227,10 @@ export default {
       }],
     })
       .then(meeting => {
+        if (!meeting) {
+          return createMeeting(req.user.id, from, to)
+        }
+
         const isAlreadyExisting = meeting.conversation.animals.find(animal => {
           return animal.userId === req.user.id
         })
@@ -236,10 +240,6 @@ export default {
             translate('api.errors.meeting.alreadyJoined'),
             httpStatus.BAD_REQUEST
           )
-        }
-
-        if (!meeting) {
-          return createMeeting(req.user.id, from, to)
         }
 
         return joinMeeting(meeting.conversation, req.user.id)

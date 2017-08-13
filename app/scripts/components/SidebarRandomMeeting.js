@@ -33,17 +33,19 @@ class SidebarRandomMeeting extends Component {
 
   render() {
     return (
-      <div className="button-group">
+      <div>
         { this.renderErrorMessage() }
-        <button
-          className="button"
-          disabled={this.props.isMeetingLoading}
-          onClick={this.onClick}
-        >
-          {
-            translate('components.sidebarRandomMeeting.requestButton')
-          }
-        </button>
+        <div className="button-group">
+          <button
+            className="button"
+            disabled={this.props.isMeetingLoading}
+            onClick={this.onClick}
+          >
+            {
+              translate('components.sidebarRandomMeeting.requestButton')
+            }
+          </button>
+        </div>
       </div>
     )
   }
