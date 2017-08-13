@@ -219,7 +219,7 @@ export default {
         dateFns.addHours(new Date(), ANY_DATE_FROM_NOW_MIN_HOURS)
       )
       where.from = {
-        $lt: from,
+        $gte: from,
       }
     }
 
