@@ -61,6 +61,7 @@ export default {
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
   },
   sidebarRandomMeeting: {
+    anytime: 'Anytime',
     requestButton: 'Request random meeting',
   },
   slotEditor: {

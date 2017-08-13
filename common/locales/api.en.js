@@ -11,7 +11,7 @@ export default {
     },
     meeting: {
       alreadyJoined: 'You already joined a meeting during the given time',
-      invalidDate: 'Date is too soon or already in the past',
+      invalidDate: 'The date is too soon or already in the past',
       noPlaceFound: 'Could not find a usable place during the given time',
     },
   },

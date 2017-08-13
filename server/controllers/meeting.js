@@ -20,11 +20,13 @@ import {
 } from '../services/activity'
 
 import { APIError } from '../helpers/errors'
-import { translate } from '../../common/services/i18n'
 import { formatEventTime } from '../../common/utils/dateFormat'
+import { isInFestivalRange } from '../../common/utils/slots'
+import { translate } from '../../common/services/i18n'
 
-const MEETING_DURATION_HOURS = 1
-const MEETING_DATE_MINIMUM_TO_NOW_HOURS = 2
+const DURATION_HOURS = 1
+const DATE_MINIMUM_TO_NOW_HOURS = 1
+const ANY_DATE_FROM_NOW_MIN_HOURS = 2
 
 function createConversation(place, from, to, userId) {
   return new Promise((resolve, reject) => {
@@ -187,16 +189,19 @@ export default {
   requestRandomMeeting: (req, res, next) => {
     const date = req.body.date
     const where = {}
-
-    const earliestDate = dateFns.startOfHour(
-      dateFns.addHours(new Date(), MEETING_DATE_MINIMUM_TO_NOW_HOURS)
-    )
-
-    let from = earliestDate
+    let from
 
     if (date) {
       // meeting was requested with a date
-      if (dateFns.isBefore(date, earliestDate)) {
+      const isValidDate = (
+        process.env.NODE_ENV === 'production' ? isInFestivalRange(date) : true
+      )
+
+      const tresholdDate = dateFns.startOfHour(
+        dateFns.addHours(new Date(), DATE_MINIMUM_TO_NOW_HOURS)
+      )
+
+      if (!isValidDate || dateFns.isBefore(date, tresholdDate)) {
         next(
           new APIError(
             translate('api.errors.meeting.invalidDate'),
@@ -210,12 +215,15 @@ export default {
       where.from = from
     } else {
       // meeting was requested with any date
+      from = dateFns.startOfHour(
+        dateFns.addHours(new Date(), ANY_DATE_FROM_NOW_MIN_HOURS)
+      )
       where.from = {
-        $lt: earliestDate,
+        $lt: from,
       }
     }
 
-    const to = dateFns.addHours(from, MEETING_DURATION_HOURS)
+    const to = dateFns.addHours(from, DURATION_HOURS)
 
     return Meeting.findOne({
       where,

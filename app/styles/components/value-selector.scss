@@ -1,0 +1,12 @@
+.value-selector {
+  display: flex;
+
+  background-color: $black;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.value-selector__value {
+  text-transform: uppercase;
+}
