@@ -3,6 +3,7 @@ import Animal from '../models/animal'
 import User from '../models/user'
 
 import { sendActivityNotification } from '../helpers/mailTemplate'
+import { translate } from '../../common/services/i18n'
 
 function addActivity(data) {
   return new Promise((resolve, reject) => {
@@ -18,19 +19,12 @@ function sendMail(data) {
       .then(animal => {
         return User.findById(data.userId)
           .then(user => {
-            let subject = ''
-            let message = ''
-
-            if (data.type === 'RECEIVED_MESSAGE') {
-              subject = 'YOU RECEIVED A NEW MESSAGE'
-              message = `${animal.name} sent you a message on the platform!`
-            } else if (data.type === 'RECEIVED_REQUEST') {
-              subject = 'YOU RECEIVED A REQUEST'
-              message = `${animal.name} requests your ${data.objectType} "${data.objectTitle}" for an event!`
-            } else if (data.type === 'RANDOM_MEETING_JOINED') {
-              subject = 'YOU JOINED A RANDOM MEETING'
-              message = 'You joined a random meeting!\n\nA conversation related to this random meeting was just openend in your inbox, check it on the platform for further details about time and place.\n\nThere you can start the dialogue with other attending participants you might eventually meet soon <3'
-            }
+            const subject = translate(`api.activityMails.${data.type}.subject`)
+            const message = translate(`api.activityMails.${data.type}.message`, {
+              name: animal.name,
+              objectTitle: data.objectTitle,
+              objectType: data.objectType,
+            })
 
             const locals = {
               message,
