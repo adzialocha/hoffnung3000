@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { asInfiniteListItem, withAuthState } from '../containers'
-import { formatEventTime } from '../utils/dateFormat'
+import { formatEventTime } from '../../../common/utils/dateFormat'
 
 class CuratedEventListItem extends Component {
   static propTypes = {

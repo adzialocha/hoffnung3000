@@ -9,7 +9,7 @@ function addSlotDuration(date, slotSize) {
   return dateFns.addMinutes(date, slotSize)
 }
 
-function isInFestivalRange(date) {
+export function isInFestivalRange(date) {
   return dateFns.isWithinRange(
     date,
     config.festivalDateStart,

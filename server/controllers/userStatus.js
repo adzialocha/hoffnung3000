@@ -33,6 +33,13 @@ function getUnreadMessageCount(req) {
       }],
     })
       .then(messages => {
+        const isDateGiven = req.query.lastRequestAt
+
+        const lastRequestAt = isDateGiven ? new Date(
+          parseInt(req.query.lastRequestAt, 10)
+        ) : new Date()
+
+        // check for unread messages
         const unreadMessages = messages.rows.filter(message => {
           const animalMe = message.conversation.animals[0]
           const lastCheckedAt = animalMe.conversationsAnimals.updatedAt
@@ -47,7 +54,20 @@ function getUnreadMessageCount(req) {
           )
         })
 
+        // check for unread messages since the last time we looked at it
+        const latestMessages = unreadMessages.filter(message => {
+          return dateFns.isBefore(
+            lastRequestAt,
+            message.createdAt
+          )
+        })
+
+        const hasNewMessages = (
+          isDateGiven ? latestMessages.length > 0 : unreadMessages.length > 0
+        )
+
         resolve({
+          hasNewMessages,
           unreadMessagesCount: unreadMessages.length,
         })
       })

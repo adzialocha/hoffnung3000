@@ -9,6 +9,7 @@ import form from './form'
 import imageUpload from './imageUpload'
 import inbox from './inbox'
 import infiniteList from './infiniteList'
+import meeting from './meeting'
 import meta from './meta'
 import page from './page'
 import paginatedList from './paginatedList'
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   imageUpload,
   inbox,
   infiniteList,
+  meeting,
   meta,
   page,
   paginatedList,

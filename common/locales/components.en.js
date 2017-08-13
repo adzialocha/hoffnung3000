@@ -52,13 +52,17 @@ export default {
     logoutButton: 'Logout',
     profileButton: 'Profile',
     randomMeetingTitle: 'Random meetings',
-    requestRandomMeetingButton: 'Request random meeting',
+    randomMeetingDescription: 'Randomly meet other participants at a random place today',
     signUpButton: 'Register as participant',
     signUpHeader: 'We invite all activists, artists, theoreticians, performers, musicians, hackers and everyone else to register.',
     startDocumentationButton: 'Start documentation',
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
     welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
+  },
+  sidebarRandomMeeting: {
+    anytime: 'Anytime',
+    requestButton: 'Request random meeting',
   },
   slotEditor: {
     slotsHaveToBeInClosedOrder: 'Please select your slots in a closed order',
@@ -135,6 +139,9 @@ export default {
         resource: 'deleted a resource "{objectTitle}"',
       },
       RECEIVED_MESSAGE: 'sent you a message',
+      JOIN_RANDOM_MEETING: 'joined your random meeting',
+      JOIN_RANDOM_MEETING_ME: 'You joined a random meeting',
+      CREATE_RANDOM_MEETING: 'You created a random meeting',
     },
     link: {
       event: 'See event',

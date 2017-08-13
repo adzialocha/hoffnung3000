@@ -15,6 +15,10 @@ class UserStatusUpdater extends Component {
   }
 
   static defaultProps = {
+    lastRequestAt: undefined,
+  }
+
+  static defaultProps = {
     isWithInterval: false,
   }
 

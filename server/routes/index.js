@@ -19,6 +19,7 @@ import userStatusController from '../controllers/userStatus'
 import authRoutes from './auth'
 import conversationRoutes from './conversation'
 import eventRoutes from './event'
+import meetingRoutes from './meeting'
 import pageRoutes from './page'
 import placeRoutes from './place'
 import profileRoutes from './profile'
@@ -67,6 +68,7 @@ router.use('/*', (req, res, next) => {
 
 router.use('/conversations', conversationRoutes)
 router.use('/events', eventRoutes)
+router.use('/meeting', meetingRoutes)
 router.use('/places', placeRoutes)
 router.use('/profile', profileRoutes)
 router.use('/resources', resourceRoutes)

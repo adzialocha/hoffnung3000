@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { asFormField } from '../containers'
 import { fetchSlots } from '../actions/slots'
-import { formatEventTime } from '../utils/dateFormat'
+import { formatEventTime } from '../../../common/utils/dateFormat'
 import { generateNewSlotItems, getSlotWithIndex } from '../../../common/utils/slots'
 import {
   CuratedPlaceListItem,

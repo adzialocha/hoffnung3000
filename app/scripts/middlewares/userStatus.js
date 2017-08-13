@@ -11,15 +11,7 @@ export default store => next => action => {
   }
 
   if (action.type === ActionTypes.USER_STATUS_SUCCESS) {
-    const state = store.getState()
-    const unreadMessagesCount = action.payload.unreadMessagesCount
-
-    const hasUnreadMessages = unreadMessagesCount > 0
-    const hasChanged = (
-      unreadMessagesCount > state.userStatus.unreadMessagesCount
-    )
-
-    if (hasUnreadMessages && hasChanged) {
+    if (action.payload.hasNewMessages) {
       store.dispatch(flash({
         text: translate('flash.notificationNewMessages', {
           count: action.payload.unreadMessagesCount,

@@ -2,9 +2,20 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Drawer, SidebarToggle, SidebarActivity } from './'
+import {
+  Drawer,
+  SidebarActivity,
+  SidebarRandomMeeting,
+  SidebarToggle,
+} from './'
+
 import { translate } from '../../../common/services/i18n'
-import { withAuthState, withDrawerState, withUserStatus } from '../containers'
+
+import {
+  withAuthState,
+  withDrawerState,
+  withUserStatus,
+} from '../containers'
 
 class Sidebar extends Component {
   static propTypes = {
@@ -94,6 +105,12 @@ class Sidebar extends Component {
           { this.renderActivity() }
           <br />
           { this.renderInbox() }
+          <hr className="separator separator--white" />
+          <h5 className="sidebar__title">
+            { translate('components.sidebar.randomMeetingTitle') }
+          </h5>
+          <p>{ translate('components.sidebar.randomMeetingDescription' )}</p>
+          <SidebarRandomMeeting />
           <hr className="separator separator--white" />
         </section>
       )

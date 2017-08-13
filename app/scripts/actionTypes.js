@@ -59,6 +59,10 @@ export default keyMirror({
   PAGINATED_LIST_REQUEST: null,
   PAGINATED_LIST_SUCCESS: null,
 
+  RANDOM_MEETING_FAILURE: null,
+  RANDOM_MEETING_REQUEST: null,
+  RANDOM_MEETING_SUCCESS: null,
+
   REDIRECT: null,
   REPLACE: null,
 

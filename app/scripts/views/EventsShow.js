@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
-import { formatEventTime } from '../utils/dateFormat'
+import { formatEventTime } from '../../../common/utils/dateFormat'
 import { ImageGallery, AnimalLink } from '../components'
 import { translate } from '../../../common/services/i18n'
 

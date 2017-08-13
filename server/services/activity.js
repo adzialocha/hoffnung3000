@@ -3,6 +3,7 @@ import Animal from '../models/animal'
 import User from '../models/user'
 
 import { sendActivityNotification } from '../helpers/mailTemplate'
+import { translate } from '../../common/services/i18n'
 
 function addActivity(data) {
   return new Promise((resolve, reject) => {
@@ -18,16 +19,12 @@ function sendMail(data) {
       .then(animal => {
         return User.findById(data.userId)
           .then(user => {
-            let subject = ''
-            let message = ''
-
-            if (data.type === 'RECEIVED_MESSAGE') {
-              subject = 'YOU RECEIVED A NEW MESSAGE'
-              message = `${animal.name} sent you a message on the platform!`
-            } else if (data.type === 'RECEIVED_REQUEST') {
-              subject = 'YOU RECEIVED A REQUEST'
-              message = `${animal.name} requests your ${data.objectType} "${data.objectTitle}" for an event!`
-            }
+            const subject = translate(`api.activityMails.${data.type}.subject`)
+            const message = translate(`api.activityMails.${data.type}.message`, {
+              name: animal.name,
+              objectTitle: data.objectTitle,
+              objectType: data.objectType,
+            })
 
             const locals = {
               message,
@@ -105,9 +102,55 @@ export function addRequestPlaceActivity(data) {
   }
 
   return Promise.all([
-    sendMail(activity),
     addActivity(activity),
+    sendMail(activity),
   ])
+}
+
+export function addCreateMeetingActivity(data) {
+  const { place, animalId, userId } = data
+
+  // send a message to creating user
+  const activity = {
+    animalId,
+    objectId: place.id,
+    objectTitle: place.title,
+    objectType: 'place',
+    type: 'CREATE_RANDOM_MEETING',
+    userId,
+  }
+
+  return Promise.all([
+    addActivity(activity),
+    sendMail(activity),
+  ])
+}
+
+export function addJoinMeetingActivity(data) {
+  return new Promise((resolve, reject) => {
+    // send a message to all currently participating users
+    const activities = data.receivingAnimals.map(animal => {
+      return {
+        animalId: data.joiningAnimal.id,
+        userId: animal.userId,
+        type: 'JOIN_RANDOM_MEETING',
+      }
+    })
+
+    // send a message to joining user
+    const ownActivity = {
+      animalId: data.joiningAnimal.id,
+      type: 'JOIN_RANDOM_MEETING_ME',
+      userId: data.joiningAnimal.userId,
+    }
+
+    activities.push(ownActivity)
+
+    Activity.bulkCreate(activities)
+      .then(() => sendMails(activities))
+      .then(() => resolve())
+      .catch(err => reject(err))
+  })
 }
 
 export function addCreateActivity(data) {
