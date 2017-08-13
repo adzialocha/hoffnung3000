@@ -26,6 +26,7 @@ import uglify from 'gulp-uglify'
 const VENDOR_MODULES = [
   'classnames',
   'date-fns',
+  'gif-stream',
   'history',
   'immutability-helper',
   'isomorphic-fetch',

@@ -5,10 +5,12 @@ import { Link } from 'react-router-dom'
 import {
   Drawer,
   SidebarActivity,
+  SidebarGifStream,
   SidebarRandomMeeting,
   SidebarToggle,
 } from './'
 
+import config from '../../../common/config'
 import { translate } from '../../../common/services/i18n'
 
 import {
@@ -93,6 +95,42 @@ class Sidebar extends Component {
     )
   }
 
+  renderStream() {
+    if (!config.gifStreamServer) {
+      return null
+    }
+
+    return (
+      <div>
+        <hr className="separator separator--white" />
+        <h5 className="sidebar__title">
+          { translate('components.sidebar.gifStreamTitle') }
+        </h5>
+        <p>
+          { translate('components.sidebar.gifStreamDescription' )}
+          &nbsp;
+          <Link to="/stream">
+            { translate('components.sidebar.gifStreamLink' )}
+          </Link>
+        </p>
+        <SidebarGifStream />
+      </div>
+    )
+  }
+
+  renderRandomMeeting() {
+    return (
+      <div>
+        <hr className="separator separator--white" />
+        <h5 className="sidebar__title">
+          { translate('components.sidebar.randomMeetingTitle') }
+        </h5>
+        <p>{ translate('components.sidebar.randomMeetingDescription' )}</p>
+        <SidebarRandomMeeting />
+      </div>
+    )
+  }
+
   renderAuthenticatedContent() {
     const { isActive, isParticipant, isAdmin } = this.props
 
@@ -105,12 +143,8 @@ class Sidebar extends Component {
           { this.renderActivity() }
           <br />
           { this.renderInbox() }
-          <hr className="separator separator--white" />
-          <h5 className="sidebar__title">
-            { translate('components.sidebar.randomMeetingTitle') }
-          </h5>
-          <p>{ translate('components.sidebar.randomMeetingDescription' )}</p>
-          <SidebarRandomMeeting />
+          { this.renderStream() }
+          { this.renderRandomMeeting() }
           <hr className="separator separator--white" />
         </section>
       )
