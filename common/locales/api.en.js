@@ -10,9 +10,9 @@ export default {
       userNotExisting: 'User does not exist',
     },
     meeting: {
-      alreadyJoined: 'You already joined a meeting during the given time',
+      alreadyJoined: 'You already joined a meeting during this date',
       invalidDate: 'The date is too soon or already in the past',
-      noPlaceFound: 'Could not find a usable place during the given time',
+      noPlaceFound: 'Sorry, we could not find a place for you during the given date',
     },
   },
   activityMails: {
@@ -26,11 +26,11 @@ export default {
     },
     CREATE_RANDOM_MEETING: {
       subject: 'YOU CREATED A RANDOM MEETING',
-      message: 'You created a random meeting!\n\nA conversation related to this random meeting was just openend in your inbox, check it on the platform.\n\nThere you can start the dialogue with other attending participants you might eventually meet soon <3',
+      message: 'You created a random meeting! You can wait now for other participants who might join in!\n\nA conversation related to this random meeting was just openend in your inbox, check it on the platform.\n\nThere you can start the dialogue with other attending participants you might eventually meet soon <3',
     },
     JOIN_RANDOM_MEETING: {
       subject: 'YOU JOINED A RANDOM MEETING',
-      message: 'You joined a random meeting!\n\nA conversation related to this random meeting was just openend in your inbox, check it on the platform for further details about time and place.\n\nThere you can start the dialogue with other attending participants you might eventually meet soon <3',
+      message: 'You joined a random meeting!\n\nA conversation related to this random meeting was just openend in your inbox, check it on the platform for further details like time and place.\n\nThere you can start the dialogue with other attending participants you might eventually meet soon <3',
     },
   },
   products: {
@@ -38,7 +38,7 @@ export default {
     ticket: 'Festival ticket',
   },
   meeting: {
-    createMessageText: '{name} created a random meeting at {placeTitle} {date}',
+    createMessageText: '{name} created a random meeting at {placeTitle} on {date}.\n\nThis conversation is your tool where you can prepare and organize yourself for the final rendevous.\n\nDrink a beer, start a band or a revolution, have a passionate debate or fall in love with each other - even in virtual places.',
     createMessageTitle: 'Random meeting {date} @ {placeTitle}',
     joinMessageText: '{name} joins the random meeting!',
   },
