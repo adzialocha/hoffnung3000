@@ -52,7 +52,7 @@ export default {
     logoutButton: 'Logout',
     profileButton: 'Profile',
     randomMeetingTitle: 'Random meetings',
-    randomMeetingDescription: 'Randomly meet other participants at a random place',
+    randomMeetingDescription: 'Randomly meet other participants at a random place today',
     signUpButton: 'Register as participant',
     signUpHeader: 'We invite all activists, artists, theoreticians, performers, musicians, hackers and everyone else to register.',
     startDocumentationButton: 'Start documentation',
