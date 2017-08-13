@@ -1,0 +1,46 @@
+.gif-stream {
+  position: fixed;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  z-index: map-get($z-index, "gif-stream");
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  background-color: $white;
+}
+
+.gif-stream__container {
+  display: flex;
+
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.gif-stream__image {
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  opacity: 0;
+
+  transition: opacity .2s linear;
+
+  flex: 1;
+}
+
+.gif-stream__image--ready {
+  opacity: 1;
+}
+
+.gif-stream__button {
+  margin: 50px auto;
+}
