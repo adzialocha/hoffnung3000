@@ -138,14 +138,14 @@ export function addJoinMeetingActivity(data) {
       return {
         animalId: data.joiningAnimal.id,
         userId: animal.userId,
-        type: 'RANDOM_MEETING_JOINED',
+        type: 'JOIN_RANDOM_MEETING',
       }
     })
 
     // send a message to joining user
     const ownActivity = {
       animalId: data.joiningAnimal.id,
-      type: 'JOIN_RANDOM_MEETING',
+      type: 'JOIN_RANDOM_MEETING_ME',
       userId: data.joiningAnimal.userId,
     }
 

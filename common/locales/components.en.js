@@ -138,6 +138,9 @@ export default {
         resource: 'deleted a resource "{objectTitle}"',
       },
       RECEIVED_MESSAGE: 'sent you a message',
+      JOIN_RANDOM_MEETING: 'joined your random meeting',
+      JOIN_RANDOM_MEETING_ME: 'You joined a random meeting',
+      CREATE_RANDOM_MEETING: 'You created a random meeting',
     },
     link: {
       event: 'See event',

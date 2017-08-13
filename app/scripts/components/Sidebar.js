@@ -111,6 +111,7 @@ class Sidebar extends Component {
           </h5>
           <p>{ translate('components.sidebar.randomMeetingDescription' )}</p>
           <SidebarRandomMeeting />
+          <hr className="separator separator--white" />
         </section>
       )
     }

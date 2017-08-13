@@ -6,12 +6,28 @@ import { Link } from 'react-router-dom'
 import { AnimalLink } from './'
 import { translate } from '../../../common/services/i18n'
 
+const INBOX_ACTIVITY_TYPES = [
+  'CREATE_RANDOM_MEETING',
+  'JOIN_RANDOM_MEETING',
+  'JOIN_RANDOM_MEETING_ME',
+  'RECEIVED_MESSAGE',
+]
+
+const NO_ANIMAL_TYPES = [
+  'CREATE_RANDOM_MEETING',
+  'JOIN_RANDOM_MEETING_ME',
+]
+
 class ActivityListItem extends Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
   }
 
   renderAnimal() {
+    if (NO_ANIMAL_TYPES.includes(this.props.item.type)) {
+      return null
+    }
+
     if (!this.props.item.animal) {
       return (
         <span className="activity-list-item__part">
@@ -31,7 +47,7 @@ class ActivityListItem extends Component {
     const { type, objectType, event, object } = this.props.item
 
     let localeKey = `components.activityListItem.activity.${type}.${objectType}`
-    if (type === 'RECEIVED_MESSAGE') {
+    if (INBOX_ACTIVITY_TYPES.includes(type)) {
       localeKey = `components.activityListItem.activity.${type}`
     } else if (type === 'RECEIVED_REQUEST' && !event) {
       localeKey = `components.activityListItem.activity.${type}.${objectType}Deleted`
@@ -64,7 +80,7 @@ class ActivityListItem extends Component {
   renderLink() {
     const { objectType, type } = this.props.item
 
-    if (type === 'RECEIVED_MESSAGE') {
+    if (INBOX_ACTIVITY_TYPES.includes(type)) {
       return (
         <Link to="/inbox">
           { translate('components.activityListItem.link.message') }
