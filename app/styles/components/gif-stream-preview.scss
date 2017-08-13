@@ -5,7 +5,6 @@
   margin-bottom: 15px;
 
   align-items: center;
-  justify-content: space-between;
 }
 
 .gif-stream-preview__image {
@@ -13,4 +12,8 @@
   height: 50px;
 
   flex: 0;
+
+  + .gif-stream-preview__image {
+    margin-left: 5px;
+  }
 }
