@@ -48,6 +48,7 @@
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-import": "2.7.0",
     "eslint-plugin-react": "7.1.0",
+    "gif-stream": "git+https://github.com/adzialocha/gif-stream.git",
     "gulp": "3.9.1",
     "gulp-autoprefixer": "4.0.0",
     "gulp-clean-css": "3.7.0",

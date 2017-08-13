@@ -1,0 +1,16 @@
+.gif-stream-preview {
+  display: flex;
+
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gif-stream-preview__image {
+  width: 50px;
+  height: 50px;
+
+  flex: 0;
+}

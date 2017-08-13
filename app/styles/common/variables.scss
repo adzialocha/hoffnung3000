@@ -24,9 +24,9 @@ $page-margin-mobile: 18px;
 
 $z-index: (
   header: 3000,
-  flash-message-stage: 4000,
   navigation-overlay: 5000,
   drawer: 10000,
+  flash-message-stage: 12000,
   navigation-toggle: 15000,
   react-modal: 20000,
 );
