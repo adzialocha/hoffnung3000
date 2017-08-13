@@ -102,8 +102,8 @@ export function addRequestPlaceActivity(data) {
   }
 
   return Promise.all([
-    sendMail(activity),
     addActivity(activity),
+    sendMail(activity),
   ])
 }
 
@@ -122,6 +122,7 @@ export function addCreateMeetingActivity(data) {
 
   return Promise.all([
     addActivity(activity),
+    sendMail(activity),
   ])
 }
 
