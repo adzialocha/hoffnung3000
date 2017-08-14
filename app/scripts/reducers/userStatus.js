@@ -11,6 +11,13 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+  case ActionTypes.AUTH_TOKEN_EXPIRED_OR_INVALID:
+  case ActionTypes.AUTH_LOGOUT:
+    return update(state, {
+      lastRequestAt: { $set: undefined },
+      latestActivities: [],
+      unreadMessagesCount: 0,
+    })
   case ActionTypes.USER_STATUS_REQUEST:
     return update(state, {
       isLoading: { $set: true },
