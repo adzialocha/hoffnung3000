@@ -15,7 +15,7 @@ export default {
   formSubmitError: 'Some information is missing, please check the form again!',
   gifStreamError: 'Sorry, .gif streaming is not possible. Please check your webcam permissions or try on a different device.',
   gifStreamErrorIOS: 'Sorry, .gif streaming is not available on iOS, use another device instead (your laptop for example). If you think Apple is the future: it\'s not, HOFFNUNG 3000 is! :-)',
-  gifStreamStarted: 'And action! .gif streaming started now!',
+  gifStreamStarted: 'Aaaaand action! .gif streaming started now!',
   gifStreamStopped: '.gif streaming stopped!',
   loginSuccess: 'Welcome!',
   logout: 'Goodbye! See you soon!',
