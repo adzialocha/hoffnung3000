@@ -17,7 +17,7 @@ const DATE_VALUES = [
   },
 ]
 
-for (let value = 0; value < 24; value += 1) {
+for (let value = 1; value < 25; value += 1) {
   const label = value < 10 ? `0${value}:00` : `${value}:00`
   DATE_VALUES.push({ value, label })
 }
