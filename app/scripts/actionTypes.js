@@ -83,9 +83,6 @@ export default keyMirror({
   SLOTS_REQUEST: null,
   SLOTS_SUCCESS: null,
 
-  STREAM_START: null,
-  STREAM_STOP: null,
-
   UPLOAD_IMAGE_CLEAR: null,
   UPLOAD_IMAGE_FAILURE: null,
   UPLOAD_IMAGE_REMOVE_IMAGE: null,
