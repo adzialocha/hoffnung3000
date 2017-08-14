@@ -1,3 +1,4 @@
+import marked from 'marked'
 import moment from 'moment-timezone'
 
 import {
@@ -33,6 +34,8 @@ function prepareResponse(message, req) {
   } else {
     response.isRead = moment(lastCheckedAt).isAfter(response.createdAt)
   }
+
+  response.textHtml = marked(response.text)
 
   if (response.animal) {
     response.animal = prepareAnimalResponse(response.animal)

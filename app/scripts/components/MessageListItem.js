@@ -28,9 +28,10 @@ class MessageListItem extends Component {
     return (
       <div className="list-item-content">
         { this.renderDateAndSender() }
-        <div className="list-item-content__description list-item-content__description--message">
-          { this.props.item.text }
-        </div>
+        <div
+          className="markdown"
+          dangerouslySetInnerHTML={ { __html: this.props.item.textHtml } }
+        />
       </div>
     )
   }
