@@ -11,9 +11,7 @@ class MessageListItem extends Component {
   }
 
   renderDateAndSender() {
-    const dateStr = moment(lastSlot.to).format(
-      'DD.MM.YY HH:mm'
-    )
+    const dateStr = moment(this.props.item.createdAt).format('DD.MM.YY HH:mm')
 
     return (
       <div className="list-item-content__title ellipsis">
