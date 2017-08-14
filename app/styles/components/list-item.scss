@@ -1,5 +1,5 @@
 $_list-item-height: 150px;
-$_list-item-mobile-height: 150px;
+$_list-item-mobile-height: 120px;
 
 .list-item {
   display: flex;
@@ -38,10 +38,6 @@ $_list-item-mobile-height: 150px;
 }
 
 @include media-breakpoint(xs) {
-  .list-item {
-    height: $_list-item-mobile-height;
-  }
-
   .list-item--half {
     height: auto;
 

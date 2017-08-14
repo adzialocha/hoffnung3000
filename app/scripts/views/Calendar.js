@@ -31,8 +31,6 @@ class Calendar extends Component {
     if (!this.props.isAuthenticated || !this.props.isActive) {
       return (
         <WrappedInfiniteList
-          className="infinite-list-container--half-items"
-          listItemClassName="list-item--half"
           resourceName="preview"
         />
       )
@@ -40,8 +38,6 @@ class Calendar extends Component {
 
     return (
       <WrappedInfiniteList
-        className="infinite-list-container--half-items"
-        listItemClassName="list-item--half"
         resourceName="events"
         onClick={this.onClick}
         onEditClick={this.onEditClick}
