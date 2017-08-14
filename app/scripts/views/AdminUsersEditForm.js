@@ -1,3 +1,4 @@
+import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -38,13 +39,18 @@ class AdminUsersEditForm extends Component {
       return null
     }
 
+    const DATE_FORMAT = 'DD.MM.YYYY hh:mm:ss'
+
+    const createdAt = moment(this.props.resourceData.createdAt)
+    const updatedAt = moment(this.props.resourceData.updatedAt)
+
     return (
       <div className="left">
         <hr />
         <code>
           ID: { this.props.resourceData.id }<br />
-          Created at: { this.props.resourceData.createdAt }<br />
-          Updated at: { this.props.resourceData.updatedAt }<br />
+          Created at: { createdAt.format(DATE_FORMAT) }<br />
+          Updated at: { updatedAt.format(DATE_FORMAT) }<br />
           Payment Method: { this.props.resourceData.paymentMethod }<br />
           Payment ID: { this.props.resourceData.paymentId }
         </code>
