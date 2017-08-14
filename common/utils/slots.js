@@ -12,7 +12,9 @@ function addSlotDuration(date, slotSize) {
 export function isInFestivalRange(date) {
   return moment(date).isBetween(
     config.festivalDateStart,
-    config.festivalDateEnd
+    config.festivalDateEnd,
+    null,
+    '[]'
   )
 }
 
