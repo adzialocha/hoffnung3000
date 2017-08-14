@@ -24,8 +24,8 @@
 .gif-stream__spinner {
   position: fixed;
 
-  right: 0;
   top: 50%;
+  right: 0;
   left: 0;
 
   text-align: center;
@@ -51,6 +51,6 @@
   opacity: 1;
 }
 
-.gif-stream__button {
-  margin: 50px auto;
+.gif-stream__buttons {
+  margin: 30px auto;
 }

@@ -14,22 +14,13 @@ function fetchStream(marker) {
   return new Promise((resolve, reject) => {
     fetch(`${config.gifStreamServer}/api/stream${markerStr}`)
       .then(response => {
-        const contentType = response.headers.get('content-type')
-        if (contentType && contentType.includes('application/json')) {
-          response.json().then(json => {
-            if (response.status !== 200) {
-              reject(json)
-            } else {
-              resolve(json)
-            }
-          })
+        if (response.status === 200) {
+          response.json().then(json => resolve(json))
         } else {
           reject()
         }
       })
-      .catch(error => {
-        reject(error)
-      })
+      .catch(error => reject(error))
   })
 }
 
@@ -74,26 +65,38 @@ class Stream extends Component {
     })
   }
 
-  render() {
+  renderButtons() {
+    if (this.state.isLoading && this.state.images.length === 0) {
+      return null
+    }
+
     return (
-      <div className="gif-stream">
-        <div className="gif-stream__container">
-          { this.renderImages() }
-        </div>
+      <div className="gif-stream__buttons">
         <button
-          className="button gif-stream__button"
+          className="button"
           disabled={!this.state.nextMarker || this.state.isLoading}
           onClick={this.onClick}
         >
           { translate('views.stream.loadOlderImagesButton') }
         </button>
         <button
-          className="button button--blue gif-stream__button"
+          className="button button--blue"
           disabled={this.state.isLoading}
           onClick={this.onUpdateClick}
         >
           { translate('views.stream.updateButton') }
         </button>
+      </div>
+    )
+  }
+
+  render() {
+    return (
+      <div className="gif-stream">
+        <div className="gif-stream__container">
+          { this.renderImages() }
+        </div>
+        { this.renderButtons() }
         { this.renderSpinner() }
       </div>
     )
