@@ -50,6 +50,18 @@ class Stream extends Component {
     this.next(true)
   }
 
+  renderSpinner() {
+    if (!this.state.isLoading) {
+      return null
+    }
+
+    return (
+      <div className="gif-stream__spinner">
+        { translate('common.loading') }
+      </div>
+    )
+  }
+
   renderImages() {
     return this.state.images.map((image, index) => {
       return (
@@ -82,6 +94,7 @@ class Stream extends Component {
         >
           { translate('views.stream.updateButton') }
         </button>
+        { this.renderSpinner() }
       </div>
     )
   }

@@ -14,6 +14,10 @@ const include = [{
 }]
 
 export function prepareAnimalResponse(animal) {
+  if (!animal) {
+    return null
+  }
+
   const { id, name } = animal
 
   return {

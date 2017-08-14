@@ -21,6 +21,16 @@
   justify-content: center;
 }
 
+.gif-stream__spinner {
+  position: fixed;
+
+  right: 0;
+  top: 50%;
+  left: 0;
+
+  text-align: center;
+}
+
 .gif-stream__image {
   width: 100px;
   min-width: 100px;
