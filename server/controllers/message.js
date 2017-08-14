@@ -1,4 +1,5 @@
-import dateFns from 'date-fns'
+import marked from 'marked'
+import moment from 'moment-timezone'
 
 import {
   DEFAULT_LIMIT,
@@ -12,7 +13,7 @@ import pick from '../utils/pick'
 import ConversationAnimal from '../models/conversationAnimal'
 import Message from '../models/message'
 import { addMessageActivity } from '../services/activity'
-import { MessageBelongsToAnimal} from '../database/associations'
+import { MessageBelongsToAnimal } from '../database/associations'
 
 const permittedFields = [
   'text',
@@ -31,11 +32,10 @@ function prepareResponse(message, req) {
   if (response.animal.id === animalMe.id) {
     response.isRead = true
   } else {
-    response.isRead = dateFns.isAfter(
-      lastCheckedAt,
-      response.createdAt
-    )
+    response.isRead = moment(lastCheckedAt).isAfter(response.createdAt)
   }
+
+  response.textHtml = marked(response.text)
 
   if (response.animal) {
     response.animal = prepareAnimalResponse(response.animal)

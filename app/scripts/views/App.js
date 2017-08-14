@@ -18,7 +18,7 @@ class App extends Component {
     return (
       <div className="wrapper" role="application">
         <Header />
-        <UserStatusUpdater />
+        <UserStatusUpdater isWithInterval={true} />
         <FlashMessageStage />
         <Navigation />
         { this.props.children }

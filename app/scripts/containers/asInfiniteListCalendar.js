@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -100,13 +100,9 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       return listItems.map((item, index) => {
         const previousItem = index > 0 ? listItems[index - 1] : null
 
-        const dateA = dateFns.parse(item.slots[0].from)
-        const dateB = previousItem && dateFns.parse(previousItem.slots[0].from)
-
-        const isSameDay = previousItem ? dateFns.isSameDay(
-          dateA,
-          dateB,
-        ) : false
+        const dateA = moment(item.slots[0].from)
+        const dateB = previousItem && moment(previousItem.slots[0].from)
+        const isSameDay = previousItem ? moment(dateA).isSame(dateB, 'date') : false
 
         const itemComponent = (
           <div
@@ -127,7 +123,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
             key={`header-${index}`}
           >
             <h2 className="infinite-list-container__heading">
-              { dateFns.format(item.slots[0].from, 'DD.MM.YY') }
+              { moment(item.slots[0].from).format('DD.MM.YY') }
             </h2>
             { index > 0 ? <hr /> : null }
           </div>

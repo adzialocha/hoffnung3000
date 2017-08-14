@@ -2,9 +2,22 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Drawer, SidebarToggle, SidebarActivity } from './'
+import {
+  Drawer,
+  SidebarActivity,
+  SidebarGifStream,
+  SidebarRandomMeeting,
+  SidebarToggle,
+} from './'
+
+import config from '../../../common/config'
 import { translate } from '../../../common/services/i18n'
-import { withAuthState, withDrawerState, withUserStatus } from '../containers'
+
+import {
+  withAuthState,
+  withDrawerState,
+  withUserStatus,
+} from '../containers'
 
 class Sidebar extends Component {
   static propTypes = {
@@ -82,6 +95,42 @@ class Sidebar extends Component {
     )
   }
 
+  renderStream() {
+    if (!config.gifStreamServer) {
+      return null
+    }
+
+    return (
+      <div>
+        <hr className="separator separator--white" />
+        <h5 className="sidebar__title">
+          { translate('components.sidebar.gifStreamTitle') }
+        </h5>
+        <p>
+          { translate('components.sidebar.gifStreamDescription' )}
+          &nbsp;
+          <Link to="/stream">
+            { translate('components.sidebar.gifStreamLink' )}
+          </Link>
+        </p>
+        <SidebarGifStream />
+      </div>
+    )
+  }
+
+  renderRandomMeeting() {
+    return (
+      <div>
+        <hr className="separator separator--white" />
+        <h5 className="sidebar__title">
+          { translate('components.sidebar.randomMeetingTitle') }
+        </h5>
+        <p>{ translate('components.sidebar.randomMeetingDescription' )}</p>
+        <SidebarRandomMeeting />
+      </div>
+    )
+  }
+
   renderAuthenticatedContent() {
     const { isActive, isParticipant, isAdmin } = this.props
 
@@ -94,6 +143,8 @@ class Sidebar extends Component {
           { this.renderActivity() }
           <br />
           { this.renderInbox() }
+          { this.renderStream() }
+          { this.renderRandomMeeting() }
           <hr className="separator separator--white" />
         </section>
       )

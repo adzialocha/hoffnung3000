@@ -18,7 +18,7 @@ class SidebarActivity extends Component {
   }
 
   render() {
-    if (this.props.isLoading) {
+    if (this.props.isLoading && this.props.latestActivities.length === 0) {
       return <p>{ translate('common.loading') }</p>
     }
 

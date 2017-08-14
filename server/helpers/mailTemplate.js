@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import winston from 'winston'
 
 import config from '../../common/config'
 import mail from '../services/mail'
@@ -47,6 +48,11 @@ function sendMail(locals, subject, receiver, templateName, sender) {
 
         if (sender) {
           mailOptions.from = sender
+        }
+
+        if (process.env.NODE_ENV === 'development') {
+          winston.info('SEND MAIL', mailOptions)
+          return resolve()
         }
 
         return mail.sendMail(mailOptions, (err) => {

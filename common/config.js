@@ -11,6 +11,7 @@ function integer(str, fallback) {
 }
 
 const config = {
+  timezone: process.env.CONFIG_TIMEZONE || 'Europe/Berlin',
   title: process.env.CONFIG_TITLE,
   description: process.env.CONFIG_DESCRIPTION,
   basePath: process.env.CONFIG_URL,
@@ -31,6 +32,7 @@ const config = {
     tutorial: process.env.CONFIG_VIDEO_TUTORIAL || 'ux2R9jwEIgw',
   },
   googleMapApiKey: process.env.GOOGLE_MAP_API_KEY,
+  gifStreamServer: process.env.GIF_STREAM_SERVER,
   festivalDateStart: process.env.CONFIG_FESTIVAL_DATE_START || '2017-08-24T00:00:00.000+02:00',
   festivalDateEnd: process.env.CONFIG_FESTIVAL_DATE_START || '2017-08-27T00:00:00.000+02:00',
   defaultCity: process.env.CONFIG_DEFAULT_CITY || 'Berlin',

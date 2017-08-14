@@ -1,12 +1,24 @@
 # HOFFNUNG 3000
 
-Platform for decentralized, self-curated festivals.
+Platform for decentralized, anonymized, self-curated festivals.
+
+```
+Conversation.belongsToMany(Animal, {
+  as: 'animals',
+  foreignKey: 'conversationId',
+  through: 'conversationsAnimals',
+})
+```
 
 ## Requirements
 
-* node
-* npm
-* running database (postgres recommended)
+* Node and npm
+* PostgreSQL Database
+* Google Map API key
+* AWS S3 Cloud Storage
+* PayPal Account for payment
+* Mail-Server (SMTP)
+* [gif-stream-server](https://github.com/adzialocha/gif-stream-server) (optional)
 
 ## Setup
 
@@ -41,3 +53,11 @@ npm run build // compile assets for production
 ```
 
 Note that `NPM_CONFIG_PRODUCTION` should be set to `false` for successful [Heroku deployment](https://devcenter.heroku.com/articles/nodejs-support#devdependencies).
+
+---
+
+#### About
+
+HOFFNUNG 3000 is a self-curated festival for music, art and theory developed and organized by [BLATT 3000](https://blatt3000.de) and Klangkeller, 24.-26.08.17 in Berlin - HOFFNUNG 3000 is an experiment in social, artistic and theoretical collaboration. Feel free to use the platform for your own festivals.
+
+https://hoffnung3000.de

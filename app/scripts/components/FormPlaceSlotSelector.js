@@ -1,11 +1,11 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { asFormField } from '../containers'
 import { fetchSlots } from '../actions/slots'
-import { formatEventTime } from '../utils/dateFormat'
+import { formatEventTime } from '../../../common/utils/dateFormat'
 import { generateNewSlotItems, getSlotWithIndex } from '../../../common/utils/slots'
 import {
   CuratedPlaceListItem,
@@ -164,8 +164,8 @@ class FormPlaceSlotSelector extends Component {
     )
 
     this.setState({
-      eventFromStr: dateFns.format(firstSlot.from),
-      eventToStr: dateFns.format(lastSlot.to),
+      eventFromStr: moment(firstSlot.from).format(),
+      eventToStr: moment(lastSlot.to).format(),
       selectedSlotsIndexes: slotIndexes,
     })
   }

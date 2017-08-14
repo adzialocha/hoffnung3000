@@ -51,10 +51,6 @@ class Navigation extends Component {
       </nav>
     )
   }
-
-  constructor(props) {
-    super(props)
-  }
 }
 
 export default withDrawerState(Navigation)

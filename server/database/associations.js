@@ -3,6 +3,7 @@ import Animal from '../models/animal'
 import Conversation from '../models/conversation'
 import Event from '../models/event'
 import Image from '../models/image'
+import Meeting from '../models/meeting'
 import Message from '../models/message'
 import ObjectImage from '../models/objectImage'
 import Place from '../models/place'
@@ -117,6 +118,11 @@ export const EventBelongsToManyImage = Event.belongsToMany(Image, {
   as: 'images',
   foreignKey: 'objectId',
   constraints: false,
+})
+
+export const MeetingBelongsToConversation = Meeting.belongsTo(Conversation, {
+  as: 'conversation',
+  foreignKey: 'conversationId',
 })
 
 export const MessageBelongsToAnimal = Message.belongsTo(Animal, {

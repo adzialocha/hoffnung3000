@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
@@ -11,10 +11,7 @@ class MessageListItem extends Component {
   }
 
   renderDateAndSender() {
-    const dateStr = dateFns.format(
-      this.props.item.createdAt,
-      'DD.MM.YY HH:mm'
-    )
+    const dateStr = moment(this.props.item.createdAt).format('DD.MM.YY HH:mm')
 
     return (
       <div className="list-item-content__title ellipsis">
@@ -31,9 +28,10 @@ class MessageListItem extends Component {
     return (
       <div className="list-item-content">
         { this.renderDateAndSender() }
-        <div className="list-item-content__description">
-          { this.props.item.text }
-        </div>
+        <div
+          className="markdown"
+          dangerouslySetInnerHTML={ { __html: this.props.item.textHtml } }
+        />
       </div>
     )
   }

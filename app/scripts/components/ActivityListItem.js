@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
@@ -6,12 +6,28 @@ import { Link } from 'react-router-dom'
 import { AnimalLink } from './'
 import { translate } from '../../../common/services/i18n'
 
+const INBOX_ACTIVITY_TYPES = [
+  'CREATE_RANDOM_MEETING',
+  'JOIN_RANDOM_MEETING',
+  'JOIN_RANDOM_MEETING_ME',
+  'RECEIVED_MESSAGE',
+]
+
+const NO_ANIMAL_TYPES = [
+  'CREATE_RANDOM_MEETING',
+  'JOIN_RANDOM_MEETING_ME',
+]
+
 class ActivityListItem extends Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
   }
 
   renderAnimal() {
+    if (NO_ANIMAL_TYPES.includes(this.props.item.type)) {
+      return null
+    }
+
     if (!this.props.item.animal) {
       return (
         <span className="activity-list-item__part">
@@ -31,7 +47,7 @@ class ActivityListItem extends Component {
     const { type, objectType, event, object } = this.props.item
 
     let localeKey = `components.activityListItem.activity.${type}.${objectType}`
-    if (type === 'RECEIVED_MESSAGE') {
+    if (INBOX_ACTIVITY_TYPES.includes(type)) {
       localeKey = `components.activityListItem.activity.${type}`
     } else if (type === 'RECEIVED_REQUEST' && !event) {
       localeKey = `components.activityListItem.activity.${type}.${objectType}Deleted`
@@ -56,7 +72,7 @@ class ActivityListItem extends Component {
       <span
         className="activity-list-item__part activity-list-item__part--emphasized"
       >
-        { dateFns.format(this.props.item.createdAt, 'DD.MM.YY HH:mm') }
+        { moment(this.props.item.createdAt).format('DD.MM.YY HH:mm') }
       </span>
     )
   }
@@ -64,7 +80,7 @@ class ActivityListItem extends Component {
   renderLink() {
     const { objectType, type } = this.props.item
 
-    if (type === 'RECEIVED_MESSAGE') {
+    if (INBOX_ACTIVITY_TYPES.includes(type)) {
       return (
         <Link to="/inbox">
           { translate('components.activityListItem.link.message') }

@@ -51,4 +51,9 @@ export default {
     messageTo: 'With',
     titlePlaceholder: 'Conversation',
   },
+  stream: {
+    error: 'Something went wrong with loading the .gif stream! Try it again later ...',
+    loadOlderImagesButton: 'Load more',
+    updateButton: 'Update',
+  },
 }

@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 
 import config from '../config'
 import { translate } from '../services/i18n'
@@ -6,12 +6,11 @@ import { translate } from '../services/i18n'
 const TIME_FORMAT = 'HH:mm'
 
 function addSlotDuration(date, slotSize) {
-  return dateFns.addMinutes(date, slotSize)
+  return moment(date).add(slotSize, 'minutes')
 }
 
-function isInFestivalRange(date) {
-  return dateFns.isWithinRange(
-    date,
+export function isInFestivalRange(date) {
+  return moment(date).isBetween(
     config.festivalDateStart,
     config.festivalDateEnd
   )
@@ -96,18 +95,18 @@ export function generateNewSlotItems(slotSize, existingSlots) {
   }
 
   let slotIndex = 0
-  let from = dateFns.parse(config.festivalDateStart)
+  let from = moment(config.festivalDateStart)
   let to = addSlotDuration(from, slotSize)
 
   while (isInFestivalRange(to)) {
     slotItems.push({
       eventId: existingSlotEventIdStates[slotIndex],
       from,
-      fromTimeStr: dateFns.format(from, TIME_FORMAT),
+      fromTimeStr: moment(from).format(TIME_FORMAT),
       isDisabled: existingSlotDisabledStates[slotIndex] || false,
       slotIndex,
       to,
-      toTimeStr: dateFns.format(to, TIME_FORMAT),
+      toTimeStr: moment(to).format(TIME_FORMAT),
     })
 
     slotIndex += 1
@@ -121,8 +120,8 @@ export function generateNewSlotItems(slotSize, existingSlots) {
 export function getSlotTimes(slotSize, slotIndex) {
   const date = config.festivalDateStart
   return {
-    from: dateFns.addMinutes(date, slotSize * slotIndex),
-    to: dateFns.addMinutes(date, slotSize * (slotIndex + 1)),
+    from: moment(date).add(slotSize * slotIndex, 'minutes'),
+    to: moment(date).add(slotSize * (slotIndex + 1), 'minutes'),
   }
 }
 
