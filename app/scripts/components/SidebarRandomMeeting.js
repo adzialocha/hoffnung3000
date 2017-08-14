@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
@@ -33,10 +33,8 @@ class SidebarRandomMeeting extends Component {
     if (this.state.selectedHour === undefined) {
       this.props.requestRandomMeeting()
     } else {
-      const date = dateFns.setHours(
-        dateFns.startOfToday(), this.state.selectedHour
-      )
-      this.props.requestRandomMeeting(date.toISOString())
+      const date = moment().startOf('day').add(this.state.selectedHour, 'hours')
+      this.props.requestRandomMeeting(date.format())
     }
   }
 

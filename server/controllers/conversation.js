@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 import httpStatus from 'http-status'
 
 import pick from '../utils/pick'
@@ -43,8 +43,7 @@ function prepareResponse(conversation, req) {
     if (response.lastMessage.animalId === animalMe.id) {
       response.isRead = true
     } else {
-      response.isRead = dateFns.isAfter(
-        lastCheckedAt,
+      response.isRead = moment(lastCheckedAt).isAfter(
         response.lastMessage.createdAt
       )
     }

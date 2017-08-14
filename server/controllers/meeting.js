@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 import httpStatus from 'http-status'
 
 import {
@@ -197,11 +197,11 @@ export default {
         process.env.NODE_ENV === 'production' ? isInFestivalRange(date) : true
       )
 
-      const tresholdDate = dateFns.startOfHour(
-        dateFns.addHours(new Date(), DATE_MINIMUM_TO_NOW_HOURS)
-      )
+      const tresholdDate = moment()
+        .startOf('hour')
+        .add(DATE_MINIMUM_TO_NOW_HOURS, 'hours')
 
-      if (!isValidDate || dateFns.isBefore(date, tresholdDate)) {
+      if (!isValidDate || moment(date).isBefore(tresholdDate)) {
         next(
           new APIError(
             translate('api.errors.meeting.invalidDate'),
@@ -211,19 +211,20 @@ export default {
         return null
       }
 
-      from = dateFns.startOfHour(date)
+      from = moment(date).startOf('hour')
       where.from = from
     } else {
       // meeting was requested with any date
-      from = dateFns.startOfHour(
-        dateFns.addHours(new Date(), ANY_DATE_FROM_NOW_MIN_HOURS)
-      )
+      from = moment()
+        .startOf('hour')
+        .add(ANY_DATE_FROM_NOW_MIN_HOURS, 'hours')
+
       where.from = {
         $gte: from,
       }
     }
 
-    const to = dateFns.addHours(from, DURATION_HOURS)
+    const to = moment(from).add(DURATION_HOURS, 'hours')
 
     return Meeting.findOne({
       where,

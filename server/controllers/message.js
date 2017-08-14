@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 
 import {
   DEFAULT_LIMIT,
@@ -31,10 +31,7 @@ function prepareResponse(message, req) {
   if (response.animal.id === animalMe.id) {
     response.isRead = true
   } else {
-    response.isRead = dateFns.isAfter(
-      lastCheckedAt,
-      response.createdAt
-    )
+    response.isRead = moment(lastCheckedAt).isAfter(response.createdAt)
   }
 
   if (response.animal) {

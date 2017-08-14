@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 
 import {
   MessageBelongsToConversation,
@@ -48,18 +48,12 @@ function getUnreadMessageCount(req) {
             return false
           }
 
-          return dateFns.isBefore(
-            lastCheckedAt,
-            message.createdAt
-          )
+          return moment(lastCheckedAt).isBefore(message.createdAt)
         })
 
         // check for unread messages since the last time we looked at it
         const latestMessages = unreadMessages.filter(message => {
-          return dateFns.isBefore(
-            lastRequestAt,
-            message.createdAt
-          )
+          return moment(lastRequestAt).isBefore(message.createdAt)
         })
 
         const hasNewMessages = (

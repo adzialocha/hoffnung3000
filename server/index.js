@@ -9,8 +9,11 @@ import helmet from 'helmet'
 import logger from 'morgan'
 import marked from 'marked'
 import methodOverride from 'method-override'
+import moment from 'moment-timezone'
 import path from 'path'
 import winston from 'winston'
+
+import config from '../common/config'
 
 const DEFAULT_PORT = 3000
 const ASSETS_MAX_AGE = 31557600000
@@ -43,6 +46,9 @@ marked.setOptions({
   smartypants: true,
   tables: false,
 })
+
+// moment settings
+moment.tz.setDefault(config.timezone)
 
 // check database connection
 const db = require('./database')

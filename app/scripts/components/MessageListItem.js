@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
@@ -11,8 +11,7 @@ class MessageListItem extends Component {
   }
 
   renderDateAndSender() {
-    const dateStr = dateFns.format(
-      this.props.item.createdAt,
+    const dateStr = moment(lastSlot.to).format(
       'DD.MM.YY HH:mm'
     )
 

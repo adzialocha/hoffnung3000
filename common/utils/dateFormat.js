@@ -1,19 +1,19 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 
 const DATE_FORMAT = 'ddd DD.MM.YY'
 const TIME_FORMAT = 'HH:mm'
 
 export function formatEventTime(from, to) {
-  const fromDateStr = dateFns.format(from, DATE_FORMAT)
-  const fromTimeStr = dateFns.format(from, TIME_FORMAT)
+  const fromDateStr = moment(from).format(DATE_FORMAT)
+  const fromTimeStr = moment(from).format(TIME_FORMAT)
 
   let toStr
 
-  if (dateFns.isSameDay(from, to)) {
-    toStr = dateFns.format(to, TIME_FORMAT)
+  if (moment(from).isSame(to, 'day')) {
+    toStr = moment(to).format(TIME_FORMAT)
   } else {
-    const toDateStr = dateFns.format(to, DATE_FORMAT)
-    const toTimeStr = dateFns.format(to, TIME_FORMAT)
+    const toDateStr = moment(to).format(DATE_FORMAT)
+    const toTimeStr = moment(to).format(TIME_FORMAT)
     toStr = `${toDateStr} - ${toTimeStr}`
   }
 

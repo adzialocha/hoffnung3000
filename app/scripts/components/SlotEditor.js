@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
@@ -84,7 +84,7 @@ class SlotEditor extends Component {
         className="slot-editor__day-header"
         key={`header-${index}`}
       >
-        { dateFns.format(item.from, 'dd DD.MM.YY') }
+        { moment(item.from).format('dd DD.MM.YY') }
       </div>
     )
   }
@@ -105,7 +105,7 @@ class SlotEditor extends Component {
   }
 
   renderSlotItemList(item, previousItem, index) {
-    if (!previousItem || !dateFns.isSameDay(item.from, previousItem.from)) {
+    if (!previousItem || !moment(item.from).isSame(previousItem.from, 'date')) {
       return [
         this.renderSlotDateHeader(item, index),
         this.renderSlotItem(item, index),

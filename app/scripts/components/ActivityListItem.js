@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
@@ -72,7 +72,7 @@ class ActivityListItem extends Component {
       <span
         className="activity-list-item__part activity-list-item__part--emphasized"
       >
-        { dateFns.format(this.props.item.createdAt, 'DD.MM.YY HH:mm') }
+        { moment(this.props.item.createdAt).format('DD.MM.YY HH:mm') }
       </span>
     )
   }

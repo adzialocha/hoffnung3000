@@ -11,6 +11,7 @@ function integer(str, fallback) {
 }
 
 const config = {
+  timezone: process.env.CONFIG_TIMEZONE || 'Europe/Berlin',
   title: process.env.CONFIG_TITLE,
   description: process.env.CONFIG_DESCRIPTION,
   basePath: process.env.CONFIG_URL,

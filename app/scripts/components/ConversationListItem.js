@@ -1,4 +1,4 @@
-import dateFns from 'date-fns'
+import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
@@ -10,8 +10,7 @@ class ConversationListItem extends Component {
   }
 
   renderDate() {
-    const dateStr = dateFns.format(
-      this.props.item.lastMessage.createdAt,
+    const dateStr = moment(this.props.item.lastMessage.createdAt).format(
       'DD.MM.YY HH:mm'
     )
 
