@@ -19,6 +19,7 @@ export default {
   notificationNewMessages: { one: 'You have {count} new message, click on the INBOX button in your right sidebar to read it.', other: 'You have {count} new messages, click on the INBOX button in your right sidebar to read them.' },
   redirectedUnauthenticated: 'You have to login before you can see that page.',
   requestPasswordToken: 'We just sent you an email with a link to reset your password. Check your spam folder if you can\'t find it.',
+  requestRandomMeetingSuccess: 'Hurra! Well done! Check your inbox for details about your random meeting!',
   resetPassword: 'Yes! Your password has been reset!',
   resourceCreateFailure: 'Ouch, I couldn\'t create this, please check your fields again.',
   resourceUpdateFailure: 'Ouch, I couldn\'t update this, please check your fields again.',
