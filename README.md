@@ -1,12 +1,24 @@
 # HOFFNUNG 3000
 
-Platform for decentralized, self-curated festivals.
+```
+Conversation.belongsToMany(Animal, {
+  as: 'animals',
+  foreignKey: 'conversationId',
+  through: 'conversationsAnimals',
+})
+```
+
+Platform for decentralized, anonymized, self-curated festivals. https://hoffnung3000.de
 
 ## Requirements
 
-* node
-* npm
-* running database (postgres recommended)
+* Node and npm
+* PostgreSQL Database
+* Google Map API key
+* AWS S3 Cloud Storage
+* PayPal Account for payment
+* Mail-Server (SMTP)
+* [gif-stream-server](https://github.com/adzialocha/gif-stream-server) (optional)
 
 ## Setup
 
