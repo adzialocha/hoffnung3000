@@ -48,6 +48,16 @@
   font-size: $font-size-sm;
 }
 
+.list-item-content__description--message {
+  padding: 15px;
+
+  background-color: $gray-lighter;
+
+  font-size: $font-size-base;
+
+  line-height: 1.5;
+}
+
 @include media-breakpoint(xs) {
   .list-item-content__description {
     margin-top: 3px;
