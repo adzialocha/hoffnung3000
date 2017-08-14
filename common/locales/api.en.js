@@ -26,9 +26,13 @@ export default {
     },
     CREATE_RANDOM_MEETING: {
       subject: 'YOU CREATED A RANDOM MEETING',
-      message: 'You created a random meeting! You can wait now for other participants who might join in!\n\nA conversation related to this random meeting was just openend in your inbox, check it on the platform.\n\nThere you can start the dialogue with other attending participants you might eventually meet soon <3',
+      message: 'You created a random meeting!\n\nYou can wait now for other participants who might join in!\n\nAlso a conversation related to this random meeting was just openend in your inbox, check it on the platform.\n\nThere you can start the dialogue with other attending participants you might eventually meet soon <3',
     },
     JOIN_RANDOM_MEETING: {
+      subject: 'SOMEONE JOINED YOUR RANDOM MEETING',
+      message: '{name} joined one of your random meetings!',
+    },
+    JOIN_RANDOM_MEETING_ME: {
       subject: 'YOU JOINED A RANDOM MEETING',
       message: 'You joined a random meeting!\n\nA conversation related to this random meeting was just openend in your inbox, check it on the platform for further details like time and place.\n\nThere you can start the dialogue with other attending participants you might eventually meet soon <3',
     },
