@@ -34,6 +34,10 @@ class SidebarGifStream extends Component {
         isStreaming: false,
         isLoading: false,
       })
+
+      this.props.flash({
+        text: translate('flash.gifStreamStopped'),
+      })
     } else {
       this.stream.start()
         .then(() => {
@@ -41,12 +45,16 @@ class SidebarGifStream extends Component {
             isStreaming: true,
             isLoading: false,
           })
+
+          this.props.flash({
+            text: translate('flash.gifStreamStarted'),
+          })
         })
         .catch(() => {
           const text = (
             isIOS ? translate(
-              'components.sidebarGifStream.errorIOS'
-            ) : translate('components.sidebarGifStream.error')
+              'flash.gifStreamErrorIOS'
+            ) : translate('flash.gifStreamError')
           )
 
           this.props.flash({

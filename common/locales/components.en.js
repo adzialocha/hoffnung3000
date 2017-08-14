@@ -66,8 +66,6 @@ export default {
     requestButton: 'Request random meeting',
   },
   sidebarGifStream: {
-    error: 'Sorry, .gif streaming is not possible. Please check your webcam permissions or try on a different device.',
-    errorIOS: 'Sorry, .gif streaming is not available on iOS, use another device instead (your laptop for example). If you think Apple is the future: it\'s not, HOFFNUNG 3000 is! :-)',
     start: 'Start streaming',
     stop: 'Stop streaming',
   },
