@@ -193,15 +193,11 @@ export default {
 
     if (date) {
       // meeting was requested with a date
-      const isValidDate = (
-        process.env.NODE_ENV === 'production' ? isInFestivalRange(date) : true
-      )
-
       const tresholdDate = moment()
         .startOf('hour')
         .add(DATE_MINIMUM_TO_NOW_HOURS, 'hours')
 
-      if (!isValidDate || moment(date).isBefore(tresholdDate)) {
+      if (moment(date).isBefore(tresholdDate)) {
         next(
           new APIError(
             translate('api.errors.meeting.invalidDate'),
@@ -222,6 +218,20 @@ export default {
       where.from = {
         $gte: from,
       }
+    }
+
+    const isInFestival = (
+      process.env.NODE_ENV === 'production' ? isInFestivalRange(from) : true
+    )
+
+    if (!isInFestival) {
+      next(
+        new APIError(
+          translate('api.errors.meeting.festivalRange'),
+          httpStatus.PRECONDITION_FAILED
+        )
+      )
+      return null
     }
 
     const to = moment(from).add(DURATION_HOURS, 'hours')

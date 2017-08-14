@@ -11,6 +11,7 @@ export default {
     },
     meeting: {
       alreadyJoined: 'You already joined a meeting during this date',
+      festivalRange: 'Sorry, random meetings are only available during the festival',
       invalidDate: 'The date is too soon or already in the past',
       noPlaceFound: 'Sorry, we could not find a place for you during the given date',
     },
