@@ -39,7 +39,7 @@ class AdminUsersEditForm extends Component {
       return null
     }
 
-    const DATE_FORMAT = 'DD.MM.YYYY hh:mm:ss'
+    const DATE_FORMAT = 'DD.MM.YYYY HH:mm:ss'
 
     const createdAt = moment(this.props.resourceData.createdAt)
     const updatedAt = moment(this.props.resourceData.updatedAt)
