@@ -17,6 +17,10 @@ class SidebarGifStream extends Component {
     flash: PropTypes.func.isRequired,
   }
 
+  componentWillUnmount() {
+    this.stream.stop()
+  }
+
   onClick() {
     this.setState({
       images: [],
