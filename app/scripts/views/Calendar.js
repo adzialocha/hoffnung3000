@@ -27,11 +27,16 @@ class Calendar extends Component {
     this.props.push(`/events/${item.slug}/edit`)
   }
 
+  onPreviewClick() {
+    this.props.push('/tickets')
+  }
+
   renderItemsList() {
     if (!this.props.isAuthenticated || !this.props.isActive) {
       return (
         <WrappedInfiniteList
           resourceName="preview"
+          onClick={this.onPreviewClick}
         />
       )
     }
@@ -85,6 +90,7 @@ class Calendar extends Component {
 
     this.onClick = this.onClick.bind(this)
     this.onEditClick = this.onEditClick.bind(this)
+    this.onPreviewClick = this.onPreviewClick.bind(this)
   }
 }
 

@@ -70,6 +70,9 @@ export default {
     start: 'Start streaming',
     stop: 'Stop streaming',
   },
+  curatedEventListItem: {
+    getATicket: 'Get a festival ticket to see the address',
+  },
   slotEditor: {
     slotsHaveToBeInClosedOrder: 'Please select your slots in a closed order',
     submitButton: 'Okay',

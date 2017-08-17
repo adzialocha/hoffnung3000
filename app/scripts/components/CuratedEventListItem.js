@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 
 import { asInfiniteListItem, withAuthState } from '../containers'
 import { formatEventTime } from '../../../common/utils/dateFormat'
+import { translate } from '../../../common/services/i18n'
 
 class CuratedEventListItem extends Component {
   static propTypes = {
@@ -13,7 +14,11 @@ class CuratedEventListItem extends Component {
 
   renderPlaceName() {
     if (!this.props.isAuthenticated || !this.props.isActive) {
-      return null
+      return (
+        <div className="list-item-content__description ellipsis">
+          { translate('components.curatedEventListItem.getATicket') }
+        </div>
+      )
     }
 
     return (
