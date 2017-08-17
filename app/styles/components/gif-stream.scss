@@ -12,6 +12,8 @@
   overflow-y: auto;
 
   background-color: $white;
+
+  -webkit-overflow-scrolling: touch; // sass-lint:disable-line no-vendor-prefixes no-misspelled-properties
 }
 
 .gif-stream__container {
