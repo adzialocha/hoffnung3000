@@ -14,8 +14,9 @@ export default {
     contact: 'Contact',
     home: 'Home',
     information: 'Information',
-    resources: 'Der Markt',
     places: 'Places',
+    resources: 'Der Markt',
+    stream: 'Stream',
     tickets: 'Tickets',
   },
   staticPage: {

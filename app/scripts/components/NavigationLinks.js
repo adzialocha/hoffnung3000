@@ -19,6 +19,7 @@ const SECONDARY_NAVIGATION = [
 const CURATION_NAVIGATION = [
   { localeKey: 'places', url: '/places' },
   { localeKey: 'resources', url: '/resources' },
+  { localeKey: 'stream', url: '/stream' },
 ]
 
 const ADMIN_NAVIGATION = CURATION_NAVIGATION.concat([
@@ -27,7 +28,9 @@ const ADMIN_NAVIGATION = CURATION_NAVIGATION.concat([
 
 const PARTICIPANT_NAVIGATION = CURATION_NAVIGATION
 
-const VISITOR_NAVIGATION = []
+const VISITOR_NAVIGATION = [
+  { localeKey: 'stream', url: '/stream' },
+]
 
 const DEFAULT_NAVIGATION = [
   { localeKey: 'tickets', url: '/tickets' },

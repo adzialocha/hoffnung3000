@@ -51,8 +51,8 @@ export default class Routes extends Component {
           <Route component={Page} path="/pages/:slug" />
           <Route component={Calendar} path="/calendar" />
           <Route component={isAuthenticated(Profile)} path="/profile" />
+          <Route component={isAuthenticated(Stream)} path="/stream" />
           <Route component={isParticipant(Activity)} path="/activity" />
-          <Route component={isParticipant(Stream)} path="/stream" />
           <Route component={isParticipant(EventsNew)} path="/new/event" />
           <Route component={isParticipant(PlacesNew)} path="/new/place" />
           <Route component={isParticipant(ResourcesNew)} path="/new/resource" />
