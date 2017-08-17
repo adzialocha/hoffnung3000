@@ -19,6 +19,7 @@ export default {
     } = req.query
 
     return Event.findAndCountAll({
+      distinct: true,
       include: [
         EventBelongsToManyImage,
         EventHasManySlots, {
