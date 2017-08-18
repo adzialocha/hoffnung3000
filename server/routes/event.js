@@ -4,13 +4,13 @@ import validate from 'express-validation'
 import eventController from '../controllers/event'
 import eventValidation from '../validation/event'
 
-import { canRead, canCreate, canUpdate, canDelete } from '../middlewares/roles'
+import { canReadAsVisitor, canCreate, canUpdate, canDelete } from '../middlewares/roles'
 
 const router = express.Router() // eslint-disable-line new-cap
 
 router.route('/')
   .get(
-    canRead,
+    canReadAsVisitor,
     eventController.findAll
   )
   .post(
@@ -22,7 +22,7 @@ router.route('/')
 router.route('/:resourceSlug')
   .get(
     eventController.lookup,
-    canRead,
+    canReadAsVisitor,
     eventController.findOneWithSlug
   )
   .put(
