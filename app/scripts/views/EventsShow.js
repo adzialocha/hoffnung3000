@@ -6,14 +6,16 @@ import { Link } from 'react-router-dom'
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
 import { formatEventTime } from '../../../common/utils/dateFormat'
-import { ImageGallery, AnimalLink } from '../components'
+import { ImageGallery, AnimalLink, LocationMap } from '../components'
 import { translate } from '../../../common/services/i18n'
 
 class EventsShow extends Component {
   static propTypes = {
     fetchResource: PropTypes.func.isRequired,
+    isActive: PropTypes.bool.isRequired,
     isError: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    isVisitor: PropTypes.bool.isRequired,
     resourceData: PropTypes.object.isRequired,
     resourceSlug: PropTypes.string.isRequired,
   }
@@ -62,10 +64,63 @@ class EventsShow extends Component {
   }
 
   renderOwner() {
+    if (this.props.isVisitor || this.props.isActive) {
+      return null
+    }
+
     return <AnimalLink animal={this.props.resourceData.animal} />
   }
 
+  renderPlaceAddress() {
+    const {
+      city,
+      cityCode,
+      country,
+      latitude,
+      longitude,
+      mode,
+      street,
+    } = this.props.resourceData.place
+
+    if (mode === 'gps') {
+      return (
+        <div>
+          <strong>
+            { translate('views.places.locationHeader') }
+          </strong>
+          <p>@ { latitude }, { longitude }</p>
+          <LocationMap latitude={latitude} longitude={longitude} />
+        </div>
+      )
+    } else if (mode === 'address') {
+      return (
+        <div>
+          <strong>
+            { translate('views.places.locationHeader') }
+          </strong>
+          <p>
+            { street }<br />
+            { `${cityCode} ${city}` }<br />
+            { country }<br />
+          </p>
+        </div>
+      )
+    }
+    return (
+      <div>
+        <strong>
+          { translate('views.places.locationHeader') }
+        </strong>
+        <p>{ translate('views.places.virtualLocation') }</p>
+      </div>
+    )
+  }
+
   renderPlace() {
+    if (this.props.isVisitor || this.props.isActive) {
+      return this.renderPlaceAddress()
+    }
+
     return (
       <Link to={`/places/${this.props.resourceData.place.slug}`}>
         @ { this.props.resourceData.place.title }
@@ -169,10 +224,13 @@ function mapStateToProps(state, ownProps) {
   const resourceSlug = ownProps.match.params.slug
   const resource = cachedResource('events', resourceSlug)
   const { isLoading, isError, object: resourceData } = resource
+  const { isVisitor, isActive } = state.user
 
   return {
+    isActive,
     isError,
     isLoading,
+    isVisitor,
     resourceData,
     resourceSlug,
   }
