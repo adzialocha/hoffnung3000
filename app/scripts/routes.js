@@ -52,12 +52,12 @@ export default class Routes extends Component {
           <Route component={Calendar} path="/calendar" />
           <Route component={isAuthenticated(Profile)} path="/profile" />
           <Route component={isAuthenticated(Stream)} path="/stream" />
-          <Route component={isAuthenticated(EventsShow)} path="/events/:slug" />
           <Route component={isParticipant(Activity)} path="/activity" />
           <Route component={isParticipant(EventsNew)} path="/new/event" />
           <Route component={isParticipant(PlacesNew)} path="/new/place" />
           <Route component={isParticipant(ResourcesNew)} path="/new/resource" />
           <Route component={isParticipant(EventsEdit)} path="/events/:slug/edit" />
+          <Route component={isAuthenticated(EventsShow)} path="/events/:slug" />
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
           <Route component={isParticipant(PlacesShow)} path="/places/:slug" />
           <Route component={isParticipant(PlacesIndex)} path="/places" />
