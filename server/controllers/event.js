@@ -385,14 +385,29 @@ export default {
       offset = DEFAULT_OFFSET,
     } = req.query
 
+    const includeForVisitors = [
+      belongsToAnimal,
+      belongsToManyResources,
+      {
+        association: EventBelongsToPlace,
+        required: true,
+        where: {
+          isPublic: true,
+        },
+      },
+      EventBelongsToManyImage,
+      hasManySlots,
+    ]
+
     return Event.findAndCountAll({
       distinct: true,
-      include,
+      include: req.user.isVisitor ? includeForVisitors : include,
       limit,
       offset,
       order: [
         [EventHasManySlots, 'from', 'ASC'],
       ],
+      where: req.user.isVisitor ? { isPublic: true } : {},
     })
       .then(result => {
         res.json({
@@ -415,7 +430,19 @@ export default {
         [EventHasManySlots, 'from', 'ASC'],
       ],
     })
-      .then(data => res.json(prepareResponse(data, req)))
+      .then(data => {
+        if (!data.isPublic && req.user.isVisitor) {
+          next(
+            new APIError(
+              'Requested resource is not public',
+              httpStatus.FORBIDDEN
+            )
+          )
+          return null
+        }
+
+        return res.json(prepareResponse(data, req))
+      })
       .catch(err => next(err))
   },
   lookup: (req, res, next) => {
