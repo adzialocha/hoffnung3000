@@ -64,7 +64,7 @@ class EventsShow extends Component {
   }
 
   renderOwner() {
-    if (this.props.isVisitor || this.props.isActive) {
+    if (this.props.isVisitor && this.props.isActive) {
       return null
     }
 
@@ -117,7 +117,7 @@ class EventsShow extends Component {
   }
 
   renderPlace() {
-    if (this.props.isVisitor || this.props.isActive) {
+    if (this.props.isVisitor && this.props.isActive) {
       return this.renderPlaceAddress()
     }
 
