@@ -268,6 +268,7 @@ function updateEvent(req, fields) {
           include: [
             EventBelongsToAnimal,
             EventBelongsToManyImage,
+            EventBelongsToManyResource,
           ],
           individualHooks: true,
           limit: 1,
@@ -308,11 +309,26 @@ function updateEvent(req, fields) {
                           place.slotSize
                         )
 
+                        // filter out only new resources for notifications
+                        const currentResourceIds = resources.map(resource => {
+                          return resource.id
+                        })
+
+                        const newResources = currentResourceIds.sort().filter(
+                          id => {
+                            return !req.body.resources.sort().includes(id)
+                          }
+                        )
+
                         return Slot.bulkCreate(slots)
                           .then(() => {
+                            if (newResources.length === 0) {
+                              return Promise.resolve()
+                            }
+
                             return addRequestResourcesActivity({
                               event,
-                              resources,
+                              newResources,
                             })
                           })
                           .then(() => {
