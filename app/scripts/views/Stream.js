@@ -8,6 +8,8 @@ import { withFlash } from '../containers'
 import config from '../../../common/config'
 import { translate } from '../../../common/services/i18n'
 
+const REFRESH_INTERVAL = 60000
+
 function fetchStream(marker) {
   const markerStr = marker ? `?marker=${marker}` : ''
 
@@ -31,6 +33,16 @@ class Stream extends Component {
 
   componentDidMount() {
     this.next()
+
+    this._interval = setInterval(() => {
+      if (!this.state.isRefreshingAutomatically) {
+        this.next(true)
+      }
+    }, REFRESH_INTERVAL)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._interval)
   }
 
   onClick() {
@@ -107,10 +119,12 @@ class Stream extends Component {
       this.setState({
         images: [],
         isLoading: true,
+        isRefreshingAutomatically: false,
       })
     } else {
       this.setState({
         isLoading: true,
+        isRefreshingAutomatically: this.state.nextMarker !== undefined,
       })
     }
 
@@ -138,8 +152,11 @@ class Stream extends Component {
     this.state = {
       images: [],
       isLoading: false,
+      isRefreshingAutomatically: false,
       nextMarker: undefined,
     }
+
+    this._interval = null
 
     this.onClick = this.onClick.bind(this)
     this.onUpdateClick = this.onUpdateClick.bind(this)
