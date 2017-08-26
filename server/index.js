@@ -16,7 +16,7 @@ import winston from 'winston'
 import config from '../common/config'
 
 const DEFAULT_PORT = 3000
-const ASSETS_MAX_AGE = 31557600000
+const ASSETS_MAX_AGE = 0 //31557600000
 
 // load environment variables
 const envVariables = dotenv.config({
