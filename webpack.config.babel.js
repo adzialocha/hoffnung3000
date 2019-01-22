@@ -1,14 +1,15 @@
-const path = require('path')
+import path from 'path'
 
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+import AssetsPlugin from 'assets-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin'
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 
 const APP_FILE_NAME = 'app'
 const VENDORS_FILE_NAME = 'lib'
 
 const PATH_SRC = './app'
-const PATH_DIST = './public'
+const PATH_DIST = './static'
 
 const NODE_MODULES_NAME = 'node_modules'
 
@@ -18,6 +19,7 @@ function getPath(filePath) {
 
 module.exports = (env, options) => {
   const isDevelopment = (options.mode === 'development')
+  const filename = isDevelopment ? '[name]' : '[name]-[contenthash:4]'
   const exclude = new RegExp(NODE_MODULES_NAME);
 
   return {
@@ -25,7 +27,7 @@ module.exports = (env, options) => {
       [APP_FILE_NAME]: getPath(`${PATH_SRC}/scripts/index.js`),
     },
     output: {
-      filename: '[name]-[hash].js',
+      filename: `${filename}.js`,
       path: getPath(PATH_DIST),
     },
     resolve: {
@@ -83,9 +85,11 @@ module.exports = (env, options) => {
         },
       },
     },
+    devtool: isDevelopment ? 'cheap-module-source-map' : undefined,
     plugins: [
+      new AssetsPlugin(),
       new MiniCssExtractPlugin({
-        filename: '[name]-[hash].css',
+        filename: `${filename}.css`,
       }),
     ],
   }

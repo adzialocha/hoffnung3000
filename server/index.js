@@ -1,44 +1,57 @@
 import bodyParser from 'body-parser'
-import compress from 'compression'
+import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import fs from 'fs'
 import helmet from 'helmet'
-import logger from 'morgan'
 import marked from 'marked'
 import methodOverride from 'method-override'
-import moment from 'moment-timezone'
+import morgan from 'morgan'
 import path from 'path'
 import winston from 'winston'
 
-import config from '../common/config'
+import logger from './helpers/logger'
+
+const ASSETS_FOLDER_NAME = 'static'
+const ASSETS_MANIFESTO_FILE = 'webpack-assets.json'
+const ASSETS_MAX_AGE = 31557600000
 
 const DEFAULT_PORT = 3000
-const ASSETS_MAX_AGE = 0 //31557600000
 
-// load environment variables
+function getPath(filePath) {
+  return path.resolve(__dirname, '..', filePath)
+}
+
+// Load environment variables when in development
 const envVariables = dotenv.config({
-  path: path.join(__dirname, '..', '.env'),
+  path: getPath('.env'),
 })
 
 if (envVariables.error && process.env.NODE_ENV === 'development') {
-  winston.error('".env" file does not exist, please configure the app first')
+  logger.error('".env" file does not exist, please configure the app first')
   process.exit(1)
 }
 
-// check for public assets folder
-const publicDirPath = process.env.NODE_ENV === 'development' ? '.tmp' : 'public'
-if (!fs.existsSync(path.join(__dirname, '..', publicDirPath))) {
-  winston.error(
-    'Public folder "%s" does not exist, please bundle assets first',
-    publicDirPath
-  )
+// Read build manifesto for asset file paths
+const assetsPath = getPath(ASSETS_MANIFESTO_FILE)
+
+if (!fs.existsSync(assetsPath)) {
+  logger.error(`"${ASSETS_MANIFESTO_FILE}" was not found, please bundle assets first`)
   process.exit(1)
 }
 
-// markdown settings
+const assets = require(assetsPath)
+assets.basePath = ASSETS_FOLDER_NAME
+
+// Check for public assets folder
+if (!fs.existsSync(getPath(ASSETS_FOLDER_NAME))) {
+  logger.error(`Assets folder "${ASSETS_FOLDER_NAME}" does not exist, please bundle assets first`)
+  process.exit(1)
+}
+
+// Markdown settings
 marked.setOptions({
   breaks: true,
   gfm: true,
@@ -47,44 +60,48 @@ marked.setOptions({
   tables: false,
 })
 
-// moment settings
-moment.tz.setDefault(config.timezone)
+// Moment settings
+// @TODO Check if we really want to keep using moment-js here
+// moment.tz.setDefault(config.timezone)
 
-// check database connection
-const db = require('./database')
-db.sequelize.authenticate()
-  .then(() => {
-    winston.info('Database connection has been established successfully')
-  })
-  .catch((err) => {
-    winston.error('Unable to connect to the database: %s', err)
-    process.exit(1)
-  })
+// Check database connection
+// @TODO Revisit database handling
+// const db = require('./database')
+// db.sequelize.authenticate()
+//   .then(() => {
+//     logger.info('Database connection has been established successfully')
+//   })
+//   .catch((err) => {
+//     logger.error('Unable to connect to the database: %s', err)
+//     process.exit(1)
+//   })
 
-// initialize express instance
+// Initialize express instance
 const app = express()
 app.set('port', process.env.PORT || DEFAULT_PORT)
+app.set('x-powered-by', false)
+app.set('view engine', 'pug')
+app.set('views', __dirname)
 
 if (process.env.NODE_ENV === 'development') {
-  app.use(logger('tiny'))
+  app.use(morgan('dev'))
 }
 
-// parse body params and attach them to req.body
+// Enable compression and parsing requests
+app.use(compression())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
 app.use(cookieParser())
-app.use(compress())
 app.use(methodOverride())
 
-// secure apps by setting various HTTP headers
+// Secure application by setting various HTTP headers
 app.use(helmet())
 
-// enable CORS - Cross Origin Resource Sharing
+// Setup CORS - Cross Origin Resource Sharing
 app.use(cors())
 
-// enforce https on production
-if (process.env.NODE_ENV !== 'development') {
+// Enforce https on production
+if (process.env.NODE_ENV === 'production') {
   app.use((req, res, next) => {
     if (req.headers['x-forwarded-proto'] !== 'https') {
       return res.redirect(['https://', req.get('Host'), req.url].join(''))
@@ -93,12 +110,13 @@ if (process.env.NODE_ENV !== 'development') {
   })
 }
 
-// mount all API routes
-app.use('/api', require('./routes'))
+// Mount all API routes
+// @TODO
+// app.use('/api', require('./routes'))
 
-// static file hosting
-app.use('/static', express.static(
-  path.join(__dirname, '..', publicDirPath), {
+// Static assets hosting
+app.use(`/${ASSETS_FOLDER_NAME}`, express.static(
+  getPath(ASSETS_FOLDER_NAME), {
     index: false,
     redirect: false,
     maxAge: ASSETS_MAX_AGE,
@@ -106,17 +124,22 @@ app.use('/static', express.static(
 ))
 
 app.use((req, res, next) => {
+  // Check if request url contains any extension
   if (path.extname(req.url)) {
     next()
     return
   }
-  res.sendFile(path.join(__dirname, '..', publicDirPath, 'index.html'))
+
+  // .. otherwise serve the webapp
+  res.render('index', {
+    assets,
+  })
 })
 
-// start server
+// Start server
 app.listen(app.get('port'), () => {
-  winston.info(
-    'App is running at http://localhost:%d in %s mode',
+  logger.info(
+    'Server is listening at port %d in %s mode',
     app.get('port'),
     app.get('env')
   )

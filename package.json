@@ -13,8 +13,12 @@
     "npm": "~6.6.0"
   },
   "scripts": {
-    "build": "npm run clear && webpack --mode production --progress",
-    "clear": "rimraf ./public",
+    "assets:build": "npm run assets:clear && webpack --mode production --progress",
+    "assets:clear": "rimraf ./static",
+    "assets:watch": "npm run assets:clear && webpack --mode development --watch --progress",
+    "postinstall": "npm run assets:build",
+    "serve": "nodemon --watch server --watch common --exec cross-env NODE_ENV=development babel-node server/index.js",
+    "start": "cross-env NODE_ENV=production babel-node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,20 +26,24 @@
     "url": "git://github.com/adzialocha/hoffnung3000.git"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.3.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
+    "assets-webpack-plugin": "^3.9.7",
     "autoprefixer": "^9.4.6",
     "babel-loader": "^8.0.5",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
     "cssnano": "^4.1.8",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
+    "nodemon": "^1.18.9",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "^3.0.0",
     "rimraf": "^2.6.3",
@@ -45,15 +53,26 @@
     "webpack-cli": "^3.2.1"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "classnames": "^2.2.6",
+    "compression": "^1.7.3",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
     "create-react-class": "^15.6.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
     "gif-stream": "git+https://github.com/adzialocha/gif-stream.git#0.2.0",
+    "helmet": "^3.15.0",
     "immutability-helper": "^2.9.0",
     "isomorphic-fetch": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "keymirror": "^0.1.1",
+    "marked": "^0.6.0",
+    "method-override": "^3.0.0",
     "moment-timezone": "^0.5.23",
+    "morgan": "^1.9.1",
     "normalize.css": "^8.0.1",
+    "pug": "^2.0.3",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-google-maps": "^9.4.5",
@@ -69,6 +88,7 @@
     "redux-auth-wrapper": "^2.0.3",
     "redux-form": "^8.1.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "winston": "^3.1.0"
   }
 }
