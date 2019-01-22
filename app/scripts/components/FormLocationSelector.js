@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import withScriptjs from 'react-google-maps/lib/async/withScriptjs'
-import { GoogleMap, Marker, withGoogleMap } from 'react-google-maps'
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 
 import { asFormField } from '../containers'
 import config from '../../../common/config'

@@ -1,3 +1,5 @@
+import '../styles/app.scss'
+
 import moment from 'moment-timezone'
 import React from 'react'
 import { ConnectedRouter  } from 'react-router-redux'
