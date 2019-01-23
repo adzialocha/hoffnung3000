@@ -1,18 +1,18 @@
 import Sequelize from 'sequelize'
-import winston from 'winston'
 
-const config = require('./config.js')[process.env.NODE_ENV]
-const { url, dialect } = config
-const sequelize = new Sequelize(url, {
-  logging: (msg) => {
+import logger from '../helpers/logger'
+
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  logging: msg => {
     if (process.env.NODE_ENV !== 'production') {
-      winston.info(msg)
+      logger.info(msg)
     }
   },
-  dialect,
+  dialect: process.env.DATABASE_DIALECT,
+  operatorsAliases: false,
 })
 
-export default {
+export {
   Sequelize,
   sequelize,
 }

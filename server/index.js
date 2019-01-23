@@ -10,6 +10,7 @@ import marked from 'marked'
 import methodOverride from 'method-override'
 import morgan from 'morgan'
 import path from 'path'
+import sequelize from 'sequelize'
 import winston from 'winston'
 
 import logger from './helpers/logger'
@@ -24,22 +25,25 @@ function getPath(filePath) {
   return path.resolve(__dirname, '..', filePath)
 }
 
+function errorAndExit(message) {
+  logger.error(message)
+  process.exit(1)
+}
+
 // Load environment variables when in development
 const envVariables = dotenv.config({
   path: getPath('.env'),
 })
 
 if (envVariables.error && process.env.NODE_ENV === 'development') {
-  logger.error('".env" file does not exist, please configure the app first')
-  process.exit(1)
+  errorAndExit('".env" file does not exist, please configure the app first')
 }
 
 // Read build manifesto for asset file paths
 const assetsPath = getPath(ASSETS_MANIFESTO_FILE)
 
 if (!fs.existsSync(assetsPath)) {
-  logger.error(`"${ASSETS_MANIFESTO_FILE}" was not found, please bundle assets first`)
-  process.exit(1)
+  errorAndExit(`"${ASSETS_MANIFESTO_FILE}" was not found, please bundle assets first`)
 }
 
 const assets = require(assetsPath)
@@ -47,8 +51,7 @@ assets.basePath = ASSETS_FOLDER_NAME
 
 // Check for public assets folder
 if (!fs.existsSync(getPath(ASSETS_FOLDER_NAME))) {
-  logger.error(`Assets folder "${ASSETS_FOLDER_NAME}" does not exist, please bundle assets first`)
-  process.exit(1)
+  errorAndExit(`Assets folder "${ASSETS_FOLDER_NAME}" does not exist, please bundle assets first`)
 }
 
 // Markdown settings
@@ -65,16 +68,14 @@ marked.setOptions({
 // moment.tz.setDefault(config.timezone)
 
 // Check database connection
-// @TODO Revisit database handling
-// const db = require('./database')
-// db.sequelize.authenticate()
-//   .then(() => {
-//     logger.info('Database connection has been established successfully')
-//   })
-//   .catch((err) => {
-//     logger.error('Unable to connect to the database: %s', err)
-//     process.exit(1)
-//   })
+const db = require('./database')
+db.sequelize.authenticate()
+  .then(() => {
+    logger.info('Database connection has been established successfully')
+  })
+  .catch(err => {
+    errorAndExit(`Unable to connect to database: ${err}`)
+  })
 
 // Initialize express instance
 const app = express()
