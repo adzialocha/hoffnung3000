@@ -38,6 +38,12 @@ module.exports = (env, options) => {
         {
           test: /\.js$/,
           exclude,
+          enforce: 'pre',
+          loader: 'eslint-loader',
+        },
+        {
+          test: /\.js$/,
+          exclude,
           use: {
             loader: 'babel-loader',
           },
