@@ -8,9 +8,11 @@ import fs from 'fs'
 import helmet from 'helmet'
 import marked from 'marked'
 import methodOverride from 'method-override'
+import moment from 'moment-timezone'
 import morgan from 'morgan'
 import path from 'path'
 
+import config from '../common/config'
 import logger from './helpers/logger'
 
 const ASSETS_FOLDER_NAME = 'static'
@@ -63,7 +65,7 @@ marked.setOptions({
 
 // Moment settings
 // @TODO Check if we really want to keep using moment-js here
-// moment.tz.setDefault(config.timezone)
+moment.tz.setDefault(config.timezone)
 
 // Check database connection
 const db = require('./database')
@@ -110,8 +112,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Mount all API routes
-// @TODO
-// app.use('/api', require('./routes'))
+app.use('/api', require('./routes'))
 
 // Static assets hosting
 app.use(`/${ASSETS_FOLDER_NAME}`, express.static(

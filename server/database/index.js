@@ -12,7 +12,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   operatorsAliases: false,
 })
 
-export {
+export default {
   Sequelize,
   sequelize,
 }

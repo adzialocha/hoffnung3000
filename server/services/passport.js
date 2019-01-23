@@ -1,13 +1,13 @@
 import jwt from 'jsonwebtoken'
 import passport from 'passport'
-import passportJwt from 'passport-jwt'
+import { Strategy, ExtractJwt } from 'passport-jwt'
 
 import User from '../models/user'
 
 const TOKEN_EXPIRY = '96 hours'
 
 const options = {
-  jwtFromRequest: passportJwt.ExtractJwt.fromAuthHeader(),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
   secretOrKey: process.env.JWT_SECRET,
 }
 
@@ -16,7 +16,7 @@ const tokenOptions = {
   expiresIn: TOKEN_EXPIRY,
 }
 
-const strategy = new passportJwt.Strategy(options, (payload, next) => {
+const strategy = new Strategy(options, (payload, next) => {
   User.findById(payload.user.id)
     .then(user => {
       next(null, user)
