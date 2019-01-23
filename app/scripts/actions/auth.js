@@ -1,4 +1,4 @@
-import { routerActions } from 'react-router-redux'
+import { routerActions } from 'connected-react-router'
 
 import ActionTypes from '../actionTypes'
 import flash from './flash'
