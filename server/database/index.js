@@ -1,14 +1,17 @@
 import Sequelize from 'sequelize'
 
 import logger from '../helpers/logger'
+import config from './config'
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const { url, dialect } = config[process.env.NODE_ENV]
+
+const sequelize = new Sequelize(url, {
   logging: msg => {
     if (process.env.NODE_ENV !== 'production') {
-      logger.info(msg)
+      logger.debug(msg)
     }
   },
-  dialect: process.env.DATABASE_DIALECT,
+  dialect,
   operatorsAliases: false,
 })
 
