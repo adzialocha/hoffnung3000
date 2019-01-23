@@ -8,7 +8,7 @@ module.exports = {
       }
     )
   },
-  down: (queryInterface) => {
+  down: queryInterface => {
     queryInterface.removeColumn('slots', 'eventId')
   },
 }

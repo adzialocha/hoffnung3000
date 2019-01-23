@@ -6,7 +6,7 @@ import flash from '../actions/flash'
 export default function withFlash(WrappedComponent) {
   return connect(null, {
     flash,
-  })((props) => {
+  })(props => {
     return <WrappedComponent {...props} />
   })
 }

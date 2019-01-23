@@ -1,27 +1,43 @@
-// typography
+// Color definitions
+$black: #000;
+$gray-dark: #111;
+$gray: #222;
+$gray-light: #aaa;
+$gray-lighter: #efefef;
+$white: #fff;
 
+$red: #f00;
+$green: #0f0;
+$blue: #00f;
+$yellow: #ff0;
+
+$transparent: rgba($white, 0);
+
+// Font families
 $font-family: "Arial", sans-serif;
 
+// Font sizes
 $font-size-xs: 9px;
 $font-size-sm: 12px;
 $font-size-md: 16px;
 $font-size-lg: 20px;
 $font-size-xl: 24px;
 $font-size-xxl: 58px;
+
 $font-size-base: 15px;
 $font-size-heading: 20px;
 
+// Font weights
 $font-weight-bold: 900;
 
+// Line heights
 $line-height-base: 1.5;
 
-// layout
-
+// Layout variables
 $page-margin: 32px;
 $page-margin-mobile: 18px;
 
 // z-index
-
 $z-index: (
   gif-stream: 2000,
   header: 3000,
@@ -32,27 +48,10 @@ $z-index: (
   react-modal: 20000,
 );
 
-// media breakpoints
-
+// Breakpoints for responsive layouts
 $media-breakpoint: (
   xs: 699px,
   sm: 700px,
   md: 900px,
-  lg: 1200px
+  lg: 1200px,
 );
-
-// colors
-
-$black: #000000;
-$gray-dark: #111111;
-$gray: #222222;
-$gray-light: #aaaaaa;
-$gray-lighter: #efefef;
-$white: #ffffff;
-
-$red: #ff0000;
-$green: #00ff00;
-$blue: #0000ff;
-$yellow: #ffff00;
-
-$transparent: rgba($white, 0);

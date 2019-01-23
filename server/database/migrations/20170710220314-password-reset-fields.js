@@ -16,7 +16,7 @@ module.exports = {
       }
     )
   },
-  down: (queryInterface) => {
+  down: queryInterface => {
     queryInterface.removeColumn('users', 'passwordResetAt')
     queryInterface.removeColumn('users', 'passwordResetToken')
   },

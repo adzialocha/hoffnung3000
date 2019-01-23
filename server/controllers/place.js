@@ -194,10 +194,10 @@ export default {
     const body = pick(permittedFields, req.body)
     const values = preparePlaceValues(body)
 
-    // check first if we can disable the requested slots
+    // Check first if we can disable the requested slots
     areSlotsBooked(req.resourceId, body.disabledSlots)
       .then(() => {
-        // update place
+        // Update place
         Place.update(values, {
           include,
           individualHooks: true,
@@ -212,7 +212,7 @@ export default {
 
             return updateImagesForObject(previousPlace, req.body.images)
               .then(() => {
-                // clean up all slot before
+                // Clean up all slot before
                 return Slot.destroy({
                   where: {
                     isDisabled: true,

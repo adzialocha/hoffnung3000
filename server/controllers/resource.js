@@ -115,7 +115,7 @@ export default {
       .catch(err => next(err))
   },
   findAll: (req, res, next) => {
-    // is there a time filter activated?
+    // Is there a time filter activated?
     if (req.query.from && req.query.to) {
       return findAllWithAvailability(req, res, next)
     }

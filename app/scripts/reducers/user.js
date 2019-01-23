@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
       isLoading: { $set: true },
     })
   case ActionTypes.CHANGE_PROFILE_SUCCESS:
-  case ActionTypes.AUTH_LOGIN_SUCCESS:
+  case ActionTypes.AUTH_LOGIN_SUCCESS: {
     const jwtPayload = jwtDecode(action.payload.token)
     const user = jwtPayload.user
 
@@ -36,6 +36,7 @@ export default (state = initialState, action) => {
       isParticipant: { $set: user.isParticipant },
       isVisitor: { $set: user.isVisitor },
     })
+  }
   case ActionTypes.CHANGE_PROFILE_FAILURE:
     return update(state, {
       errorMessage: { $set: action.error.message },

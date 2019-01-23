@@ -1,6 +1,6 @@
 import winston from 'winston'
 
-const { format } = winston;
+const { format } = winston
 
 export default winston.createLogger({
   format: format.combine(

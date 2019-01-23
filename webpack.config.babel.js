@@ -20,7 +20,7 @@ function getPath(filePath) {
 module.exports = (env, options) => {
   const isDevelopment = (options.mode === 'development')
   const filename = isDevelopment ? '[name]' : '[name]-[contenthash:4]'
-  const exclude = new RegExp(NODE_MODULES_NAME);
+  const exclude = new RegExp(NODE_MODULES_NAME)
 
   return {
     entry: {

@@ -9,7 +9,7 @@ function makePage(title, slug) {
 }
 
 module.exports = {
-  up: (queryInterface) => {
+  up: queryInterface => {
     return queryInterface.bulkInsert('pages', [
       makePage('About', 'about'),
       makePage('Contact', 'contact'),
@@ -23,7 +23,7 @@ module.exports = {
       makePage('Ticket', 'ticket-payment'),
     ])
   },
-  down: (queryInterface) => {
+  down: queryInterface => {
     return queryInterface.bulkDelete('pages', [{
       slug: [
         'about',

@@ -37,8 +37,8 @@ class FormImageUploader extends Component {
     maxImagesCount: PropTypes.number,
     removeImageFromList: PropTypes.func.isRequired,
     setUploadedImages: PropTypes.func.isRequired,
-    uploadedImages: PropTypes.array.isRequired,
     uploadImages: PropTypes.func.isRequired,
+    uploadedImages: PropTypes.array.isRequired,
   }
 
   static defaultProps = {
@@ -106,7 +106,7 @@ class FormImageUploader extends Component {
   onUploadClick(event) {
     event.preventDefault()
 
-    this.refs.uploadButton.click()
+    this._uploadButtonElem.click()
   }
 
   onImageRemoveClick(imageId) {
@@ -171,7 +171,7 @@ class FormImageUploader extends Component {
       <div className="image-uploader__footer">
         <input
           multiple="multiple"
-          ref="uploadButton"
+          ref={c => { this._uploadButtonElem = c }}
           style={ { display: 'none' } }
           type="file"
           onChange={this.onFilesChange}

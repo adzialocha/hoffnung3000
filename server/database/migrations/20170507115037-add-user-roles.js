@@ -20,7 +20,7 @@ module.exports = {
       }
     )
   },
-  down: (queryInterface) => {
+  down: queryInterface => {
     queryInterface.removeColumn('users', 'isAdmin')
     queryInterface.removeColumn('users', 'isParticipant')
   },

@@ -51,7 +51,7 @@ function createConversation(place, from, to, userId) {
           placeTitle,
         })
 
-        // create the new conversation
+        // Create the new conversation
         return Conversation.create({
           title,
           animalId,
@@ -59,7 +59,7 @@ function createConversation(place, from, to, userId) {
           .then(conversation => {
             return conversation.setAnimals([sendingAnimal])
               .then(() => {
-                // create first message in conversation
+                // Create first message in conversation
                 return Message.create({
                   animalId,
                   conversationId: conversation.id,
@@ -74,7 +74,7 @@ function createConversation(place, from, to, userId) {
               })
           })
       })
-      .catch((err) => {
+      .catch(err => {
         reject(err)
       })
   })
@@ -169,7 +169,7 @@ function joinMeeting(conversation, userId) {
 
       return conversation.addAnimal(joiningAnimal)
         .then(() => {
-          // create message in conversation
+          // Create message in conversation
           return Message.create({
             animalId: joiningAnimal.id,
             conversationId: conversation.id,
@@ -192,7 +192,7 @@ export default {
     let from
 
     if (date) {
-      // meeting was requested with a date
+      // Meeting was requested with a date
       const tresholdDate = moment()
         .startOf('hour')
         .add(DATE_MINIMUM_TO_NOW_HOURS, 'hours')
@@ -210,7 +210,7 @@ export default {
       from = moment(date).startOf('hour')
       where.from = from
     } else {
-      // meeting was requested with any date
+      // Meeting was requested with any date
       from = moment()
         .startOf('hour')
         .add(ANY_DATE_FROM_NOW_MIN_HOURS, 'hours')

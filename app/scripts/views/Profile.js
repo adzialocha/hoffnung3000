@@ -8,9 +8,9 @@ import { translate } from '../../../common/services/i18n'
 
 class Profile extends Component {
   static propTypes = {
+    changeProfile: PropTypes.func.isRequired,
     errorMessage: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
-    changeProfile: PropTypes.func.isRequired,
   }
 
   static defaultProps = {

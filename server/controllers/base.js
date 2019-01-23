@@ -33,19 +33,19 @@ export function prepareAnimalResponseAll(animals) {
 export function prepareResponse(data, req) {
   const response = data.toJSON()
 
-  // set owner flag for frontend ui
+  // Set owner flag for frontend ui
   if (typeof req.isOwnerMe !== 'undefined') {
     response.isOwnerMe = req.isOwnerMe
   } else {
     response.isOwnerMe = (data.animal.userId === req.user.id)
   }
 
-  // remove userId from animal to stay anonymous
+  // Remove userId from animal to stay anonymous
   if (response.animal) {
     response.animal = prepareAnimalResponse(response.animal)
   }
 
-  // convert markdown to html
+  // Convert markdown to html
   response.descriptionHtml = marked(response.description)
 
   return response

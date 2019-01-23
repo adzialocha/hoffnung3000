@@ -6,7 +6,7 @@ export function deleteObjects(model, where, include, associations) {
     })
       .then(associations)
       .then(() => resolve())
-      .catch((err) => reject(err))
+      .catch(err => reject(err))
   })
 }
 

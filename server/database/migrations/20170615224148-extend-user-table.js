@@ -40,7 +40,7 @@ module.exports = {
       }
     )
   },
-  down: (queryInterface) => {
+  down: queryInterface => {
     queryInterface.removeColumn('users', 'street')
     queryInterface.removeColumn('users', 'cityCode')
     queryInterface.removeColumn('users', 'city')

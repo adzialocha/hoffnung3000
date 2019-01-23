@@ -28,7 +28,7 @@ module.exports = {
       }
     )
   },
-  down: (queryInterface) => {
+  down: queryInterface => {
     queryInterface.removeColumn('users', 'paymentMethod')
     queryInterface.removeColumn('users', 'paymentId')
     queryInterface.removeColumn('users', 'isActive')

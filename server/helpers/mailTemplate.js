@@ -9,8 +9,8 @@ const TEMPLATES_PATH = 'mails'
 
 function generateTemplateString(template) {
   const sanitized = template
-    .replace(/\$\{([\s]*[^;\s\{]+[\s]*)\}/g, (_, match) => {
-      return `\$\{map.${match.trim()}\}`
+    .replace(/\$\{([\s]*[^;\s{]+[\s]*)\}/g, (_, match) => {
+      return `$\{map.${match.trim()}}`
     })
     .replace(/(\$\{(?!map\.)[^}]+\})/g, '')
 
@@ -39,7 +39,7 @@ function sendMail(locals, subject, receiver, templateName, sender) {
   return new Promise((resolve, reject) => {
     const mergedLocals = Object.assign({}, locals, { config })
     textTemplate(`${TEMPLATES_PATH}/${templateName}.txt`, mergedLocals)
-      .then((text) => {
+      .then(text => {
         const mailOptions = {
           subject,
           text,
@@ -55,7 +55,7 @@ function sendMail(locals, subject, receiver, templateName, sender) {
           return resolve()
         }
 
-        return mail.sendMail(mailOptions, (err) => {
+        return mail.sendMail(mailOptions, err => {
           if (err) {
             reject(err)
             return

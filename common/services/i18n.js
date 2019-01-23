@@ -38,7 +38,7 @@ function capitalizeWord(word) {
 
 function titleize(sentence) {
   const result = []
-  sentence.split(' ').forEach((word) => {
+  sentence.split(' ').forEach(word => {
     result.push(capitalizeWord(word))
   })
 

@@ -10,8 +10,6 @@ import marked from 'marked'
 import methodOverride from 'method-override'
 import morgan from 'morgan'
 import path from 'path'
-import sequelize from 'sequelize'
-import winston from 'winston'
 
 import logger from './helpers/logger'
 

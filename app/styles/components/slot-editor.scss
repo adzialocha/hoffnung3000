@@ -1,9 +1,8 @@
 .slot-editor {
   display: flex;
 
-  flex-wrap: wrap;
-
   align-content: flex-start;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
@@ -20,9 +19,8 @@
 
   transition: all .2s linear;
 
-  flex: 1 25%;
-
   align-items: center;
+  flex: 1 25%;
   justify-content: center;
 
   cursor: pointer;
@@ -85,8 +83,7 @@
 
   text-align: center;
 
-  flex: 1 100%;
-
   align-items: center;
+  flex: 1 100%;
   justify-content: center;
 }

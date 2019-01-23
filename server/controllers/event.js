@@ -214,7 +214,7 @@ function createEvent(req, fields) {
           returning: true,
         })
           .then(event => {
-            // associate resources to event
+            // Associate resources to event
             return Resource.findAll({
               where: { id: { $in: req.body.resources } },
               include: [{
@@ -225,7 +225,7 @@ function createEvent(req, fields) {
               .then(resources => {
                 event.setResources(resources)
 
-                // create slots for event
+                // Create slots for event
                 const slots = createEventSlots(
                   req.body.slots,
                   place.id,
@@ -280,10 +280,10 @@ function updateEvent(req, fields) {
           .then(data => {
             const event = data[1][0]
 
-            // update images
+            // Update images
             return updateImagesForObject(event, req.body.images)
               .then(() => {
-                // associate resources to event
+                // Associate resources to event
                 return Resource.findAll({
                   where: { id: { $in: req.body.resources } },
                   include: [{
@@ -294,14 +294,14 @@ function updateEvent(req, fields) {
                   .then(resources => {
                     event.setResources(resources)
 
-                    // clean up all slot before
+                    // Clean up all slot before
                     return Slot.destroy({
                       where: {
                         eventId: event.id,
                       },
                     })
                       .then(() => {
-                        // create slots for event
+                        // Create slots for event
                         const slots = createEventSlots(
                           req.body.slots,
                           place.id,
@@ -309,7 +309,7 @@ function updateEvent(req, fields) {
                           place.slotSize
                         )
 
-                        // filter out only new resources for notifications
+                        // Filter out only new resources for notifications
                         const currentResourceIds = resources.map(resource => {
                           return resource.id
                         })
@@ -338,7 +338,7 @@ function updateEvent(req, fields) {
                             })
                           })
                           .then(() => {
-                            // return the whole event with all associations
+                            // Return the whole event with all associations
                             return Event.findById(event.id, { include })
                               .then(updatedEvent => resolve(updatedEvent))
                           })
@@ -361,7 +361,7 @@ function validateEvent(req, fields, eventId) {
         )
       }
 
-      // keep the place, because we need it later
+      // Keep the place, because we need it later
       req.place = place
 
       return Promise.all([
@@ -376,10 +376,10 @@ export default {
   create: (req, res, next) => {
     const fields = pick(permittedFields, req.body)
 
-    // check if everything is correct before we do anything
+    // Check if everything is correct before we do anything
     return validateEvent(req, fields)
       .then(() => {
-        // create event
+        // Create event
         return createEvent(req, fields)
           .then(event => res.json(prepareResponse(event, req)))
       })
@@ -467,10 +467,10 @@ export default {
   update: (req, res, next) => {
     const fields = pick(permittedFields, req.body)
 
-    // check if everything is correct before we do anything
+    // Check if everything is correct before we do anything
     return validateEvent(req, fields, req.resourceId)
       .then(() => {
-        // update event
+        // Update event
         return updateEvent(req, fields)
           .then(event => res.json(prepareResponse(event, req)))
       })

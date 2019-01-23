@@ -113,10 +113,11 @@ export default (state = initialState, action) => {
     return updateResource(newState, action, true, true)
   }
   case ActionTypes.RESOURCE_CREATE_SUCCESS: {
-    // delete temporarily created resource
+    // Delete temporarily created resource
     const { resourceType, resourceId } = action.meta
     const newState = deleteResource(state, resourceType, resourceId)
-    // pass over the "real" remote object
+
+    // Pass over the "real" remote object
     action.meta.resourceId = action.payload.id
     return updateResource(newState, action, false, false)
   }

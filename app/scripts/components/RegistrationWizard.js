@@ -59,7 +59,7 @@ class RegistrationWizard extends Component {
 
   onTermsAcceptedChanged() {
     this.setState({
-      isTermsAccepted: this.refs.termsCheckbox.checked,
+      isTermsAccepted: this._termsCheckboxElem.checked,
     })
   }
 
@@ -125,7 +125,7 @@ class RegistrationWizard extends Component {
             checked={this.state.isTermsAccepted}
             className="form__field-input"
             disabled={this.props.isLoading}
-            ref="termsCheckbox"
+            ref={c => { this._termsCheckboxElem = c }}
             type="checkbox"
             onChange={this.onTermsAcceptedChanged}
           />

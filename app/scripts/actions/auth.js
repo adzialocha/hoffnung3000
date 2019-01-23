@@ -9,7 +9,7 @@ import { REDIRECT } from '../middlewares/redirect'
 import { translate } from '../../../common/services/i18n'
 
 export function redirectWhenUnauthenticated(location) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(
       flash({
         lifetime: 5000,

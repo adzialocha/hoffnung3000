@@ -34,7 +34,7 @@ router.get('/health-check', (req, res) =>
   res.send('ok')
 )
 
-// public API routes
+// Public API routes
 
 router.use('/auth', authRoutes)
 
@@ -49,7 +49,7 @@ router.route('/preview')
     eventPreviewController.findAll
   )
 
-// private API routes
+// Private API routes
 
 router.use('/*', (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
@@ -82,7 +82,7 @@ router.route('/upload')
 router.route('/activity')
   .get(activityController.findAll)
 
-// admin API routes
+// Admin API routes
 
 router.use(onlyAdmin)
 
@@ -97,7 +97,7 @@ router.use((err, req, res, next) => {
   }
 
   if (err instanceof expressValidation.ValidationError) {
-    // validation error contains errors which is an
+    // Validation error contains errors which is an
     // array of error each containing message[]
     const unifiedMessage = err.errors.map(
       error => error.messages.join('. ')

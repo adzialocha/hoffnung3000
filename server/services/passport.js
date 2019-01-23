@@ -18,7 +18,7 @@ const tokenOptions = {
 
 const strategy = new passportJwt.Strategy(options, (payload, next) => {
   User.findById(payload.user.id)
-    .then((user) => {
+    .then(user => {
       next(null, user)
       return null
     })

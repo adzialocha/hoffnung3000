@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface) => {
+  up: queryInterface => {
     queryInterface.addConstraint('animals', ['userId'], {
       name: 'animal_user_id_fkey',
       type: 'FOREIGN KEY',
@@ -66,7 +66,7 @@ module.exports = {
       onUpdate: 'CASCADE',
     })
   },
-  down: (queryInterface) => {
+  down: queryInterface => {
     queryInterface.removeConstraint('animals', 'animal_user_id_fkey')
     queryInterface.removeConstraint('slots', 'slot_place_id_fkey')
     queryInterface.removeConstraint('slots', 'slot_event_id_fkey')

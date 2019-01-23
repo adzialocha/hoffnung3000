@@ -110,7 +110,7 @@ export function addRequestPlaceActivity(data) {
 export function addCreateMeetingActivity(data) {
   const { place, animalId, userId } = data
 
-  // send a message to creating user
+  // Send a message to creating user
   const activity = {
     animalId,
     objectId: place.id,
@@ -128,7 +128,7 @@ export function addCreateMeetingActivity(data) {
 
 export function addJoinMeetingActivity(data) {
   return new Promise((resolve, reject) => {
-    // send a message to all currently participating users
+    // Send a message to all currently participating users
     const activities = data.receivingAnimals.map(animal => {
       return {
         animalId: data.joiningAnimal.id,
@@ -137,7 +137,7 @@ export function addJoinMeetingActivity(data) {
       }
     })
 
-    // send a message to joining user
+    // Send a message to joining user
     const ownActivity = {
       animalId: data.joiningAnimal.id,
       type: 'JOIN_RANDOM_MEETING_ME',

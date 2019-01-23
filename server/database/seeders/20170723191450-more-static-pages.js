@@ -9,7 +9,7 @@ function makePage(title, slug) {
 }
 
 module.exports = {
-  up: (queryInterface) => {
+  up: queryInterface => {
     return queryInterface.bulkInsert('pages', [
       makePage('Calendar (public)', 'calendar-public'),
       makePage('Calendar', 'calendar'),
@@ -18,7 +18,7 @@ module.exports = {
       makePage('New Event', 'new-event'),
     ])
   },
-  down: (queryInterface) => {
+  down: queryInterface => {
     return queryInterface.bulkDelete('pages', [{
       slug: [
         'calendar-public',

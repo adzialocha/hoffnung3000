@@ -58,7 +58,7 @@ const upload = multer({
 }).array('images')
 
 export default function(req, res, next) {
-  upload(req, res, (err) => {
+  upload(req, res, err => {
     if (err) {
       return next(err)
     }

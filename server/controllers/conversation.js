@@ -61,7 +61,7 @@ export default {
     const values = pick(permittedFields, req.body)
     const animalIds = req.body.animalIds
 
-    // get all receiving animals
+    // Get all receiving animals
     return Animal.findAll({
       where: {
         id: {
@@ -72,7 +72,7 @@ export default {
       returning: true,
     })
       .then(receivingAnimals => {
-        // check if receiving animal is not myself
+        // Check if receiving animal is not myself
         const isMyself = receivingAnimals.find(animal => {
           return animal.userId === req.user.id
         })
@@ -87,7 +87,7 @@ export default {
           return null
         }
 
-        // are all receiving animals given?
+        // Are all receiving animals given?
         if (receivingAnimals.length !== animalIds.length) {
           next(
             new APIError(
@@ -98,7 +98,7 @@ export default {
           return null
         }
 
-        // create an animal for myself (the sending user)
+        // Create an animal for myself (the sending user)
         return Animal.create({
           userId: req.user.id,
         }, {
@@ -107,7 +107,7 @@ export default {
           .then(sendingAnimal => {
             const animals = receivingAnimals.concat([sendingAnimal])
 
-            // create the new conversation
+            // Create the new conversation
             return Conversation.create({
               title: values.title,
               animalId: sendingAnimal.id,
@@ -115,7 +115,7 @@ export default {
               .then(conversation => {
                 return conversation.setAnimals(animals)
                   .then(() => {
-                    // create first message in conversation
+                    // Create first message in conversation
                     return Message.create({
                       animalId: sendingAnimal.id,
                       conversationId: conversation.id,

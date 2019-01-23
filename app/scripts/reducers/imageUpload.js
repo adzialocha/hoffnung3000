@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
       errorMessage: { $set: '' },
       isLoading: { $set: true },
     })
-  case ActionTypes.UPLOAD_IMAGE_SUCCESS:
+  case ActionTypes.UPLOAD_IMAGE_SUCCESS: {
     const newImages = action.payload.map((fileName, index) => {
       return {
         base64String: action.meta.base64Strings[index],
@@ -24,10 +24,12 @@ export default (state = initialState, action) => {
         id: randomId(),
       }
     })
+
     return update(state, {
       uploadedImages: { $push: newImages },
       isLoading: { $set: false },
     })
+  }
   case ActionTypes.UPLOAD_IMAGE_FAILURE:
     return update(state, {
       errorMessage: { $set: action.error.message },
@@ -37,13 +39,15 @@ export default (state = initialState, action) => {
     return update(state, {
       uploadedImages: { $set: action.meta.images },
     })
-  case ActionTypes.UPLOAD_IMAGE_REMOVE_IMAGE:
+  case ActionTypes.UPLOAD_IMAGE_REMOVE_IMAGE: {
     const index = state.uploadedImages.findIndex(image => {
       return image.id === action.meta.imageId
     })
+
     return update(state, {
       uploadedImages: { $splice: [[index, 1]] },
     })
+  }
   case ActionTypes.UPLOAD_IMAGE_CLEAR:
     return update(state, {
       $set: initialState,

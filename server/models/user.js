@@ -96,7 +96,7 @@ const User = db.sequelize.define('user', {
   },
 })
 
-// instance methods
+// Instance methods
 User.prototype.comparePasswords = function compare(password) {
   return bcrypt.compareSync(password, this.password)
 }

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 
 import config from '../../../common/config'
 import styles from '../utils/googleMapStyle.json'

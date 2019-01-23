@@ -26,9 +26,9 @@ const Image = db.sequelize.define('image', {
   },
 })
 
-Image.hook('beforeValidate', (image) => {
+Image.hook('beforeValidate', image => {
   if (!image.fileName) {
-    return sequelize.Promise.reject(
+    return Promise.reject(
       new Error('Invalid image object')
     )
   }
@@ -42,11 +42,11 @@ Image.hook('beforeValidate', (image) => {
 
         resolve()
       })
-      .catch((err) => reject(err))
+      .catch(err => reject(err))
   })
 })
 
-Image.hook('beforeDestroy', (image) => {
+Image.hook('beforeDestroy', image => {
   return deleteObjects([
     image.largeImageUrl,
     image.mediumImageUrl,

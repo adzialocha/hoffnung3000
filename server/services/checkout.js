@@ -13,7 +13,7 @@ function generateRandomPaymentId() {
 function paypalCheckout(user, product) {
   return new Promise((resolve, reject) => {
     createPayment(product)
-      .then((paypalResponse) => {
+      .then(paypalResponse => {
         return User.update({
           paymentId: paypalResponse.payment.id,
         }, {
@@ -51,7 +51,7 @@ function transferCheckout(user, product) {
       limit: 1,
       returning: true,
     })
-      .then((data) => {
+      .then(data => {
         const updatedUser = data[1][0]
         sendWireTransferDetails({
           paymentId,

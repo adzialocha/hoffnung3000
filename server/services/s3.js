@@ -28,7 +28,7 @@ function request(method, Key, customParams, customMethod) {
     let promise
 
     if (customMethod) {
-      // wrap this around a Promise since S3 SDK is not doing this for us
+      // Wrap this around a Promise since S3 SDK is not doing this for us
       promise = new Promise((customResolve, customReject) => {
         s3[method](customMethod, params, (err, data) => {
           if (err) {

@@ -52,7 +52,7 @@ export default {
   create: (req, res, next) => {
     const values = pick(permittedFields, req.body)
 
-    // create a message in that conversation
+    // Create a message in that conversation
     return Message.create({
       animalId: req.meAnimal.id,
       conversationId: req.conversation.id,
@@ -75,7 +75,7 @@ export default {
       offset = DEFAULT_OFFSET,
     } = req.query
 
-    // find related conversation
+    // Find related conversation
     return Message.findAndCountAll({
       where: {
         conversationId: req.params.resourceId,
@@ -90,7 +90,7 @@ export default {
       ],
     })
       .then(result => {
-        // update last checked at date
+        // Update last checked at date
         return ConversationAnimal.update({
           lastCheckedAt: db.sequelize.fn('NOW'),
         }, {
@@ -100,7 +100,7 @@ export default {
           },
         })
           .then(() => {
-            // return messages
+            // Return messages
             res.json({
               data: prepareResponseAll(result.rows, req),
               limit: parseInt(limit, 10),

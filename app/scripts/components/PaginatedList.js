@@ -44,7 +44,7 @@ class PaginatedList extends Component {
   }
 
   renderTableCells(item, index) {
-    return this.props.columns.map((cell) => {
+    return this.props.columns.map(cell => {
       const key = `${item.id}${cell.key}`
       const value = item[cell.key]
 
@@ -112,7 +112,7 @@ class PaginatedList extends Component {
   }
 
   renderTableHeader() {
-    return this.props.columns.map((cell) => {
+    return this.props.columns.map(cell => {
       return (
         <th className="paginated-list__header-cell" key={cell.key}>
           { cell.title }

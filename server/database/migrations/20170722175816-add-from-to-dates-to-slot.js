@@ -18,7 +18,7 @@ module.exports = {
       }
     )
   },
-  down: (queryInterface) => {
+  down: queryInterface => {
     queryInterface.removeColumn('slots', 'from')
     queryInterface.removeColumn('slots', 'to')
   },

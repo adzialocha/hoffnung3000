@@ -10,11 +10,11 @@ class FormCheckbox extends Component {
   }
 
   onBlur() {
-    this.props.input.onBlur(this.refs.checkbox.checked)
+    this.props.input.onBlur(this._checkboxElem.checked)
   }
 
   onChange() {
-    this.props.input.onChange(this.refs.checkbox.checked)
+    this.props.input.onChange(this._checkboxElem.checked)
   }
 
   render() {
@@ -25,7 +25,7 @@ class FormCheckbox extends Component {
         checked={this.props.input.value}
         className="form__field-input form__field-checkbox"
         disabled={disabled}
-        ref="checkbox"
+        ref={c => { this._refCheckbox = c }}
         type="checkbox"
         {...input}
         onBlur={this.onBlur}

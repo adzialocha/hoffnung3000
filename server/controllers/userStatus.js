@@ -39,7 +39,7 @@ function getUnreadMessageCount(req) {
           parseInt(req.query.lastRequestAt, 10)
         ) : new Date()
 
-        // check for unread messages
+        // Check for unread messages
         const unreadMessages = messages.rows.filter(message => {
           const animalMe = message.conversation.animals[0]
           const lastCheckedAt = animalMe.conversationsAnimals.updatedAt
@@ -51,7 +51,7 @@ function getUnreadMessageCount(req) {
           return moment(lastCheckedAt).isBefore(message.createdAt)
         })
 
-        // check for unread messages since the last time we looked at it
+        // Check for unread messages since the last time we looked at it
         const latestMessages = unreadMessages.filter(message => {
           return moment(lastRequestAt).isBefore(message.createdAt)
         })
