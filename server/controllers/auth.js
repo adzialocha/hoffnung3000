@@ -176,7 +176,7 @@ function requestResetToken(req, res, next) {
   }
 
   generateRandomHash().then(passwordResetToken => {
-    const passwordResetAt = db.sequelize.fn('NOW')
+    const passwordResetAt = db.fn('NOW')
 
     return User.update({ passwordResetAt, passwordResetToken }, queryParams)
       .then(data => {

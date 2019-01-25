@@ -92,7 +92,7 @@ export default {
       .then(result => {
         // Update last checked at date
         return ConversationAnimal.update({
-          lastCheckedAt: db.sequelize.fn('NOW'),
+          lastCheckedAt: db.fn('NOW'),
         }, {
           where: {
             animalId: req.meAnimal.id,
