@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
-import winston from 'winston'
 
 import config from '../../common/config'
+import logger from '../helpers/logger'
 import mail from '../services/mail'
 
 const TEMPLATES_PATH = 'mails'
@@ -50,8 +50,9 @@ function sendMail(locals, subject, receiver, templateName, sender) {
           mailOptions.from = sender
         }
 
+        // Do not send real emails when in development
         if (process.env.NODE_ENV === 'development') {
-          winston.info('SEND MAIL', mailOptions)
+          logger.info('SEND MAIL', mailOptions)
           return resolve()
         }
 

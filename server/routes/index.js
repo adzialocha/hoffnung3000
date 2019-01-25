@@ -1,7 +1,6 @@
 import express from 'express'
 import expressValidation from 'express-validation'
 import httpStatus from 'http-status'
-import winston from 'winston'
 import { EmptyResultError, ValidationError } from 'sequelize'
 
 import passport from '../services/passport'
@@ -26,16 +25,14 @@ import profileRoutes from './profile'
 import resourceRoutes from './resource'
 import userRoutes from './user'
 
+import logger from '../helpers/logger'
+
 const router = express.Router() // eslint-disable-line new-cap
 
 // API health check route
-
-router.get('/health-check', (req, res) =>
-  res.send('ok')
-)
+router.get('/health-check', (req, res) => res.send('ok'))
 
 // Public API routes
-
 router.use('/auth', authRoutes)
 
 router.route('/pages/:resourceSlug(\\D+)/')
@@ -45,12 +42,9 @@ router.route('/meta')
   .get(metaController.information)
 
 router.route('/preview')
-  .get(
-    eventPreviewController.findAll
-  )
+  .get(eventPreviewController.findAll)
 
 // Private API routes
-
 router.use('/*', (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
     if (err) {
@@ -83,17 +77,15 @@ router.route('/activity')
   .get(activityController.findAll)
 
 // Admin API routes
-
 router.use(onlyAdmin)
 
 router.use('/pages', pageRoutes)
 router.use('/users', userRoutes)
 
 // API error handling
-
 router.use((err, req, res, next) => {
-  if (err && process.env.NODE_ENV === 'development') {
-    winston.error(err)
+  if (err) {
+    logger.error(err.stack)
   }
 
   if (err instanceof expressValidation.ValidationError) {

@@ -12,9 +12,6 @@ import moment from 'moment-timezone'
 import morgan from 'morgan'
 import path from 'path'
 
-import config from '../common/config'
-import logger from './helpers/logger'
-
 const ASSETS_FOLDER_NAME = 'static'
 const ASSETS_MANIFESTO_FILE = 'webpack-assets.json'
 const ASSETS_MAX_AGE = 31557600000
@@ -25,19 +22,23 @@ function getPath(filePath) {
   return path.resolve(__dirname, '..', filePath)
 }
 
+// Load environment variables when in development
+const envVariables = dotenv.config({ path: getPath('.env') })
+
+const logger = require('./helpers/logger')
+
 function errorAndExit(message) {
   logger.error(message)
   process.exit(1)
 }
 
-// Load environment variables when in development
-const envVariables = dotenv.config({
-  path: getPath('.env'),
-})
-
 if (envVariables.error && process.env.NODE_ENV === 'development') {
   errorAndExit('".env" file does not exist, please configure the app first')
 }
+
+// Load configuration file
+// @TODO Check if we shouldnt replace this with only using ENV variables
+const config = require('../common/config')
 
 // Read build manifesto for asset file paths
 const assetsPath = getPath(ASSETS_MANIFESTO_FILE)
@@ -84,9 +85,12 @@ app.set('x-powered-by', false)
 app.set('view engine', 'pug')
 app.set('views', __dirname)
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'))
-}
+// Log HTTP requests
+app.use(morgan('dev', {
+  stream: {
+    write: message => logger.verbose(message.replace('\n', '')),
+  },
+}))
 
 // Enable compression and parsing requests
 app.use(compression())
@@ -139,8 +143,6 @@ app.use((req, res, next) => {
 // Start server
 app.listen(app.get('port'), () => {
   logger.info(
-    'Server is listening at port %d in %s mode',
-    app.get('port'),
-    app.get('env')
+    `Server is listening at port ${app.get('port')} in ${app.get('env')} mode`
   )
 })
