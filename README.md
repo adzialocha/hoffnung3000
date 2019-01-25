@@ -35,7 +35,7 @@ You can log in now with the initial admin account `admin@admin.com` and password
 
 ```bash
 npm run serve // server runs by default on localhost:3000
-npm run watch // run gulp watch process in a second terminal
+npm run assets:watch // run webpack watch process in a second terminal
 ```
 
 ## Linting
@@ -49,7 +49,7 @@ npm run lint // run all linters
 ## Deployment
 
 ```bash
-npm run build // compile assets for production
+npm run assets:build // compile assets for production
 ```
 
 Note that `NPM_CONFIG_PRODUCTION` should be set to `false` for successful [Heroku deployment](https://devcenter.heroku.com/articles/nodejs-support#devdependencies).
