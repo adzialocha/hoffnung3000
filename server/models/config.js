@@ -16,20 +16,22 @@ function configField(type, allowNull = false) {
 // This model holds global configurations which are crucial for
 // the whole application. Defaults are defined in a database seed.
 const Config = db.define('config', {
-  timezone: configField(Sequelize.STRING),
-  currency: configField(Sequelize.STRING),
-  title: configField(Sequelize.STRING),
-  description: configField(Sequelize.STRING),
   baseUrl: configField(Sequelize.STRING),
-  mailAddressAdmin: configField(Sequelize.STRING),
-  mailAddressRobot: configField(Sequelize.STRING),
-  maximumParticipantsCount: configField(Sequelize.INTEGER, true),
-  festivalTicketPrice: configField(Sequelize.FLOAT, true),
-  participationPrice: configField(Sequelize.FLOAT, true),
+  currency: configField(Sequelize.STRING),
   defaultCity: configField(Sequelize.STRING),
   defaultCounty: configField(Sequelize.CHAR),
   defaultLatitude: configField(Sequelize.FLOAT),
   defaultLongitude: configField(Sequelize.FLOAT),
+  description: configField(Sequelize.STRING),
+  festivalDateEnd: configField(Sequelize.DATEONLY),
+  festivalDateStart: configField(Sequelize.DATEONLY),
+  festivalTicketPrice: configField(Sequelize.FLOAT, true),
+  mailAddressAdmin: configField(Sequelize.STRING),
+  mailAddressRobot: configField(Sequelize.STRING),
+  maximumParticipantsCount: configField(Sequelize.INTEGER, true),
+  participationPrice: configField(Sequelize.FLOAT, true),
+  timezone: configField(Sequelize.STRING),
+  title: configField(Sequelize.STRING),
 })
 
 export default Config

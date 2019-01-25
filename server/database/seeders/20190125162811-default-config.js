@@ -14,6 +14,8 @@ module.exports = {
       defaultCity: 'Berlin',
       defaultCounty: 'Germany',
       defaultLatitude: 52.53647,
+      festivalDateEnd: '2017-08-27',
+      festivalDateStart: '2017-08-24',
       defaultLongitude: 13.40780,
     }])
   },

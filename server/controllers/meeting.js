@@ -22,6 +22,7 @@ import {
 
 import { APIError } from '../helpers/errors'
 import { formatEventTime } from '../../common/utils/dateFormat'
+import { getConfig } from '../config'
 import { isInFestivalRange } from '../../common/utils/slots'
 import { translate } from '../../common/services/i18n'
 
@@ -221,50 +222,55 @@ export default {
       }
     }
 
-    const isInFestival = (
-      process.env.NODE_ENV === 'production' ? isInFestivalRange(from) : true
-    )
+    return getConfig(['festivalDateStart, festivalDateEnd'])
+      .then(config => {
+        const { festivalDateStart: start, festivalDateEnd: end } = config
 
-    if (!isInFestival) {
-      next(
-        new APIError(
-          translate('api.errors.meeting.festivalRange'),
-          httpStatus.PRECONDITION_FAILED
+        const isInFestival = (
+          process.env.NODE_ENV === 'production' ? isInFestivalRange(from, start, end) : true
         )
-      )
-      return null
-    }
 
-    const to = moment(from).add(DURATION_HOURS, 'hours')
-
-    return Meeting.findOne({
-      where,
-      include: [{
-        association: MeetingBelongsToConversation,
-        include: [{
-          association: ConversationBelongsToManyAnimal,
-        }],
-      }],
-    })
-      .then(meeting => {
-        if (!meeting) {
-          return createMeeting(req.user.id, from, to)
-        }
-
-        const isAlreadyExisting = meeting.conversation.animals.find(animal => {
-          return animal.userId === req.user.id
-        })
-
-        if (isAlreadyExisting) {
-          throw new APIError(
-            translate('api.errors.meeting.alreadyJoined'),
-            httpStatus.BAD_REQUEST
+        if (!isInFestival) {
+          next(
+            new APIError(
+              translate('api.errors.meeting.festivalRange'),
+              httpStatus.PRECONDITION_FAILED
+            )
           )
+          return null
         }
 
-        return joinMeeting(meeting.conversation, req.user.id)
+        const to = moment(from).add(DURATION_HOURS, 'hours')
+
+        return Meeting.findOne({
+          where,
+          include: [{
+            association: MeetingBelongsToConversation,
+            include: [{
+              association: ConversationBelongsToManyAnimal,
+            }],
+          }],
+        })
+          .then(meeting => {
+            if (!meeting) {
+              return createMeeting(req.user.id, from, to)
+            }
+
+            const isAlreadyExisting = meeting.conversation.animals.find(animal => {
+              return animal.userId === req.user.id
+            })
+
+            if (isAlreadyExisting) {
+              throw new APIError(
+                translate('api.errors.meeting.alreadyJoined'),
+                httpStatus.BAD_REQUEST
+              )
+            }
+
+            return joinMeeting(meeting.conversation, req.user.id)
+          })
+          .then(() => res.json({ status: 'ok' }))
+          .catch(err => next(err))
       })
-      .then(() => res.json({ status: 'ok' }))
-      .catch(err => next(err))
   },
 }

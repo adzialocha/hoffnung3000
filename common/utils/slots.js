@@ -9,13 +9,8 @@ function addSlotDuration(date, slotSize) {
   return moment(date).add(slotSize, 'minutes')
 }
 
-export function isInFestivalRange(date) {
-  return moment(date).isBetween(
-    config.festivalDateStart,
-    config.festivalDateEnd,
-    null,
-    '[]'
-  )
+export function isInFestivalRange(date, start, end) {
+  return moment(date).isBetween(start, end, null, '[]')
 }
 
 export function checkSlotSize(slotSize) {
@@ -97,6 +92,7 @@ export function generateNewSlotItems(slotSize, existingSlots) {
   }
 
   let slotIndex = 0
+  // @TODO Pass config as a function argument
   let from = moment(config.festivalDateStart)
   let to = addSlotDuration(from, slotSize)
 
@@ -120,6 +116,7 @@ export function generateNewSlotItems(slotSize, existingSlots) {
 }
 
 export function getSlotTimes(slotSize, slotIndex) {
+  // @TODO Pass config as a function argument
   const date = config.festivalDateStart
   return {
     from: moment(date).add(slotSize * slotIndex, 'minutes'),

@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 
-import config from '../../common/config'
 import logger from '../helpers/logger'
 import mail from '../services/mail'
+import { getConfig } from '../config'
 
 const TEMPLATES_PATH = 'mails'
 
@@ -18,6 +18,7 @@ function generateTemplateString(template) {
 }
 
 function textTemplate(url, locals) {
+  // @TODO Load templates from database
   return new Promise((resolve, reject) => {
     const filePath = path.join(__dirname, '../', url)
 
@@ -37,17 +38,13 @@ function textTemplate(url, locals) {
 
 function sendMail(locals, subject, receiver, templateName, sender) {
   return new Promise((resolve, reject) => {
-    const mergedLocals = Object.assign({}, locals, { config })
-    textTemplate(`${TEMPLATES_PATH}/${templateName}.txt`, mergedLocals)
+    textTemplate(`${TEMPLATES_PATH}/${templateName}.txt`, locals)
       .then(text => {
         const mailOptions = {
           subject,
           text,
+          from: sender,
           to: receiver,
-        }
-
-        if (sender) {
-          mailOptions.from = sender
         }
 
         // Do not send real emails when in development
@@ -61,6 +58,7 @@ function sendMail(locals, subject, receiver, templateName, sender) {
             reject(err)
             return
           }
+
           resolve()
         })
       })
@@ -69,31 +67,74 @@ function sendMail(locals, subject, receiver, templateName, sender) {
 }
 
 export function sendWireTransferDetails(locals, receiver) {
-  const subject = `${config.title} TRANSFER DETAILS`
-  return sendMail(locals, subject, receiver, 'wireTransferDetails')
+  return getConfig(['title', 'mailAddressAdmin'])
+    .then(config => {
+      const subject = `${config.title} TRANSFER DETAILS`
+
+      return sendMail(
+        locals,
+        subject,
+        receiver,
+        'wireTransferDetails',
+        config.mailAddressAdmin
+      )
+    })
 }
 
 export function sendRegistrationComplete(locals, receiver) {
-  const subject = `WELCOME TO ${config.title}`
-  return sendMail(locals, subject, receiver, 'registrationComplete')
+  return getConfig(['title', 'mailAddressAdmin'])
+    .then(config => {
+      const subject = `WELCOME TO ${config.title}`
+
+      return sendMail(
+        locals,
+        subject,
+        receiver,
+        'registrationComplete',
+        config.mailAddressAdmin
+      )
+    })
 }
 
 export function sendAdminRegistrationNotification(locals) {
-  const subject = 'NEW REGISTRATION'
-  return sendMail(
-    locals,
-    subject,
-    config.mailAddressAdmin,
-    'adminRegistrationNotification',
-    config.mailAddressRobot
-  )
+  return getConfig(['mailAddressAdmin', 'mailAddressRobot'])
+    .then(config => {
+      const subject = 'NEW REGISTRATION'
+
+      return sendMail(
+        locals,
+        subject,
+        config.mailAddressAdmin,
+        'adminRegistrationNotification',
+        config.mailAddressRobot
+      )
+    })
 }
 
 export function sendPasswordReset(locals, receiver) {
-  const subject = 'PASSWORD RESET'
-  return sendMail(locals, subject, receiver, 'passwordReset')
+  return getConfig('mailAddressAdmin')
+    .then(config => {
+      const subject = 'PASSWORD RESET'
+
+      return sendMail(
+        locals,
+        subject,
+        receiver,
+        'passwordReset',
+        config.mailAddressAdmin
+      )
+    })
 }
 
 export function sendActivityNotification(subject, locals, receiver) {
-  return sendMail(locals, subject, receiver, 'activityNotification')
+  return getConfig('mailAddressAdmin')
+    .then(config => {
+      return sendMail(
+        locals,
+        subject,
+        receiver,
+        'activityNotification',
+        config.mailAddressAdmin
+      )
+    })
 }

@@ -1,23 +1,24 @@
 import httpStatus from 'http-status'
 import { Op } from 'sequelize'
 
+import User from '../models/user'
 import checkout from '../services/checkout'
-import config from '../../common/config'
 import db from '../database'
 import pick from '../utils/pick'
-import User from '../models/user'
 import { APIError } from '../helpers/errors'
 import { executePayment } from '../services/paypal'
 import { generateRandomHash } from '../utils/randomHash'
 import { generateToken } from '../services/passport'
+import { getConfig } from '../config'
+import { translate } from '../../common/services/i18n'
+
 import {
   sendAdminRegistrationNotification,
   sendPasswordReset,
   sendRegistrationComplete,
 } from '../helpers/mailTemplate'
-import { translate } from '../../common/services/i18n'
 
-const PASSWORD_RESET_EXPIRY = 15 // Min
+const PASSWORD_RESET_EXPIRY = 15 // Minutes
 
 const permittedFields = [
   'city',
@@ -32,10 +33,12 @@ const permittedFields = [
   'street',
 ]
 
-const product = {
-  name: config.title,
-  description: translate('api.products.participation'),
-  price: config.participationPrice,
+function getProduct(config) {
+  return {
+    name: config.title,
+    description: translate('api.products.participation'),
+    price: config.participationPrice,
+  }
 }
 
 function signup(req, res, next) {
@@ -44,50 +47,56 @@ function signup(req, res, next) {
 
   const { email, paymentMethod } = fields
 
-  return User.count({ where: { isParticipant: true } })
-    .then(count => {
-      if (count >= config.maximumParticipantsCount) {
-        next(
-          new APIError(
-            translate('api.errors.auth.registrationLimitExceeded'),
-            httpStatus.LOCKED
-          )
-        )
-        return null
-      }
-
-      return User.findOne({ where: { email } })
-        .then(existingUser => {
-          if (existingUser) {
+  return getConfig(['maximumParticipantsCount', 'title', 'description'])
+    .then(config => {
+      return User.count({ where: { isParticipant: true } })
+        .then(count => {
+          if (count >= config.maximumParticipantsCount) {
             next(
               new APIError(
-                translate('api.errors.auth.userExistsAlready'),
-                httpStatus.BAD_REQUEST
+                translate('api.errors.auth.registrationLimitExceeded'),
+                httpStatus.LOCKED
               )
             )
             return null
           }
 
-          return User.create(fields, { returning: true })
-            .then(user => {
-              return checkout(paymentMethod, user, product)
-                .then(data => {
-                  sendAdminRegistrationNotification({
-                    paymentMethod,
-                    product,
-                    user,
-                  })
-                  res.json(data)
+          const product = getProduct(config)
+
+          return User.findOne({ where: { email } })
+            .then(existingUser => {
+              if (existingUser) {
+                next(
+                  new APIError(
+                    translate('api.errors.auth.userExistsAlready'),
+                    httpStatus.BAD_REQUEST
+                  )
+                )
+                return null
+              }
+
+              return User.create(fields, { returning: true })
+                .then(user => {
+                  return checkout(paymentMethod, user, product)
+                    .then(data => {
+                      sendAdminRegistrationNotification({
+                        paymentMethod,
+                        product,
+                        user,
+                      })
+                      res.json(data)
+                    })
+                    .catch(err => next(err))
                 })
                 .catch(err => next(err))
             })
-            .catch(err => next(err))
         })
     })
 }
 
 function paypalCheckoutSuccess(req, res, next) {
   const { paymentId, PayerID } = req.query
+
   const queryParams = {
     where: {
       paymentId,
@@ -97,34 +106,41 @@ function paypalCheckoutSuccess(req, res, next) {
     rejectOnEmpty: true,
   }
 
-  return User.findOne(queryParams)
-    .then(user => {
-      executePayment(paymentId, PayerID)
-        .then(() => {
-          return User.update({ isActive: true }, queryParams)
+  return getConfig(['title', 'description'])
+    .then(config => {
+      return getProduct(config)
+    })
+    .then(product => {
+      return User
+        .findOne(queryParams)
+        .then(user => {
+          executePayment(paymentId, PayerID)
             .then(() => {
-              sendRegistrationComplete({
-                product,
-                user,
-              }, user.email)
+              return User.update({ isActive: true }, queryParams)
+                .then(() => {
+                  sendRegistrationComplete({
+                    product,
+                    user,
+                  }, user.email)
 
-              res.redirect('/?paypalSuccess')
+                  res.redirect('/?paypalSuccess')
+                })
+                .catch(err => next(err))
             })
-            .catch(err => next(err))
+            .catch(() => next(
+              new APIError(
+                translate('api.errors.auth.paymentError'),
+                httpStatus.INTERNAL_SERVER_ERROR
+              )
+            ))
         })
         .catch(() => next(
           new APIError(
-            translate('api.errors.auth.paymentError'),
-            httpStatus.INTERNAL_SERVER_ERROR
+            translate('api.errors.auth.paymentMethodError'),
+            httpStatus.BAD_REQUEST
           )
         ))
     })
-    .catch(() => next(
-      new APIError(
-        translate('api.errors.auth.paymentMethodError'),
-        httpStatus.BAD_REQUEST
-      )
-    ))
 }
 
 function paypalCheckoutCancel(req, res) {
@@ -178,31 +194,34 @@ function requestResetToken(req, res, next) {
   generateRandomHash().then(passwordResetToken => {
     const passwordResetAt = db.fn('NOW')
 
-    return User.update({ passwordResetAt, passwordResetToken }, queryParams)
-      .then(data => {
-        if (data[0] === 0) {
-          next(
-            new APIError(
-              translate('api.errors.auth.userNotExisting'),
-              httpStatus.BAD_REQUEST
-            )
-          )
-          return
-        }
+    return getConfig('baseUrl')
+      .then(config => {
+        return User.update({ passwordResetAt, passwordResetToken }, queryParams)
+          .then(data => {
+            if (data[0] === 0) {
+              next(
+                new APIError(
+                  translate('api.errors.auth.userNotExisting'),
+                  httpStatus.BAD_REQUEST
+                )
+              )
+              return
+            }
 
-        const user = data[1][0]
-        const passwordResetUrl = `${config.basePath}/reset/${passwordResetToken}`
+            const user = data[1][0]
+            const passwordResetUrl = `${config.baseUrl}/reset/${passwordResetToken}`
 
-        sendPasswordReset({
-          passwordResetUrl,
-          user,
-        }, user.email)
+            sendPasswordReset({
+              passwordResetUrl,
+              user,
+            }, user.email)
 
-        res.json({
-          message: 'ok',
-        })
+            res.json({
+              message: 'ok',
+            })
+          })
+          .catch(err => next(err))
       })
-      .catch(err => next(err))
   })
 }
 
