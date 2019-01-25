@@ -1,6 +1,7 @@
 import path from 'path'
 
 import AssetsPlugin from 'assets-webpack-plugin'
+import CopyPlugin from 'copy-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
@@ -94,6 +95,11 @@ module.exports = (env, options) => {
     devtool: isDevelopment ? 'cheap-module-source-map' : undefined,
     plugins: [
       new AssetsPlugin(),
+      new CopyPlugin([{
+        flatten: true,
+        from: getPath(`${PATH_SRC}/images/*`),
+        to: getPath(PATH_DIST),
+      }]),
       new MiniCssExtractPlugin({
         filename: `${filename}.css`,
       }),
