@@ -17,7 +17,7 @@
     "assets:clear": "rimraf ./static",
     "assets:watch": "npm run assets:clear && webpack --mode development --watch --progress",
     "db:migrate": "sequelize db:migrate",
-    "db:migrate:create": "sequelize migration:generate",
+    "db:migrate:create": "sequelize migration:generate --name untitled",
     "db:migrate:undo": "sequelize db:migrate:undo",
     "db:seed": "sequelize db:seed:all",
     "db:seed:create": "sequelize seed:generate",
