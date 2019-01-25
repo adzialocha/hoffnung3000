@@ -1,3 +1,5 @@
+import { Op } from 'sequelize'
+
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
@@ -37,9 +39,9 @@ function findAllWithAvailability(req, res, next) {
     offset = DEFAULT_OFFSET,
   } = req.query
 
-  let eventId = { $not: null }
+  let eventId = { [Op.not]: null }
   if (req.query.eventId) {
-    eventId = { $and: [eventId, { $not: req.query.eventId }] }
+    eventId = { [Op.and]: [eventId, { [Op.not]: req.query.eventId }] }
   }
 
   return Resource.findAndCountAll({
@@ -58,15 +60,15 @@ function findAllWithAvailability(req, res, next) {
           model: Slot,
           as: 'slots',
           where: {
-            $and: [{
+            [Op.and]: [{
               eventId,
             }, {
               from: {
-                $lt: req.query.to,
+                [Op.lt]: req.query.to,
               },
             }, {
               to: {
-                $gt: req.query.from,
+                [Op.gt]: req.query.from,
               },
             }],
           },
@@ -175,7 +177,7 @@ export default {
 
         return updateImagesForObject(previousResource, req.body.images)
           .then(() => {
-            return Resource.findById(previousResource.id, { include })
+            return Resource.findByPk(previousResource.id, { include })
               .then(resource => {
                 res.json(prepareResponse(resource, req))
               })

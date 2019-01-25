@@ -70,7 +70,7 @@ moment.tz.setDefault(config.timezone)
 
 // Check database connection
 const db = require('./database')
-db.sequelize.authenticate()
+db.authenticate()
   .then(() => {
     logger.info('Database connection has been established successfully')
   })

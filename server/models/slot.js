@@ -1,32 +1,34 @@
+import Sequelize from 'sequelize'
+
 import db from '../database'
 
-const Slot = db.sequelize.define('slot', {
+const Slot = db.define('slot', {
   id: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   placeId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: false,
   },
   eventId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
   },
   from: {
-    type: db.Sequelize.DATE,
+    type: Sequelize.DATE,
     allowNull: false,
   },
   to: {
-    type: db.Sequelize.DATE,
+    type: Sequelize.DATE,
     allowNull: false,
   },
   slotIndex: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: false,
   },
   isDisabled: {
-    type: db.Sequelize.BOOLEAN,
+    type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },

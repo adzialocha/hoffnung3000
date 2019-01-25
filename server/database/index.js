@@ -3,20 +3,12 @@ import Sequelize from 'sequelize'
 import logger from '../helpers/logger'
 import config from './config'
 
-const DEFAULT_LOG_LEVEL = 'info'
-
 const { url, dialect } = config[process.env.NODE_ENV]
 
-const sequelize = new Sequelize(url, {
-  level: process.env.LOG_LEVEL || DEFAULT_LOG_LEVEL,
+export default new Sequelize(url, {
   logging: msg => {
     logger.debug(msg)
   },
   dialect,
-  operatorsAliases: false,
+  operatorsAliases: false, // @TODO Remove this option in sequelize@>=5.0
 })
-
-export default {
-  Sequelize,
-  sequelize,
-}

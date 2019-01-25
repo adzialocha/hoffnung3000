@@ -1,4 +1,5 @@
 import httpStatus from 'http-status'
+import { Op } from 'sequelize'
 
 import checkout from '../services/checkout'
 import config from '../../common/config'
@@ -210,8 +211,8 @@ function resetPassword(req, res, next) {
   const queryParams = {
     where: {
       passwordResetAt: {
-        $lt: new Date(),
-        $gt: new Date(new Date() - PASSWORD_RESET_EXPIRY * 60000),
+        [Op.lt]: new Date(),
+        [Op.gt]: new Date(new Date() - PASSWORD_RESET_EXPIRY * 60000),
       },
       passwordResetToken: token,
     },

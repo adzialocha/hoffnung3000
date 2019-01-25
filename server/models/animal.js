@@ -1,19 +1,20 @@
+import Sequelize from 'sequelize'
 import generateRandomAnimalName from 'random-animal-name-generator'
 
 import db from '../database'
 
-const Animal = db.sequelize.define('animal', {
+const Animal = db.define('animal', {
   id: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   userId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: false,
   },
   name: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
 })

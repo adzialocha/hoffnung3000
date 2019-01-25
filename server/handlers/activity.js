@@ -1,3 +1,5 @@
+import { Op } from 'sequelize'
+
 import { prepareAnimalResponse } from '../controllers/base'
 
 import {
@@ -71,7 +73,7 @@ export function getMyActivities(limit, offset, userId) {
       ],
       where: {
         userId: {
-          $or: [
+          [Op.or]: [
             null,
             userId,
           ],

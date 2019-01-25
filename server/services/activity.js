@@ -15,9 +15,9 @@ function addActivity(data) {
 
 function sendMail(data) {
   return new Promise((resolve, reject) => {
-    Animal.findById(data.animalId)
+    Animal.findByPk(data.animalId)
       .then(animal => {
-        return User.findById(data.userId)
+        return User.findByPk(data.userId)
           .then(user => {
             const subject = translate(`api.activityMails.${data.type}.subject`)
             const message = translate(`api.activityMails.${data.type}.message`, {

@@ -1,5 +1,6 @@
-import moment from 'moment-timezone'
 import httpStatus from 'http-status'
+import moment from 'moment-timezone'
+import { Op } from 'sequelize'
 
 import pick from '../utils/pick'
 import { addMessageActivity } from '../services/activity'
@@ -65,7 +66,7 @@ export default {
     return Animal.findAll({
       where: {
         id: {
-          $in: animalIds,
+          [Op.in]: animalIds,
         },
       },
     }, {
@@ -172,7 +173,7 @@ export default {
       .catch(err => next(err))
   },
   lookup: (req, res, next) => {
-    return Conversation.findById(req.params.resourceId, {
+    return Conversation.findByPk(req.params.resourceId, {
       include: [
         {
           association: ConversationBelongsToManyAnimal,
@@ -202,7 +203,7 @@ export default {
       .catch(err => next(err))
   },
   findOne: (req, res, next) => {
-    return Conversation.findById(req.params.resourceId, {
+    return Conversation.findByPk(req.params.resourceId, {
       include: [
         ConversationBelongsToManyAnimal,
       ],

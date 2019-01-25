@@ -1,3 +1,5 @@
+import { Op } from 'sequelize'
+
 export function deleteObjects(model, where, include, associations) {
   return new Promise((resolve, reject) => {
     model.findAll({
@@ -33,7 +35,7 @@ export function deleteObjectsByUserId(model, userId, include, associations) {
 export function deleteObjectsByIds(model, ids, include, associations) {
   const where = {
     id: {
-      $in: ids,
+      [Op.in]: ids,
     },
   }
 

@@ -1,5 +1,6 @@
-import moment from 'moment-timezone'
 import httpStatus from 'http-status'
+import moment from 'moment-timezone'
+import { Op } from 'sequelize'
 
 import {
   ConversationBelongsToManyAnimal,
@@ -92,15 +93,15 @@ function getRandomPlace(from, to) {
           as: 'slots',
           required: false,
           where: {
-            $and: [{
+            [Op.and]: [{
               isDisabled: true,
             }, {
               from: {
-                $lt: to,
+                [Op.lt]: to,
               },
             }, {
               to: {
-                $gt: from,
+                [Op.gt]: from,
               },
             }],
           },
@@ -216,7 +217,7 @@ export default {
         .add(ANY_DATE_FROM_NOW_MIN_HOURS, 'hours')
 
       where.from = {
-        $gte: from,
+        [Op.gte]: from,
       }
     }
 

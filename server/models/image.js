@@ -1,36 +1,36 @@
+import Sequelize from 'sequelize'
+
 import db from '../database'
 import { createAndUploadImageVersions } from '../services/imageVersions'
 import { deleteObjects } from '../services/s3'
 
-const Image = db.sequelize.define('image', {
+const Image = db.define('image', {
   id: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   fileName: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   largeImageUrl: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   mediumImageUrl: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   smallImageUrl: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
 })
 
 Image.addHook('beforeValidate', image => {
   if (!image.fileName) {
-    return Promise.reject(
-      new Error('Invalid image object')
-    )
+    return Promise.reject(new Error('Invalid image object'))
   }
 
   return new Promise((resolve, reject) => {

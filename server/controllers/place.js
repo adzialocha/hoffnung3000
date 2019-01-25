@@ -1,4 +1,5 @@
 import httpStatus from 'http-status'
+import { Op } from 'sequelize'
 
 import {
   DEFAULT_LIMIT,
@@ -58,10 +59,10 @@ function areSlotsBooked(placeId, slotIndexes) {
       where: {
         placeId,
         slotIndex: {
-          $in: slotIndexes,
+          [Op.in]: slotIndexes,
         },
         eventId: {
-          $not: null,
+          [Op.not]: null,
         },
       },
     })
@@ -229,7 +230,7 @@ export default {
                 return Slot.bulkCreate(slots)
               })
               .then(() => {
-                return Place.findById(previousPlace.id, { include })
+                return Place.findByPk(previousPlace.id, { include })
                   .then(place => {
                     res.json(prepareResponse(place, req))
                   })

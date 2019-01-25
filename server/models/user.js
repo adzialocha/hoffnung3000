@@ -1,3 +1,4 @@
+import Sequelize from 'sequelize'
 import bcrypt from 'bcrypt'
 
 import db from '../database'
@@ -7,28 +8,28 @@ export function generateHash(str) {
   return bcrypt.hashSync(str, salt)
 }
 
-const User = db.sequelize.define('user', {
+const User = db.define('user', {
   id: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   firstname: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   lastname: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   password: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
@@ -38,13 +39,13 @@ const User = db.sequelize.define('user', {
     },
   },
   passwordResetAt: {
-    type: db.Sequelize.DATE,
+    type: Sequelize.DATE,
   },
   passwordResetToken: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
   },
   email: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     unique: true,
     allowNull: false,
     validate: {
@@ -52,45 +53,45 @@ const User = db.sequelize.define('user', {
     },
   },
   phone: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
   },
   street: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
   },
   cityCode: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
   },
   city: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
   },
   country: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
   },
   paymentId: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: true,
   },
   paymentMethod: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: true,
   },
   isActive: {
-    type: db.Sequelize.BOOLEAN,
+    type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
   isAdmin: {
-    type: db.Sequelize.BOOLEAN,
+    type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
   isParticipant: {
-    type: db.Sequelize.BOOLEAN,
+    type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
   isVisitor: {
-    type: db.Sequelize.BOOLEAN,
+    type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
@@ -103,6 +104,7 @@ User.prototype.comparePasswords = function compare(password) {
 
 User.prototype.toJSON = function convert() {
   const data = this.get()
+
   delete data.password
   delete data.passwordResetAt
   delete data.passwordResetToken

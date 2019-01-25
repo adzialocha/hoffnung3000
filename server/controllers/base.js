@@ -56,7 +56,7 @@ export function prepareResponseAll(rows, req) {
 }
 
 export function lookup(model, req, res, next) {
-  return model.findById(req.params.resourceId, {
+  return model.findByPk(req.params.resourceId, {
     include,
     rejectOnEmpty: true,
   })
@@ -88,7 +88,7 @@ export function lookupWithSlug(model, req, res, next) {
 }
 
 export function findOne(model, req, res, next) {
-  return model.findById(req.params.resourceId, {
+  return model.findByPk(req.params.resourceId, {
     rejectOnEmpty: true,
   })
     .then(data => res.json(data))

@@ -17,7 +17,7 @@ const tokenOptions = {
 }
 
 const strategy = new Strategy(options, (payload, next) => {
-  User.findById(payload.user.id)
+  User.findByPk(payload.user.id)
     .then(user => {
       next(null, user)
       return null

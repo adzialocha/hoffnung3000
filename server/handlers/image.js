@@ -1,3 +1,5 @@
+import { Op } from 'sequelize'
+
 import Image from '../models/image'
 
 export function updateImagesForObject(resource, images) {
@@ -53,7 +55,7 @@ export function deleteImagesForObject(resource) {
         return Image.destroy({
           where: {
             id: {
-              $in: resource.images.map(image => image.id),
+              [Op.in]: resource.images.map(image => image.id),
             },
           },
           individualHooks: true,
