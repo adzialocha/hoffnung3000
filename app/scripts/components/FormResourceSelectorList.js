@@ -104,7 +104,7 @@ class FormResourceSelectorList extends Component {
   }
 
   isSelected(item) {
-    return this.state.selectedItems.find((selItem) => {
+    return this.state.selectedItems.find(selItem => {
       return selItem.id === item.id
     }) !== undefined
   }

@@ -1,16 +1,16 @@
 import fs from 'fs'
 import path from 'path'
-import winston from 'winston'
 
 import config from '../../common/config'
+import logger from '../helpers/logger'
 import mail from '../services/mail'
 
 const TEMPLATES_PATH = 'mails'
 
 function generateTemplateString(template) {
   const sanitized = template
-    .replace(/\$\{([\s]*[^;\s\{]+[\s]*)\}/g, (_, match) => {
-      return `\$\{map.${match.trim()}\}`
+    .replace(/\$\{([\s]*[^;\s{]+[\s]*)\}/g, (_, match) => {
+      return `$\{map.${match.trim()}}`
     })
     .replace(/(\$\{(?!map\.)[^}]+\})/g, '')
 
@@ -39,7 +39,7 @@ function sendMail(locals, subject, receiver, templateName, sender) {
   return new Promise((resolve, reject) => {
     const mergedLocals = Object.assign({}, locals, { config })
     textTemplate(`${TEMPLATES_PATH}/${templateName}.txt`, mergedLocals)
-      .then((text) => {
+      .then(text => {
         const mailOptions = {
           subject,
           text,
@@ -50,12 +50,13 @@ function sendMail(locals, subject, receiver, templateName, sender) {
           mailOptions.from = sender
         }
 
+        // Do not send real emails when in development
         if (process.env.NODE_ENV === 'development') {
-          winston.info('SEND MAIL', mailOptions)
+          logger.info('SEND MAIL', mailOptions)
           return resolve()
         }
 
-        return mail.sendMail(mailOptions, (err) => {
+        return mail.sendMail(mailOptions, err => {
           if (err) {
             reject(err)
             return

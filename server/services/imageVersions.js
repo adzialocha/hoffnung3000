@@ -102,7 +102,7 @@ export function createAndUploadImageVersions(fileName) {
 
     return createImageVersions(fileName, filePath)
       .then(resizeResults => {
-        // remove temporary file
+        // Remove temporary file
         fs.unlink(filePath)
 
         resolve(prepareImageData(resizeResults))

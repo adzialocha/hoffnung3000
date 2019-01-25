@@ -1,33 +1,28 @@
 {
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "es6": true
   },
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
-      "arrowFunctions": true,
-      "blockBindings": true,
-      "classes": true,
-      "defaultParams": true,
-      "destructuring": true,
-      "forOf": true,
-      "generators": false,
-      "jsx": true,
-      "modules": true,
-      "objectLiteralComputedProperties": true,
-      "objectLiteralDuplicateProperties": false,
-      "objectLiteralShorthandMethods": true,
-      "objectLiteralShorthandProperties": true,
-      "spread": true,
-      "superInFunctions": true,
-      "templateStrings": true
+      "jsx": true
     }
   },
   "plugins": [
     "react"
   ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "rules": {
+    "arrow-parens": [
+      "error",
+      "as-needed"
+    ],
     "block-scoped-var": 2,
     "brace-style": [
       2,
@@ -219,7 +214,6 @@
     ],
     "react/jsx-no-duplicate-props": 2,
     "react/jsx-no-undef": 2,
-    "react/jsx-sort-prop-types": 0,
     "react/jsx-sort-props": [
       2,
       {
@@ -238,8 +232,12 @@
     "react/jsx-uses-vars": 2,
     "react/jsx-wrap-multilines": 2,
     "react/no-did-mount-set-state": 2,
+    "react/sort-prop-types": 2,
     "react/no-did-update-set-state": 2,
+    "react/boolean-prop-naming": 2,
     "react/no-multi-comp": 2,
+    "react/no-string-refs": 2,
+    "react/no-deprecated": 2,
     "react/no-unknown-property": 2,
     "react/no-unused-prop-types": 1,
     "react/prop-types": 2,
@@ -289,6 +287,24 @@
       }
     ],
     "space-before-blocks": 2,
+    "lines-around-comment": [
+      "error",
+      {
+        "beforeBlockComment": true,
+        "allowBlockStart": true,
+        "allowArrayStart": false,
+        "allowArrayEnd": false,
+        "afterLineComment": false,
+        "beforeLineComment": true
+      }
+    ],
+    "capitalized-comments": [
+      "error",
+      "always",
+      {
+        "ignoreConsecutiveComments": true
+      }
+    ],
     "space-before-function-paren": [
       2,
       "never"

@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface) => {
+  up: queryInterface => {
     return queryInterface.bulkInsert('pages', [{
       createdAt: new Date,
       isRemovable: false,
@@ -8,7 +8,7 @@ module.exports = {
       updatedAt: new Date,
     }])
   },
-  down: (queryInterface) => {
+  down: queryInterface => {
     return queryInterface.bulkDelete('pages', [{
       slug: [
         'home-with-video',

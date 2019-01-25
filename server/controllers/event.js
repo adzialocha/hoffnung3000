@@ -1,4 +1,5 @@
 import httpStatus from 'http-status'
+import { Op } from 'sequelize'
 
 import {
   DEFAULT_LIMIT,
@@ -96,9 +97,9 @@ function areSlotsInClosedRange(req) {
 function areSlotsAvailable(req, fields, existingEventId) {
   const { placeId } = fields
 
-  let eventId = { $not: null }
+  let eventId = { [Op.not]: null }
   if (existingEventId) {
-    eventId = { $and: [eventId, { $not: existingEventId }] }
+    eventId = { [Op.and]: [eventId, { [Op.not]: existingEventId }] }
   }
 
   return new Promise((resolve, reject) => {
@@ -106,9 +107,9 @@ function areSlotsAvailable(req, fields, existingEventId) {
       where: {
         placeId,
         slotIndex: {
-          $in: req.body.slots,
+          [Op.in]: req.body.slots,
         },
-        $or: [{
+        [Op.or]: [{
           isDisabled: true,
         }, {
           eventId,
@@ -141,9 +142,9 @@ function areResourcesAvailable(req, existingEventId) {
   const eventFrom = slots[0].from
   const eventTo = slots[slots.length - 1].to
 
-  let eventId = { $not: null }
+  let eventId = { [Op.not]: null }
   if (existingEventId) {
-    eventId = { $and: [eventId, { $not: existingEventId }] }
+    eventId = { [Op.and]: [eventId, { [Op.not]: existingEventId }] }
   }
 
   return new Promise((resolve, reject) => {
@@ -151,7 +152,7 @@ function areResourcesAvailable(req, existingEventId) {
       distinct: true,
       where: {
         id: {
-          $in: req.body.resources,
+          [Op.in]: req.body.resources,
         },
       },
       include: [{
@@ -163,15 +164,15 @@ function areResourcesAvailable(req, existingEventId) {
           as: 'slots',
           required: true,
           where: {
-            $and: [{
+            [Op.and]: [{
               eventId,
             }, {
               from: {
-                $lt: eventTo,
+                [Op.lt]: eventTo,
               },
             }, {
               to: {
-                $gt: eventFrom,
+                [Op.gt]: eventFrom,
               },
             }],
           },
@@ -195,7 +196,7 @@ function areResourcesAvailable(req, existingEventId) {
 
 function createEvent(req, fields) {
   return new Promise((resolve, reject) => {
-    return Place.findById(fields.placeId, {
+    return Place.findByPk(fields.placeId, {
       include: [
         PlaceBelongsToAnimal,
       ],
@@ -214,9 +215,9 @@ function createEvent(req, fields) {
           returning: true,
         })
           .then(event => {
-            // associate resources to event
+            // Associate resources to event
             return Resource.findAll({
-              where: { id: { $in: req.body.resources } },
+              where: { id: { [Op.in]: req.body.resources } },
               include: [{
                 association: ResourceBelongsToAnimal,
                 required: true,
@@ -225,7 +226,7 @@ function createEvent(req, fields) {
               .then(resources => {
                 event.setResources(resources)
 
-                // create slots for event
+                // Create slots for event
                 const slots = createEventSlots(
                   req.body.slots,
                   place.id,
@@ -256,7 +257,7 @@ function createEvent(req, fields) {
 
 function updateEvent(req, fields) {
   return new Promise((resolve, reject) => {
-    return Place.findById(fields.placeId, {
+    return Place.findByPk(fields.placeId, {
       include: [
         PlaceBelongsToAnimal,
       ],
@@ -280,12 +281,12 @@ function updateEvent(req, fields) {
           .then(data => {
             const event = data[1][0]
 
-            // update images
+            // Update images
             return updateImagesForObject(event, req.body.images)
               .then(() => {
-                // associate resources to event
+                // Associate resources to event
                 return Resource.findAll({
-                  where: { id: { $in: req.body.resources } },
+                  where: { id: { [Op.in]: req.body.resources } },
                   include: [{
                     association: ResourceBelongsToAnimal,
                     required: true,
@@ -294,14 +295,14 @@ function updateEvent(req, fields) {
                   .then(resources => {
                     event.setResources(resources)
 
-                    // clean up all slot before
+                    // Clean up all slot before
                     return Slot.destroy({
                       where: {
                         eventId: event.id,
                       },
                     })
                       .then(() => {
-                        // create slots for event
+                        // Create slots for event
                         const slots = createEventSlots(
                           req.body.slots,
                           place.id,
@@ -309,7 +310,7 @@ function updateEvent(req, fields) {
                           place.slotSize
                         )
 
-                        // filter out only new resources for notifications
+                        // Filter out only new resources for notifications
                         const currentResourceIds = resources.map(resource => {
                           return resource.id
                         })
@@ -338,8 +339,8 @@ function updateEvent(req, fields) {
                             })
                           })
                           .then(() => {
-                            // return the whole event with all associations
-                            return Event.findById(event.id, { include })
+                            // Return the whole event with all associations
+                            return Event.findByPk(event.id, { include })
                               .then(updatedEvent => resolve(updatedEvent))
                           })
                       })
@@ -352,7 +353,7 @@ function updateEvent(req, fields) {
 }
 
 function validateEvent(req, fields, eventId) {
-  return Place.findById(fields.placeId)
+  return Place.findByPk(fields.placeId)
     .then(place => {
       if (!place) {
         throw new APIError(
@@ -361,7 +362,7 @@ function validateEvent(req, fields, eventId) {
         )
       }
 
-      // keep the place, because we need it later
+      // Keep the place, because we need it later
       req.place = place
 
       return Promise.all([
@@ -376,10 +377,10 @@ export default {
   create: (req, res, next) => {
     const fields = pick(permittedFields, req.body)
 
-    // check if everything is correct before we do anything
+    // Check if everything is correct before we do anything
     return validateEvent(req, fields)
       .then(() => {
-        // create event
+        // Create event
         return createEvent(req, fields)
           .then(event => res.json(prepareResponse(event, req)))
       })
@@ -467,10 +468,10 @@ export default {
   update: (req, res, next) => {
     const fields = pick(permittedFields, req.body)
 
-    // check if everything is correct before we do anything
+    // Check if everything is correct before we do anything
     return validateEvent(req, fields, req.resourceId)
       .then(() => {
-        // update event
+        // Update event
         return updateEvent(req, fields)
           .then(event => res.json(prepareResponse(event, req)))
       })

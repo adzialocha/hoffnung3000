@@ -16,7 +16,7 @@ function sortItems(list) {
 }
 
 function removeItem(state, resourceId) {
-  return state.listItems.filter((listItem) => {
+  return state.listItems.filter(listItem => {
     return listItem.id !== resourceId
   })
 }

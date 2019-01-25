@@ -1,3 +1,4 @@
+import Sequelize from 'sequelize'
 import slugify from 'sequelize-slugify'
 
 import db from '../database'
@@ -8,67 +9,67 @@ import {
   addUpdateActivity,
 } from '../services/activity'
 
-const Place = db.sequelize.define('place', {
+const Place = db.define('place', {
   id: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   animalId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
   },
   title: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   slug: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     unique: true,
   },
   mode: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   description: {
-    type: db.Sequelize.TEXT,
+    type: Sequelize.TEXT,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   isPublic: {
-    type: db.Sequelize.BOOLEAN,
+    type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: true,
   },
   slotSize: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: false,
     defaultValue: 10,
   },
   latitude: {
-    type: db.Sequelize.FLOAT,
+    type: Sequelize.FLOAT,
   },
   longitude: {
-    type: db.Sequelize.FLOAT,
+    type: Sequelize.FLOAT,
   },
   street: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
   },
   cityCode: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
   },
   city: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
   },
   country: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
   },
 })
 

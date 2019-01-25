@@ -119,7 +119,7 @@ class SidebarGifStream extends Component {
     super(props)
 
     const options = {
-      callback: (data) => {
+      callback: data => {
         const images = this.state.images
 
         if (images.length === PREVIEW_IMAGES_COUNT) {

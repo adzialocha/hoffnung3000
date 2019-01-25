@@ -1,7 +1,7 @@
-import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
-import { routerMiddleware } from 'react-router-redux'
+import { createStore, applyMiddleware } from 'redux'
+import { routerMiddleware } from 'connected-react-router'
 
 import api from './middlewares/api'
 import apiError from './middlewares/apiError'
@@ -32,7 +32,7 @@ export default function configureStore(initialState, history) {
   }
 
   store = createStore(
-    reducers,
+    reducers(history),
     applyMiddleware(...middleware),
   )
 

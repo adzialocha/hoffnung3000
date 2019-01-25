@@ -1,12 +1,12 @@
 module.exports = {
-  up: (queryInterface) => {
+  up: queryInterface => {
     return Promise.all([
       queryInterface.renameTable('resourcesImages', 'objectsImages'),
       queryInterface.renameColumn('objectsImages', 'resourceName', 'objectType'),
       queryInterface.renameColumn('objectsImages', 'resourceId', 'objectId'),
     ])
   },
-  down: (queryInterface) => {
+  down: queryInterface => {
     return Promise.all([
       queryInterface.renameColumn('objectsImages', 'objectType', 'resourceName'),
       queryInterface.renameColumn('objectsImages', 'objectId', 'resourceId'),

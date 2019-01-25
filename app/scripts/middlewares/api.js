@@ -59,10 +59,10 @@ function request(path, method = 'GET', body = {}) {
 
   return new Promise((resolve, reject) => {
     fetch(`${API_ENDPOINT}${path.join('/')}${paramsStr}`, options)
-      .then((response) => {
+      .then(response => {
         const contentType = response.headers.get('content-type')
         if (contentType && contentType.includes('application/json')) {
-          response.json().then((json) => {
+          response.json().then(json => {
             if (response.status !== 200) {
               reject(getErrorMessage(json))
             } else {
@@ -73,7 +73,7 @@ function request(path, method = 'GET', body = {}) {
           reject(getErrorMessage())
         }
       })
-      .catch((error) => {
+      .catch(error => {
         reject(getErrorMessage(error))
       })
   })
@@ -97,7 +97,7 @@ export default store => next => action => {
   }
 
   return request(path, method, body)
-    .then((payload) => {
+    .then(payload => {
       store.dispatch({
         type: ActionTypes.API_SUCCESS,
         payload,
@@ -109,7 +109,7 @@ export default store => next => action => {
         }
       }
     })
-    .catch((error) => {
+    .catch(error => {
       store.dispatch({
         type: ActionTypes.API_FAILURE,
         error,

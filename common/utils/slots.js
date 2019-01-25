@@ -71,7 +71,7 @@ export function getDisabledSlotIndexes(slots) {
 }
 
 export function getSlotWithIndex(slots, slotIndex) {
-  return slots.find((slot) => slot.slotIndex === slotIndex)
+  return slots.find(slot => slot.slotIndex === slotIndex)
 }
 
 export function generateNewSlotItems(slotSize, existingSlots) {
@@ -155,7 +155,7 @@ export function createEventSlots(slotIndexes, placeId, eventId, slotSize) {
 }
 
 export function createDisabledSlots(slotIndexes, placeId, slotSize) {
-  return slotIndexes.map((slotIndex) => {
+  return slotIndexes.map(slotIndex => {
     const { from, to } = getSlotTimes(slotSize, slotIndex)
     const slot = {
       from,

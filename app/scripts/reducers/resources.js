@@ -1,5 +1,5 @@
 import update from 'immutability-helper'
-import { LOCATION_CHANGE } from 'react-router-redux'
+import { LOCATION_CHANGE } from 'connected-react-router'
 
 import ActionTypes from '../actionTypes'
 import randomId from '../utils/randomId'
@@ -113,10 +113,11 @@ export default (state = initialState, action) => {
     return updateResource(newState, action, true, true)
   }
   case ActionTypes.RESOURCE_CREATE_SUCCESS: {
-    // delete temporarily created resource
+    // Delete temporarily created resource
     const { resourceType, resourceId } = action.meta
     const newState = deleteResource(state, resourceType, resourceId)
-    // pass over the "real" remote object
+
+    // Pass over the "real" remote object
     action.meta.resourceId = action.payload.id
     return updateResource(newState, action, false, false)
   }

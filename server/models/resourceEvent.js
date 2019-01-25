@@ -1,12 +1,14 @@
+import Sequelize from 'sequelize'
+
 import db from '../database'
 
-const ResourceEvent = db.sequelize.define('resourceEvent', {
+const ResourceEvent = db.define('resourceEvent', {
   resourceId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
   },
   eventId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
   },
 })

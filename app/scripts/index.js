@@ -1,18 +1,21 @@
-import moment from 'moment-timezone'
+import '../styles/app.scss'
+
 import React from 'react'
-import { ConnectedRouter  } from 'react-router-redux'
-import { createBrowserHistory } from 'history'
+import moment from 'moment-timezone'
+import { ConnectedRouter  } from 'connected-react-router'
 import { Provider } from 'react-redux'
+import { createBrowserHistory } from 'history'
 import { render } from 'react-dom'
 
 import config from '../../common/config'
 import configureStore from './store'
 import flash from './actions/flash'
-import Routes from './routes'
-import { App } from './views'
 import { checkExistingToken } from './actions/auth'
 import { getItem, hasItem } from './services/storage'
 import { translate } from '../../common/services/i18n'
+
+import Routes from './routes'
+import { App } from './views'
 
 moment.tz.setDefault(config.timezone)
 

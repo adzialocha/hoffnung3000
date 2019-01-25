@@ -1,4 +1,5 @@
 import httpStatus from 'http-status'
+import { Op } from 'sequelize'
 
 import checkout from '../services/checkout'
 import config from '../../common/config'
@@ -16,7 +17,7 @@ import {
 } from '../helpers/mailTemplate'
 import { translate } from '../../common/services/i18n'
 
-const PASSWORD_RESET_EXPIRY = 15 // min
+const PASSWORD_RESET_EXPIRY = 15 // Min
 
 const permittedFields = [
   'city',
@@ -68,9 +69,9 @@ function signup(req, res, next) {
           }
 
           return User.create(fields, { returning: true })
-            .then((user) => {
+            .then(user => {
               return checkout(paymentMethod, user, product)
-                .then((data) => {
+                .then(data => {
                   sendAdminRegistrationNotification({
                     paymentMethod,
                     product,
@@ -97,7 +98,7 @@ function paypalCheckoutSuccess(req, res, next) {
   }
 
   return User.findOne(queryParams)
-    .then((user) => {
+    .then(user => {
       executePayment(paymentId, PayerID)
         .then(() => {
           return User.update({ isActive: true }, queryParams)
@@ -174,11 +175,11 @@ function requestResetToken(req, res, next) {
     returning: true,
   }
 
-  generateRandomHash().then((passwordResetToken) => {
+  generateRandomHash().then(passwordResetToken => {
     const passwordResetAt = db.sequelize.fn('NOW')
 
     return User.update({ passwordResetAt, passwordResetToken }, queryParams)
-      .then((data) => {
+      .then(data => {
         if (data[0] === 0) {
           next(
             new APIError(
@@ -210,8 +211,8 @@ function resetPassword(req, res, next) {
   const queryParams = {
     where: {
       passwordResetAt: {
-        $lt: new Date(),
-        $gt: new Date(new Date() - PASSWORD_RESET_EXPIRY * 60000),
+        [Op.lt]: new Date(),
+        [Op.gt]: new Date(new Date() - PASSWORD_RESET_EXPIRY * 60000),
       },
       passwordResetToken: token,
     },
@@ -222,7 +223,7 @@ function resetPassword(req, res, next) {
   const passwordResetToken = null
 
   return User.update({ password, passwordResetToken }, queryParams)
-    .then((data) => {
+    .then(data => {
       if (data[0] === 0) {
         next(
           new APIError(

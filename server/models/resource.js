@@ -1,3 +1,4 @@
+import Sequelize from 'sequelize'
 import slugify from 'sequelize-slugify'
 
 import db from '../database'
@@ -8,28 +9,28 @@ import {
   addUpdateActivity,
 } from '../services/activity'
 
-const Resource = db.sequelize.define('resource', {
+const Resource = db.define('resource', {
   id: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   animalId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
   },
   title: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   slug: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     unique: true,
   },
   description: {
-    type: db.Sequelize.TEXT,
+    type: Sequelize.TEXT,
     allowNull: false,
     defaultValue: '',
   },

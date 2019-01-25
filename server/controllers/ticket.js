@@ -45,9 +45,9 @@ function signup(req, res, next) {
       }
 
       return User.create(fields, { returning: true })
-        .then((user) => {
+        .then(user => {
           return checkout(paymentMethod, user, product)
-            .then((data) => {
+            .then(data => {
               sendAdminRegistrationNotification({
                 paymentMethod,
                 product,

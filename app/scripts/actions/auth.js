@@ -1,4 +1,4 @@
-import { routerActions } from 'react-router-redux'
+import { routerActions } from 'connected-react-router'
 
 import ActionTypes from '../actionTypes'
 import flash from './flash'
@@ -9,7 +9,7 @@ import { REDIRECT } from '../middlewares/redirect'
 import { translate } from '../../../common/services/i18n'
 
 export function redirectWhenUnauthenticated(location) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(
       flash({
         lifetime: 5000,

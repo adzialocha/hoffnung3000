@@ -30,7 +30,7 @@ export function fetchList(path, page = 0, params = {}) {
     success[UPDATE_USER_STATUS] = true
   }
 
-  // this is a quick hack fixing a wierd SQL issue
+  // This is a quick hack fixing a wierd SQL issue
   if (
     requestPath[0] === 'conversations' ||
     requestPath[0] === 'events' ||

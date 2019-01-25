@@ -1,23 +1,26 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    queryInterface.addColumn(
-      'users',
-      'passwordResetAt',
-      {
-        type: Sequelize.DATE,
-      }
-    )
-
-    queryInterface.addColumn(
-      'users',
-      'passwordResetToken',
-      {
-        type: Sequelize.STRING,
-      }
-    )
+    return Promise.all([
+      queryInterface.addColumn(
+        'users',
+        'passwordResetAt',
+        {
+          type: Sequelize.DATE,
+        }
+      ),
+      queryInterface.addColumn(
+        'users',
+        'passwordResetToken',
+        {
+          type: Sequelize.STRING,
+        }
+      ),
+    ])
   },
-  down: (queryInterface) => {
-    queryInterface.removeColumn('users', 'passwordResetAt')
-    queryInterface.removeColumn('users', 'passwordResetToken')
+  down: queryInterface => {
+    return Promise.all([
+      queryInterface.removeColumn('users', 'passwordResetAt'),
+      queryInterface.removeColumn('users', 'passwordResetToken'),
+    ])
   },
 }

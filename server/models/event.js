@@ -1,3 +1,4 @@
+import Sequelize from 'sequelize'
 import slugify from 'sequelize-slugify'
 
 import db from '../database'
@@ -8,36 +9,36 @@ import {
   addUpdateActivity,
 } from '../services/activity'
 
-const Event = db.sequelize.define('event', {
+const Event = db.define('event', {
   id: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   placeId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
   },
   animalId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
   },
   isPublic: {
-    type: db.Sequelize.BOOLEAN,
+    type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: true,
   },
   title: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   slug: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     unique: true,
   },
   description: {
-    type: db.Sequelize.TEXT,
+    type: Sequelize.TEXT,
     allowNull: false,
     defaultValue: '',
   },

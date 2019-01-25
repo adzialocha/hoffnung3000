@@ -1,5 +1,5 @@
 import update from 'immutability-helper'
-import { LOCATION_CHANGE } from 'react-router-redux'
+import { LOCATION_CHANGE } from 'connected-react-router'
 
 import ActionTypes from '../actionTypes'
 import { setItem, removeItem } from '../services/storage'

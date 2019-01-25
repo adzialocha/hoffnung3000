@@ -1,8 +1,10 @@
+import { Op } from 'sequelize'
+
 import Image from '../models/image'
 
 export function updateImagesForObject(resource, images) {
   return new Promise((resolve, reject) => {
-    // remove images when needed
+    // Remove images when needed
     const keptImages = images.filter(img => img.id)
     const keptImageIds = keptImages.map(img => img.id)
 
@@ -22,7 +24,7 @@ export function updateImagesForObject(resource, images) {
         return Promise.all(removePromises)
       })
 
-    // add new images when given
+    // Add new images when given
     const newImages = images.filter(img => !img.id)
 
     const addNewImagesPromise = Promise.all(newImages.map(image => {
@@ -37,7 +39,7 @@ export function updateImagesForObject(resource, images) {
       addNewImagesPromise,
     ])
       .then(() => resolve())
-      .catch((err) => reject(err))
+      .catch(err => reject(err))
   })
 }
 
@@ -53,13 +55,13 @@ export function deleteImagesForObject(resource) {
         return Image.destroy({
           where: {
             id: {
-              $in: resource.images.map(image => image.id),
+              [Op.in]: resource.images.map(image => image.id),
             },
           },
           individualHooks: true,
         })
           .then(() => resolve())
       })
-      .catch((err) => reject(err))
+      .catch(err => reject(err))
   })
 }
