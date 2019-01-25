@@ -20,7 +20,7 @@
     "db:migrate:create": "sequelize migration:generate --name untitled",
     "db:migrate:undo": "sequelize db:migrate:undo",
     "db:seed": "sequelize db:seed:all",
-    "db:seed:create": "sequelize seed:generate",
+    "db:seed:create": "sequelize seed:generate --name untitled",
     "lint": "npm run lint:js && npm run lint:scss",
     "lint:js": "eslint --ignore-path .gitignore ./",
     "lint:scss": "stylelint ./app/styles",
