@@ -37,6 +37,8 @@ import {
   Tickets,
 } from './views'
 
+// @TODO Hide routes when isSignUpVisitorEnabled and isSignUpParticipantEnabled are deactivated
+
 export default class Routes extends Component {
   render() {
     return (

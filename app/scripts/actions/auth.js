@@ -3,9 +3,9 @@ import { routerActions } from 'connected-react-router'
 import ActionTypes from '../actionTypes'
 import flash from './flash'
 import { FLASH } from '../middlewares/flash'
+import { REDIRECT } from '../middlewares/redirect'
 import { jwtDecode } from '../utils/jwt'
 import { postRequest } from '../services/api'
-import { REDIRECT } from '../middlewares/redirect'
 import { translate } from '../../../common/services/i18n'
 
 export function redirectWhenUnauthenticated(location) {

@@ -3,16 +3,18 @@ import React, { Component } from 'react'
 import Scroll from 'react-scroll'
 import { connect } from 'react-redux'
 
-import { buyTicket } from '../actions/auth'
 import { StaticPage } from './'
 import { TicketForm } from '../forms'
+import { buyTicket } from '../actions/auth'
 import { translate } from '../../../common/services/i18n'
+import { withConfig } from '../containers'
 
 const totalSteps = 2
 
 class TicketWizard extends Component {
   static propTypes = {
     buyTicket: PropTypes.func.isRequired,
+    config: PropTypes.object.isRequired,
     errorMessage: PropTypes.string.isRequired,
     form: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
@@ -47,6 +49,7 @@ class TicketWizard extends Component {
   renderErrorMessage() {
     if (this.props.errorMessage) {
       Scroll.animateScroll.scrollToTop()
+
       return (
         <div className="form__error">
           { this.props.errorMessage }
@@ -57,6 +60,38 @@ class TicketWizard extends Component {
     return null
   }
 
+  renderPayPalButton() {
+    if (!this.props.config.isPayPalEnabled) {
+      return null
+    }
+
+    return (
+      <button
+        className="button button--rainbow"
+        disabled={!this.state.isTermsAccepted || this.props.isLoading}
+        onClick={this.onPayPalCheckout}
+      >
+        { translate('components.common.payViaPayPal') }
+      </button>
+    )
+  }
+
+  renderTransferButton() {
+    if (!this.props.config.isTransferEnabled) {
+      return null
+    }
+
+    return (
+      <button
+        className="button button--rainbow"
+        disabled={!this.state.isTermsAccepted || this.props.isLoading}
+        onClick={this.onTransferCheckout}
+      >
+        { translate('components.common.payViaTransfer') }
+      </button>
+    )
+  }
+
   renderPaymentButtons() {
     if (this.state.isCheckoutClicked && this.props.isLoading) {
       return (
@@ -64,22 +99,15 @@ class TicketWizard extends Component {
       )
     }
 
+    if (!this.props.config.isTransferEnabled &&
+      !this.props.config.isPayPalEnabled) {
+      return <p>Warning: No payment was configured</p>
+    }
+
     return (
       <div className="button-group">
-        <button
-          className="button button--rainbow"
-          disabled={!this.state.isTermsAccepted || this.props.isLoading}
-          onClick={this.onPayPalCheckout}
-        >
-          { translate('components.common.payViaPayPal') }
-        </button>
-        <button
-          className="button button--rainbow"
-          disabled={!this.state.isTermsAccepted || this.props.isLoading}
-          onClick={this.onTransferCheckout}
-        >
-          { translate('components.common.payViaTransfer') }
-        </button>
+        { this.renderPayPalButton() }
+        { this.renderTransferButton() }
       </div>
     )
   }
@@ -93,8 +121,11 @@ class TicketWizard extends Component {
     return (
       <div className="form left">
         <h1>{ title }</h1>
+
         { this.renderErrorMessage() }
+
         <StaticPage hideTitle={true} slug="ticket-payment" />
+
         <div className="form__field form__field--inline">
           <input
             checked={this.state.isTermsAccepted}
@@ -104,13 +135,16 @@ class TicketWizard extends Component {
             type="checkbox"
             onChange={this.onTermsAcceptedChanged}
           />
+
           <label className="form__field-label">
             { translate('components.common.agreeWithTerms') }
           </label>
         </div>
+
         <hr />
         { this.renderPaymentButtons() }
         <hr />
+
         <button
           className="button button--clear"
           disabled={this.props.isLoading}
@@ -142,11 +176,16 @@ class TicketWizard extends Component {
   }
 
   render() {
+    if (!this.props.config.isSignUpVisitorEnabled) {
+      return null
+    }
+
     if (this.state.registrationStep === 0) {
       return this.renderTicketForm()
     } else if (this.state.registrationStep === 1) {
       return this.renderPaymentGateway()
     }
+
     return null
   }
 
@@ -197,4 +236,4 @@ export default connect(
   mapStateToProps, {
     buyTicket,
   }
-)(TicketWizard)
+)(withConfig(TicketWizard))

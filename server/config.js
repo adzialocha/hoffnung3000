@@ -4,7 +4,7 @@ function getConfig(fields = []) {
   const attributes = (typeof fields === 'string') ? [fields] : fields
   const query = (attributes.length > 0) ? { attributes } : {}
 
-  return Config.findOne(query)
+  return Config.findOne({ ...query, raw: true })
     .then(config => {
       if (attributes.length === 0) {
         return config

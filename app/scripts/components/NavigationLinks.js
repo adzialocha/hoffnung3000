@@ -32,6 +32,7 @@ const VISITOR_NAVIGATION = [
   { localeKey: 'stream', url: '/stream' },
 ]
 
+// @TODO Hide Ticket link when isSignUpVisitorEnabled is deactivated
 const DEFAULT_NAVIGATION = [
   { localeKey: 'tickets', url: '/tickets' },
 ]

@@ -53,6 +53,7 @@ function transferCheckout(user, product) {
     })
       .then(data => {
         const updatedUser = data[1][0]
+
         sendWireTransferDetails({
           paymentId,
           product,
