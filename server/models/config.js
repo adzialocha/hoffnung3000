@@ -32,6 +32,10 @@ const Config = db.define('config', {
   participationPrice: configField(Sequelize.FLOAT, true),
   timezone: configField(Sequelize.STRING),
   title: configField(Sequelize.STRING),
+}, {
+  timestamps: false,
 })
+
+Config.removeAttribute('id')
 
 export default Config
