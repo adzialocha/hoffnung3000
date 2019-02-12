@@ -2,20 +2,19 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 
-import { asFormField } from '../containers'
-import config from '../../../common/config'
+import { asFormField, withConfig } from '../containers'
+
 import styles from '../utils/googleMapStyle.json'
 import { translate } from '../../../common/services/i18n'
 
 const DEFAULT_MODE = 'address'
 const DEFAULT_ZOOM = 17
-const GOOGLE_MAP_SCRIPT_URL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${config.googleMapApiKey}`
 const MAP_OPTIONS = { disableDefaultUI: true, zoomControl: true, styles }
 
 const LocationSelectorMap = withScriptjs(withGoogleMap(props => {
   const defaultCenter = {
-    lat: config.defaultLatitude,
-    lng: config.defaultLongitude,
+    lat: props.config.defaultLatitude,
+    lng: props.config.defaultLongitude,
   }
   const center = props.markerPosition ? props.markerPosition : defaultCenter
 
@@ -34,8 +33,15 @@ const LocationSelectorMap = withScriptjs(withGoogleMap(props => {
   )
 }))
 
+const LocationSelectorMapContainer = withConfig('googleMapApiKey', true, props => {
+  const googleMapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${props.config.googleMapApiKey}`
+
+  return <LocationSelectorMap {... { ...props, googleMapURL, config }} />
+})
+
 class FormLocationSelector extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
   }
@@ -94,18 +100,20 @@ class FormLocationSelector extends Component {
             <label className="form__field-label">
               { translate('components.locationSelector.currentGpsPosition') }
             </label>
+
             <input
               className="form__field-input"
               readOnly={true}
               type="text"
               value={this.currentLatLngString()}
             />
+
             <small>{ translate('components.locationSelector.clickMap') }</small>
           </div>
         </div>
-        <LocationSelectorMap
+
+        <LocationSelectorMapContainer
           containerElement={<div className="location-selector__container" />}
-          googleMapURL={GOOGLE_MAP_SCRIPT_URL}
           loadingElement={
             <div className="location-selector__loading">
               { translate('common.loading') }
@@ -130,6 +138,7 @@ class FormLocationSelector extends Component {
             <label className="form__field-label">
               { translate('components.locationSelector.street') }
             </label>
+
             <input
               className="form__field-input"
               disabled={this.props.disabled}
@@ -141,10 +150,12 @@ class FormLocationSelector extends Component {
               onFocus={this.onFocus}
             />
           </div>
+
           <div className="form__field">
             <label className="form__field-label">
               { translate('components.locationSelector.cityCode') }
             </label>
+
             <input
               className="form__field-input"
               disabled={this.props.disabled}
@@ -156,10 +167,12 @@ class FormLocationSelector extends Component {
               onFocus={this.onFocus}
             />
           </div>
+
           <div className="form__field">
             <label className="form__field-label">
               { translate('components.locationSelector.city') }
             </label>
+
             <input
               className="form__field-input"
               disabled={this.props.disabled}
@@ -171,10 +184,12 @@ class FormLocationSelector extends Component {
               onFocus={this.onFocus}
             />
           </div>
+
           <div className="form__field">
             <label className="form__field-label">
               { translate('components.locationSelector.country') }
             </label>
+
             <input
               className="form__field-input"
               disabled={this.props.disabled}
@@ -208,6 +223,7 @@ class FormLocationSelector extends Component {
     } else if (this.state.mode === 'address') {
       return this.renderAddressSelector()
     }
+
     return this.renderVirtualSelector()
   }
 
@@ -222,6 +238,7 @@ class FormLocationSelector extends Component {
           >
             { translate('components.locationSelector.gpsPositionMode') }
           </button>
+
           <button
             className="button button--green button--small-mobile"
             disabled={this.state.mode === 'address' || this.props.disabled}
@@ -229,6 +246,7 @@ class FormLocationSelector extends Component {
           >
             { translate('components.locationSelector.addressMode') }
           </button>
+
           <button
             className="button button--green button--small-mobile"
             disabled={this.state.mode === 'virtual' || this.props.disabled}
@@ -237,6 +255,7 @@ class FormLocationSelector extends Component {
             { translate('components.locationSelector.virtualMode') }
           </button>
         </div>
+
         { this.renderSelector() }
       </div>
     )
@@ -252,11 +271,11 @@ class FormLocationSelector extends Component {
     const { value } = props.input
 
     this.state = {
-      city: value.city || config.defaultCity,
+      city: value.city || props.config.defaultCity,
       cityCode: value.cityCode || '',
-      country: value.country || config.defaultCountry,
-      latitude: value.latitude || config.defaultLatitude,
-      longitude: value.longitude || config.defaultLongitude,
+      country: value.country || props.config.defaultCountry,
+      latitude: value.latitude || props.config.defaultLatitude,
+      longitude: value.longitude || props.config.defaultLongitude,
       mode: value.mode || DEFAULT_MODE,
       street: value.street || '',
     }
@@ -271,4 +290,4 @@ class FormLocationSelector extends Component {
   }
 }
 
-export default asFormField(FormLocationSelector)
+export default withConfig(asFormField(FormLocationSelector))

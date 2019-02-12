@@ -2,12 +2,12 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 
-import config from '../../../common/config'
 import styles from '../utils/googleMapStyle.json'
 import { translate } from '../../../common/services/i18n'
 
+import { withConfig } from '../containers'
+
 const DEFAULT_ZOOM = 15
-const GOOGLE_MAP_SCRIPT_URL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${config.googleMapApiKey}`
 const MAP_OPTIONS = {
   disableDefaultUI: true,
   styles,
@@ -28,15 +28,18 @@ const LocationGoogleMap = withScriptjs(withGoogleMap(props => {
 
 class LocationMap extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     latitude: PropTypes.number.isRequired,
     longitude: PropTypes.number.isRequired,
   }
 
   render() {
+    const googleMapUrl = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${this.props.config.googleMapApiKey}`
+
     return (
       <LocationGoogleMap
         containerElement={<div className="location-map" />}
-        googleMapURL={GOOGLE_MAP_SCRIPT_URL}
+        googleMapURL={googleMapUrl}
         loadingElement={
           <div className="location-selector__loading">
             { translate('common.loading') }
@@ -52,4 +55,4 @@ class LocationMap extends Component {
   }
 }
 
-export default LocationMap
+export default withConfig('googleMapApiKey', true, LocationMap)
