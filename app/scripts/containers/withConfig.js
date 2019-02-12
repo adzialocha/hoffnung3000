@@ -18,13 +18,14 @@ export default function withConfig(...args) {
   class ConfigContainer extends Component {
     static propTypes = {
       config: PropTypes.object.isRequired,
+      isLoading: PropTypes.bool.isRequired,
       isReady: PropTypes.bool.isRequired,
       updateMetaInformation: PropTypes.func.isRequired,
     }
 
     componentWillMount() {
       // Fetch configuration from server when not given yet
-      if (!this.props.isReady) {
+      if (!this.props.isReady && !this.props.isLoading) {
         this.props.updateMetaInformation()
       }
     }
@@ -44,10 +45,11 @@ export default function withConfig(...args) {
   }
 
   function mapStateToProps(state) {
-    const { config, isReady } = state.meta
+    const { config, isLoading, isReady } = state.meta
 
     return {
       config,
+      isLoading,
       isReady,
     }
   }
