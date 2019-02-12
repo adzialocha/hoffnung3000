@@ -1,18 +1,23 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import config from '../../../common/config'
+import { withConfig } from '../containers'
 
 class Header extends Component {
+  static propTypes = {
+    config: PropTypes.object.isRequired,
+  }
+
   render() {
     return (
       <header role="banner">
         <div className="logo">
-          <Link to="/">{ config.title }</Link>
+          <Link to="/">{ this.props.config.title }</Link>
         </div>
       </header>
     )
   }
 }
 
-export default Header
+export default withConfig(Header)
