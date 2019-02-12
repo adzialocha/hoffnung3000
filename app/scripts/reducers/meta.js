@@ -3,8 +3,12 @@ import update from 'immutability-helper'
 import ActionTypes from '../actionTypes'
 
 const initialState = {
-  isRegistrationFull: false,
+  config: {},
+  status: {
+    isRegistrationFull: false,
+  },
   isLoading: false,
+  isReady: false,
 }
 
 export default (state = initialState, action) => {
@@ -15,8 +19,12 @@ export default (state = initialState, action) => {
     })
   case ActionTypes.META_SUCCESS:
     return update(state, {
-      isRegistrationFull: { $set: action.payload.isRegistrationFull },
+      config: { $set: action.payload.config },
+      status: {
+        isRegistrationFull: { $set: action.payload.status.isRegistrationFull },
+      },
       isLoading: { $set: false },
+      isReady: { $set: true },
     })
   case ActionTypes.META_FAILURE:
     return update(state, {
