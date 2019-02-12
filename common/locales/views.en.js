@@ -3,7 +3,7 @@ export default {
     imageGalleryTitle: 'Images',
   },
   home: {
-    platformTutorial: 'Platform tutorial',
+    videoTitle: 'Platform tutorial',
   },
   login: {
     title: 'Login',
