@@ -30,8 +30,12 @@ export default function withConfig(...args) {
     }
 
     render() {
+      if (!this.props.isReady) {
+        return null
+      }
+
       // Do not render component when config field was not set
-      if (this.props.isReady && field && !(field in this.props.config)) {
+      if (field && !(field in this.props.config)) {
         return null
       }
 
