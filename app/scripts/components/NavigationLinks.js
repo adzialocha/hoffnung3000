@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
 import { translate } from '../../../common/services/i18n'
+import { withConfig } from '../containers'
 
 const PRIMARY_NAVIGATION = [
   { localeKey: 'home', url: '/' },
@@ -19,7 +20,7 @@ const SECONDARY_NAVIGATION = [
 const CURATION_NAVIGATION = [
   { localeKey: 'places', url: '/places' },
   { localeKey: 'resources', url: '/resources' },
-  { localeKey: 'stream', url: '/stream' },
+  { localeKey: 'stream', url: '/stream', withConfig: 'gifStreamServerUrl' },
 ]
 
 const ADMIN_NAVIGATION = CURATION_NAVIGATION.concat([
@@ -28,18 +29,17 @@ const ADMIN_NAVIGATION = CURATION_NAVIGATION.concat([
 
 const PARTICIPANT_NAVIGATION = CURATION_NAVIGATION
 
-// @TODO Hide stream link when gifStreamUrl is not given
 const VISITOR_NAVIGATION = [
-  { localeKey: 'stream', url: '/stream' },
+  { localeKey: 'stream', url: '/stream', withConfig: 'gifStreamServerUrl' },
 ]
 
-// @TODO Hide Ticket link when isSignUpVisitorEnabled is deactivated
 const DEFAULT_NAVIGATION = [
-  { localeKey: 'tickets', url: '/tickets' },
+  { localeKey: 'tickets', url: '/tickets', withConfig: 'isSignUpVisitorEnabled' },
 ]
 
 class NavigationLinks extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     isParticipant: PropTypes.bool.isRequired,
     isVisitor: PropTypes.bool.isRequired,
@@ -47,6 +47,16 @@ class NavigationLinks extends Component {
 
   renderNavigationItems(navigation) {
     return navigation.map((navigationItem, index) => {
+      // Required config was not given or falsly
+      if (
+        ('withConfig' in navigationItem) && (
+          !(navigationItem.withConfig in this.props.config) ||
+          !this.props.config[navigationItem.withConfig]
+        )
+      ) {
+        return null
+      }
+
       return (
         <li className="navigation-links__item" key={index}>
           <NavLink to={navigationItem.url}>
@@ -96,4 +106,4 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps
-)(NavigationLinks)
+)(withConfig(NavigationLinks))
