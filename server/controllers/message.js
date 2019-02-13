@@ -52,22 +52,29 @@ export default {
   create: (req, res, next) => {
     const values = pick(permittedFields, req.body)
 
-    // Create a message in that conversation
-    return Message.create({
-      animalId: req.meAnimal.id,
-      conversationId: req.conversation.id,
-      text: values.text,
-    })
-      .then(() => {
-        return addMessageActivity({
-          sendingAnimal: req.meAnimal,
-          receivingAnimals: req.otherAnimals,
+    return getConfig('isInboxEnabled').then(config => {
+      if (!config.isInboxEnabled) {
+        next(new APIError('Messaging is not available', httpStatus.FORBIDDEN))
+        return null
+      }
+
+      // Create a message in that conversation
+      return Message.create({
+        animalId: req.meAnimal.id,
+        conversationId: req.conversation.id,
+        text: values.text,
+      })
+        .then(() => {
+          return addMessageActivity({
+            sendingAnimal: req.meAnimal,
+            receivingAnimals: req.otherAnimals,
+          })
         })
-      })
-      .then(() => {
-        res.json({ status: 'ok' })
-      })
-      .catch(err => next(err))
+        .then(() => {
+          res.json({ status: 'ok' })
+        })
+        .catch(err => next(err))
+    })
   },
   findAll: (req, res, next) => {
     const {
@@ -75,40 +82,47 @@ export default {
       offset = DEFAULT_OFFSET,
     } = req.query
 
-    // Find related conversation
-    return Message.findAndCountAll({
-      where: {
-        conversationId: req.params.resourceId,
-      },
-      include: [
-        MessageBelongsToAnimal,
-      ],
-      limit,
-      offset,
-      order: [
-        ['createdAt', 'DESC'],
-      ],
-    })
-      .then(result => {
-        // Update last checked at date
-        return ConversationAnimal.update({
-          lastCheckedAt: db.fn('NOW'),
-        }, {
-          where: {
-            animalId: req.meAnimal.id,
-            conversationId: req.conversation.id,
-          },
-        })
-          .then(() => {
-            // Return messages
-            res.json({
-              data: prepareResponseAll(result.rows, req),
-              limit: parseInt(limit, 10),
-              offset: parseInt(offset, 10),
-              total: result.count,
-            })
-          })
+    return getConfig('isInboxEnabled').then(config => {
+      if (!config.isInboxEnabled) {
+        next(new APIError('Messaging is not available', httpStatus.FORBIDDEN))
+        return null
+      }
+
+      // Find related conversation
+      return Message.findAndCountAll({
+        where: {
+          conversationId: req.params.resourceId,
+        },
+        include: [
+          MessageBelongsToAnimal,
+        ],
+        limit,
+        offset,
+        order: [
+          ['createdAt', 'DESC'],
+        ],
       })
-      .catch(err => next(err))
+        .then(result => {
+          // Update last checked at date
+          return ConversationAnimal.update({
+            lastCheckedAt: db.fn('NOW'),
+          }, {
+            where: {
+              animalId: req.meAnimal.id,
+              conversationId: req.conversation.id,
+            },
+          })
+            .then(() => {
+              // Return messages
+              res.json({
+                data: prepareResponseAll(result.rows, req),
+                limit: parseInt(limit, 10),
+                offset: parseInt(offset, 10),
+                total: result.count,
+              })
+            })
+        })
+        .catch(err => next(err))
+    })
   },
 }

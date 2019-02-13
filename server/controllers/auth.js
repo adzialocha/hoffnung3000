@@ -47,8 +47,18 @@ function signup(req, res, next) {
 
   const { email, paymentMethod } = fields
 
-  return getConfig(['maximumParticipantsCount', 'title', 'description'])
+  return getConfig([
+    'description',
+    'isSignUpParticipantEnabled',
+    'maximumParticipantsCount',
+    'title',
+  ])
     .then(config => {
+      if (!config.isSignUpParticipantEnabled) {
+        next(new APIError('Sign up is not available', httpStatus.FORBIDDEN))
+        return null
+      }
+
       return User.count({ where: { isParticipant: true } })
         .then(count => {
           if (count >= config.maximumParticipantsCount) {

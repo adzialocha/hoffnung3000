@@ -222,8 +222,13 @@ export default {
       }
     }
 
-    return getConfig(['festivalDateStart, festivalDateEnd'])
+    return getConfig(['festivalDateStart, festivalDateEnd, isRandomMeetingEnabled'])
       .then(config => {
+        if (!config.isRandomMeetingEnabled) {
+          next(new APIError('Random meetings are not available', httpStatus.FORBIDDEN))
+          return null
+        }
+
         const { festivalDateStart: start, festivalDateEnd: end } = config
 
         const isInFestival = (

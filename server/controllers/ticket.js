@@ -26,8 +26,13 @@ function signup(req, res, next) {
 
   const { email, paymentMethod } = fields
 
-  return getConfig(['title', 'description'])
+  return getConfig(['title', 'description', 'isSignUpVisitorEnabled'])
     .then(config => {
+      if (!config.isSignUpVisitorEnabled) {
+        next(new APIError('Ticket sales are not available', httpStatus.FORBIDDEN))
+        return null
+      }
+
       return User.findOne({ where: { email } })
         .then(existingUser => {
           if (existingUser) {
