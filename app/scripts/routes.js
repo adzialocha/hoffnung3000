@@ -8,6 +8,8 @@ import {
   shouldNotBeAuthenticated,
 } from './auth'
 
+import { withConfig } from './containers'
+
 import {
   Activity,
   Admin,
@@ -37,8 +39,6 @@ import {
   Tickets,
 } from './views'
 
-// @TODO Hide routes when isSignUpVisitorEnabled and isSignUpParticipantEnabled are deactivated
-
 export default class Routes extends Component {
   render() {
     return (
@@ -46,15 +46,15 @@ export default class Routes extends Component {
         <Switch>
           <Route component={Home} exact={true} path="/" />
           <Route component={shouldNotBeAuthenticated(Login)} path="/login" />
-          <Route component={shouldNotBeAuthenticated(Register)} path="/register" />
-          <Route component={shouldNotBeAuthenticated(Tickets)} path="/tickets" />
+          <Route component={withConfig('isSignUpParticipantEnabled', shouldNotBeAuthenticated(Register))} path="/register" />
+          <Route component={withConfig('isSignUpVisitorEnabled', shouldNotBeAuthenticated(Tickets))} path="/tickets" />
           <Route component={shouldNotBeAuthenticated(ForgotPassword)} path="/forgot" />
           <Route component={shouldNotBeAuthenticated(ResetPassword)} path="/reset/:token" />
           <Route component={Page} path="/pages/:slug" />
           <Route component={Calendar} path="/calendar" />
           <Route component={isAuthenticated(Profile)} path="/profile" />
-          <Route component={isAuthenticated(Stream)} path="/stream" />
-          <Route component={isParticipant(Activity)} path="/activity" />
+          <Route component={withConfig('gifStreamServerUrl', isAuthenticated(Stream))} path="/stream" />
+          <Route component={withConfig('isActivityStreamEnabled', isParticipant(Activity))} path="/activity" />
           <Route component={isParticipant(EventsNew)} path="/new/event" />
           <Route component={isParticipant(PlacesNew)} path="/new/place" />
           <Route component={isParticipant(ResourcesNew)} path="/new/resource" />
@@ -65,9 +65,9 @@ export default class Routes extends Component {
           <Route component={isParticipant(PlacesIndex)} path="/places" />
           <Route component={isParticipant(ResourcesEdit)} path="/resources/:slug/edit" />
           <Route component={isParticipant(ResourcesIndex)} path="/resources" />
-          <Route component={isParticipant(ConversationsNew)} path="/inbox/new" />
-          <Route component={isParticipant(ConversationsShow)} path="/inbox/conversations/:id" />
-          <Route component={isParticipant(ConversationsIndex)} path="/inbox" />
+          <Route component={withConfig('isInboxEnabled', isParticipant(ConversationsNew))} path="/inbox/new" />
+          <Route component={withConfig('isInboxEnabled', isParticipant(ConversationsShow))} path="/inbox/conversations/:id" />
+          <Route component={withConfig('isInboxEnabled', isParticipant(ConversationsIndex))} path="/inbox" />
           <Route component={isAdmin(Admin)} path="/admin" />
           <Route component={NotFound} />
         </Switch>
