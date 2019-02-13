@@ -18,7 +18,6 @@ function generateTemplateString(template) {
 }
 
 function textTemplate(url, locals) {
-  // @TODO Load templates from database
   return new Promise((resolve, reject) => {
     const filePath = path.join(__dirname, '../', url)
 
