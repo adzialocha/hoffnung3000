@@ -28,6 +28,7 @@ const ADMIN_NAVIGATION = CURATION_NAVIGATION.concat([
 
 const PARTICIPANT_NAVIGATION = CURATION_NAVIGATION
 
+// @TODO Hide stream link when gifStreamUrl is not given
 const VISITOR_NAVIGATION = [
   { localeKey: 'stream', url: '/stream' },
 ]
@@ -80,6 +81,7 @@ class NavigationLinks extends Component {
     } else if (this.props.isVisitor) {
       return this.renderNavigation(VISITOR_NAVIGATION)
     }
+
     return this.renderNavigation(DEFAULT_NAVIGATION)
   }
 }

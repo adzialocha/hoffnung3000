@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { asFormField } from '../containers'
+import { asFormField, withConfig } from '../containers'
 import { fetchSlots } from '../actions/slots'
 import { formatEventTime } from '../../../common/utils/dateFormat'
 import { generateNewSlotItems, getSlotWithIndex } from '../../../common/utils/slots'
@@ -16,6 +16,7 @@ import { translate } from '../../../common/services/i18n'
 
 class FormPlaceSlotSelector extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     disabled: PropTypes.bool.isRequired,
     fetchSlots: PropTypes.func.isRequired,
     input: PropTypes.object.isRequired,
@@ -148,7 +149,8 @@ class FormPlaceSlotSelector extends Component {
   generateSlots() {
     return generateNewSlotItems(
       this.state.place.slotSize,
-      this.props.slots
+      this.props.slots,
+      this.props.config.festivalDateStart
     )
   }
 
@@ -181,5 +183,5 @@ export default connect(
   mapStateToProps, {
     fetchSlots,
   }
-)(asFormField(FormPlaceSlotSelector))
+)(asFormField(withConfig(FormPlaceSlotSelector)))
 

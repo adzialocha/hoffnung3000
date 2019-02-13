@@ -21,6 +21,7 @@ import {
 import pick from '../utils/pick'
 import { APIError } from '../helpers/errors'
 import { createDisabledSlots } from '../../common/utils/slots'
+import { getConfig } from '../config'
 
 import Place from '../models/place'
 import Slot from '../models/slot'
@@ -121,23 +122,26 @@ export default {
     const body = pick(permittedFieldsCreate, req.body)
     const values = preparePlaceValues(body)
 
-    values.slots = createDisabledSlots(
-      body.disabledSlots,
-      null,
-      body.slotSize
-    )
+    return getConfig('festivalDateStart').then(config => {
+      values.slots = createDisabledSlots(
+        body.disabledSlots,
+        null,
+        body.slotSize,
+        config.festivalDateStart
+      )
 
-    return Place.create({
-      ...values,
-      animal: {
-        userId: req.user.id,
-      },
-    }, {
-      include,
-      returning: true,
+      return Place.create({
+        ...values,
+        animal: {
+          userId: req.user.id,
+        },
+      }, {
+        include,
+        returning: true,
+      })
+        .then(data => res.json(prepareResponse(data, req)))
+        .catch(err => next(err))
     })
-      .then(data => res.json(prepareResponse(data, req)))
-      .catch(err => next(err))
   },
   destroyWithSlug: (req, res, next) => {
     return deletePlacesByIds([req.resourceId])
@@ -222,12 +226,15 @@ export default {
                 })
               })
               .then(() => {
-                const slots = createDisabledSlots(
-                  body.disabledSlots,
-                  previousPlace.id,
-                  previousPlace.slotSize
-                )
-                return Slot.bulkCreate(slots)
+                return getConfig('festivalDateStart').then(config => {
+                  const slots = createDisabledSlots(
+                    body.disabledSlots,
+                    previousPlace.id,
+                    previousPlace.slotSize,
+                    config.festivalDateStart
+                  )
+                  return Slot.bulkCreate(slots)
+                })
               })
               .then(() => {
                 return Place.findByPk(previousPlace.id, { include })

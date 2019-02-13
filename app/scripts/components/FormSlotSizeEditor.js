@@ -14,6 +14,7 @@ import { translate } from '../../../common/services/i18n'
 
 class FormSlotSizeEditor extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
     isSlotSizeVisible: PropTypes.bool.isRequired,
@@ -63,7 +64,11 @@ class FormSlotSizeEditor extends Component {
 
   onAfterChange(slotSize) {
     this.setState({
-      slots: generateNewSlotItems(slotSize),
+      slots: generateNewSlotItems(
+        slotSize,
+        null,
+        this.props.config.festivalDateStart
+      ),
       slotSize,
     })
   }

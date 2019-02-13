@@ -12,6 +12,7 @@ import {
   updateResource,
 } from '../actions/resources'
 import { PlaceForm } from '../forms'
+import { withConfig } from '../containers'
 import {
   generateNewSlotItems,
   getDisabledSlotIndexes,
@@ -20,6 +21,7 @@ import { translate } from '../../../common/services/i18n'
 
 class PlacesEdit extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     deleteResource: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
@@ -118,7 +120,11 @@ class PlacesEdit extends Component {
 
     const slotSize = this.props.resourceData.slotSize
     const slots = {
-      slots: generateNewSlotItems(slotSize, slotData),
+      slots: generateNewSlotItems(
+        slotSize,
+        slotData,
+        this.props.config.festivalDateStart
+      ),
       slotSize,
     }
     const initialValues = {
@@ -144,6 +150,7 @@ class PlacesEdit extends Component {
     if (this.props.isLoading) {
       return <h1>{ translate('views.places.titlePlaceholder') }</h1>
     }
+
     return <h1>{ this.props.resourceData.title }</h1>
   }
 
@@ -151,12 +158,15 @@ class PlacesEdit extends Component {
     return (
       <section>
         { this.renderTitle() }
+
         <Link className="button" to="/places">
           { translate('common.backToOverview') }
         </Link>
+
         <button className="button button--red" onClick={this.onDeleteClick}>
           { translate('common.deleteButton') }
         </button>
+
         <hr />
         { this.renderForm() }
       </section>
@@ -192,4 +202,4 @@ export default connect(
     flash,
     updateResource,
   }
-)(PlacesEdit)
+)(withConfig(PlacesEdit))

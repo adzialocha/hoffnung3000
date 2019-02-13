@@ -20,6 +20,7 @@ import {
 import pick from '../utils/pick'
 import { APIError } from '../helpers/errors'
 import { createEventSlots, isInClosedOrder } from '../../common/utils/slots'
+import { getConfig } from '../config'
 
 import {
   EventBelongsToAnimal,
@@ -131,12 +132,13 @@ function areSlotsAvailable(req, fields, existingEventId) {
   })
 }
 
-function areResourcesAvailable(req, existingEventId) {
+function areResourcesAvailable(req, existingEventId, festivalDateStart) {
   const slots = createEventSlots(
     req.body.slots,
     null,
     null,
-    req.place.slotSize
+    req.place.slotSize,
+    festivalDateStart
   )
 
   const eventFrom = slots[0].from
@@ -194,7 +196,7 @@ function areResourcesAvailable(req, existingEventId) {
   })
 }
 
-function createEvent(req, fields) {
+function createEvent(req, fields, festivalDateStart) {
   return new Promise((resolve, reject) => {
     return Place.findByPk(fields.placeId, {
       include: [
@@ -231,7 +233,8 @@ function createEvent(req, fields) {
                   req.body.slots,
                   place.id,
                   event.id,
-                  place.slotSize
+                  place.slotSize,
+                  festivalDateStart
                 )
 
                 return Slot.bulkCreate(slots)
@@ -255,7 +258,7 @@ function createEvent(req, fields) {
   })
 }
 
-function updateEvent(req, fields) {
+function updateEvent(req, fields, festivalDateStart) {
   return new Promise((resolve, reject) => {
     return Place.findByPk(fields.placeId, {
       include: [
@@ -307,7 +310,8 @@ function updateEvent(req, fields) {
                           req.body.slots,
                           place.id,
                           event.id,
-                          place.slotSize
+                          place.slotSize,
+                          festivalDateStart
                         )
 
                         // Filter out only new resources for notifications
@@ -352,7 +356,7 @@ function updateEvent(req, fields) {
   })
 }
 
-function validateEvent(req, fields, eventId) {
+function validateEvent(req, fields, eventId, festivalDateStart) {
   return Place.findByPk(fields.placeId)
     .then(place => {
       if (!place) {
@@ -368,7 +372,7 @@ function validateEvent(req, fields, eventId) {
       return Promise.all([
         areSlotsInClosedRange(req),
         areSlotsAvailable(req, fields, eventId),
-        areResourcesAvailable(req, eventId),
+        areResourcesAvailable(req, eventId, festivalDateStart),
       ])
     })
 }
@@ -378,15 +382,18 @@ export default {
     const fields = pick(permittedFields, req.body)
 
     // Check if everything is correct before we do anything
-    return validateEvent(req, fields)
-      .then(() => {
-        // Create event
-        return createEvent(req, fields)
-          .then(event => res.json(prepareResponse(event, req)))
-      })
-      .catch(err => {
-        next(err)
-        return
+    return getConfig('festivalDateStart')
+      .then(config => {
+        return validateEvent(req, fields, config.festivalDateStart)
+          .then(() => {
+            // Create event
+            return createEvent(req, fields, config.festivalDateStart)
+              .then(event => res.json(prepareResponse(event, req)))
+          })
+          .catch(err => {
+            next(err)
+            return
+          })
       })
   },
   destroy: (req, res, next) => {
@@ -469,15 +476,18 @@ export default {
     const fields = pick(permittedFields, req.body)
 
     // Check if everything is correct before we do anything
-    return validateEvent(req, fields, req.resourceId)
-      .then(() => {
-        // Update event
-        return updateEvent(req, fields)
-          .then(event => res.json(prepareResponse(event, req)))
-      })
-      .catch(err => {
-        next(err)
-        return
+    return getConfig('festivalDateStart')
+      .then(config => {
+        return validateEvent(req, fields, req.resourceId, config.festivalDateStart)
+          .then(() => {
+            // Update event
+            return updateEvent(req, fields, config.festivalDateStart)
+              .then(event => res.json(prepareResponse(event, req)))
+          })
+          .catch(err => {
+            next(err)
+            return
+          })
       })
   },
 }
