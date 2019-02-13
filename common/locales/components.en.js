@@ -167,6 +167,5 @@ export default {
     home: 'Home',
     imprint: 'Imprint',
     information: 'Information',
-    supportedBy: 'Supported by',
   },
 }
