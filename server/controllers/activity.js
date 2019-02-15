@@ -4,6 +4,7 @@ import {
 } from './base'
 
 import { APIError } from '../helpers/errors'
+import { getConfig } from '../config'
 import { getMyActivities } from '../handlers/activity'
 
 export default {
