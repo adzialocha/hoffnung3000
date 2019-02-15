@@ -2,7 +2,7 @@ function configField(type, allowNull = false) {
   return {
     type,
     allowNull,
-    validate: {
+    validate: allowNull ? {} : {
       notEmpty: true,
     },
   }
@@ -11,10 +11,11 @@ function configField(type, allowNull = false) {
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('configs', {
+      app: configField(Sequelize.STRING),
       baseUrl: configField(Sequelize.STRING),
       currency: configField(Sequelize.STRING),
       defaultCity: configField(Sequelize.STRING),
-      defaultCounty: configField(Sequelize.CHAR),
+      defaultCountry: configField(Sequelize.CHAR),
       defaultLatitude: configField(Sequelize.FLOAT),
       defaultLongitude: configField(Sequelize.FLOAT),
       description: configField(Sequelize.STRING),
@@ -27,6 +28,19 @@ module.exports = {
       participationPrice: configField(Sequelize.FLOAT, true),
       timezone: configField(Sequelize.STRING),
       title: configField(Sequelize.STRING),
+      transferReceiverName: configField(Sequelize.STRING, true),
+      transferBankName: configField(Sequelize.STRING, true),
+      transferIBAN: configField(Sequelize.STRING, true),
+      transferBIC: configField(Sequelize.STRING, true),
+      videoHomeId: configField(Sequelize.STRING, true),
+      videoIntroductionId: configField(Sequelize.STRING, true),
+      isActivityStreamEnabled: configField(Sequelize.BOOLEAN),
+      isInboxEnabled: configField(Sequelize.BOOLEAN),
+      isRandomMeetingEnabled: configField(Sequelize.BOOLEAN),
+      isSignUpParticipantEnabled: configField(Sequelize.BOOLEAN),
+      isSignUpVisitorEnabled: configField(Sequelize.BOOLEAN),
+      googleMapApiKey: configField(Sequelize.STRING, true),
+      gifStreamServerUrl: configField(Sequelize.STRING, true),
     })
   },
   down: queryInterface => {

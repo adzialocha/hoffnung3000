@@ -7,7 +7,7 @@ function configField(type, allowNull = false) {
   return {
     type,
     allowNull,
-    validate: {
+    validate: allowNull ? {} : {
       notEmpty: true,
     },
   }
@@ -16,10 +16,11 @@ function configField(type, allowNull = false) {
 // This model holds global configurations which are crucial for
 // the whole application. Defaults are defined in a database seed.
 const Config = db.define('config', {
+  app: configField(Sequelize.STRING),
   baseUrl: configField(Sequelize.STRING),
   currency: configField(Sequelize.STRING),
   defaultCity: configField(Sequelize.STRING),
-  defaultCounty: configField(Sequelize.CHAR),
+  defaultCountry: configField(Sequelize.CHAR),
   defaultLatitude: configField(Sequelize.FLOAT),
   defaultLongitude: configField(Sequelize.FLOAT),
   description: configField(Sequelize.STRING),
@@ -32,6 +33,19 @@ const Config = db.define('config', {
   participationPrice: configField(Sequelize.FLOAT, true),
   timezone: configField(Sequelize.STRING),
   title: configField(Sequelize.STRING),
+  transferReceiverName: configField(Sequelize.STRING, true),
+  transferBankName: configField(Sequelize.STRING, true),
+  transferIBAN: configField(Sequelize.STRING, true),
+  transferBIC: configField(Sequelize.STRING, true),
+  videoHomeId: configField(Sequelize.STRING, true),
+  videoIntroductionId: configField(Sequelize.STRING, true),
+  isActivityStreamEnabled: configField(Sequelize.BOOLEAN),
+  isInboxEnabled: configField(Sequelize.BOOLEAN),
+  isRandomMeetingEnabled: configField(Sequelize.BOOLEAN),
+  isSignUpParticipantEnabled: configField(Sequelize.BOOLEAN),
+  isSignUpVisitorEnabled: configField(Sequelize.BOOLEAN),
+  googleMapApiKey: configField(Sequelize.STRING, true),
+  gifStreamServerUrl: configField(Sequelize.STRING, true),
 }, {
   timestamps: false,
 })
