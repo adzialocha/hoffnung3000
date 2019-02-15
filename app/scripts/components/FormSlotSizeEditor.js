@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import ReactSlider from 'react-slider'
 
-import { asFormField } from '../containers'
+import { asFormField, withConfig } from '../containers'
 import {
   checkSlotSize,
   generateNewSlotItems,
@@ -195,4 +195,4 @@ class FormSlotSizeEditor extends Component {
   }
 }
 
-export default asFormField(FormSlotSizeEditor)
+export default asFormField(withConfig(FormSlotSizeEditor))
