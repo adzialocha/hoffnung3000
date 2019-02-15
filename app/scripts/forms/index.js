@@ -1,3 +1,4 @@
+export { default as AdminConfigForm } from './AdminConfigForm'
 export { default as EventForm } from './EventForm'
 export { default as ForgotPasswordForm } from './ForgotPasswordForm'
 export { default as LoginForm } from './LoginForm'

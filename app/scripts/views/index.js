@@ -1,5 +1,6 @@
 export { default as Activity } from './Activity'
 export { default as Admin } from './Admin'
+export { default as AdminConfig } from './AdminConfig'
 export { default as AdminPages } from './AdminPages'
 export { default as AdminPagesEditForm } from './AdminPagesEditForm'
 export { default as AdminPagesNewForm } from './AdminPagesNewForm'

@@ -27,6 +27,7 @@ export default {
   resetPassword: 'Yes! Your password has been reset!',
   resourceCreateFailure: 'Ouch, I couldn\'t create this, please check your fields again.',
   resourceUpdateFailure: 'Ouch, I couldn\'t update this, please check your fields again.',
+  updateAdminConfigFailure: 'Could not save the configuration. Please check your fields and the documentation.',
   signUpPaypalSuccess: 'Thank you and welcome to HOFFNUNG 3000! You successfully created your account!',
   signUpTransferFailure: 'Something with the registration went wrong',
   signUpTransferSuccess: 'Thank you for your registration! We just sent you an email with our bank account details! Please contact us if you didn\'t receive the mail in the next minutes or you have any questions.',
@@ -36,4 +37,5 @@ export default {
   updatePlaceSuccess: 'Your place was successfully updated.',
   updateProfileSuccess: 'Your profile has been successfully updated!',
   updateResourceSuccess: 'Your resource was successfully updated.',
+  updateAdminConfigSuccess: 'Your configuration was saved successfully. You might need to refresh the page to see some changes.',
 }
