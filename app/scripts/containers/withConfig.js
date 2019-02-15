@@ -52,7 +52,7 @@ export default function withConfig(...args) {
         return null
       }
 
-      if (field && !(field in this.props.config)) {
+      if (field && (!(field in this.props.config) || !this.props.config[field])) {
         if (isRequired) {
           return <p>Warning! <em>{ field }</em> is not set. Please check your configuration.</p>
         }
