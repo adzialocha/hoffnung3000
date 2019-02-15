@@ -211,7 +211,7 @@ class FormLocationSelector extends Component {
       <div className="location-selector__view">
         <img
           className="location-selector__kitty-future"
-          src="/static/images/future.jpg"
+          src="/static/future.jpg"
         />
       </div>
     )
