@@ -16,6 +16,7 @@ import pageController from '../controllers/page'
 import userStatusController from '../controllers/userStatus'
 
 import authRoutes from './auth'
+import configRoutes from './config'
 import conversationRoutes from './conversation'
 import eventRoutes from './event'
 import meetingRoutes from './meeting'
@@ -39,7 +40,7 @@ router.route('/pages/:resourceSlug(\\D+)/')
   .get(pageController.findOneWithSlug)
 
 router.route('/meta')
-  .get(metaController.information)
+  .get(metaController.getStatusAndConfig)
 
 router.route('/preview')
   .get(eventPreviewController.findAll)
@@ -79,6 +80,7 @@ router.route('/activity')
 // Admin API routes
 router.use(onlyAdmin)
 
+router.use('/config', configRoutes)
 router.use('/pages', pageRoutes)
 router.use('/users', userRoutes)
 

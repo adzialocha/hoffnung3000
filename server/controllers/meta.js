@@ -1,6 +1,9 @@
 import { getConfig } from '../config'
 
+import Config from '../models/config'
 import User from '../models/user'
+
+const CONFIG_NAME = 'default'
 
 const TRANSFER_CONFIG = [
   'transferReceiverName',
@@ -31,7 +34,7 @@ function hasRequiredFields(fields, config) {
   })
 }
 
-function information(req, res, next) {
+function getStatusAndConfig(req, res, next, hasSensitiveFields = false) {
   // Check if all variables are set to enable PayPal payment
   const isPayPalEnabled = hasRequiredFields([
     'PAYPAL_ID',
@@ -52,15 +55,22 @@ function information(req, res, next) {
         },
       })
         .then(count => {
+          const { maximumParticipantsCount } = config
+          const isRegistrationFull = maximumParticipantsCount ? count >= maximumParticipantsCount : false
+
+          const mergedConfig = {
+            ...config,
+            isPayPalEnabled,
+            isTransferEnabled,
+          }
+
+          const filteredConfig = hasSensitiveFields ? mergedConfig : removeSensitive(mergedConfig)
+
           // Return all gathered statuses and (filtered) configs
           res.json({
-            config: removeSensitive({
-              ...config,
-              isPayPalEnabled,
-              isTransferEnabled,
-            }),
+            config: filteredConfig,
             status: {
-              isRegistrationFull: count >= config.maximumParticipantsCount,
+              isRegistrationFull,
             },
           })
         })
@@ -68,6 +78,20 @@ function information(req, res, next) {
     })
 }
 
+function updateConfig(req, res, next) {
+  return Config.update(req.body, { limit: 1, where: {
+    app: CONFIG_NAME,
+  } })
+    .then(() => {
+      return getStatusAndConfig(req, res, next, true)
+    })
+    .catch(err => next(err))
+}
+
 export default {
-  information,
+  getStatusAndConfig,
+  getStatusAndSensitiveConfig: (req, res, next) => {
+    return getStatusAndConfig(req, res, next, true)
+  },
+  updateConfig,
 }

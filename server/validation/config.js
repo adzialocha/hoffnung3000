@@ -1,0 +1,37 @@
+import Joi from 'joi'
+
+export default {
+  updateConfig: {
+    body: {
+      baseUrl: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
+      currency: Joi.string().uppercase().length(3).required(),
+      defaultCity: Joi.string().required(),
+      defaultCountry: Joi.string().required(),
+      defaultLatitude: Joi.number().required(),
+      defaultLongitude: Joi.number().required(),
+      description: Joi.string().required(),
+      festivalDateEnd: Joi.string().isoDate().required(),
+      festivalDateStart: Joi.string().isoDate().required(),
+      festivalTicketPrice: Joi.number(),
+      mailAddressAdmin: Joi.string().email().required(),
+      mailAddressRobot: Joi.string().email().required(),
+      maximumParticipantsCount: Joi.number(),
+      participationPrice: Joi.number(),
+      timezone: Joi.string().required(),
+      title: Joi.string().required(),
+      transferReceiverName: Joi.string(),
+      transferBankName: Joi.string(),
+      transferIBAN: Joi.string(),
+      transferBIC: Joi.string(),
+      videoHomeId: Joi.string(),
+      videoIntroductionId: Joi.string(),
+      isActivityStreamEnabled: Joi.boolean().required(),
+      isInboxEnabled: Joi.boolean().required(),
+      isRandomMeetingEnabled: Joi.boolean().required(),
+      isSignUpParticipantEnabled: Joi.boolean().required(),
+      isSignUpVisitorEnabled: Joi.boolean().required(),
+      googleMapApiKey: Joi.string().token(),
+      gifStreamServerUrl: Joi.string().uri({ scheme: ['http', 'https'] }),
+    },
+  },
+}
