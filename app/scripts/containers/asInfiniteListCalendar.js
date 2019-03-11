@@ -1,6 +1,6 @@
-import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import moment from 'moment-timezone'
 import { connect } from 'react-redux'
 
 import { fetchList, clearList } from '../actions/infiniteList'
@@ -10,10 +10,10 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
   class InfiniteListContainer extends Component {
     static propTypes = {
       clearList: PropTypes.func.isRequired,
-      currentPageIndex: PropTypes.number.isRequired,
+      currentPageIndex: PropTypes.number,
       fetchList: PropTypes.func.isRequired,
-      isLoading: PropTypes.bool.isRequired,
-      listItems: PropTypes.array.isRequired,
+      isLoading: PropTypes.bool,
+      listItems: PropTypes.array,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
       resourceName: PropTypes.string.isRequired,
@@ -21,6 +21,9 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     }
 
     static defaultProps = {
+      currentPageIndex: 0,
+      isLoading: true,
+      listItems: [],
       onClick: undefined,
       onEditClick: undefined,
       totalPageCount: undefined,
@@ -34,7 +37,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     }
 
     componentWillUnmount() {
-      this.props.clearList()
+      this.props.clearList(this.props.resourceName)
     }
 
     onLoadMoreClick() {
@@ -125,6 +128,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
             <h2 className="infinite-list-container__heading">
               { moment(item.slots[0].from).format('DD.MM.YY') }
             </h2>
+
             { index > 0 ? <hr /> : null }
           </div>
         )
@@ -158,8 +162,10 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     }
   }
 
-  function mapStateToProps(state) {
-    return state.infiniteList
+  function mapStateToProps(state, props) {
+    return {
+      ...state.infiniteList[props.resourceName],
+    }
   }
 
   return connect(

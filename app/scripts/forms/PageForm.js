@@ -6,15 +6,19 @@ import { FormInput, FormTextarea } from '../components'
 
 const validate = values => {
   const errors = {}
+
   if (!values.title) {
     errors.title = 'Required'
   }
+
   if (!values.slug) {
     errors.slug = 'Required'
   }
+
   if (!values.content) {
     errors.content = 'Required'
   }
+
   return errors
 }
 
@@ -38,6 +42,7 @@ class PageForm extends Component {
         </div>
       )
     }
+
     return null
   }
 
@@ -45,6 +50,7 @@ class PageForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -52,6 +58,7 @@ class PageForm extends Component {
           name="title"
           type="text"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -59,6 +66,7 @@ class PageForm extends Component {
           name="slug"
           type="text"
         />
+
         <Field
           component={FormTextarea}
           disabled={this.props.isLoading}
@@ -66,6 +74,7 @@ class PageForm extends Component {
           name="content"
           type="text"
         />
+
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}

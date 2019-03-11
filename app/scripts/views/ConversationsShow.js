@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
+import { MessageForm } from '../forms'
+import { MessageListItem } from '../components'
 import { asInfiniteList } from '../containers'
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
-import { MessageForm } from '../forms'
-import { MessageListItem } from '../components'
 import { sendNewMessage } from '../actions/inbox'
 import { translate } from '../../../common/services/i18n'
 

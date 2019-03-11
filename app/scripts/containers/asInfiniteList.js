@@ -1,6 +1,6 @@
-import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import classnames from 'classnames'
 import { connect } from 'react-redux'
 
 import { fetchList, clearList } from '../actions/infiniteList'
@@ -10,13 +10,13 @@ export default function asInfiniteList(WrappedListItemComponent) {
   class InfiniteListContainer extends Component {
     static propTypes = {
       clearList: PropTypes.func.isRequired,
-      currentPageIndex: PropTypes.number.isRequired,
+      currentPageIndex: PropTypes.number,
       fetchList: PropTypes.func.isRequired,
       filter: PropTypes.object,
       input: PropTypes.object,
       isInModal: PropTypes.bool,
-      isLoading: PropTypes.bool.isRequired,
-      listItems: PropTypes.array.isRequired,
+      isLoading: PropTypes.bool,
+      listItems: PropTypes.array,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
       resourceName: PropTypes.any.isRequired,
@@ -24,15 +24,18 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
 
     static defaultProps = {
+      currentPageIndex: 0,
       filter: {},
       input: undefined,
       isInModal: false,
+      isLoading: true,
+      listItems: [],
       onClick: undefined,
       onEditClick: undefined,
       totalPageCount: undefined,
     }
 
-    componentWillMount() {
+    componentDidMount() {
       this.props.fetchList(
         this.props.resourceName,
         0,
@@ -41,7 +44,7 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
 
     componentWillUnmount() {
-      this.props.clearList()
+      this.props.clearList(this.props.resourceName)
     }
 
     onLoadMoreClick() {
@@ -75,7 +78,11 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
 
     renderListItems() {
-      if (!this.props.isLoading && this.props.listItems.length === 0) {
+      if (this.props.isLoading) {
+        return null
+      }
+
+      if (this.props.listItems.length === 0) {
         return <p>{ translate('components.common.emptyList') }</p>
       }
 
@@ -108,6 +115,10 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
 
     render() {
+      if (this.props.isLoading) {
+        return null
+      }
+
       const listClasses = classnames(
         'infinite-list-container', {
           'infinite-list-container--in-modal': this.props.isInModal,
@@ -130,8 +141,10 @@ export default function asInfiniteList(WrappedListItemComponent) {
     }
   }
 
-  function mapStateToProps(state) {
-    return state.infiniteList
+  function mapStateToProps(state, props) {
+    return {
+      ...state.infiniteList[props.resourceName],
+    }
   }
 
   return connect(

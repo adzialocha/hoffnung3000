@@ -35,6 +35,7 @@ class AnimalLink extends Component {
     return (
       <span>
         { this.renderBy() }
+
         <Link to={ { pathname: '/inbox/new', query } }>
           { this.props.animal.name }
         </Link>

@@ -1,6 +1,6 @@
 import ActionTypes from '../actionTypes'
-import { getRequest } from '../services/api'
 import { UPDATE_USER_STATUS } from '../middlewares/userStatus'
+import { getRequest } from '../services/api'
 
 export const ITEMS_PER_PAGE = 50
 export const MANY_ITEMS_PER_PAGE = 500
@@ -9,9 +9,10 @@ export function fetchList(path, page = 0, params = {}) {
   let offset = page * ITEMS_PER_PAGE
   let limit = ITEMS_PER_PAGE
   const meta = {
-    page,
-    offset,
     limit,
+    offset,
+    page,
+    path,
   }
 
   let type = ActionTypes.INFINITE_LIST_INITIALIZE
@@ -30,7 +31,7 @@ export function fetchList(path, page = 0, params = {}) {
     success[UPDATE_USER_STATUS] = true
   }
 
-  // This is a quick hack fixing a wierd SQL issue
+  // @TODO This is a quick hack fixing a wierd SQL issue
   if (
     requestPath[0] === 'conversations' ||
     requestPath[0] === 'events' ||
@@ -53,8 +54,11 @@ export function fetchList(path, page = 0, params = {}) {
   })
 }
 
-export function clearList() {
+export function clearList(path) {
   return {
-    type: ActionTypes.INFINITE_LIST_INITIALIZE,
+    type: ActionTypes.INFINITE_LIST_CLEAR,
+    meta: {
+      path,
+    },
   }
 }
