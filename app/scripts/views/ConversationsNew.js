@@ -79,7 +79,7 @@ class ConversationsNew extends Component {
 
 function mapStateToProps(state) {
   const { errorMessage, isLoading } = state.inbox
-  const location = state.routing.location
+  const location = state.router.location
 
   let receiverAnimals = []
   if (location.query && location.query.receiverAnimals) {
