@@ -12,8 +12,9 @@ import pick from '../utils/pick'
 
 import ConversationAnimal from '../models/conversationAnimal'
 import Message from '../models/message'
-import { addMessageActivity } from '../services/activity'
 import { MessageBelongsToAnimal } from '../database/associations'
+import { addMessageActivity } from '../services/activity'
+import { getConfig } from '../config'
 
 const permittedFields = [
   'text',
