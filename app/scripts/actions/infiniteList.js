@@ -2,12 +2,12 @@ import ActionTypes from '../actionTypes'
 import { UPDATE_USER_STATUS } from '../middlewares/userStatus'
 import { getRequest } from '../services/api'
 
-export const ITEMS_PER_PAGE = 50
-export const MANY_ITEMS_PER_PAGE = 500
+export const ITEMS_PER_PAGE = 1
 
 export function fetchList(path, page = 0, params = {}) {
-  let offset = page * ITEMS_PER_PAGE
-  let limit = ITEMS_PER_PAGE
+  const offset = page * ITEMS_PER_PAGE
+  const limit = ITEMS_PER_PAGE
+
   const meta = {
     limit,
     offset,
@@ -29,16 +29,6 @@ export function fetchList(path, page = 0, params = {}) {
 
   if (requestPath[0] === 'conversations') {
     success[UPDATE_USER_STATUS] = true
-  }
-
-  // @TODO This is a quick hack fixing a wierd SQL issue
-  if (
-    requestPath[0] === 'conversations' ||
-    requestPath[0] === 'events' ||
-    requestPath[0] === 'preview'
-  ) {
-    offset = page * MANY_ITEMS_PER_PAGE
-    limit = MANY_ITEMS_PER_PAGE
   }
 
   return getRequest(requestPath, { offset, limit, ...params }, {

@@ -66,27 +66,27 @@ function sendMail(locals, subject, receiver, templateName, sender) {
 }
 
 export function sendWireTransferDetails(locals, receiver) {
-  return getConfig(['title', 'mailAddressAdmin'])
+  return getConfig()
     .then(config => {
       const subject = `${config.title} TRANSFER DETAILS`
 
       return sendMail(
-        locals,
+        { ...locals, config },
         subject,
         receiver,
         'wireTransferDetails',
-        config.mailAddressAdmin
+        config.mailAddressAdmin,
       )
     })
 }
 
 export function sendRegistrationComplete(locals, receiver) {
-  return getConfig(['title', 'mailAddressAdmin'])
+  return getConfig()
     .then(config => {
       const subject = `WELCOME TO ${config.title}`
 
       return sendMail(
-        locals,
+        { ...locals, config },
         subject,
         receiver,
         'registrationComplete',
@@ -96,12 +96,12 @@ export function sendRegistrationComplete(locals, receiver) {
 }
 
 export function sendAdminRegistrationNotification(locals) {
-  return getConfig(['mailAddressAdmin', 'mailAddressRobot'])
+  return getConfig()
     .then(config => {
       const subject = 'NEW REGISTRATION'
 
       return sendMail(
-        locals,
+        { ...locals, config },
         subject,
         config.mailAddressAdmin,
         'adminRegistrationNotification',
@@ -111,12 +111,12 @@ export function sendAdminRegistrationNotification(locals) {
 }
 
 export function sendPasswordReset(locals, receiver) {
-  return getConfig('mailAddressAdmin')
+  return getConfig()
     .then(config => {
       const subject = 'PASSWORD RESET'
 
       return sendMail(
-        locals,
+        { ...locals, config },
         subject,
         receiver,
         'passwordReset',
@@ -126,10 +126,10 @@ export function sendPasswordReset(locals, receiver) {
 }
 
 export function sendActivityNotification(subject, locals, receiver) {
-  return getConfig(['baseUrl', 'mailAddressAdmin'])
+  return getConfig()
     .then(config => {
       return sendMail(
-        { ...locals, baseUrl: config.baseUrl },
+        { ...locals, config },
         subject,
         receiver,
         'activityNotification',
