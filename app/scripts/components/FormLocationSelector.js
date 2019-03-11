@@ -2,12 +2,10 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 
-import { asFormField, withConfig } from '../containers'
-
 import styles from '../utils/googleMapStyle.json'
+import { asFormField, withConfig } from '../containers'
 import { translate } from '../../../common/services/i18n'
 
-const DEFAULT_MODE = 'address'
 const DEFAULT_ZOOM = 17
 const MAP_OPTIONS = { disableDefaultUI: true, zoomControl: true, styles }
 
@@ -41,58 +39,62 @@ const LocationSelectorMapContainer = withConfig('googleMapApiKey', true, props =
 
 class FormLocationSelector extends Component {
   static propTypes = {
-    config: PropTypes.object.isRequired,
     disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
   }
 
-  componentDidUpdate() {
-    this.props.input.onChange(this.state)
+  onChange(values) {
+    this.props.input.onChange(this.currentValue(values))
   }
 
   onBlur() {
-    this.props.input.onBlur(this.state)
+    this.props.input.onBlur(this.currentValue())
   }
 
   onFocus() {
-    this.props.input.onFocus(this.state)
+    this.props.input.onFocus(this.currentValue())
   }
 
   onMapClick(event) {
-    this.setState({
+    this.onChange({
       latitude: event.latLng.lat(),
       longitude: event.latLng.lng(),
     })
   }
 
   onAddressChange(event) {
-    this.setState({
+    this.onChange({
       [event.target.name]: event.target.value,
     })
   }
 
   onGpsSelect(event) {
     event.preventDefault()
-    this.setState({
+
+    this.onChange({
       mode: 'gps',
     })
   }
 
   onAddressSelect(event) {
     event.preventDefault()
-    this.setState({
+
+    this.onChange({
       mode: 'address',
     })
   }
 
   onVirtualSelect(event) {
     event.preventDefault()
-    this.setState({
+
+    this.onChange({
       mode: 'virtual',
     })
   }
 
   renderGpsSelector() {
+    const { latitude, longitude } = this.props.input.value
+
     return (
       <div className="location-selector__view">
         <div className="location-selector__panel">
@@ -121,8 +123,8 @@ class FormLocationSelector extends Component {
           }
           mapElement={<div className="location-selector__map" />}
           markerPosition={ {
-            lat: this.state.latitude,
-            lng: this.state.longitude,
+            lat: latitude,
+            lng: longitude,
           } }
           onMapClick={this.onMapClick}
         />
@@ -131,6 +133,8 @@ class FormLocationSelector extends Component {
   }
 
   renderAddressSelector() {
+    const { street, cityCode, city, country } = this.props.input.value
+
     return (
       <div className="location-selector__view">
         <div className="form">
@@ -144,7 +148,7 @@ class FormLocationSelector extends Component {
               disabled={this.props.disabled}
               name="street"
               type="text"
-              value={this.state.street}
+              value={street}
               onBlur={this.onBlur}
               onChange={this.onAddressChange}
               onFocus={this.onFocus}
@@ -161,7 +165,7 @@ class FormLocationSelector extends Component {
               disabled={this.props.disabled}
               name="cityCode"
               type="text"
-              value={this.state.cityCode}
+              value={cityCode}
               onBlur={this.onBlur}
               onChange={this.onAddressChange}
               onFocus={this.onFocus}
@@ -178,7 +182,7 @@ class FormLocationSelector extends Component {
               disabled={this.props.disabled}
               name="city"
               type="text"
-              value={this.state.city}
+              value={city}
               onBlur={this.onBlur}
               onChange={this.onAddressChange}
               onFocus={this.onFocus}
@@ -195,7 +199,7 @@ class FormLocationSelector extends Component {
               disabled={this.props.disabled}
               name="country"
               type="text"
-              value={this.state.country}
+              value={country}
               onBlur={this.onBlur}
               onChange={this.onAddressChange}
               onFocus={this.onFocus}
@@ -218,9 +222,11 @@ class FormLocationSelector extends Component {
   }
 
   renderSelector() {
-    if (this.state.mode === 'gps') {
+    const { mode } = this.props.input.value
+
+    if (mode === 'gps') {
       return this.renderGpsSelector()
-    } else if (this.state.mode === 'address') {
+    } else if (mode === 'address') {
       return this.renderAddressSelector()
     }
 
@@ -228,12 +234,14 @@ class FormLocationSelector extends Component {
   }
 
   render() {
+    const { mode } = this.props.input.value
+
     return (
       <div className="location-selector">
         <div className="button-group">
           <button
             className="button button--green button--small-mobile"
-            disabled={this.state.mode === 'gps' || this.props.disabled}
+            disabled={mode === 'gps' || this.props.disabled}
             onClick={this.onGpsSelect}
           >
             { translate('components.locationSelector.gpsPositionMode') }
@@ -241,7 +249,7 @@ class FormLocationSelector extends Component {
 
           <button
             className="button button--green button--small-mobile"
-            disabled={this.state.mode === 'address' || this.props.disabled}
+            disabled={mode === 'address' || this.props.disabled}
             onClick={this.onAddressSelect}
           >
             { translate('components.locationSelector.addressMode') }
@@ -249,7 +257,7 @@ class FormLocationSelector extends Component {
 
           <button
             className="button button--green button--small-mobile"
-            disabled={this.state.mode === 'virtual' || this.props.disabled}
+            disabled={mode === 'virtual' || this.props.disabled}
             onClick={this.onVirtualSelect}
           >
             { translate('components.locationSelector.virtualMode') }
@@ -262,23 +270,19 @@ class FormLocationSelector extends Component {
   }
 
   currentLatLngString() {
-    return `${this.state.latitude}, ${this.state.longitude}`
+    const { latitude, longitude } = this.props.input.value
+
+    return `${latitude}, ${longitude}`
+  }
+
+  currentValue(newValues = {}) {
+    return Object.assign({}, this.props.input.value, {
+      ...newValues,
+    })
   }
 
   constructor(props) {
     super(props)
-
-    const { value } = props.input
-
-    this.state = {
-      city: value.city || props.config.defaultCity,
-      cityCode: value.cityCode || '',
-      country: value.country || props.config.defaultCountry,
-      latitude: value.latitude || props.config.defaultLatitude,
-      longitude: value.longitude || props.config.defaultLongitude,
-      mode: value.mode || DEFAULT_MODE,
-      street: value.street || '',
-    }
 
     this.onAddressChange = this.onAddressChange.bind(this)
     this.onAddressSelect = this.onAddressSelect.bind(this)
@@ -290,4 +294,4 @@ class FormLocationSelector extends Component {
   }
 }
 
-export default withConfig(asFormField(FormLocationSelector))
+export default asFormField(FormLocationSelector)

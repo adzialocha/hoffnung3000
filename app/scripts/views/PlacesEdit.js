@@ -106,27 +106,26 @@ class PlacesEdit extends Component {
 
     const location = {
       mode,
-    }
-
-    if (mode === 'gps') {
-      location.latitude = this.props.resourceData.latitude
-      location.longitude = this.props.resourceData.longitude
-    } else if (mode === 'address') {
-      location.street = this.props.resourceData.street
-      location.cityCode = this.props.resourceData.cityCode
-      location.city = this.props.resourceData.city
-      location.country = this.props.resourceData.country
+      latitude: this.props.resourceData.latitude || this.props.config.defaultLatitude,
+      longitude: this.props.resourceData.longitude || this.props.config.defaultLongitude,
+      street: this.props.resourceData.street || '',
+      cityCode: this.props.resourceData.cityCode || '',
+      city: this.props.resourceData.city || this.props.config.defaultCity,
+      country: this.props.resourceData.country || this.props.config.defaultCountry,
     }
 
     const slotSize = this.props.resourceData.slotSize
+
     const slots = {
       slots: generateNewSlotItems(
         slotSize,
         slotData,
-        this.props.config.festivalDateStart
+        this.props.config.festivalDateStart,
+        this.props.config.festivalDateEnd
       ),
       slotSize,
     }
+
     const initialValues = {
       description,
       images,
@@ -195,11 +194,11 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(
+export default withConfig(connect(
   mapStateToProps, {
     deleteResource,
     fetchResource,
     flash,
     updateResource,
   }
-)(withConfig(PlacesEdit))
+)(PlacesEdit))

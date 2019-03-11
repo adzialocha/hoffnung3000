@@ -1,6 +1,6 @@
-import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import moment from 'moment-timezone'
 import { connect } from 'react-redux'
 
 import { asFormField, withConfig } from '../containers'
@@ -150,7 +150,8 @@ class FormPlaceSlotSelector extends Component {
     return generateNewSlotItems(
       this.state.place.slotSize,
       this.props.slots,
-      this.props.config.festivalDateStart
+      this.props.config.festivalDateStart,
+      this.props.config.festivalDateEnd
     )
   }
 

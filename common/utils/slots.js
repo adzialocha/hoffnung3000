@@ -68,7 +68,7 @@ export function getSlotWithIndex(slots, slotIndex) {
   return slots.find(slot => slot.slotIndex === slotIndex)
 }
 
-export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateStart) {
+export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateStart, festivalDateEnd) {
   const slotItems = []
 
   if (!checkSlotSize(slotSize).isValid) {
@@ -94,7 +94,7 @@ export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateS
   let from = moment(festivalDateStart)
   let to = addSlotDuration(from, slotSize)
 
-  while (isInFestivalRange(to)) {
+  while (isInFestivalRange(to, festivalDateStart, festivalDateEnd)) {
     slotItems.push({
       eventId: existingSlotEventIdStates[slotIndex],
       from,

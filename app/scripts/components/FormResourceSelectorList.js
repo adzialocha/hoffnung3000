@@ -35,15 +35,15 @@ class FormResourceSelectorList extends Component {
   }
 
   onResourceRemoveClick(item) {
-    this.state.selectedItems = this.state.selectedItems.filter(selItem => {
+    const selectedItems = this.state.selectedItems.filter(selItem => {
       return selItem.id !== item.id
     })
 
     this.setState({
-      selectedItems: this.state.selectedItems,
+      selectedItems,
     })
 
-    this.props.onChange(this.state.selectedItems)
+    this.props.onChange(selectedItems)
   }
 
   renderAllItemsList() {

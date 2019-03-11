@@ -1,5 +1,6 @@
 import '../styles/app.scss'
 
+import Modal from 'react-modal'
 import React from 'react'
 import { ConnectedRouter  } from 'connected-react-router'
 import { Provider } from 'react-redux'
@@ -18,6 +19,8 @@ import { App } from './views'
 
 // @TODO
 // moment.tz.setDefault(config.timezone)
+
+Modal.setAppElement('#app')
 
 const initialState = {}
 const history = createBrowserHistory()
