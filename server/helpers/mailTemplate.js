@@ -126,10 +126,10 @@ export function sendPasswordReset(locals, receiver) {
 }
 
 export function sendActivityNotification(subject, locals, receiver) {
-  return getConfig(['basePath', 'mailAddressAdmin'])
+  return getConfig(['baseUrl', 'mailAddressAdmin'])
     .then(config => {
       return sendMail(
-        { ...locals, basePath: config.basePath },
+        { ...locals, baseUrl: config.baseUrl },
         subject,
         receiver,
         'activityNotification',

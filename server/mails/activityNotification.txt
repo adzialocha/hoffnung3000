@@ -1,6 +1,6 @@
 ${message}
 
-Go to the platform and log in to check the details: ${config.basePath}
+Go to the platform and log in to check the details: ${config.baseUrl}
 
 Love,
 ${config.title}
