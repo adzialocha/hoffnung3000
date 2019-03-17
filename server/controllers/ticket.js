@@ -26,10 +26,25 @@ function signup(req, res, next) {
 
   const { email, paymentMethod } = fields
 
-  return getConfig(['title', 'description', 'isSignUpVisitorEnabled'])
+  return getConfig([
+    'description',
+    'festivalTicketPrice',
+    'isSignUpVisitorEnabled',
+    'title',
+  ])
     .then(config => {
       if (!config.isSignUpVisitorEnabled) {
         next(new APIError('Ticket sales are not available', httpStatus.FORBIDDEN))
+        return null
+      }
+
+      if (paymentMethod === 'free' && config.festivalTicketPrice !== 0) {
+        next(
+          new APIError(
+            translate('api.errors.auth.unknownPaymentMethod'),
+            httpStatus.BAD_REQUEST
+          )
+        )
         return null
       }
 

@@ -51,6 +51,7 @@ function signup(req, res, next) {
     'description',
     'isSignUpParticipantEnabled',
     'maximumParticipantsCount',
+    'participationPrice',
     'title',
   ])
     .then(config => {
@@ -59,9 +60,19 @@ function signup(req, res, next) {
         return null
       }
 
+      if (paymentMethod === 'free' && config.participationPrice !== 0) {
+        next(
+          new APIError(
+            translate('api.errors.auth.paymentMethodError'),
+            httpStatus.BAD_REQUEST
+          )
+        )
+        return null
+      }
+
       return User.count({ where: { isParticipant: true } })
         .then(count => {
-          if (count >= config.maximumParticipantsCount) {
+          if (config.maximumParticipantsCount !== 0 && count >= config.maximumParticipantsCount) {
             next(
               new APIError(
                 translate('api.errors.auth.registrationLimitExceeded'),

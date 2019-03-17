@@ -2,6 +2,7 @@ export default {
   common: {
     agreeWithTerms: 'I agree with the terms',
     emptyList: 'Nothing to do here yet ...',
+    freeCheckout: 'Register',
     nextStep: 'Next step',
     payViaPayPal: 'Pay via PayPal',
     payViaTransfer: 'Pay via transfer',

@@ -66,7 +66,7 @@ export function logout() {
   }
 }
 
-export function register(paymentMethod = 'paypal', data) {
+export function register(paymentMethod, data) {
   const meta = {
     paymentMethod,
   }
@@ -81,7 +81,7 @@ export function register(paymentMethod = 'paypal', data) {
     meta,
   }
 
-  if (paymentMethod === 'transfer') {
+  if (paymentMethod !== 'paypal') {
     success[FLASH] = {
       lifetime: 30000,
       text: translate('flash.signUpTransferSuccess'),
@@ -120,7 +120,7 @@ export function buyTicket(paymentMethod = 'paypal', data) {
     meta,
   }
 
-  if (paymentMethod === 'transfer') {
+  if (paymentMethod !== 'paypal') {
     success[FLASH] = {
       lifetime: 30000,
       text: translate('flash.signUpTransferTicketSuccess'),

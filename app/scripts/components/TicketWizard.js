@@ -24,6 +24,14 @@ class TicketWizard extends Component {
     form: {},
   }
 
+  onFreeCheckout() {
+    this.setState({
+      isCheckoutClicked: true,
+    })
+
+    this.props.buyTicket('free', this.props.form.values)
+  }
+
   onPayPalCheckout() {
     this.setState({
       isCheckoutClicked: true,
@@ -44,6 +52,18 @@ class TicketWizard extends Component {
     this.setState({
       isTermsAccepted: this._termsCheckboxElem.checked,
     })
+  }
+
+  renderFreeButton() {
+    return (
+      <button
+        className="button button--rainbow"
+        disabled={!this.state.isTermsAccepted || this.props.isLoading}
+        onClick={this.onFreeCheckout}
+      >
+        { translate('components.common.freeCheckout') }
+      </button>
+    )
   }
 
   renderErrorMessage() {
@@ -99,8 +119,18 @@ class TicketWizard extends Component {
       )
     }
 
-    if (!this.props.config.isTransferEnabled &&
-      !this.props.config.isPayPalEnabled) {
+    if (this.props.config.festivalTicketPrice === 0) {
+      return (
+        <div className="button-group">
+          { this.renderFreeButton() }
+        </div>
+      )
+    }
+
+    if (
+      !this.props.config.isTransferEnabled &&
+      !this.props.config.isPayPalEnabled
+    ) {
       return <p>Warning: No payment was configured</p>
     }
 
@@ -215,6 +245,7 @@ class TicketWizard extends Component {
     }
 
     this.nextStep = this.nextStep.bind(this)
+    this.onFreeCheckout = this.onFreeCheckout.bind(this)
     this.onPayPalCheckout = this.onPayPalCheckout.bind(this)
     this.onTermsAcceptedChanged = this.onTermsAcceptedChanged.bind(this)
     this.onTransferCheckout = this.onTransferCheckout.bind(this)

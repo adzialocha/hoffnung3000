@@ -24,15 +24,7 @@ class AdminConfigPanel extends Component {
   }
 
   onSave() {
-    const { values } = this.props.form
-
-    this.props.saveConfiguration(Object.keys(values).reduce((acc, key) => {
-      if (values[key]) {
-        acc[key] = values[key]
-      }
-
-      return acc
-    }, {}))
+    this.props.saveConfiguration(this.props.form.values)
   }
 
   render() {

@@ -40,6 +40,14 @@ class RegistrationWizard extends Component {
     form: {},
   }
 
+  onFreeCheckout() {
+    this.setState({
+      isCheckoutClicked: true,
+    })
+
+    this.props.register('free', this.props.form.values)
+  }
+
   onPayPalCheckout() {
     this.setState({
       isCheckoutClicked: true,
@@ -81,6 +89,18 @@ class RegistrationWizard extends Component {
     return null
   }
 
+  renderFreeButton() {
+    return (
+      <button
+        className="button button--rainbow"
+        disabled={!this.state.isTermsAccepted || this.props.isLoading}
+        onClick={this.onFreeCheckout}
+      >
+        { translate('components.common.freeCheckout') }
+      </button>
+    )
+  }
+
   renderPayPalButton() {
     if (!this.props.config.isPayPalEnabled) {
       return null
@@ -118,8 +138,18 @@ class RegistrationWizard extends Component {
       return <p>{ translate('common.loading') }</p>
     }
 
-    if (!this.props.config.isTransferEnabled &&
-      !this.props.config.isPayPalEnabled) {
+    if (this.props.config.participationPrice === 0) {
+      return (
+        <div className="button-group">
+          { this.renderFreeButton() }
+        </div>
+      )
+    }
+
+    if (
+      !this.props.config.isTransferEnabled &&
+      !this.props.config.isPayPalEnabled
+    ) {
       return <p>Warning: No payment was configured</p>
     }
 
@@ -285,6 +315,7 @@ class RegistrationWizard extends Component {
     }
 
     this.nextStep = this.nextStep.bind(this)
+    this.onFreeCheckout = this.onFreeCheckout.bind(this)
     this.onPayPalCheckout = this.onPayPalCheckout.bind(this)
     this.onTermsAcceptedChanged = this.onTermsAcceptedChanged.bind(this)
     this.onTransferCheckout = this.onTransferCheckout.bind(this)
