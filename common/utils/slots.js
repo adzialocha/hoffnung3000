@@ -1,15 +1,15 @@
-import moment from 'moment-timezone'
+import { DateTime, Interval } from 'luxon'
 
 import { translate } from '../services/i18n'
 
 const TIME_FORMAT = 'HH:mm'
 
 function addSlotDuration(date, slotSize) {
-  return moment(date).add(slotSize, 'minutes')
+  return DateTime.fromISO(date).plus({ minutes: slotSize })
 }
 
 export function isInFestivalRange(date, start, end) {
-  return moment(date).isBetween(start, end, null, '[]')
+  return Interval.fromDateTimes(start, end).contains(DateTime.fromISO(date))
 }
 
 export function checkSlotSize(slotSize) {
@@ -91,18 +91,18 @@ export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateS
   }
 
   let slotIndex = 0
-  let from = moment(festivalDateStart)
+  let from = DateTime.fromISO(festivalDateStart)
   let to = addSlotDuration(from, slotSize)
 
   while (isInFestivalRange(to, festivalDateStart, festivalDateEnd)) {
     slotItems.push({
       eventId: existingSlotEventIdStates[slotIndex],
       from,
-      fromTimeStr: moment(from).format(TIME_FORMAT),
+      fromTimeStr: DateTime.fromISO(from).toFormat(TIME_FORMAT),
       isDisabled: existingSlotDisabledStates[slotIndex] || false,
       slotIndex,
       to,
-      toTimeStr: moment(to).format(TIME_FORMAT),
+      toTimeStr: DateTime.fromISO(to).toFormat(TIME_FORMAT),
     })
 
     slotIndex += 1
@@ -115,8 +115,8 @@ export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateS
 
 export function getSlotTimes(slotSize, slotIndex, festivalDateStart) {
   return {
-    from: moment(festivalDateStart).add(slotSize * slotIndex, 'minutes'),
-    to: moment(festivalDateStart).add(slotSize * (slotIndex + 1), 'minutes'),
+    from: DateTime.fromISO(festivalDateStart).plus({ minutes: slotSize * slotIndex }),
+    to: DateTime.fromISO(festivalDateStart).plus({ minutes: slotSize * (slotIndex + 1) }),
   }
 }
 

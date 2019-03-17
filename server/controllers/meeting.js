@@ -1,5 +1,5 @@
 import httpStatus from 'http-status'
-import moment from 'moment-timezone'
+import { DateTime } from 'luxon'
 import { Op } from 'sequelize'
 
 import {
@@ -195,11 +195,11 @@ export default {
 
     if (date) {
       // Meeting was requested with a date
-      const tresholdDate = moment()
+      const tresholdDate = DateTime.local()
         .startOf('hour')
-        .add(DATE_MINIMUM_TO_NOW_HOURS, 'hours')
+        .plus({ hours: DATE_MINIMUM_TO_NOW_HOURS })
 
-      if (moment(date).isBefore(tresholdDate)) {
+      if (DateTime.fromISO(date) < tresholdDate) {
         next(
           new APIError(
             translate('api.errors.meeting.invalidDate'),
@@ -209,13 +209,13 @@ export default {
         return null
       }
 
-      from = moment(date).startOf('hour')
+      from = DateTime.fromISO(date).startOf('hour')
       where.from = from
     } else {
       // Meeting was requested with any date
-      from = moment()
+      from = DateTime.local()
         .startOf('hour')
-        .add(ANY_DATE_FROM_NOW_MIN_HOURS, 'hours')
+        .plus({ hours: ANY_DATE_FROM_NOW_MIN_HOURS })
 
       where.from = {
         [Op.gte]: from,
@@ -250,7 +250,7 @@ export default {
           return null
         }
 
-        const to = moment(from).add(DURATION_HOURS, 'hours')
+        const to = DateTime.fromISO(from).plus({ hours: DURATION_HOURS })
 
         return Meeting.findOne({
           where,

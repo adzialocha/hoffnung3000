@@ -1,5 +1,5 @@
 import marked from 'marked'
-import moment from 'moment-timezone'
+import { DateTime } from 'luxon'
 
 import {
   DEFAULT_LIMIT,
@@ -33,7 +33,7 @@ function prepareResponse(message, req, isAnonymous) {
   if (response.animal.id === animalMe.id) {
     response.isRead = true
   } else {
-    response.isRead = moment(lastCheckedAt).isAfter(response.createdAt)
+    response.isRead = DateTime.fromISO(lastCheckedAt) > DateTime.fromISO(response.createdAt)
   }
 
   response.textHtml = marked(response.text)
