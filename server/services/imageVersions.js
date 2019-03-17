@@ -2,9 +2,9 @@ import fs from 'fs'
 import path from 'path'
 import sharp  from 'sharp'
 
-import { putObject } from '../services/s3'
+import { UPLOAD_FOLDER_PATH } from '../middlewares/upload'
+import { uploadImage } from '../services/upload'
 
-const BUCKET_PATH = 'uploads/'
 const IMAGE_FILE_FORMAT = 'jpeg'
 const IMAGE_VERSIONS = [{
   height: 1600,
@@ -25,14 +25,14 @@ const IMAGE_VERSIONS = [{
   width: 400,
 }]
 
-function resizeAndUpload(filePath, key, width, height, quality) {
+function resizeAndUpload(filePath, fileName, width, height, quality) {
   return sharp(filePath)
     .resize(width, height)
     .max()
     .toFormat(IMAGE_FILE_FORMAT, { quality })
     .toBuffer()
     .then(buffer => {
-      return putObject(buffer, key)
+      return uploadImage(buffer, fileName)
     })
 }
 
@@ -49,18 +49,18 @@ function createImageVersions(fileName, filePath) {
 
   IMAGE_VERSIONS.forEach(version => {
     const promise = new Promise((resolve, reject) => {
-      const key = `${BUCKET_PATH}${addSuffix(fileName, version.name)}`
+      const fileNameSafe = addSuffix(fileName, version.name)
 
       resizeAndUpload(
         filePath,
-        key,
+        fileNameSafe,
         version.width,
         version.height,
         version.quality
       )
         .then(result => {
           resolve({
-            key: result.url,
+            url: result.url,
             name: version.name,
           })
         })
@@ -77,7 +77,7 @@ function prepareImageData(resizeResults) {
   const data = {}
 
   resizeResults.forEach(imageVersion => {
-    data[`${imageVersion.name}ImageUrl`] = imageVersion.key
+    data[`${imageVersion.name}ImageUrl`] = imageVersion.url
   })
 
   return data
@@ -86,11 +86,7 @@ function prepareImageData(resizeResults) {
 export function createAndUploadImageVersions(fileName) {
   return new Promise((resolve, reject) => {
     const filePath = path.join(
-      __dirname,
-      '..',
-      '..',
-      '.tmp',
-      'uploads',
+      UPLOAD_FOLDER_PATH,
       fileName
     )
 
@@ -103,7 +99,11 @@ export function createAndUploadImageVersions(fileName) {
     return createImageVersions(fileName, filePath)
       .then(resizeResults => {
         // Remove temporary file
-        fs.unlink(filePath)
+        fs.unlink(filePath, err => {
+          if (err) {
+            throw new Error('Can not delete temporary file')
+          }
+        })
 
         resolve(prepareImageData(resizeResults))
       })

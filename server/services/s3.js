@@ -53,6 +53,17 @@ function request(method, Key, customParams, customMethod) {
   })
 }
 
+export function hasAWSConfiguration() {
+  return [
+    'AWS_REGION',
+    'AWS_ACCESS_KEY_ID',
+    'AWS_SECRET_ACCESS_KEY',
+    'AWS_BUCKET_NAME',
+  ].find(field => {
+    return process.env[field] === ''
+  }) === undefined
+}
+
 export function putObject(Body, Key) {
   const params = {
     Body,

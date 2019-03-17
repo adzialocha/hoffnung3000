@@ -5,7 +5,7 @@ import { AnimalLink } from './'
 import { asInfiniteListItem } from '../containers'
 import { translate } from '../../../common/services/i18n'
 
-class PlaceListItem extends Component {
+class CuratedPlaceListItem extends Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
   }
@@ -37,6 +37,7 @@ class PlaceListItem extends Component {
     } else if (mode === 'address') {
       return `@ ${street}, ${cityCode} ${city}`
     }
+
     return translate('components.placeListItem.virtualLocation')
   }
 
@@ -46,16 +47,19 @@ class PlaceListItem extends Component {
         <div className="list-item-content__title ellipsis">
           { this.props.item.title }
         </div>
+
         <div className="list-item-content__subtitle ellipsis">
           <AnimalLink animal={this.props.item.animal} />
         </div>
+
         <div className="list-item-content__description ellipsis">
           { this.renderAddress() }
         </div>
+
         { this.renderPrivacy() }
       </div>
     )
   }
 }
 
-export default asInfiniteListItem(PlaceListItem)
+export default asInfiniteListItem(CuratedPlaceListItem)

@@ -2,7 +2,7 @@ import Sequelize from 'sequelize'
 
 import db from '../database'
 import { createAndUploadImageVersions } from '../services/imageVersions'
-import { deleteObjects } from '../services/s3'
+import { deleteImages } from '../services/upload'
 
 const Image = db.define('image', {
   id: {
@@ -47,7 +47,7 @@ Image.addHook('beforeValidate', image => {
 })
 
 Image.addHook('beforeDestroy', image => {
-  return deleteObjects([
+  return deleteImages([
     image.largeImageUrl,
     image.mediumImageUrl,
     image.smallImageUrl,

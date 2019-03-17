@@ -11,6 +11,13 @@ import methodOverride from 'method-override'
 import morgan from 'morgan'
 import path from 'path'
 
+import {
+  UPLOAD_FOLDER_NAME,
+  UPLOAD_FOLDER_PATH,
+} from './middlewares/upload'
+
+import { hasAWSConfiguration } from './services/s3'
+
 const ASSETS_FOLDER_NAME = 'static'
 const ASSETS_MANIFESTO_FILE = 'webpack-assets.json'
 const ASSETS_MAX_AGE = 31557600000
@@ -123,6 +130,17 @@ app.use(`/${ASSETS_FOLDER_NAME}`, express.static(
     maxAge: ASSETS_MAX_AGE,
   }
 ))
+
+// Expose uploads folder route when we dont use AWS
+if (!hasAWSConfiguration()) {
+  app.use(`/${UPLOAD_FOLDER_NAME}`, express.static(
+    UPLOAD_FOLDER_PATH, {
+      index: false,
+      redirect: false,
+      maxAge: ASSETS_MAX_AGE,
+    }
+  ))
+}
 
 app.use((req, res, next) => {
   // Check if request url contains any extension
