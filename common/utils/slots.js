@@ -1,6 +1,5 @@
 import moment from 'moment-timezone'
 
-import config from '../config'
 import { translate } from '../services/i18n'
 
 const TIME_FORMAT = 'HH:mm'
@@ -9,13 +8,8 @@ function addSlotDuration(date, slotSize) {
   return moment(date).add(slotSize, 'minutes')
 }
 
-export function isInFestivalRange(date) {
-  return moment(date).isBetween(
-    config.festivalDateStart,
-    config.festivalDateEnd,
-    null,
-    '[]'
-  )
+export function isInFestivalRange(date, start, end) {
+  return moment(date).isBetween(start, end, null, '[]')
 }
 
 export function checkSlotSize(slotSize) {
@@ -74,7 +68,7 @@ export function getSlotWithIndex(slots, slotIndex) {
   return slots.find(slot => slot.slotIndex === slotIndex)
 }
 
-export function generateNewSlotItems(slotSize, existingSlots) {
+export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateStart, festivalDateEnd) {
   const slotItems = []
 
   if (!checkSlotSize(slotSize).isValid) {
@@ -97,10 +91,10 @@ export function generateNewSlotItems(slotSize, existingSlots) {
   }
 
   let slotIndex = 0
-  let from = moment(config.festivalDateStart)
+  let from = moment(festivalDateStart)
   let to = addSlotDuration(from, slotSize)
 
-  while (isInFestivalRange(to)) {
+  while (isInFestivalRange(to, festivalDateStart, festivalDateEnd)) {
     slotItems.push({
       eventId: existingSlotEventIdStates[slotIndex],
       from,
@@ -119,11 +113,10 @@ export function generateNewSlotItems(slotSize, existingSlots) {
   return slotItems
 }
 
-export function getSlotTimes(slotSize, slotIndex) {
-  const date = config.festivalDateStart
+export function getSlotTimes(slotSize, slotIndex, festivalDateStart) {
   return {
-    from: moment(date).add(slotSize * slotIndex, 'minutes'),
-    to: moment(date).add(slotSize * (slotIndex + 1), 'minutes'),
+    from: moment(festivalDateStart).add(slotSize * slotIndex, 'minutes'),
+    to: moment(festivalDateStart).add(slotSize * (slotIndex + 1), 'minutes'),
   }
 }
 
@@ -140,10 +133,12 @@ export function isInClosedOrder(arr) {
   })
 }
 
-export function createEventSlots(slotIndexes, placeId, eventId, slotSize) {
+export function createEventSlots(slotIndexes, placeId, eventId, slotSize, festivalDateStart) {
   slotIndexes.sort((slotA, slotB) => slotA - slotB)
+
   return slotIndexes.map(slotIndex => {
-    const { from, to } = getSlotTimes(slotSize, slotIndex)
+    const { from, to } = getSlotTimes(slotSize, slotIndex, festivalDateStart)
+
     return {
       eventId,
       from,
@@ -154,9 +149,10 @@ export function createEventSlots(slotIndexes, placeId, eventId, slotSize) {
   })
 }
 
-export function createDisabledSlots(slotIndexes, placeId, slotSize) {
+export function createDisabledSlots(slotIndexes, placeId, slotSize, festivalDateStart) {
   return slotIndexes.map(slotIndex => {
-    const { from, to } = getSlotTimes(slotSize, slotIndex)
+    const { from, to } = getSlotTimes(slotSize, slotIndex, festivalDateStart)
+
     const slot = {
       from,
       to,

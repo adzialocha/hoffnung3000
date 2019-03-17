@@ -1,61 +1,50 @@
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import YouTube from 'react-youtube'
 
-import config from '../../../common/config'
 import { StaticPage } from '../components'
 import { translate } from '../../../common/services/i18n'
-import { withAuthState } from '../containers'
+import { withAuthState, withConfig } from '../containers'
 
-const videoOptions = {
-  playerVars: {
-    autoplay: 0,
-    cc_load_policy: 0,
-    controls: 1,
-    disablekb: 1,
-    fs: 0,
-    iv_load_policy: 3,
-    modestbranding: 1,
-    playsinline: 1,
-    showinfo: 0,
-    rel: 0,
-  },
-}
-
-const videoId = config.video.tutorial
-
-class Home extends Component {
-  static propTypes = {
-    isAdmin: PropTypes.bool.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired,
-    isParticipant: PropTypes.bool.isRequired,
+const HomeVideo = withConfig('videoHomeId', props => {
+  const videoOptions = {
+    playerVars: {
+      autoplay: 0,
+      cc_load_policy: 0,
+      controls: 1,
+      disablekb: 1,
+      fs: 0,
+      iv_load_policy: 3,
+      modestbranding: 1,
+      playsinline: 1,
+      showinfo: 0,
+      rel: 0,
+    },
   }
 
+  return (
+    <Fragment>
+      <hr />
+      <h2>{ translate('views.home.videoTitle') }</h2>
+
+      <div className="form">
+        <div className="youtube">
+          <YouTube
+            className="youtube__container"
+            opts={videoOptions}
+            videoId={props.config.videoHomeId}
+          />
+        </div>
+      </div>
+    </Fragment>
+  )
+})
+
+class Home extends Component {
   render() {
-    const { isAdmin, isAuthenticated, isParticipant } = this.props
-
-    if (isAuthenticated && (isParticipant || isAdmin)) {
-      return (
-        <section>
-          <StaticPage slug="home-with-video" />
-          <hr />
-          <h2>{ translate('views.home.platformTutorial') }</h2>
-          <div className="form">
-            <div className="youtube">
-              <YouTube
-                className="youtube__container"
-                opts={videoOptions}
-                videoId={videoId}
-              />
-            </div>
-          </div>
-        </section>
-      )
-    }
-
     return (
       <section>
         <StaticPage slug="home" />
+        <HomeVideo />
       </section>
     )
   }

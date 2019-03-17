@@ -1,54 +1,90 @@
+import L from 'leaflet'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
+import { Map, TileLayer, Marker } from 'react-leaflet'
 
-import config from '../../../common/config'
-import styles from '../utils/googleMapStyle.json'
-import { translate } from '../../../common/services/i18n'
+const DEFAULT_ZOOM = 13
 
-const DEFAULT_ZOOM = 15
-const GOOGLE_MAP_SCRIPT_URL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${config.googleMapApiKey}`
-const MAP_OPTIONS = {
-  disableDefaultUI: true,
-  styles,
-  zoomControl: true,
-}
-
-const LocationGoogleMap = withScriptjs(withGoogleMap(props => {
-  return (
-    <GoogleMap
-      defaultCenter={props.markerPosition}
-      defaultOptions={MAP_OPTIONS}
-      defaultZoom={DEFAULT_ZOOM}
-    >
-      <Marker position={props.markerPosition} />
-    </GoogleMap>
-  )
-}))
+const markerIcon = new L.Icon.Default({
+  imagePath: '/static/',
+})
 
 class LocationMap extends Component {
   static propTypes = {
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired,
+    initialCenter: PropTypes.shape({
+      lat: PropTypes.number.isRequired,
+      lng: PropTypes.number.isRequired,
+    }).isRequired,
+    onClick: PropTypes.func,
+  }
+
+  static defaultProps = {
+    onClick: undefined,
+  }
+
+  onClick(event) {
+    if (!this.props.onClick) {
+      return
+    }
+
+    const { lat, lng } = event.latlng
+
+    this.props.onClick({
+      latitude: lat,
+      longitude: lng,
+    })
+
+    this.setState({
+      position: {
+        lat,
+        lng,
+      },
+    })
+  }
+
+  onZoom(event) {
+    this.setState({
+      zoom: event.target._zoom,
+    })
   }
 
   render() {
     return (
-      <LocationGoogleMap
-        containerElement={<div className="location-map" />}
-        googleMapURL={GOOGLE_MAP_SCRIPT_URL}
-        loadingElement={
-          <div className="location-selector__loading">
-            { translate('common.loading') }
-          </div>
-        }
-        mapElement={<div className="location-map__google-map" />}
-        markerPosition={ {
-          lat: this.props.latitude,
-          lng: this.props.longitude,
-        } }
-      />
+      <Map
+        center={this.props.initialCenter}
+        className="location-map"
+        doubleClickZoom={false}
+        keyboard={false}
+        scrollWheelZoom={false}
+        zoom={this.state.zoom}
+        onClick={this.onClick}
+        onZoom={this.onZoom}
+      >
+        <TileLayer
+          attribution='&amp;copy <a target="_blank" href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+
+        <Marker icon={markerIcon} position={this.state.position} />
+      </Map>
     )
+  }
+
+  constructor(props) {
+    super(props)
+
+    const { lat, lng } = props.initialCenter
+
+    this.state = {
+      position: {
+        lat,
+        lng,
+      },
+      zoom: DEFAULT_ZOOM,
+    }
+
+    this.onClick = this.onClick.bind(this)
+    this.onZoom = this.onZoom.bind(this)
   }
 }
 

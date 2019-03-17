@@ -22,6 +22,7 @@ import {
 
 import { APIError } from '../helpers/errors'
 import { formatEventTime } from '../../common/utils/dateFormat'
+import { getConfig } from '../config'
 import { isInFestivalRange } from '../../common/utils/slots'
 import { translate } from '../../common/services/i18n'
 
@@ -29,10 +30,10 @@ const DURATION_HOURS = 1
 const DATE_MINIMUM_TO_NOW_HOURS = 1
 const ANY_DATE_FROM_NOW_MIN_HOURS = 2
 
-function createConversation(place, from, to, userId) {
+function createConversation(place, from, to, user, isAnonymous) {
   return new Promise((resolve, reject) => {
     Animal.create({
-      userId,
+      userId: user.id,
     }, {
       returning: true,
     })
@@ -48,7 +49,7 @@ function createConversation(place, from, to, userId) {
 
         const text = translate('api.meeting.createMessageText', {
           date,
-          name: sendingAnimal.name,
+          name: isAnonymous ? sendingAnimal.name : user.firstname,
           placeTitle,
         })
 
@@ -130,12 +131,12 @@ function getRandomPlace(from, to) {
   })
 }
 
-function createMeeting(userId, from, to) {
+function createMeeting(user, from, to, isAnonymous) {
   return getRandomPlace(from, to)
     .then(place => {
       const placeId = place.id
 
-      return createConversation(place, from, to, userId)
+      return createConversation(place, from, to, user, isAnonymous)
         .then(data => {
           const { conversation, animalId } = data
           const conversationId = conversation.id
@@ -150,22 +151,22 @@ function createMeeting(userId, from, to) {
               return addCreateMeetingActivity({
                 animalId,
                 place,
-                userId,
+                userId: user.id,
               })
             })
         })
     })
 }
 
-function joinMeeting(conversation, userId) {
+function joinMeeting(user, conversation, isAnonymous) {
   return Animal.create({
-    userId,
+    userId: user.id,
   }, {
     returning: true,
   })
     .then(joiningAnimal => {
       const text = translate('api.meeting.joinMessageText', {
-        name: joiningAnimal.name,
+        name: isAnonymous ? joiningAnimal.name : user.firstname,
       })
 
       return conversation.addAnimal(joiningAnimal)
@@ -221,50 +222,74 @@ export default {
       }
     }
 
-    const isInFestival = (
-      process.env.NODE_ENV === 'production' ? isInFestivalRange(from) : true
-    )
+    return getConfig([
+      'festivalDateStart',
+      'festivalDateEnd',
+      'isRandomMeetingEnabled',
+      'isAnonymizationEnabled',
+    ])
+      .then(config => {
+        if (!config.isRandomMeetingEnabled) {
+          next(new APIError('Random meetings are not available', httpStatus.FORBIDDEN))
+          return null
+        }
 
-    if (!isInFestival) {
-      next(
-        new APIError(
-          translate('api.errors.meeting.festivalRange'),
-          httpStatus.PRECONDITION_FAILED
+        const { festivalDateStart: start, festivalDateEnd: end } = config
+
+        const isInFestival = (
+          process.env.NODE_ENV === 'production' ? isInFestivalRange(from, start, end) : true
         )
-      )
-      return null
-    }
 
-    const to = moment(from).add(DURATION_HOURS, 'hours')
-
-    return Meeting.findOne({
-      where,
-      include: [{
-        association: MeetingBelongsToConversation,
-        include: [{
-          association: ConversationBelongsToManyAnimal,
-        }],
-      }],
-    })
-      .then(meeting => {
-        if (!meeting) {
-          return createMeeting(req.user.id, from, to)
-        }
-
-        const isAlreadyExisting = meeting.conversation.animals.find(animal => {
-          return animal.userId === req.user.id
-        })
-
-        if (isAlreadyExisting) {
-          throw new APIError(
-            translate('api.errors.meeting.alreadyJoined'),
-            httpStatus.BAD_REQUEST
+        if (!isInFestival) {
+          next(
+            new APIError(
+              translate('api.errors.meeting.festivalRange'),
+              httpStatus.PRECONDITION_FAILED
+            )
           )
+          return null
         }
 
-        return joinMeeting(meeting.conversation, req.user.id)
+        const to = moment(from).add(DURATION_HOURS, 'hours')
+
+        return Meeting.findOne({
+          where,
+          include: [{
+            association: MeetingBelongsToConversation,
+            include: [{
+              association: ConversationBelongsToManyAnimal,
+            }],
+          }],
+        })
+          .then(meeting => {
+            if (!meeting) {
+              return createMeeting(
+                req.user,
+                from,
+                to,
+                config.isAnonymizationEnabled
+              )
+            }
+
+            const isAlreadyExisting = meeting.conversation.animals.find(animal => {
+              return animal.userId === req.user.id
+            })
+
+            if (isAlreadyExisting) {
+              throw new APIError(
+                translate('api.errors.meeting.alreadyJoined'),
+                httpStatus.BAD_REQUEST
+              )
+            }
+
+            return joinMeeting(
+              req.user,
+              meeting.conversation,
+              config.isAnonymizationEnabled
+            )
+          })
+          .then(() => res.json({ status: 'ok' }))
+          .catch(err => next(err))
       })
-      .then(() => res.json({ status: 'ok' }))
-      .catch(err => next(err))
   },
 }

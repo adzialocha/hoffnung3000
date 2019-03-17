@@ -8,11 +8,14 @@ import {
   ActivityBelongsToPlace,
   ActivityBelongsToResource,
   ActivityRequestBelongsToEvent,
+  AnimalBelongsToUser,
 } from '../database/associations'
 
 import Activity from '../models/activity'
 
-function prepareResponse(conversation) {
+import { getConfig } from '../config'
+
+function prepareResponse(conversation, isAnonymous) {
   const response = conversation.toJSON()
   const { id, createdAt, type, objectTitle, objectType } = response
 
@@ -38,7 +41,7 @@ function prepareResponse(conversation) {
     title: response.requestedEvent.title,
   }) : null
 
-  const animal = prepareAnimalResponse(response.animal)
+  const animal = prepareAnimalResponse(response.animal, isAnonymous)
 
   return Object.assign({}, {
     animal,
@@ -52,42 +55,50 @@ function prepareResponse(conversation) {
   })
 }
 
-export function prepareResponseAll(rows) {
-  return rows.map(row => prepareResponse(row))
+export function prepareResponseAll(rows, isAnonymous) {
+  return rows.map(row => prepareResponse(row, isAnonymous))
 }
 
 export function getMyActivities(limit, offset, userId) {
   return new Promise((resolve, reject) => {
-    Activity.findAndCountAll({
-      include: [
-        ActivityBelongsToAnimal,
-        ActivityBelongsToEvent,
-        ActivityBelongsToPlace,
-        ActivityBelongsToResource,
-        ActivityRequestBelongsToEvent,
-      ],
-      limit,
-      offset,
-      order: [
-        ['createdAt', 'DESC'],
-      ],
-      where: {
-        userId: {
-          [Op.or]: [
-            null,
-            userId,
-          ],
+    return getConfig('isAnonymizationEnabled').then(config => {
+      Activity.findAndCountAll({
+        include: [
+          {
+            association: ActivityBelongsToAnimal,
+            include: AnimalBelongsToUser,
+          },
+          ActivityBelongsToEvent,
+          ActivityBelongsToPlace,
+          ActivityBelongsToResource,
+          ActivityRequestBelongsToEvent,
+        ],
+        limit,
+        offset,
+        order: [
+          ['createdAt', 'DESC'],
+        ],
+        where: {
+          userId: {
+            [Op.or]: [
+              null,
+              userId,
+            ],
+          },
         },
-      },
-    })
-      .then(result => {
-        resolve({
-          data: prepareResponseAll(result.rows),
-          limit: parseInt(limit, 10),
-          offset: parseInt(offset, 10),
-          total: result.count,
-        })
       })
-      .catch(err => reject(err))
+        .then(result => {
+          resolve({
+            data: prepareResponseAll(
+              result.rows,
+              config.isAnonymizationEnabled
+            ),
+            limit: parseInt(limit, 10),
+            offset: parseInt(offset, 10),
+            total: result.count,
+          })
+        })
+        .catch(err => reject(err))
+    })
   })
 }

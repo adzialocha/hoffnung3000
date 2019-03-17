@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 
 import { withFlash } from '../containers'
 
-import config from '../../../common/config'
 import { translate } from '../../../common/services/i18n'
 
 const STREAM_INTERVAL = 5000
@@ -15,6 +14,7 @@ const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
 class SidebarGifStream extends Component {
   static propTypes = {
     flash: PropTypes.func.isRequired,
+    serverUrl: PropTypes.string.isRequired,
   }
 
   componentWillUnmount() {
@@ -98,6 +98,7 @@ class SidebarGifStream extends Component {
     return (
       <div>
         { this.renderPreview() }
+
         <div className="button-group">
           <button
             className="button"
@@ -118,6 +119,8 @@ class SidebarGifStream extends Component {
   constructor(props) {
     super(props)
 
+    const { serverUrl } = props
+
     const options = {
       callback: data => {
         const images = this.state.images
@@ -133,7 +136,7 @@ class SidebarGifStream extends Component {
         })
       },
       interval: STREAM_INTERVAL,
-      serverUrl: config.gifStreamServer,
+      serverUrl,
     }
 
     this.stream = new GifStream(options)

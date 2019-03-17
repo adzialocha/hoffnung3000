@@ -8,9 +8,15 @@ import fs from 'fs'
 import helmet from 'helmet'
 import marked from 'marked'
 import methodOverride from 'method-override'
-import moment from 'moment-timezone'
 import morgan from 'morgan'
 import path from 'path'
+
+import {
+  UPLOAD_FOLDER_NAME,
+  UPLOAD_FOLDER_PATH,
+} from './middlewares/upload'
+
+import { hasAWSConfiguration } from './services/s3'
 
 const ASSETS_FOLDER_NAME = 'static'
 const ASSETS_MANIFESTO_FILE = 'webpack-assets.json'
@@ -25,6 +31,7 @@ function getPath(filePath) {
 // Load environment variables when in development
 const envVariables = dotenv.config({ path: getPath('.env') })
 
+// Require logger after we read env variables
 const logger = require('./helpers/logger')
 
 function errorAndExit(message) {
@@ -35,10 +42,6 @@ function errorAndExit(message) {
 if (envVariables.error && process.env.NODE_ENV === 'development') {
   errorAndExit('".env" file does not exist, please configure the app first')
 }
-
-// Load configuration file
-// @TODO Check if we shouldnt replace this with only using ENV variables
-const config = require('../common/config')
 
 // Read build manifesto for asset file paths
 const assetsPath = getPath(ASSETS_MANIFESTO_FILE)
@@ -66,7 +69,8 @@ marked.setOptions({
 
 // Moment settings
 // @TODO Check if we really want to keep using moment-js here
-moment.tz.setDefault(config.timezone)
+// @TODO Get the timezone from the database, at every request
+// moment.tz.setDefault(getConfig('timezone'))
 
 // Check database connection
 const db = require('./database')
@@ -127,6 +131,17 @@ app.use(`/${ASSETS_FOLDER_NAME}`, express.static(
   }
 ))
 
+// Expose uploads folder route when we dont use AWS
+if (!hasAWSConfiguration()) {
+  app.use(`/${UPLOAD_FOLDER_NAME}`, express.static(
+    UPLOAD_FOLDER_PATH, {
+      index: false,
+      redirect: false,
+      maxAge: ASSETS_MAX_AGE,
+    }
+  ))
+}
+
 app.use((req, res, next) => {
   // Check if request url contains any extension
   if (path.extname(req.url)) {
@@ -134,10 +149,18 @@ app.use((req, res, next) => {
     return
   }
 
-  // .. otherwise serve the webapp
-  res.render('index', {
-    assets,
-  })
+  // Require this here to make sure we've loaded
+  // all .env variables first in development mode
+  const { getConfig } = require('./config')
+
+  // Serve the webapp if no extension was found
+  getConfig(['title', 'description', 'baseUrl'])
+    .then(config => {
+      res.render('index', {
+        assets,
+        config,
+      })
+    })
 })
 
 // Start server

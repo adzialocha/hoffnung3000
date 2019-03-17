@@ -49,13 +49,13 @@
 @import "components/sidebar";
 @import "components/sidebar-toggle";
 @import "components/slot-editor";
-@import "components/sponsors";
 @import "components/value-selector";
 @import "components/youtube";
 
 // Vendors
 @import "vendors/react-modal";
 @import "vendors/react-slider";
+@import "vendors/react-leaflet";
 
 // Layout
 @import "layout/footer";

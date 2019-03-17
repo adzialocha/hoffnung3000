@@ -1,6 +1,6 @@
-import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import moment from 'moment-timezone'
 
 import { asInfiniteListItem } from '../containers'
 
@@ -30,7 +30,9 @@ class ConversationListItem extends Component {
           { this.props.item.title }
           { !this.props.item.isRead ? ' *' : null }
         </div>
+
         { this.renderDate() }
+
         <div className="markdown">
           <p>{ this.previewText() }</p>
         </div>

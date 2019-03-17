@@ -1,6 +1,6 @@
-import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import moment from 'moment-timezone'
 
 import { AnimalLink } from './'
 import { asInfiniteListItem } from '../containers'
@@ -28,6 +28,7 @@ class MessageListItem extends Component {
     return (
       <div className="list-item-content">
         { this.renderDateAndSender() }
+
         <div
           className="markdown"
           dangerouslySetInnerHTML={ { __html: this.props.item.textHtml } }

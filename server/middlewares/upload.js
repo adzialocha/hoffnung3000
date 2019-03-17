@@ -15,6 +15,10 @@ const VALID_FILE_TYPES = [
 
 const MAX_FILE_SIZE = 5242880
 
+export const UPLOAD_FOLDER_NAME = 'uploads'
+
+export const UPLOAD_FOLDER_PATH = path.join(__dirname, '..', '..', UPLOAD_FOLDER_NAME)
+
 function generateFileName(ext = 'jpg') {
   return new Promise(resolve => {
     crypto.pseudoRandomBytes(16, (err, raw) => {
@@ -25,12 +29,11 @@ function generateFileName(ext = 'jpg') {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadFolder = path.join(__dirname, '..', '..', '.tmp', 'uploads')
-    if (!fs.existsSync(uploadFolder)) {
-      fs.mkdirSync(uploadFolder)
+    if (!fs.existsSync(UPLOAD_FOLDER_PATH)) {
+      fs.mkdirSync(UPLOAD_FOLDER_PATH)
     }
 
-    cb(null, uploadFolder)
+    cb(null, UPLOAD_FOLDER_PATH)
   },
   filename: (req, file, cb) => {
     generateFileName().then(name => {
@@ -40,7 +43,7 @@ const storage = multer.diskStorage({
 })
 
 function fileFilter(req, file, cb) {
-  const type = mime.extension(file.mimetype)
+  const type = mime.getExtension(file.mimetype)
   const isValid = VALID_FILE_TYPES.includes(type)
 
   if (!isValid) {

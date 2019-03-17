@@ -39,7 +39,8 @@ class Register extends Component {
 }
 
 function mapStateToProps(state) {
-  const { isRegistrationFull, isLoading } = state.meta
+  const { status, isLoading } = state.meta
+  const { isRegistrationFull } = status
 
   return {
     isLoading,

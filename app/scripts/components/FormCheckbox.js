@@ -25,7 +25,7 @@ class FormCheckbox extends Component {
         checked={this.props.input.value}
         className="form__field-input form__field-checkbox"
         disabled={disabled}
-        ref={c => { this._refCheckbox = c }}
+        ref={c => { this._checkboxElem = c }}
         type="checkbox"
         {...input}
         onBlur={this.onBlur}

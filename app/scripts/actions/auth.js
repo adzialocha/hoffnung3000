@@ -3,9 +3,9 @@ import { routerActions } from 'connected-react-router'
 import ActionTypes from '../actionTypes'
 import flash from './flash'
 import { FLASH } from '../middlewares/flash'
+import { REDIRECT } from '../middlewares/redirect'
 import { jwtDecode } from '../utils/jwt'
 import { postRequest } from '../services/api'
-import { REDIRECT } from '../middlewares/redirect'
 import { translate } from '../../../common/services/i18n'
 
 export function redirectWhenUnauthenticated(location) {
@@ -66,7 +66,7 @@ export function logout() {
   }
 }
 
-export function register(paymentMethod = 'paypal', data) {
+export function register(paymentMethod, data) {
   const meta = {
     paymentMethod,
   }
@@ -81,7 +81,7 @@ export function register(paymentMethod = 'paypal', data) {
     meta,
   }
 
-  if (paymentMethod === 'transfer') {
+  if (paymentMethod !== 'paypal') {
     success[FLASH] = {
       lifetime: 30000,
       text: translate('flash.signUpTransferSuccess'),
@@ -120,7 +120,7 @@ export function buyTicket(paymentMethod = 'paypal', data) {
     meta,
   }
 
-  if (paymentMethod === 'transfer') {
+  if (paymentMethod !== 'paypal') {
     success[FLASH] = {
       lifetime: 30000,
       text: translate('flash.signUpTransferTicketSuccess'),

@@ -14,10 +14,9 @@ Conversation.belongsToMany(Animal, {
 
 * Node and npm
 * PostgreSQL Database
-* Google Map API key
-* AWS S3 Cloud Storage
-* PayPal Account for payment
 * Mail-Server (SMTP)
+* PayPal Account for payment (optional)
+* AWS S3 Cloud Storage (optional)
 * [gif-stream-server](https://github.com/adzialocha/gif-stream-server) (optional)
 
 ## Setup
@@ -29,7 +28,7 @@ npm run db:migrate // setup the database
 npm run db:seed // create initial data
 ```
 
-You can log in now with the initial admin account `admin@admin.com` and password `adminadmin`.
+You can log in now with the initial admin account `admin@domain.com` and password `adminadmin`.
 
 ## Development
 

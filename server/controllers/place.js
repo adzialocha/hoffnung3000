@@ -13,6 +13,7 @@ import { deletePlacesByIds } from '../handlers/place'
 import { updateImagesForObject } from '../handlers/image'
 
 import {
+  AnimalBelongsToUser,
   PlaceBelongsToAnimal,
   PlaceBelongsToManyImage,
   PlaceHasManySlots,
@@ -21,6 +22,7 @@ import {
 import pick from '../utils/pick'
 import { APIError } from '../helpers/errors'
 import { createDisabledSlots } from '../../common/utils/slots'
+import { getConfig } from '../config'
 
 import Place from '../models/place'
 import Slot from '../models/slot'
@@ -29,6 +31,7 @@ const include = [
   {
     association: PlaceBelongsToAnimal,
     attributes: ['name', 'id', 'userId'],
+    include: AnimalBelongsToUser,
   },
   PlaceHasManySlots,
   PlaceBelongsToManyImage,
@@ -116,28 +119,59 @@ function preparePlaceValues(body) {
   }
 }
 
+function findOneWithSlug(slug, req, res, next) {
+  return Place.findOne({
+    include,
+    rejectOnEmpty: true,
+    where: {
+      slug,
+    },
+  })
+    .then(data => {
+      return getConfig('isAnonymizationEnabled').then(config => {
+        const response = prepareResponse(
+          data,
+          req,
+          config.isAnonymizationEnabled
+        )
+
+        if (!response.isOwnerMe) {
+          delete response.slots
+        }
+
+        res.json(response)
+      })
+    })
+    .catch(err => next(err))
+}
+
 export default {
   create: (req, res, next) => {
     const body = pick(permittedFieldsCreate, req.body)
     const values = preparePlaceValues(body)
 
-    values.slots = createDisabledSlots(
-      body.disabledSlots,
-      null,
-      body.slotSize
-    )
+    return getConfig('festivalDateStart').then(config => {
+      values.slots = createDisabledSlots(
+        body.disabledSlots,
+        null,
+        body.slotSize,
+        config.festivalDateStart
+      )
 
-    return Place.create({
-      ...values,
-      animal: {
-        userId: req.user.id,
-      },
-    }, {
-      include,
-      returning: true,
+      return Place.create({
+        ...values,
+        animal: {
+          userId: req.user.id,
+        },
+      }, {
+        include,
+        returning: true,
+      })
+        .then(data => {
+          return findOneWithSlug(data.slug, req, res, next)
+        })
+        .catch(err => next(err))
     })
-      .then(data => res.json(prepareResponse(data, req)))
-      .catch(err => next(err))
   },
   destroyWithSlug: (req, res, next) => {
     return deletePlacesByIds([req.resourceId])
@@ -162,31 +196,23 @@ export default {
       ],
     })
       .then(result => {
-        res.json({
-          data: prepareResponseAll(result.rows, req),
-          limit: parseInt(limit, 10),
-          offset: parseInt(offset, 10),
-          total: result.count,
+        return getConfig('isAnonymizationEnabled').then(config => {
+          res.json({
+            data: prepareResponseAll(
+              result.rows,
+              req,
+              config.isAnonymizationEnabled
+            ),
+            limit: parseInt(limit, 10),
+            offset: parseInt(offset, 10),
+            total: result.count,
+          })
         })
       })
       .catch(err => next(err))
   },
   findOneWithSlug: (req, res, next) => {
-    return Place.findOne({
-      include,
-      rejectOnEmpty: true,
-      where: {
-        slug: req.params.resourceSlug,
-      },
-    })
-      .then(data => {
-        const response = prepareResponse(data, req)
-        if (!response.isOwnerMe) {
-          delete response.slots
-        }
-        res.json(response)
-      })
-      .catch(err => next(err))
+    return findOneWithSlug(req.params.resourceSlug, req, res, next)
   },
   lookupWithSlug: (req, res, next) => {
     return lookupWithSlug(Place, req, res, next)
@@ -209,32 +235,42 @@ export default {
           },
         })
           .then(data => {
-            const previousPlace = data[1][0]
+            return getConfig([
+              'festivalDateStart',
+              'isAnonymizationEnabled',
+            ]).then(config => {
+              const previousPlace = data[1][0]
 
-            return updateImagesForObject(previousPlace, req.body.images)
-              .then(() => {
-                // Clean up all slot before
-                return Slot.destroy({
-                  where: {
-                    isDisabled: true,
-                    placeId: previousPlace.id,
-                  },
-                })
-              })
-              .then(() => {
-                const slots = createDisabledSlots(
-                  body.disabledSlots,
-                  previousPlace.id,
-                  previousPlace.slotSize
-                )
-                return Slot.bulkCreate(slots)
-              })
-              .then(() => {
-                return Place.findByPk(previousPlace.id, { include })
-                  .then(place => {
-                    res.json(prepareResponse(place, req))
+              return updateImagesForObject(previousPlace, req.body.images)
+                .then(() => {
+                  // Clean up all slot before
+                  return Slot.destroy({
+                    where: {
+                      isDisabled: true,
+                      placeId: previousPlace.id,
+                    },
                   })
-              })
+                })
+                .then(() => {
+                  const slots = createDisabledSlots(
+                    body.disabledSlots,
+                    previousPlace.id,
+                    previousPlace.slotSize,
+                    config.festivalDateStart
+                  )
+                  return Slot.bulkCreate(slots)
+                })
+                .then(() => {
+                  return Place.findByPk(previousPlace.id, { include })
+                    .then(place => {
+                      res.json(prepareResponse(
+                        place,
+                        req,
+                        config.isAnonymizationEnabled
+                      ))
+                    })
+                })
+            })
           })
       })
       .catch(err => next(err))

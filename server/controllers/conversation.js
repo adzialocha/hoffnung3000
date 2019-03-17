@@ -3,8 +3,9 @@ import moment from 'moment-timezone'
 import { Op } from 'sequelize'
 
 import pick from '../utils/pick'
-import { addMessageActivity } from '../services/activity'
 import { APIError } from '../helpers/errors'
+import { addMessageActivity } from '../services/activity'
+import { getConfig } from '../config'
 
 import {
   DEFAULT_LIMIT,
@@ -13,6 +14,7 @@ import {
 } from './base'
 
 import {
+  AnimalBelongsToUser,
   ConversationBelongsToManyAnimal,
   ConversationHasManyMessage,
 } from '../database/associations'
@@ -26,11 +28,11 @@ const permittedFields = [
   'title',
 ]
 
-function prepareResponse(conversation, req) {
+function prepareResponse(conversation, req, isAnonymous) {
   const response = conversation.toJSON()
 
   if (response.animals) {
-    response.animals = prepareAnimalResponseAll(response.animals)
+    response.animals = prepareAnimalResponseAll(response.animals, isAnonymous)
   }
 
   if (response.messages) {
@@ -53,8 +55,8 @@ function prepareResponse(conversation, req) {
   return response
 }
 
-function prepareResponseAll(rows, req) {
-  return rows.map(row => prepareResponse(row, req))
+function prepareResponseAll(rows, req, isAnonymous) {
+  return rows.map(row => prepareResponse(row, req, isAnonymous))
 }
 
 export default {
@@ -148,6 +150,7 @@ export default {
       include: [
         {
           association: ConversationBelongsToManyAnimal,
+          include: AnimalBelongsToUser,
           where: {
             userId: req.user.id,
           },
@@ -163,11 +166,17 @@ export default {
       ],
     })
       .then(result => {
-        res.json({
-          data: prepareResponseAll(result.rows, req),
-          limit: parseInt(limit, 10),
-          offset: parseInt(offset, 10),
-          total: result.count,
+        return getConfig('isAnonymizationEnabled').then(config => {
+          res.json({
+            data: prepareResponseAll(
+              result.rows,
+              req,
+              config.isAnonymizationEnabled
+            ),
+            limit: parseInt(limit, 10),
+            offset: parseInt(offset, 10),
+            total: result.count,
+          })
         })
       })
       .catch(err => next(err))
@@ -204,12 +213,21 @@ export default {
   },
   findOne: (req, res, next) => {
     return Conversation.findByPk(req.params.resourceId, {
-      include: [
-        ConversationBelongsToManyAnimal,
-      ],
+      include: [{
+        association: ConversationBelongsToManyAnimal,
+        include: AnimalBelongsToUser,
+      }],
       rejectOnEmpty: true,
     })
-      .then(conversation => res.json(prepareResponse(conversation, req)))
+      .then(conversation => {
+        return getConfig('isAnonymizationEnabled').then(config => {
+          return res.json(prepareResponse(
+            conversation,
+            req,
+            config.isAnonymizationEnabled
+          ))
+        })
+      })
       .catch(err => next(err))
   },
 }

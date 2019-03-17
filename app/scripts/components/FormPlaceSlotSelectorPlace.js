@@ -2,8 +2,8 @@ import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { asInfiniteList } from '../containers'
 import { CuratedPlaceListItem } from './'
+import { asInfiniteList } from '../containers'
 import { translate } from '../../../common/services/i18n'
 
 const WrappedInfiniteList = asInfiniteList(CuratedPlaceListItem)
@@ -52,7 +52,9 @@ class FormPlaceSlotSelectorPlace extends Component {
         <div className="modal__header">
           <h1>{ translate('components.placeSelector.title') }</h1>
         </div>
+
         { this.renderPlacesList() }
+
         <div className="modal__footer">
           <div className="button-group">
             <button
@@ -82,6 +84,7 @@ class FormPlaceSlotSelectorPlace extends Component {
     return (
       <div className="button-group">
         { this.renderModal() }
+
         <button
           className="button button--green"
           disabled={this.props.disabled}

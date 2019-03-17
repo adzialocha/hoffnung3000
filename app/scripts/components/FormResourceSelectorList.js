@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { asInfiniteList } from '../containers'
 import { CuratedSelectableListItem } from './'
+import { asInfiniteList } from '../containers'
 
 const WrappedInfiniteList = asInfiniteList(CuratedSelectableListItem)
 
@@ -35,15 +35,15 @@ class FormResourceSelectorList extends Component {
   }
 
   onResourceRemoveClick(item) {
-    this.state.selectedItems = this.state.selectedItems.filter(selItem => {
+    const selectedItems = this.state.selectedItems.filter(selItem => {
       return selItem.id !== item.id
     })
 
     this.setState({
-      selectedItems: this.state.selectedItems,
+      selectedItems,
     })
 
-    this.props.onChange(this.state.selectedItems)
+    this.props.onChange(selectedItems)
   }
 
   renderAllItemsList() {
@@ -96,6 +96,7 @@ class FormResourceSelectorList extends Component {
         <div className="item-selector__list item-selector__list--selection">
           { this.renderSelectedItemsList() }
         </div>
+
         <div className="item-selector__list">
           { this.renderAllItemsList() }
         </div>
@@ -113,6 +114,7 @@ class FormResourceSelectorList extends Component {
     if (item.isAvailable === undefined) {
       return true
     }
+
     return item.isAvailable
   }
 

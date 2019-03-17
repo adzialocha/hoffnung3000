@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
 import {
@@ -10,14 +10,122 @@ import {
   SidebarToggle,
 } from './'
 
-import config from '../../../common/config'
 import { translate } from '../../../common/services/i18n'
 
 import {
   withAuthState,
+  withConfig,
   withDrawerState,
   withUserStatus,
 } from '../containers'
+
+const ActivitySection = withConfig('isActivityStreamEnabled', () => {
+  return (
+    <Fragment>
+      <h5 className="sidebar__title">
+        { translate('components.sidebar.activityTitle') }
+      </h5>
+
+      <SidebarActivity />
+
+      <div className="button-group">
+        <Link className="button" to="/activity">
+          { translate('components.sidebar.activityButton') }
+        </Link>
+      </div>
+    </Fragment>
+  )
+})
+
+const InboxSection = withConfig('isInboxEnabled', props => {
+  return (
+    <Fragment>
+      <div className="button-group">
+        <Link className="button" to="/inbox">
+          {
+            translate('components.sidebar.inboxButton', {
+              count: props.unreadMessagesCount,
+            })
+          }
+        </Link>
+      </div>
+
+      <hr className="separator separator--white" />
+    </Fragment>
+  )
+})
+
+const GifStreamSection = withConfig('gifStreamServerUrl', props => {
+  return (
+    <Fragment>
+      <h5 className="sidebar__title">
+        { translate('components.sidebar.gifStreamTitle') }
+      </h5>
+
+      <p>
+        { translate('components.sidebar.gifStreamDescription' )}
+        &nbsp;
+
+        <Link to="/stream">
+          { translate('components.sidebar.gifStreamLink' )}
+        </Link>
+      </p>
+
+      <SidebarGifStream serverUrl={props.config.gifStreamServerUrl} />
+
+      <hr className="separator separator--white" />
+    </Fragment>
+  )
+})
+
+const RandomMeetingSection = withConfig('isRandomMeetingEnabled', () => {
+  return (
+    <Fragment>
+
+      <h5 className="sidebar__title">
+        { translate('components.sidebar.randomMeetingTitle') }
+      </h5>
+
+      <p>{ translate('components.sidebar.randomMeetingDescription' )}</p>
+
+      <SidebarRandomMeeting />
+
+      <hr className="separator separator--white" />
+    </Fragment>
+  )
+})
+
+const SignUpParticipantSection = withConfig('isSignUpParticipantEnabled', () => {
+  return (
+    <Fragment>
+      <p>{ translate('components.sidebar.signUpHeader' )}</p>
+
+      <div className="button-group">
+        <Link className="button" to="/register">
+          { translate('components.sidebar.signUpButton' )}
+        </Link>
+      </div>
+
+      <hr className="separator separator--white" />
+    </Fragment>
+  )
+})
+
+const SignUpVisitorSection = withConfig('isSignUpVisitorEnabled', () => {
+  return (
+    <Fragment>
+      <p>{ translate('components.sidebar.visitorHeader' )}</p>
+
+      <div className="button-group">
+        <Link className="button" to="/tickets">
+          { translate('components.sidebar.visitorButton' )}
+        </Link>
+      </div>
+
+      <hr className="separator separator--white" />
+    </Fragment>
+  )
+})
 
 class Sidebar extends Component {
   static propTypes = {
@@ -45,6 +153,7 @@ class Sidebar extends Component {
         <Link className="button" to="/profile">
           { translate('components.sidebar.profileButton' )}
         </Link>
+
         <button className="button" onClick={this.props.logout}>
           { translate('components.sidebar.logoutButton' )}
         </button>
@@ -66,86 +175,17 @@ class Sidebar extends Component {
     )
   }
 
-  renderActivity() {
-    return (
-      <div>
-        <SidebarActivity />
-        <div className="button-group">
-          <Link className="button" to="/activity">
-            {
-              translate('components.sidebar.activityButton')
-            }
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
-  renderInbox() {
-    return (
-      <div className="button-group">
-        <Link className="button" to="/inbox">
-          {
-            translate('components.sidebar.inboxButton', {
-              count: this.props.unreadMessagesCount,
-            })
-          }
-        </Link>
-      </div>
-    )
-  }
-
-  renderStream() {
-    if (!config.gifStreamServer) {
-      return null
-    }
-
-    return (
-      <div>
-        <hr className="separator separator--white" />
-        <h5 className="sidebar__title">
-          { translate('components.sidebar.gifStreamTitle') }
-        </h5>
-        <p>
-          { translate('components.sidebar.gifStreamDescription' )}
-          &nbsp;
-          <Link to="/stream">
-            { translate('components.sidebar.gifStreamLink' )}
-          </Link>
-        </p>
-        <SidebarGifStream />
-      </div>
-    )
-  }
-
-  renderRandomMeeting() {
-    return (
-      <div>
-        <hr className="separator separator--white" />
-        <h5 className="sidebar__title">
-          { translate('components.sidebar.randomMeetingTitle') }
-        </h5>
-        <p>{ translate('components.sidebar.randomMeetingDescription' )}</p>
-        <SidebarRandomMeeting />
-      </div>
-    )
-  }
-
   renderAuthenticatedContent() {
-    const { isActive, isParticipant, isAdmin } = this.props
+    const { isActive, isParticipant, isAdmin, unreadMessagesCount } = this.props
 
     if (isActive && (isParticipant || isAdmin)) {
       return (
         <section>
-          <h5 className="sidebar__title">
-            { translate('components.sidebar.activityTitle') }
-          </h5>
-          { this.renderActivity() }
+          <ActivitySection />
           <br />
-          { this.renderInbox() }
-          { this.renderStream() }
-          { this.renderRandomMeeting() }
-          <hr className="separator separator--white" />
+          <InboxSection unreadMessagesCount={unreadMessagesCount} />
+          <GifStreamSection />
+          <RandomMeetingSection />
         </section>
       )
     }
@@ -161,29 +201,16 @@ class Sidebar extends Component {
     if (!this.props.isAuthenticated) {
       return (
         <section>
-          <div
-            dangerouslySetInnerHTML={
-              {
-                __html: translate('components.sidebar.defaultHeader'),
-              }
-            }
-          />
+          <div dangerouslySetInnerHTML={
+            { __html: translate('components.sidebar.defaultHeader') }
+          } />
+
           <br />
-          <p>{ translate('components.sidebar.signUpHeader' )}</p>
-          <div className="button-group">
-            <Link className="button" to="/register">
-              { translate('components.sidebar.signUpButton' )}
-            </Link>
-          </div>
-          <hr className="separator separator--white" />
-          <p>{ translate('components.sidebar.visitorHeader' )}</p>
-          <div className="button-group">
-            <Link className="button" to="/tickets">
-              { translate('components.sidebar.visitorButton' )}
-            </Link>
-          </div>
-          <hr className="separator separator--white" />
+          <SignUpParticipantSection />
+          <SignUpVisitorSection />
+
           <p>{ translate('components.sidebar.loginHeader' )}</p>
+
           <div className="button-group">
             <Link className="button" to="/login">
               { translate('components.sidebar.loginButton' )}
@@ -202,6 +229,7 @@ class Sidebar extends Component {
         <div className="sidebar__content">
           { this.renderSidebarContent() }
         </div>
+
         <div className="sidebar__bottom">
           { this.renderSidebarBottom() }
         </div>
@@ -213,6 +241,7 @@ class Sidebar extends Component {
     return (
       <aside role="complementary">
         <SidebarToggle />
+
         <Drawer expanded={this.props.isSidebarExpanded} right={true}>
           { this.renderSidebar() }
         </Drawer>

@@ -14,6 +14,7 @@ import { deleteResourcesByIds } from '../handlers/resource'
 import pick from '../utils/pick'
 
 import {
+  AnimalBelongsToUser,
   ResourceBelongsToAnimal,
   ResourceBelongsToManyImage,
 } from '../database/associations'
@@ -22,6 +23,8 @@ import Event from '../models/event'
 import Resource from '../models/resource'
 import Slot from '../models/slot'
 
+import { getConfig } from '../config'
+
 const permittedFields = [
   'description',
   'images',
@@ -29,7 +32,10 @@ const permittedFields = [
 ]
 
 const include = [
-  ResourceBelongsToAnimal,
+  {
+    association: ResourceBelongsToAnimal,
+    include: AnimalBelongsToUser,
+  },
   ResourceBelongsToManyImage,
 ]
 
@@ -44,53 +50,90 @@ function findAllWithAvailability(req, res, next) {
     eventId = { [Op.and]: [eventId, { [Op.not]: req.query.eventId }] }
   }
 
-  return Resource.findAndCountAll({
-    distinct: true,
-    limit,
-    offset,
-    order: [
-      ['createdAt', 'DESC'],
-    ],
-    include: [
-      ResourceBelongsToManyImage,
-      ResourceBelongsToAnimal, {
-        model: Event,
-        as: 'events',
-        include: [{
-          model: Slot,
-          as: 'slots',
-          where: {
-            [Op.and]: [{
-              eventId,
-            }, {
-              from: {
-                [Op.lt]: req.query.to,
+  return getConfig('isAnonymizationEnabled').then(config => {
+    return Resource.findAndCountAll({
+      distinct: true,
+      limit,
+      offset,
+      order: [
+        ['createdAt', 'DESC'],
+      ],
+      include: [
+        ...include,
+        {
+          model: Event,
+          as: 'events',
+          required: false,
+          include: [
+            {
+              model: Slot,
+              as: 'slots',
+              required: false,
+              where: {
+                [Op.and]: [{
+                  eventId,
+                }, {
+                  from: {
+                    [Op.lt]: req.query.to,
+                  },
+                }, {
+                  to: {
+                    [Op.gt]: req.query.from,
+                  },
+                }],
               },
-            }, {
-              to: {
-                [Op.gt]: req.query.from,
-              },
-            }],
-          },
-        }],
-      },
-    ],
-  })
-    .then(result => {
-      const extendedReponse = prepareResponseAll(result.rows, req).map(row => {
-        row.isAvailable = (row.events.length === 0)
-        delete row.events
-        return row
-      })
-
-      res.json({
-        data: extendedReponse,
-        limit: parseInt(limit, 10),
-        offset: parseInt(offset, 10),
-        total: result.count,
-      })
+            },
+          ],
+        },
+      ],
     })
-    .catch(err => next(err))
+      .then(result => {
+        const extendedReponse = prepareResponseAll(
+          result.rows,
+          req,
+          config.isAnonymizationEnabled
+        ).map(row => {
+          // Resources are available when we could not find any
+          // slot from another event being associated with it
+          row.isAvailable = row.events.find(events => {
+            return events.slots.length > 0
+          }) === undefined
+
+          // Do not expose the events, it is not needed
+          delete row.events
+
+          return row
+        })
+
+        res.json({
+          data: extendedReponse,
+          limit: parseInt(limit, 10),
+          offset: parseInt(offset, 10),
+          total: result.count,
+        })
+      })
+      .catch(err => next(err))
+  })
+}
+
+function findOneWithSlug(slug, req, res, next) {
+  return getConfig('isAnonymizationEnabled').then(config => {
+    return Resource.findOne({
+      include,
+      rejectOnEmpty: true,
+      where: {
+        slug,
+      },
+    })
+      .then(data => res.json(
+        prepareResponse(
+          data,
+          req,
+          config.isAnonymizationEnabled,
+        )
+      ))
+      .catch(err => next(err))
+  })
 }
 
 export default {
@@ -102,10 +145,9 @@ export default {
       },
     }, {
       include,
-      returning: true,
     })
       .then(resource => {
-        res.json(prepareResponse(resource, req))
+        return findOneWithSlug(resource.slug, req, res, next)
       })
       .catch(err => next(err))
   },
@@ -127,35 +169,33 @@ export default {
       offset = DEFAULT_OFFSET,
     } = req.query
 
-    return Resource.findAndCountAll({
-      distinct: true,
-      include,
-      limit,
-      offset,
-      order: [
-        ['createdAt', 'DESC'],
-      ],
-    })
-      .then(result => {
-        res.json({
-          data: prepareResponseAll(result.rows, req),
-          limit: parseInt(limit, 10),
-          offset: parseInt(offset, 10),
-          total: result.count,
-        })
+    return getConfig('isAnonymizationEnabled').then(config => {
+      return Resource.findAndCountAll({
+        distinct: true,
+        include,
+        limit,
+        offset,
+        order: [
+          ['createdAt', 'DESC'],
+        ],
       })
-      .catch(err => next(err))
+        .then(result => {
+          res.json({
+            data: prepareResponseAll(
+              result.rows,
+              req,
+              config.isAnonymizationEnabled
+            ),
+            limit: parseInt(limit, 10),
+            offset: parseInt(offset, 10),
+            total: result.count,
+          })
+        })
+        .catch(err => next(err))
+    })
   },
   findOneWithSlug: (req, res, next) => {
-    return Resource.findOne({
-      include,
-      rejectOnEmpty: true,
-      where: {
-        slug: req.params.resourceSlug,
-      },
-    })
-      .then(data => res.json(prepareResponse(data, req)))
-      .catch(err => next(err))
+    return findOneWithSlug(req.params.resourceSlug, req, res, next)
   },
   lookup: (req, res, next) => {
     return lookupWithSlug(Resource, req, res, next)
@@ -175,13 +215,19 @@ export default {
       .then(data => {
         const previousResource = data[1][0]
 
-        return updateImagesForObject(previousResource, req.body.images)
-          .then(() => {
-            return Resource.findByPk(previousResource.id, { include })
-              .then(resource => {
-                res.json(prepareResponse(resource, req))
-              })
-          })
+        return getConfig('isAnonymizationEnabled').then(config => {
+          return updateImagesForObject(previousResource, req.body.images)
+            .then(() => {
+              return Resource.findByPk(previousResource.id, { include })
+                .then(resource => {
+                  res.json(prepareResponse(
+                    resource,
+                    req,
+                    config.isAnonymizationEnabled
+                  ))
+                })
+            })
+        })
       })
       .catch(err => next(err))
   },
