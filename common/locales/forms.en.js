@@ -107,7 +107,6 @@ export default {
     isRandomMeetingEnabled: 'Use random meetings',
     isSignUpParticipantEnabled: 'Activate partipant ticket sales',
     isSignUpVisitorEnabled: 'Activate visitor ticket sales',
-    googleMapApiKey: 'Google Maps API key',
     gifStreamServerUrl: 'gif-stream Server URL',
   },
   place: {

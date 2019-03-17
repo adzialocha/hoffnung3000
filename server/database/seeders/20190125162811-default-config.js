@@ -13,7 +13,6 @@ module.exports = {
       festivalDateStart: '2017-08-24',
       festivalTicketPrice: 10.00,
       gifStreamServerUrl: '',
-      googleMapApiKey: '',
       isActivityStreamEnabled: true,
       isAnonymizationEnabled: true,
       isInboxEnabled: true,

@@ -85,7 +85,6 @@ class FormLocationSelector extends Component {
         </div>
 
         <LocationMap
-          className="location-selector__container"
           initialCenter={ { lat: latitude, lng: longitude } }
           onClick={this.onMapClick}
         />

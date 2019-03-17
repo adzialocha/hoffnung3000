@@ -14,7 +14,6 @@ export default {
       festivalDateStart: Joi.string().isoDate().required(),
       festivalTicketPrice: Joi.number(),
       gifStreamServerUrl: Joi.string().empty('').uri({ scheme: ['http', 'https'] }),
-      googleMapApiKey: Joi.string().empty('').token(),
       isActivityStreamEnabled: Joi.boolean().required(),
       isAnonymizationEnabled: Joi.boolean().required(),
       isInboxEnabled: Joi.boolean().required(),

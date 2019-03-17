@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
+import { ImageGallery, AnimalLink, LocationMap } from '../components'
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
 import { formatEventTime } from '../../../common/utils/dateFormat'
-import { ImageGallery, AnimalLink, LocationMap } from '../components'
 import { translate } from '../../../common/services/i18n'
 
 class EventsShow extends Component {
@@ -43,6 +43,7 @@ class EventsShow extends Component {
     if (this.props.resourceData.isPublic) {
       return null
     }
+
     return (
       <div className="bullet bullet--centered ellipsis">
         { translate('views.events.isPrivateEvent') }
@@ -88,8 +89,10 @@ class EventsShow extends Component {
           <strong>
             { translate('views.places.locationHeader') }
           </strong>
+
           <p>@ { latitude }, { longitude }</p>
-          <LocationMap latitude={latitude} longitude={longitude} />
+
+          <LocationMap initialCenter={ { lat: latitude, lng: longitude } } />
         </div>
       )
     } else if (mode === 'address') {
@@ -98,6 +101,7 @@ class EventsShow extends Component {
           <strong>
             { translate('views.places.locationHeader') }
           </strong>
+
           <p>
             { street }<br />
             { `${cityCode} ${city}` }<br />
@@ -111,6 +115,7 @@ class EventsShow extends Component {
         <strong>
           { translate('views.places.locationHeader') }
         </strong>
+
         <p>{ translate('views.places.virtualLocation') }</p>
       </div>
     )
@@ -143,6 +148,7 @@ class EventsShow extends Component {
     } else if (mode === 'address') {
       return `@ ${street}, ${cityCode} ${city}`
     }
+
     return translate('components.placeListItem.virtualLocation')
   }
 
@@ -158,6 +164,7 @@ class EventsShow extends Component {
     if (this.props.isLoading) {
       return <h1>{ translate('views.events.titlePlaceholder') }</h1>
     }
+
     return <h1>{ this.props.resourceData.title }</h1>
   }
 
@@ -169,9 +176,11 @@ class EventsShow extends Component {
     return (
       <div>
         <hr />
+
         <strong>
           { translate('views.common.imageGalleryTitle') }
         </strong>
+
         <ImageGallery images={this.props.resourceData.images} />
       </div>
     )
@@ -187,9 +196,11 @@ class EventsShow extends Component {
         { this.renderOwner() }
         { this.renderPrivacy() }
         { this.renderEventTime() }
+
         <h4>
           { this.renderPlace() }
         </h4>
+
         { this.renderDescription() }
         { this.renderImageGallery() }
         <hr />
@@ -205,9 +216,11 @@ class EventsShow extends Component {
     return (
       <section>
         { this.renderTitle() }
+
         <Link className="button" to="/calendar">
           { translate('common.backToOverview') }
         </Link>
+
         { this.renderActionButton() }
         <hr />
         { this.renderContent() }

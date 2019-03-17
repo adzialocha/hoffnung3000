@@ -80,7 +80,7 @@ class PlacesShow extends Component {
 
           <p>@ { latitude }, { longitude }</p>
 
-          <LocationMap className="location-map" initialCenter={ { lat: latitude, lng: longitude } } />
+          <LocationMap initialCenter={ { lat: latitude, lng: longitude } } />
         </div>
       )
     } else if (mode === 'address') {

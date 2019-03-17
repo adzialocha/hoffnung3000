@@ -356,14 +356,6 @@ class AdminConfigForm extends Component {
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label={translate('forms.config.googleMapApiKey')}
-          name="googleMapApiKey"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
           label={translate('forms.config.gifStreamServerUrl')}
           name="gifStreamServerUrl"
           type="text"

@@ -28,7 +28,6 @@ const Config = db.define('config', {
   festivalDateStart: configField(Sequelize.DATEONLY),
   festivalTicketPrice: configField(Sequelize.FLOAT, true),
   gifStreamServerUrl: configField(Sequelize.STRING, true),
-  googleMapApiKey: configField(Sequelize.STRING, true),
   isActivityStreamEnabled: configField(Sequelize.BOOLEAN),
   isAnonymizationEnabled: configField(Sequelize.BOOLEAN),
   isInboxEnabled: configField(Sequelize.BOOLEAN),

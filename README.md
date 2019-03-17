@@ -14,10 +14,9 @@ Conversation.belongsToMany(Animal, {
 
 * Node and npm
 * PostgreSQL Database
-* Google Map API key
 * AWS S3 Cloud Storage
-* PayPal Account for payment
 * Mail-Server (SMTP)
+* PayPal Account for payment (optional)
 * [gif-stream-server](https://github.com/adzialocha/gif-stream-server) (optional)
 
 ## Setup

@@ -11,7 +11,6 @@ const markerIcon = new L.Icon.Default({
 
 class LocationMap extends Component {
   static propTypes = {
-    className: PropTypes.string,
     initialCenter: PropTypes.shape({
       lat: PropTypes.number.isRequired,
       lng: PropTypes.number.isRequired,
@@ -20,7 +19,6 @@ class LocationMap extends Component {
   }
 
   static defaultProps = {
-    className: undefined,
     onClick: undefined,
   }
 
@@ -54,7 +52,7 @@ class LocationMap extends Component {
     return (
       <Map
         center={this.props.initialCenter}
-        className={this.props.className}
+        className="location-map"
         doubleClickZoom={false}
         keyboard={false}
         scrollWheelZoom={false}
