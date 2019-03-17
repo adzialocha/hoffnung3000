@@ -1,41 +1,9 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 
-import styles from '../utils/googleMapStyle.json'
-import { asFormField, withConfig } from '../containers'
+import { LocationMap } from './'
+import { asFormField } from '../containers'
 import { translate } from '../../../common/services/i18n'
-
-const DEFAULT_ZOOM = 17
-const MAP_OPTIONS = { disableDefaultUI: true, zoomControl: true, styles }
-
-const LocationSelectorMap = withScriptjs(withGoogleMap(props => {
-  const defaultCenter = {
-    lat: props.config.defaultLatitude,
-    lng: props.config.defaultLongitude,
-  }
-  const center = props.markerPosition ? props.markerPosition : defaultCenter
-
-  return (
-    <GoogleMap
-      defaultCenter={center}
-      defaultOptions={MAP_OPTIONS}
-      defaultZoom={DEFAULT_ZOOM}
-      onClick={props.onMapClick}
-    >
-      <Marker
-        position={props.markerPosition}
-        title={translate('components.locationSelector.yourPlacePosition')}
-      />
-    </GoogleMap>
-  )
-}))
-
-const LocationSelectorMapContainer = withConfig('googleMapApiKey', true, props => {
-  const googleMapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${props.config.googleMapApiKey}`
-
-  return <LocationSelectorMap {... { ...props, googleMapURL, config }} />
-})
 
 class FormLocationSelector extends Component {
   static propTypes = {
@@ -56,9 +24,11 @@ class FormLocationSelector extends Component {
   }
 
   onMapClick(event) {
+    const { latitude, longitude } = event
+
     this.onChange({
-      latitude: event.latLng.lat(),
-      longitude: event.latLng.lng(),
+      latitude,
+      longitude,
     })
   }
 
@@ -114,19 +84,10 @@ class FormLocationSelector extends Component {
           </div>
         </div>
 
-        <LocationSelectorMapContainer
-          containerElement={<div className="location-selector__container" />}
-          loadingElement={
-            <div className="location-selector__loading">
-              { translate('common.loading') }
-            </div>
-          }
-          mapElement={<div className="location-selector__map" />}
-          markerPosition={ {
-            lat: latitude,
-            lng: longitude,
-          } }
-          onMapClick={this.onMapClick}
+        <LocationMap
+          className="location-selector__container"
+          initialCenter={ { lat: latitude, lng: longitude } }
+          onClick={this.onMapClick}
         />
       </div>
     )

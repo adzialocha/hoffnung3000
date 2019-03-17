@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
+import { LocationMap, ImageGallery, AnimalLink } from '../components'
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
-import { LocationMap, ImageGallery, AnimalLink } from '../components'
 import { numberToSlotSizeStrHuman } from '../../../common/utils/slots'
 import { translate } from '../../../common/services/i18n'
 
@@ -54,6 +54,7 @@ class PlacesShow extends Component {
         <strong>
           { translate('views.places.slotSizeHeader') }
         </strong>
+
         <p>{ numberToSlotSizeStrHuman(this.props.resourceData.slotSize) }</p>
       </div>
     )
@@ -76,8 +77,10 @@ class PlacesShow extends Component {
           <strong>
             { translate('views.places.locationHeader') }
           </strong>
+
           <p>@ { latitude }, { longitude }</p>
-          <LocationMap latitude={latitude} longitude={longitude} />
+
+          <LocationMap className="location-map" initialCenter={ { lat: latitude, lng: longitude } } />
         </div>
       )
     } else if (mode === 'address') {
@@ -86,6 +89,7 @@ class PlacesShow extends Component {
           <strong>
             { translate('views.places.locationHeader') }
           </strong>
+
           <p>
             { street }<br />
             { `${cityCode} ${city}` }<br />
@@ -99,6 +103,7 @@ class PlacesShow extends Component {
         <strong>
           { translate('views.places.locationHeader') }
         </strong>
+
         <p>{ translate('views.places.virtualLocation') }</p>
       </div>
     )
@@ -129,9 +134,11 @@ class PlacesShow extends Component {
     return (
       <div>
         <hr />
+
         <strong>
           { translate('views.common.imageGalleryTitle') }
         </strong>
+
         <ImageGallery images={this.props.resourceData.images} />
       </div>
     )
@@ -172,9 +179,11 @@ class PlacesShow extends Component {
     return (
       <section>
         { this.renderTitle() }
+
         <Link className="button" to="/places">
           { translate('common.backToOverview') }
         </Link>
+
         { this.renderActionButton() }
         <hr />
         { this.renderContent() }

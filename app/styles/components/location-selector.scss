@@ -10,10 +10,8 @@ $_location-selector-height: 300px;
 }
 
 .location-selector__container {
-  height: $_location-selector-height;
-}
+  overflow: hidden;
 
-.location-selector__map {
   height: $_location-selector-height;
 }
 
