@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { asInfiniteList } from '../containers'
 import { CuratedSelectableListItem } from './'
+import { asInfiniteList } from '../containers'
 
 const WrappedInfiniteList = asInfiniteList(CuratedSelectableListItem)
 
@@ -96,6 +96,7 @@ class FormResourceSelectorList extends Component {
         <div className="item-selector__list item-selector__list--selection">
           { this.renderSelectedItemsList() }
         </div>
+
         <div className="item-selector__list">
           { this.renderAllItemsList() }
         </div>
@@ -113,6 +114,7 @@ class FormResourceSelectorList extends Component {
     if (item.isAvailable === undefined) {
       return true
     }
+
     return item.isAvailable
   }
 

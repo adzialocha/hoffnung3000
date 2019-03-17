@@ -48,7 +48,7 @@ function sendMail(locals, subject, receiver, templateName, sender) {
 
         // Do not send real emails when in development
         if (process.env.NODE_ENV === 'development') {
-          logger.info('SEND MAIL', mailOptions)
+          logger.info(`Send mail: ${JSON.stringify(mailOptions)}`)
           return resolve()
         }
 

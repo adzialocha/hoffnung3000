@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { MessageForm } from '../forms'
 import { MessageListItem } from '../components'
-import { asInfiniteList } from '../containers'
+import { asInfiniteList, withConfig } from '../containers'
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
 import { sendNewMessage } from '../actions/inbox'
@@ -15,6 +15,7 @@ const WrappedInfiniteList = asInfiniteList(MessageListItem)
 
 class ConversationsShow extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     conversationData: PropTypes.object.isRequired,
     conversationId: PropTypes.number.isRequired,
     errorMessage: PropTypes.string.isRequired,
@@ -42,21 +43,29 @@ class ConversationsShow extends Component {
     if (this.props.isLoadingConversation) {
       return <h1>{ translate('views.inbox.titlePlaceholder') }</h1>
     }
+
     return <h1>{ this.props.conversationData.title }</h1>
   }
 
   renderReceiverNames() {
-    const names = this.props.conversationData.animals.map(
-      animal => animal.name
-    )
+    const names = this.props.conversationData.animals.map(animal => {
+      if (
+        this.props.config.isAnonymizationEnabled ||
+        !animal.userName
+      ) {
+        return animal.name
+      }
+
+      return animal.userName
+    })
 
     return (
       <p>
         <strong>
           { translate('views.inbox.messageTo') }
         </strong>
-        &nbsp;
-        { names.join(', ') }
+
+        &nbsp;{ names.join(', ') }
       </p>
     )
   }
@@ -96,9 +105,11 @@ class ConversationsShow extends Component {
     return (
       <section>
         { this.renderTitle() }
+
         <Link className="button" to="/inbox">
           { translate('views.inbox.backToConversations') }
         </Link>
+
         <hr />
         { this.renderConversationHeader() }
         <hr />
@@ -142,4 +153,4 @@ export default connect(
     fetchResource,
     sendNewMessage,
   }
-)(ConversationsShow)
+)(withConfig(ConversationsShow))

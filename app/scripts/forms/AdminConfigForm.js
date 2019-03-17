@@ -313,6 +313,14 @@ class AdminConfigForm extends Component {
           component={FormCheckbox}
           disabled={this.props.isLoading}
           inline={true}
+          label={translate('forms.config.isAnonymizationEnabled')}
+          name="isAnonymizationEnabled"
+        />
+
+        <Field
+          component={FormCheckbox}
+          disabled={this.props.isLoading}
+          inline={true}
           label={translate('forms.config.isInboxEnabled')}
           name="isInboxEnabled"
         />
@@ -376,9 +384,9 @@ class AdminConfigForm extends Component {
 }
 
 export default reduxForm({
-  destroyOnUnmount: false,
+  // destroyOnUnmount: false,
   enableReinitialize: true,
-  forceUnregisterOnUnmount: true,
+  // forceUnregisterOnUnmount: true,
   form: 'config',
   validate,
 })(AdminConfigForm)

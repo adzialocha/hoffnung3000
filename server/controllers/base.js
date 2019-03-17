@@ -13,24 +13,33 @@ const include = [{
   model: Animal,
 }]
 
-export function prepareAnimalResponse(animal) {
+export function prepareAnimalResponse(animal, isAnonymous = true) {
   if (!animal) {
     return null
   }
 
   const { id, name } = animal
 
-  return {
+  const data = {
     id,
     name,
   }
+
+  if (!isAnonymous) {
+    const { user } = animal
+
+    data.userId = user.id
+    data.userName = `${user.firstname} ${user.lastname}`
+  }
+
+  return data
 }
 
-export function prepareAnimalResponseAll(animals) {
-  return animals.map(animal => prepareAnimalResponse(animal))
+export function prepareAnimalResponseAll(animals, isAnonymous) {
+  return animals.map(animal => prepareAnimalResponse(animal, isAnonymous))
 }
 
-export function prepareResponse(data, req) {
+export function prepareResponse(data, req, isAnonymous) {
   const response = data.toJSON()
 
   // Set owner flag for frontend ui
@@ -42,7 +51,7 @@ export function prepareResponse(data, req) {
 
   // Remove userId from animal to stay anonymous
   if (response.animal) {
-    response.animal = prepareAnimalResponse(response.animal)
+    response.animal = prepareAnimalResponse(response.animal, isAnonymous)
   }
 
   // Convert markdown to html
@@ -51,8 +60,8 @@ export function prepareResponse(data, req) {
   return response
 }
 
-export function prepareResponseAll(rows, req) {
-  return rows.map(row => prepareResponse(row, req))
+export function prepareResponseAll(rows, req, isAnonymous) {
+  return rows.map(row => prepareResponse(row, req, isAnonymous))
 }
 
 export function lookup(model, req, res, next) {

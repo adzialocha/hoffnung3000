@@ -23,6 +23,7 @@ import { createEventSlots, isInClosedOrder } from '../../common/utils/slots'
 import { getConfig } from '../config'
 
 import {
+  AnimalBelongsToUser,
   EventBelongsToAnimal,
   EventBelongsToManyImage,
   EventBelongsToManyResource,
@@ -48,6 +49,7 @@ const permittedFields = [
 const belongsToAnimal = {
   association: EventBelongsToAnimal,
   attributes: ['name', 'id', 'userId'],
+  include: AnimalBelongsToUser,
 }
 
 const belongsToManyResources = {
@@ -377,6 +379,39 @@ function validateEvent(req, fields, eventId, festivalDateStart) {
     })
 }
 
+function findOneWithSlug(slug, req, res, next) {
+  return Event.findOne({
+    include,
+    rejectOnEmpty: true,
+    where: {
+      slug,
+    },
+    order: [
+      [EventHasManySlots, 'from', 'ASC'],
+    ],
+  })
+    .then(data => {
+      if (!data.isPublic && req.user.isVisitor) {
+        next(
+          new APIError(
+            'Requested resource is not public',
+            httpStatus.FORBIDDEN
+          )
+        )
+        return null
+      }
+
+      return getConfig('isAnonymizationEnabled').then(config => {
+        return res.json(prepareResponse(
+          data,
+          req,
+          config.isAnonymizationEnabled
+        ))
+      })
+    })
+    .catch(err => next(err))
+}
+
 export default {
   create: (req, res, next) => {
     const fields = pick(permittedFields, req.body)
@@ -384,11 +419,13 @@ export default {
     // Check if everything is correct before we do anything
     return getConfig('festivalDateStart')
       .then(config => {
-        return validateEvent(req, fields, config.festivalDateStart)
+        return validateEvent(req, fields, null, config.festivalDateStart)
           .then(() => {
             // Create event
             return createEvent(req, fields, config.festivalDateStart)
-              .then(event => res.json(prepareResponse(event, req)))
+              .then(event => {
+                return findOneWithSlug(event.slug, req, res, next)
+              })
           })
           .catch(err => {
             next(err)
@@ -434,40 +471,23 @@ export default {
       where: req.user.isVisitor ? { isPublic: true } : {},
     })
       .then(result => {
-        res.json({
-          data: prepareResponseAll(result.rows, req),
-          limit: parseInt(limit, 10),
-          offset: parseInt(offset, 10),
-          total: result.count,
+        return getConfig('isAnonymizationEnabled').then(config => {
+          res.json({
+            data: prepareResponseAll(
+              result.rows,
+              req,
+              config.isAnonymizationEnabled
+            ),
+            limit: parseInt(limit, 10),
+            offset: parseInt(offset, 10),
+            total: result.count,
+          })
         })
       })
       .catch(err => next(err))
   },
   findOneWithSlug: (req, res, next) => {
-    return Event.findOne({
-      include,
-      rejectOnEmpty: true,
-      where: {
-        slug: req.params.resourceSlug,
-      },
-      order: [
-        [EventHasManySlots, 'from', 'ASC'],
-      ],
-    })
-      .then(data => {
-        if (!data.isPublic && req.user.isVisitor) {
-          next(
-            new APIError(
-              'Requested resource is not public',
-              httpStatus.FORBIDDEN
-            )
-          )
-          return null
-        }
-
-        return res.json(prepareResponse(data, req))
-      })
-      .catch(err => next(err))
+    return findOneWithSlug(req.params.resourceSlug, req, res, next)
   },
   lookup: (req, res, next) => {
     return lookupWithSlug(Event, req, res, next)
@@ -476,13 +496,19 @@ export default {
     const fields = pick(permittedFields, req.body)
 
     // Check if everything is correct before we do anything
-    return getConfig('festivalDateStart')
+    return getConfig(['festivalDateStart', 'isAnonymizationEnabled'])
       .then(config => {
         return validateEvent(req, fields, req.resourceId, config.festivalDateStart)
           .then(() => {
             // Update event
             return updateEvent(req, fields, config.festivalDateStart)
-              .then(event => res.json(prepareResponse(event, req)))
+              .then(event => {
+                res.json(prepareResponse(
+                  event,
+                  req,
+                  config.isAnonymizationEnabled
+                ))
+              })
           })
           .catch(err => {
             next(err)

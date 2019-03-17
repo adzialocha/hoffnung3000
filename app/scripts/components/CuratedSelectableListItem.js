@@ -59,12 +59,15 @@ class CuratedSelectableListItem extends Component {
         <div className="list-item-content__title ellipsis">
           { this.props.item.title }
         </div>
+
         <div className="list-item-content__subtitle ellipsis">
           <AnimalLink animal={this.props.item.animal} />
         </div>
+
         <div className="list-item-content__description ellipsis">
           { this.props.item.description }
         </div>
+
         { this.renderSelectedState() }
       </div>
     )

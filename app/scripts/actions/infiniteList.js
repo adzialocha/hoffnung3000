@@ -2,7 +2,7 @@ import ActionTypes from '../actionTypes'
 import { UPDATE_USER_STATUS } from '../middlewares/userStatus'
 import { getRequest } from '../services/api'
 
-export const ITEMS_PER_PAGE = 1
+export const ITEMS_PER_PAGE = 50
 
 export function fetchList(path, page = 0, params = {}) {
   const offset = page * ITEMS_PER_PAGE

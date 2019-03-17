@@ -15,6 +15,7 @@ module.exports = {
       gifStreamServerUrl: '',
       googleMapApiKey: '',
       isActivityStreamEnabled: true,
+      isAnonymizationEnabled: true,
       isInboxEnabled: true,
       isRandomMeetingEnabled: true,
       isSignUpParticipantEnabled: true,

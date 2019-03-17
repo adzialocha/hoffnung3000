@@ -30,10 +30,10 @@ const DURATION_HOURS = 1
 const DATE_MINIMUM_TO_NOW_HOURS = 1
 const ANY_DATE_FROM_NOW_MIN_HOURS = 2
 
-function createConversation(place, from, to, userId) {
+function createConversation(place, from, to, user, isAnonymous) {
   return new Promise((resolve, reject) => {
     Animal.create({
-      userId,
+      userId: user.id,
     }, {
       returning: true,
     })
@@ -49,7 +49,7 @@ function createConversation(place, from, to, userId) {
 
         const text = translate('api.meeting.createMessageText', {
           date,
-          name: sendingAnimal.name,
+          name: isAnonymous ? sendingAnimal.name : user.firstname,
           placeTitle,
         })
 
@@ -131,12 +131,12 @@ function getRandomPlace(from, to) {
   })
 }
 
-function createMeeting(userId, from, to) {
+function createMeeting(user, from, to, isAnonymous) {
   return getRandomPlace(from, to)
     .then(place => {
       const placeId = place.id
 
-      return createConversation(place, from, to, userId)
+      return createConversation(place, from, to, user, isAnonymous)
         .then(data => {
           const { conversation, animalId } = data
           const conversationId = conversation.id
@@ -151,22 +151,22 @@ function createMeeting(userId, from, to) {
               return addCreateMeetingActivity({
                 animalId,
                 place,
-                userId,
+                userId: user.id,
               })
             })
         })
     })
 }
 
-function joinMeeting(conversation, userId) {
+function joinMeeting(user, conversation, isAnonymous) {
   return Animal.create({
-    userId,
+    userId: user.id,
   }, {
     returning: true,
   })
     .then(joiningAnimal => {
       const text = translate('api.meeting.joinMessageText', {
-        name: joiningAnimal.name,
+        name: isAnonymous ? joiningAnimal.name : user.firstname,
       })
 
       return conversation.addAnimal(joiningAnimal)
@@ -222,7 +222,12 @@ export default {
       }
     }
 
-    return getConfig(['festivalDateStart', 'festivalDateEnd', 'isRandomMeetingEnabled'])
+    return getConfig([
+      'festivalDateStart',
+      'festivalDateEnd',
+      'isRandomMeetingEnabled',
+      'isAnonymizationEnabled',
+    ])
       .then(config => {
         if (!config.isRandomMeetingEnabled) {
           next(new APIError('Random meetings are not available', httpStatus.FORBIDDEN))
@@ -258,7 +263,12 @@ export default {
         })
           .then(meeting => {
             if (!meeting) {
-              return createMeeting(req.user.id, from, to)
+              return createMeeting(
+                req.user,
+                from,
+                to,
+                config.isAnonymizationEnabled
+              )
             }
 
             const isAlreadyExisting = meeting.conversation.animals.find(animal => {
@@ -272,7 +282,11 @@ export default {
               )
             }
 
-            return joinMeeting(meeting.conversation, req.user.id)
+            return joinMeeting(
+              req.user,
+              meeting.conversation,
+              config.isAnonymizationEnabled
+            )
           })
           .then(() => res.json({ status: 'ok' }))
           .catch(err => next(err))

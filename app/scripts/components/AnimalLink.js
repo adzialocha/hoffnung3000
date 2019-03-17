@@ -2,11 +2,13 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
+import withConfig from '../containers/withConfig'
 import { translate } from '../../../common/services/i18n'
 
 class AnimalLink extends Component {
   static propTypes = {
     animal: PropTypes.object.isRequired,
+    config: PropTypes.object.isRequired,
     isWithoutBy: PropTypes.bool,
   }
 
@@ -27,6 +29,17 @@ class AnimalLink extends Component {
     )
   }
 
+  renderName() {
+    if (
+      this.props.config.isAnonymizationEnabled ||
+      !this.props.animal.userName
+    ) {
+      return this.props.animal.name
+    }
+
+    return this.props.animal.userName
+  }
+
   render() {
     const query = {
       receiverAnimals: [this.props.animal],
@@ -37,11 +50,11 @@ class AnimalLink extends Component {
         { this.renderBy() }
 
         <Link to={ { pathname: '/inbox/new', query } }>
-          { this.props.animal.name }
+          { this.renderName() }
         </Link>
       </span>
     )
   }
 }
 
-export default AnimalLink
+export default withConfig(AnimalLink)
