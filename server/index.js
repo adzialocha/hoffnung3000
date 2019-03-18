@@ -1,3 +1,8 @@
+// Prepare for babel transpiler
+require('@babel/register')({
+  cache: false,
+})
+
 import bodyParser from 'body-parser'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
