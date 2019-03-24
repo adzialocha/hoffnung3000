@@ -1,19 +1,23 @@
 import { DateTime } from 'luxon'
 
-const DATE_FORMAT = 'ddd DD.MM.YY'
+const DATE_FORMAT = 'ccc dd.MM.yy'
 const TIME_FORMAT = 'HH:mm'
 
 export function formatEventTime(from, to) {
-  const fromDateStr = DateTime.fromISO(from).toFormat(DATE_FORMAT)
-  const fromTimeStr = DateTime.fromISO(from).toFormat(TIME_FORMAT)
+  const dateFrom = DateTime.fromISO(from)
+  const dateTo = DateTime.fromISO(to)
+
+  const fromDateStr = dateFrom.toFormat(DATE_FORMAT)
+  const fromTimeStr = dateFrom.toFormat(TIME_FORMAT)
 
   let toStr
 
-  if (DateTime.fromISO(from).hasSame(to, 'day')) {
-    toStr = DateTime.fromISO(to).toFormat(TIME_FORMAT)
+  if (dateFrom.hasSame(dateTo, 'day')) {
+    toStr = dateTo.toFormat(TIME_FORMAT)
   } else {
-    const toDateStr = DateTime.fromISO(to).toFormat(DATE_FORMAT)
-    const toTimeStr = DateTime.fromISO(to).toFormat(TIME_FORMAT)
+    const toDateStr = dateTo.toFormat(DATE_FORMAT)
+    const toTimeStr = dateTo.toFormat(TIME_FORMAT)
+
     toStr = `${toDateStr} - ${toTimeStr}`
   }
 

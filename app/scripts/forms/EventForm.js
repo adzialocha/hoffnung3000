@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import moment from 'moment-timezone'
+import { DateTime } from 'luxon'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 
@@ -206,8 +206,8 @@ class EventForm extends Component {
     )
 
     return {
-      eventFromStr: moment(firstSlot.from).format(),
-      eventToStr: moment(lastSlot.to).format(),
+      eventFromStr: DateTime.fromISO(firstSlot.from).toISO(),
+      eventToStr: DateTime.fromISO(lastSlot.to).toISO(),
     }
   }
 }

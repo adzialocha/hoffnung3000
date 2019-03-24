@@ -1,12 +1,12 @@
-import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
+import { UserForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { fetchResource, updateResource } from '../actions/resources'
-import { UserForm } from '../forms'
 
 class AdminUsersEditForm extends Component {
   static propTypes = {
@@ -39,18 +39,19 @@ class AdminUsersEditForm extends Component {
       return null
     }
 
-    const DATE_FORMAT = 'DD.MM.YYYY HH:mm:ss'
+    const DATE_FORMAT = 'dd.MM.yyyy HH:mm:ss'
 
-    const createdAt = moment(this.props.resourceData.createdAt)
-    const updatedAt = moment(this.props.resourceData.updatedAt)
+    const createdAt = DateTime.fromISO(this.props.resourceData.createdAt)
+    const updatedAt = DateTime.fromISO(this.props.resourceData.updatedAt)
 
     return (
       <div className="left">
         <hr />
+
         <code>
           ID: { this.props.resourceData.id }<br />
-          Created at: { createdAt.format(DATE_FORMAT) }<br />
-          Updated at: { updatedAt.format(DATE_FORMAT) }<br />
+          Created at: { createdAt.toFormat(DATE_FORMAT) }<br />
+          Updated at: { updatedAt.toFormat(DATE_FORMAT) }<br />
           Payment Method: { this.props.resourceData.paymentMethod }<br />
           Payment ID: { this.props.resourceData.paymentId }
         </code>
@@ -86,6 +87,7 @@ class AdminUsersEditForm extends Component {
 
   title() {
     const { firstname } = this.props.resourceData
+
     if (!(firstname && firstname.length > 0)) {
       return ''
     }

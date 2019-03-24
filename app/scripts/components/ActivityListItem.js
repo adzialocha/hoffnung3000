@@ -1,6 +1,6 @@
-import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
 
 import { AnimalLink } from './'
@@ -68,11 +68,15 @@ class ActivityListItem extends Component {
   }
 
   renderDateAndTime() {
+    const dateStr = DateTime
+      .fromISO(this.props.item.createdAt)
+      .toFormat('dd.MM.yy HH:mm')
+
     return (
       <span
         className="activity-list-item__part activity-list-item__part--emphasized"
       >
-        { moment(this.props.item.createdAt).format('DD.MM.YY HH:mm') }
+        { dateStr }
       </span>
     )
   }
@@ -123,6 +127,7 @@ class ActivityListItem extends Component {
         { this.renderDateAndTime() }
         { this.renderAnimal() }
         { this.renderActivity() }
+
         <span className="activity-list-item__part">
           { this.renderLink() }
         </span>

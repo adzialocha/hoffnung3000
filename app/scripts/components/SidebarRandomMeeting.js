@@ -1,9 +1,8 @@
-import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { DateTime } from 'luxon'
 
 import { ValueSelector } from './'
-
 import { translate } from '../../../common/services/i18n'
 
 import {
@@ -33,8 +32,13 @@ class SidebarRandomMeeting extends Component {
     if (this.state.selectedHour === undefined) {
       this.props.requestRandomMeeting()
     } else {
-      const date = moment().startOf('day').add(this.state.selectedHour, 'hours')
-      this.props.requestRandomMeeting(date.format())
+      const date = DateTime
+        .local()
+        .startOf('day')
+        .plus({ hours: this.state.selectedHour })
+        .toISO()
+
+      this.props.requestRandomMeeting(date)
     }
   }
 
@@ -59,6 +63,7 @@ class SidebarRandomMeeting extends Component {
         { this.renderErrorMessage() }
         <ValueSelector values={DATE_VALUES} onChange={this.onDateChange} />
         <br />
+
         <div className="button-group">
           <button
             className="button"

@@ -4,6 +4,7 @@ import Modal from 'react-modal'
 import React from 'react'
 import { ConnectedRouter  } from 'connected-react-router'
 import { Provider } from 'react-redux'
+import { Settings } from 'luxon'
 import { createBrowserHistory } from 'history'
 import { render } from 'react-dom'
 
@@ -11,14 +12,13 @@ import configureStore from './store'
 import flash from './actions/flash'
 import { checkExistingToken } from './actions/auth'
 import { getItem, hasItem } from './services/storage'
-import { translate } from '../../common/services/i18n'
+import { translate, DEFAULT_LOCALE } from '../../common/services/i18n'
 import { updateMetaInformation } from './actions/meta'
 
 import Routes from './routes'
 import { App } from './views'
 
-// @TODO
-// moment.tz.setDefault(config.timezone)
+Settings.defaultLocale = DEFAULT_LOCALE
 
 Modal.setAppElement('#app')
 

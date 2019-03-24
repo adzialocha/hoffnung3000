@@ -1,6 +1,6 @@
-import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { DateTime } from 'luxon'
 
 import { alert } from '../services/dialog'
 import { SlotEditorItem } from './'
@@ -79,12 +79,16 @@ class SlotEditor extends Component {
   }
 
   renderSlotDateHeader(item, index) {
+    const date = DateTime
+      .fromISO(item.from)
+      .toFormat('ccc dd.MM.yy')
+
     return (
       <div
         className="slot-editor__day-header"
         key={`header-${index}`}
       >
-        { moment(item.from).format('dd DD.MM.YY') }
+        { date }
       </div>
     )
   }
@@ -105,7 +109,11 @@ class SlotEditor extends Component {
   }
 
   renderSlotItemList(item, previousItem, index) {
-    if (!previousItem || !moment(item.from).isSame(previousItem.from, 'date')) {
+    if (!previousItem ||
+      !DateTime
+        .fromISO(item.from)
+        .hasSame(DateTime.fromISO(previousItem.from), 'day')
+    ) {
       return [
         this.renderSlotDateHeader(item, index),
         this.renderSlotItem(item, index),
