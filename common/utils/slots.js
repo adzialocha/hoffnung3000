@@ -5,11 +5,11 @@ import { translate } from '../services/i18n'
 const TIME_FORMAT = 'HH:mm'
 
 function addSlotDuration(date, slotSize) {
-  return DateTime.fromISO(date).plus({ minutes: slotSize })
+  return date.plus({ minutes: slotSize })
 }
 
 export function isInFestivalRange(date, start, end) {
-  return Interval.fromISO(`${start}/${end}`).contains(date)
+  return Interval.fromISO(`${start}/${end}`, { zone: 'utc' }).contains(date)
 }
 
 export function checkSlotSize(slotSize) {
@@ -60,6 +60,7 @@ export function getDisabledSlotIndexes(slots) {
     if (slot.isDisabled) {
       acc.push(slot.slotIndex)
     }
+
     return acc
   }, [])
 }
@@ -91,18 +92,18 @@ export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateS
   }
 
   let slotIndex = 0
-  let from = DateTime.fromISO(festivalDateStart)
+  let from = DateTime.fromISO(festivalDateStart, { zone: 'utc' })
   let to = addSlotDuration(from, slotSize)
 
   while (isInFestivalRange(to, festivalDateStart, festivalDateEnd)) {
     slotItems.push({
       eventId: existingSlotEventIdStates[slotIndex],
       from,
-      fromTimeStr: DateTime.fromISO(from).toFormat(TIME_FORMAT),
+      fromTimeStr: from.toFormat(TIME_FORMAT),
       isDisabled: existingSlotDisabledStates[slotIndex] || false,
       slotIndex,
       to,
-      toTimeStr: DateTime.fromISO(to).toFormat(TIME_FORMAT),
+      toTimeStr: to.toFormat(TIME_FORMAT),
     })
 
     slotIndex += 1
@@ -114,9 +115,17 @@ export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateS
 }
 
 export function getSlotTimes(slotSize, slotIndex, festivalDateStart) {
+  const from = DateTime
+    .fromISO(festivalDateStart, { zone: 'utc' })
+    .plus({ minutes: slotSize * slotIndex })
+
+  const to = DateTime
+    .fromISO(festivalDateStart, { zone: 'utc' })
+    .plus({ minutes: slotSize * (slotIndex + 1) })
+
   return {
-    from: DateTime.fromISO(festivalDateStart).plus({ minutes: slotSize * slotIndex }),
-    to: DateTime.fromISO(festivalDateStart).plus({ minutes: slotSize * (slotIndex + 1) }),
+    from,
+    to,
   }
 }
 

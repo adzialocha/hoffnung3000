@@ -23,7 +23,6 @@ module.exports = {
       mailAddressRobot: 'noreply@domain.com',
       maximumParticipantsCount: 30,
       participationPrice: 25.00,
-      timezone: 'Europe/Berlin',
       title: 'HOFFNUNG 3000',
       transferBIC: '',
       transferBankName: '',

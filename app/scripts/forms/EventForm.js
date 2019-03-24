@@ -13,13 +13,17 @@ import {
   FormTextarea,
 } from '../components'
 
-import { withConfig } from '../containers'
+import {
+  generateNewSlotItems,
+  getSlotWithIndex,
+} from '../../../common/utils/slots'
 
 import { translate } from '../../../common/services/i18n'
-import { generateNewSlotItems, getSlotWithIndex } from '../../../common/utils/slots'
+import { withConfig } from '../containers'
 
 const validate = values => {
   const errors = {}
+
   if (!values.title) {
     errors.title = translate('forms.event.errors.titleRequired')
   } else if (values.title.length < 3) {
@@ -206,8 +210,8 @@ class EventForm extends Component {
     )
 
     return {
-      eventFromStr: DateTime.fromISO(firstSlot.from).toISO(),
-      eventToStr: DateTime.fromISO(lastSlot.to).toISO(),
+      eventFromStr: DateTime.fromISO(firstSlot.from, { zone: 'utc' }).toISO(),
+      eventToStr: DateTime.fromISO(lastSlot.to, { zone: 'utc' }).toISO(),
     }
   }
 }

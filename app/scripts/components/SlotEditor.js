@@ -111,7 +111,7 @@ class SlotEditor extends Component {
   renderSlotItemList(item, previousItem, index) {
     if (!previousItem ||
       !DateTime
-        .fromISO(item.from)
+        .fromISO(item.from, { zone: 'utc' })
         .hasSame(DateTime.fromISO(previousItem.from), 'day')
     ) {
       return [
