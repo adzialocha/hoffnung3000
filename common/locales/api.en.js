@@ -43,8 +43,8 @@ export default {
     ticket: 'Festival ticket',
   },
   meeting: {
-    createMessageText: '# *{name}* created a random meeting at *{placeTitle}* on *{date}*.\n\nThis conversation is your tool where you can prepare and organize yourself for the final rendezvous.\n\nDrink a beer, start a band or a revolution, have a passionate debate or fall in love with each other - even in virtual places.',
-    createMessageTitle: 'Random meeting {date} @ {placeTitle}',
+    createMessageText: '# *{name}* created a random meeting at *{placeTitle}* on *{date} {timezone}*.\n\nThis conversation is your tool where you can prepare and organize yourself for the final rendezvous.\n\nDrink a beer, start a band or a revolution, have a passionate debate or fall in love with each other - even in virtual places.',
+    createMessageTitle: 'Random meeting {date} {timezone} @ {placeTitle}',
     joinMessageText: '# {name} joins the random meeting!',
   },
 }

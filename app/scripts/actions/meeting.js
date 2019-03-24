@@ -1,12 +1,12 @@
 import ActionTypes from '../actionTypes'
 import { FLASH } from '../middlewares/flash'
-import { postRequest } from '../services/api'
 import { REDIRECT } from '../middlewares/redirect'
-import { translate } from '../../../common/services/i18n'
 import { UPDATE_USER_STATUS } from '../middlewares/userStatus'
+import { postRequest } from '../services/api'
+import { translate } from '../../../common/services/i18n'
 
-export function requestRandomMeeting(date) {
-  return postRequest(['meeting'], { date }, {
+export function requestRandomMeeting(date, isAnyDate) {
+  return postRequest(['meeting'], { date, isAnyDate }, {
     request: {
       type: ActionTypes.RANDOM_MEETING_REQUEST,
     },

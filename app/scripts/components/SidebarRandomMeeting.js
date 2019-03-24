@@ -30,7 +30,12 @@ class SidebarRandomMeeting extends Component {
 
   onClick() {
     if (this.state.selectedHour === undefined) {
-      this.props.requestRandomMeeting()
+      const date = DateTime
+        .local()
+        .startOf('hour')
+        .toISO()
+
+      this.props.requestRandomMeeting(date, true)
     } else {
       const date = DateTime
         .local()
@@ -38,7 +43,7 @@ class SidebarRandomMeeting extends Component {
         .plus({ hours: this.state.selectedHour })
         .toISO()
 
-      this.props.requestRandomMeeting(date)
+      this.props.requestRandomMeeting(date, false)
     }
   }
 
