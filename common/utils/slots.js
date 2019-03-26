@@ -9,7 +9,14 @@ function addSlotDuration(date, slotSize) {
 }
 
 export function isInFestivalRange(date, start, end) {
-  return Interval.fromISO(`${start}/${end}`, { zone: 'utc' }).contains(date)
+  const interval = Interval
+    .fromISO(`${start}/${end}`, { zone: 'utc' })
+
+  return (
+    interval.contains(date)
+    || interval.end.equals(date)
+    || interval.start.equals(date)
+  )
 }
 
 export function checkSlotSize(slotSize) {
