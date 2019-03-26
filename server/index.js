@@ -1,7 +1,5 @@
 // Prepare for babel transpiler
-require('@babel/register')({
-  cache: false,
-})
+require('@babel/register')()
 
 import bodyParser from 'body-parser'
 import compression from 'compression'
