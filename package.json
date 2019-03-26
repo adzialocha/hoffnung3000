@@ -1,6 +1,6 @@
 {
   "name": "hoffnung3000",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Platform for anonymous, decentralized and self-curated festivals",
   "main": "server/index.js",
   "private": true,
