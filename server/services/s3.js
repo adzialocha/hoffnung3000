@@ -1,9 +1,11 @@
 import AWS from 'aws-sdk'
 
-const BASE_PATH = `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_BUCKET_NAME}/`
+function getBasePath() {
+  return `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_BUCKET_NAME}/`
+}
 
 function urlToKey(url) {
-  return url.replace(BASE_PATH, '')
+  return url.replace(getBasePath(), '')
 }
 
 function request(method, Key, customParams, customMethod) {
@@ -46,7 +48,7 @@ function request(method, Key, customParams, customMethod) {
       .then(data => {
         resolve({
           data,
-          url: `${BASE_PATH}${Key}`,
+          url: `${getBasePath()}${Key}`,
         })
       })
       .catch(reject)

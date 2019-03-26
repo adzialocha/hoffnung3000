@@ -37,10 +37,6 @@ const validate = values => {
     errors.currency = translate('forms.common.errors.required')
   }
 
-  if (!values.timezone) {
-    errors.timezone = translate('forms.common.errors.required')
-  }
-
   if (!values.defaultCity) {
     errors.defaultCity = translate('forms.common.errors.required')
   }
@@ -150,14 +146,6 @@ class AdminConfigForm extends Component {
           disabled={this.props.isLoading}
           label={translate('forms.config.currency')}
           name="currency"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.config.timezone')}
-          name="timezone"
           type="text"
         />
 

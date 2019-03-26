@@ -1,3 +1,6 @@
+// Prepare for babel transpiler
+require('@babel/register')()
+
 import bodyParser from 'body-parser'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
@@ -10,6 +13,7 @@ import marked from 'marked'
 import methodOverride from 'method-override'
 import morgan from 'morgan'
 import path from 'path'
+import { Settings } from 'luxon'
 
 import {
   UPLOAD_FOLDER_NAME,
@@ -67,10 +71,8 @@ marked.setOptions({
   tables: false,
 })
 
-// Moment settings
-// @TODO Check if we really want to keep using moment-js here
-// @TODO Get the timezone from the database, at every request
-// moment.tz.setDefault(getConfig('timezone'))
+// Set default timezone
+Settings.defaultZoneName = 'utc'
 
 // Check database connection
 const db = require('./database')

@@ -6,12 +6,13 @@ import { asFormField, withConfig } from '../containers'
 import { fetchSlots } from '../actions/slots'
 import { formatEventTime } from '../../../common/utils/dateFormat'
 import { generateNewSlotItems, getSlotWithIndex } from '../../../common/utils/slots'
+import { translate } from '../../../common/services/i18n'
+
 import {
   CuratedPlaceListItem,
   FormPlaceSlotSelectorPlace,
   FormPlaceSlotSelectorSlot,
 } from './'
-import { translate } from '../../../common/services/i18n'
 
 class FormPlaceSlotSelector extends Component {
   static propTypes = {
@@ -48,9 +49,7 @@ class FormPlaceSlotSelector extends Component {
 
     const slots = this.generateSlots()
     const firstSlot = getSlotWithIndex(slots, slotIndexes[0])
-    const lastSlot = getSlotWithIndex(
-      slots, slotIndexes[slotIndexes.length - 1]
-    )
+    const lastSlot = getSlotWithIndex(slots, slotIndexes[slotIndexes.length - 1])
 
     return <h4>{ formatEventTime(firstSlot.from, lastSlot.to) }</h4>
   }

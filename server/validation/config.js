@@ -24,7 +24,6 @@ export default {
       mailAddressRobot: Joi.string().email().required(),
       maximumParticipantsCount: Joi.number(),
       participationPrice: Joi.number(),
-      timezone: Joi.string().required(),
       title: Joi.string().required(),
       transferBIC: Joi.string().empty(''),
       transferBankName: Joi.string().empty(''),

@@ -22,6 +22,18 @@ class PaginatedListNavigation extends Component {
     )
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.currentPageIndex !== prevProps.currentPageIndex
+      || this.props.resourceName !== prevProps.resourceName
+    ) {
+      this.props.fetchList(
+        this.props.resourceName,
+        this.props.currentPageIndex - 1
+      )
+    }
+  }
+
   onPreviousPageClick() {
     const previousPage = this.props.currentPageIndex - 1
     this.props.push(`/admin/${this.props.resourceName}/all/${previousPage}`)
@@ -42,9 +54,11 @@ class PaginatedListNavigation extends Component {
         >
           &lt;
         </button>
+
         <div className="paginated-list-navigation__indicator">
           { this.props.currentPageIndex }
         </div>
+
         <button
           className="paginated-list-navigation__button"
           disabled={this.props.isLoading || !this.hasNextPage()}

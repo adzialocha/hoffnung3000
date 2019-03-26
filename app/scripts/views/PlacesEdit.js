@@ -1,23 +1,25 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import flash from '../actions/flash'
+import { PlaceForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { confirm } from '../services/dialog'
+import { translate } from '../../../common/services/i18n'
+import { withConfig } from '../containers'
+
 import {
   deleteResource,
   fetchResource,
   updateResource,
 } from '../actions/resources'
-import { PlaceForm } from '../forms'
-import { withConfig } from '../containers'
+
 import {
   generateNewSlotItems,
   getDisabledSlotIndexes,
 } from '../../../common/utils/slots'
-import { translate } from '../../../common/services/i18n'
 
 class PlacesEdit extends Component {
   static propTypes = {

@@ -1,5 +1,5 @@
 import httpStatus from 'http-status'
-import moment from 'moment-timezone'
+import { DateTime } from 'luxon'
 import { Op } from 'sequelize'
 
 import pick from '../utils/pick'
@@ -46,9 +46,8 @@ function prepareResponse(conversation, req, isAnonymous) {
     if (response.lastMessage.animalId === animalMe.id) {
       response.isRead = true
     } else {
-      response.isRead = moment(lastCheckedAt).isAfter(
-        response.lastMessage.createdAt
-      )
+      response.isRead = DateTime.fromISO(lastCheckedAt) > DateTime.fromISO(
+        response.lastMessage.createdAt)
     }
   }
 

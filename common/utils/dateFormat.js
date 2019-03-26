@@ -1,19 +1,23 @@
-import moment from 'moment-timezone'
+import { DateTime } from 'luxon'
 
-const DATE_FORMAT = 'ddd DD.MM.YY'
+const DATE_FORMAT = 'ccc dd.MM.yy'
 const TIME_FORMAT = 'HH:mm'
 
 export function formatEventTime(from, to) {
-  const fromDateStr = moment(from).format(DATE_FORMAT)
-  const fromTimeStr = moment(from).format(TIME_FORMAT)
+  const dateFrom = DateTime.fromISO(from, { zone: 'utc' })
+  const dateTo = DateTime.fromISO(to, { zone: 'utc' })
+
+  const fromDateStr = dateFrom.toFormat(DATE_FORMAT)
+  const fromTimeStr = dateFrom.toFormat(TIME_FORMAT)
 
   let toStr
 
-  if (moment(from).isSame(to, 'day')) {
-    toStr = moment(to).format(TIME_FORMAT)
+  if (dateFrom.hasSame(dateTo, 'day')) {
+    toStr = dateTo.toFormat(TIME_FORMAT)
   } else {
-    const toDateStr = moment(to).format(DATE_FORMAT)
-    const toTimeStr = moment(to).format(TIME_FORMAT)
+    const toDateStr = dateTo.toFormat(DATE_FORMAT)
+    const toTimeStr = dateTo.toFormat(TIME_FORMAT)
+
     toStr = `${toDateStr} - ${toTimeStr}`
   }
 

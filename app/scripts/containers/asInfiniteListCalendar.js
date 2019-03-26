@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import moment from 'moment-timezone'
+import { DateTime } from 'luxon'
 import { connect } from 'react-redux'
 
 import { fetchList, clearList } from '../actions/infiniteList'
@@ -30,10 +30,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     }
 
     componentWillMount() {
-      this.props.fetchList(
-        this.props.resourceName,
-        0
-      )
+      this.props.fetchList(this.props.resourceName, 0)
     }
 
     componentWillUnmount() {
@@ -103,9 +100,9 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       return listItems.map((item, index) => {
         const previousItem = index > 0 ? listItems[index - 1] : null
 
-        const dateA = moment(item.slots[0].from)
-        const dateB = previousItem && moment(previousItem.slots[0].from)
-        const isSameDay = previousItem ? moment(dateA).isSame(dateB, 'date') : false
+        const dateA = DateTime.fromISO(item.slots[0].from)
+        const dateB = previousItem && DateTime.fromISO(previousItem.slots[0].from)
+        const isSameDay = previousItem ? dateA.hasSame(dateB, 'day') : false
 
         const itemComponent = (
           <div
@@ -126,7 +123,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
             key={`header-${index}`}
           >
             <h2 className="infinite-list-container__heading">
-              { moment(item.slots[0].from).format('DD.MM.YY') }
+              { DateTime.fromISO(item.slots[0].from).toFormat('dd.MM.yy') }
             </h2>
 
             { index > 0 ? <hr /> : null }
@@ -142,13 +139,10 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
 
     render() {
       return (
-        <div
-          className="infinite-list-container infinite-list-container--half-items"
-        >
+        <div className="infinite-list-container infinite-list-container--half-items">
           { this.renderListItems() }
-          <div
-            className="infinite-list-container__item infinite-list-container__item--full"
-          >
+
+          <div className="infinite-list-container__item infinite-list-container__item--full">
             { this.renderLoadMoreButton() }
           </div>
         </div>

@@ -81,10 +81,16 @@ export function register(paymentMethod, data) {
     meta,
   }
 
-  if (paymentMethod !== 'paypal') {
+  if (paymentMethod === 'transfer') {
     success[FLASH] = {
       lifetime: 30000,
       text: translate('flash.signUpTransferSuccess'),
+    }
+    success[REDIRECT] = '/'
+  } else if (paymentMethod === 'free') {
+    success[FLASH] = {
+      lifetime: 30000,
+      text: translate('flash.signUpFreeSuccess'),
     }
     success[REDIRECT] = '/'
   }
@@ -120,10 +126,16 @@ export function buyTicket(paymentMethod = 'paypal', data) {
     meta,
   }
 
-  if (paymentMethod !== 'paypal') {
+  if (paymentMethod === 'transfer') {
     success[FLASH] = {
       lifetime: 30000,
       text: translate('flash.signUpTransferTicketSuccess'),
+    }
+    success[REDIRECT] = '/'
+  } else if (paymentMethod === 'free') {
+    success[FLASH] = {
+      lifetime: 30000,
+      text: translate('flash.signUpFreeSuccess'),
     }
     success[REDIRECT] = '/'
   }

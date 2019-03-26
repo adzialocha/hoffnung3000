@@ -1,5 +1,5 @@
 import httpStatus from 'http-status'
-import moment from 'moment-timezone'
+import { DateTime } from 'luxon'
 import { Op } from 'sequelize'
 
 import {
@@ -26,9 +26,9 @@ import { getConfig } from '../config'
 import { isInFestivalRange } from '../../common/utils/slots'
 import { translate } from '../../common/services/i18n'
 
-const DURATION_HOURS = 1
-const DATE_MINIMUM_TO_NOW_HOURS = 1
 const ANY_DATE_FROM_NOW_MIN_HOURS = 2
+const DATE_MINIMUM_TO_NOW_HOURS = 1
+const DURATION_HOURS = 1
 
 function createConversation(place, from, to, user, isAnonymous) {
   return new Promise((resolve, reject) => {
@@ -40,15 +40,18 @@ function createConversation(place, from, to, user, isAnonymous) {
       .then(sendingAnimal => {
         const animalId = sendingAnimal.id
         const date = formatEventTime(from, to)
+        const timezone = from.toFormat('ZZZZ ZZ')
         const placeTitle = place.title
 
         const title = translate('api.meeting.createMessageTitle', {
           date,
+          timezone,
           placeTitle,
         })
 
         const text = translate('api.meeting.createMessageText', {
           date,
+          timezone,
           name: isAnonymous ? sendingAnimal.name : user.firstname,
           placeTitle,
         })
@@ -98,11 +101,11 @@ function getRandomPlace(from, to) {
               isDisabled: true,
             }, {
               from: {
-                [Op.lt]: to,
+                [Op.lt]: to.toISO(),
               },
             }, {
               to: {
-                [Op.gt]: from,
+                [Op.gt]: from.toISO(),
               },
             }],
           },
@@ -143,9 +146,9 @@ function createMeeting(user, from, to, isAnonymous) {
 
           return Meeting.create({
             conversationId,
-            from,
+            from: from.toISO(),
             placeId,
-            to,
+            to: to.toISO(),
           })
             .then(() => {
               return addCreateMeetingActivity({
@@ -189,36 +192,42 @@ function joinMeeting(user, conversation, isAnonymous) {
 
 export default {
   requestRandomMeeting: (req, res, next) => {
-    const date = req.body.date
+    const { date, isAnyDate } = req.body
+
     const where = {}
     let from
 
-    if (date) {
+    if (!isAnyDate) {
       // Meeting was requested with a date
-      const tresholdDate = moment()
-        .startOf('hour')
-        .add(DATE_MINIMUM_TO_NOW_HOURS, 'hours')
+      from = DateTime.fromISO(date).startOf('hour')
 
-      if (moment(date).isBefore(tresholdDate)) {
+      const tresholdDate = DateTime.local()
+        .startOf('hour')
+        .plus({ hours: DATE_MINIMUM_TO_NOW_HOURS })
+
+      if (from < tresholdDate) {
         next(
           new APIError(
             translate('api.errors.meeting.invalidDate'),
             httpStatus.BAD_REQUEST
           )
         )
+
         return null
       }
 
-      from = moment(date).startOf('hour')
-      where.from = from
+      where.from = from.toISO()
     } else {
       // Meeting was requested with any date
-      from = moment()
+      from = DateTime
+        .fromISO(date)
+        .plus({ hours: ANY_DATE_FROM_NOW_MIN_HOURS })
         .startOf('hour')
-        .add(ANY_DATE_FROM_NOW_MIN_HOURS, 'hours')
+
+      console.log(date, from, from.toISO())
 
       where.from = {
-        [Op.gte]: from,
+        [Op.gte]: from.toISO(),
       }
     }
 
@@ -250,7 +259,7 @@ export default {
           return null
         }
 
-        const to = moment(from).add(DURATION_HOURS, 'hours')
+        const to = from.plus({ hours: DURATION_HOURS })
 
         return Meeting.findOne({
           where,

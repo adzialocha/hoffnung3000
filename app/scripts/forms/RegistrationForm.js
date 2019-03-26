@@ -3,22 +3,25 @@ import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
 import { FormInput } from '../components'
-
 import { translate } from '../../../common/services/i18n'
 
 const validate = values => {
   const errors = {}
+
   if (!values.email) {
     errors.email = translate('forms.auth.errors.mailRequired')
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
     errors.email = translate('forms.auth.errors.invalidMail')
   }
+
   if (!values.firstname) {
     errors.firstname = translate('forms.auth.errors.firstnameRequired')
   }
+
   if (!values.lastname) {
     errors.lastname = translate('forms.auth.errors.lastnameRequired')
   }
+
   if (!values.password) {
     errors.password = translate('forms.auth.errors.passwordRequired')
   } else if (values.password.length < 8) {
@@ -28,27 +31,35 @@ const validate = values => {
       }
     )
   }
+
   if (!values.passwordRepeat) {
     errors.passwordRepeat = translate('forms.auth.errors.passwordRepeat')
   }
+
   if (values.passwordRepeat !== values.password) {
     errors.passwordRepeat = translate('forms.auth.errors.passwordMatch')
   }
+
   if (!values.street) {
     errors.street = translate('forms.auth.errors.streetRequired')
   }
+
   if (!values.cityCode) {
     errors.cityCode = translate('forms.auth.errors.cityCodeRequired')
   }
+
   if (!values.city) {
     errors.city = translate('forms.auth.errors.cityRequired')
   }
+
   if (!values.country) {
     errors.country = translate('forms.auth.errors.countryRequired')
   }
+
   if (!values.phone) {
     errors.phone = translate('forms.auth.errors.phoneRequired')
   }
+
   return errors
 }
 
@@ -72,6 +83,7 @@ class RegistrationForm extends Component {
         </div>
       )
     }
+
     return null
   }
 
@@ -79,7 +91,9 @@ class RegistrationForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
+
         <h2>{ translate('forms.common.basicInformation') }</h2>
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -87,6 +101,7 @@ class RegistrationForm extends Component {
           name="firstname"
           type="text"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -94,6 +109,7 @@ class RegistrationForm extends Component {
           name="lastname"
           type="text"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -101,6 +117,7 @@ class RegistrationForm extends Component {
           name="email"
           type="email"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -108,9 +125,13 @@ class RegistrationForm extends Component {
           name="phone"
           type="text"
         />
+
         <small>{ translate('forms.auth.whyPhone') }</small>
+
         <hr />
+
         <h2>{ translate('forms.auth.yourPassword') }</h2>
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -118,6 +139,7 @@ class RegistrationForm extends Component {
           name="password"
           type="password"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -125,8 +147,11 @@ class RegistrationForm extends Component {
           name="passwordRepeat"
           type="password"
         />
+
         <hr />
+
         <h2>{ translate('forms.auth.yourAddress') }</h2>
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -134,6 +159,7 @@ class RegistrationForm extends Component {
           name="street"
           type="text"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -141,6 +167,7 @@ class RegistrationForm extends Component {
           name="cityCode"
           type="text"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -148,6 +175,7 @@ class RegistrationForm extends Component {
           name="city"
           type="text"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -155,7 +183,9 @@ class RegistrationForm extends Component {
           name="country"
           type="text"
         />
+
         <hr />
+
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}

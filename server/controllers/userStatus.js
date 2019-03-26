@@ -1,4 +1,4 @@
-import moment from 'moment-timezone'
+import { DateTime } from 'luxon'
 
 import {
   MessageBelongsToConversation,
@@ -48,12 +48,12 @@ function getUnreadMessageCount(req) {
             return false
           }
 
-          return moment(lastCheckedAt).isBefore(message.createdAt)
+          return DateTime.fromISO(lastCheckedAt) < DateTime.fromISO(message.createdAt)
         })
 
         // Check for unread messages since the last time we looked at it
         const latestMessages = unreadMessages.filter(message => {
-          return moment(lastRequestAt).isBefore(message.createdAt)
+          return DateTime.fromISO(lastRequestAt) < DateTime.fromISO(message.createdAt)
         })
 
         const hasNewMessages = (

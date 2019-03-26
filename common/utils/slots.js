@@ -1,15 +1,22 @@
-import moment from 'moment-timezone'
+import { DateTime, Interval } from 'luxon'
 
 import { translate } from '../services/i18n'
 
 const TIME_FORMAT = 'HH:mm'
 
 function addSlotDuration(date, slotSize) {
-  return moment(date).add(slotSize, 'minutes')
+  return date.plus({ minutes: slotSize })
 }
 
 export function isInFestivalRange(date, start, end) {
-  return moment(date).isBetween(start, end, null, '[]')
+  const interval = Interval
+    .fromISO(`${start}/${end}`, { zone: 'utc' })
+
+  return (
+    interval.contains(date)
+    || interval.end.equals(date)
+    || interval.start.equals(date)
+  )
 }
 
 export function checkSlotSize(slotSize) {
@@ -60,6 +67,7 @@ export function getDisabledSlotIndexes(slots) {
     if (slot.isDisabled) {
       acc.push(slot.slotIndex)
     }
+
     return acc
   }, [])
 }
@@ -91,18 +99,18 @@ export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateS
   }
 
   let slotIndex = 0
-  let from = moment(festivalDateStart)
+  let from = DateTime.fromISO(festivalDateStart, { zone: 'utc' })
   let to = addSlotDuration(from, slotSize)
 
   while (isInFestivalRange(to, festivalDateStart, festivalDateEnd)) {
     slotItems.push({
       eventId: existingSlotEventIdStates[slotIndex],
       from,
-      fromTimeStr: moment(from).format(TIME_FORMAT),
+      fromTimeStr: from.toFormat(TIME_FORMAT),
       isDisabled: existingSlotDisabledStates[slotIndex] || false,
       slotIndex,
       to,
-      toTimeStr: moment(to).format(TIME_FORMAT),
+      toTimeStr: to.toFormat(TIME_FORMAT),
     })
 
     slotIndex += 1
@@ -114,9 +122,17 @@ export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateS
 }
 
 export function getSlotTimes(slotSize, slotIndex, festivalDateStart) {
+  const from = DateTime
+    .fromISO(festivalDateStart, { zone: 'utc' })
+    .plus({ minutes: slotSize * slotIndex })
+
+  const to = DateTime
+    .fromISO(festivalDateStart, { zone: 'utc' })
+    .plus({ minutes: slotSize * (slotIndex + 1) })
+
   return {
-    from: moment(festivalDateStart).add(slotSize * slotIndex, 'minutes'),
-    to: moment(festivalDateStart).add(slotSize * (slotIndex + 1), 'minutes'),
+    from,
+    to,
   }
 }
 

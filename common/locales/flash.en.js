@@ -29,6 +29,7 @@ export default {
   resourceUpdateFailure: 'Ouch, I couldn\'t update this, please check your fields again.',
   updateAdminConfigFailure: 'Could not save the configuration. Please check your fields and the documentation.',
   signUpPaypalSuccess: 'Thank you and welcome to HOFFNUNG 3000! You successfully created your account!',
+  signUpFreeSuccess: 'Thank you and welcome to HOFFNUNG 3000! You successfully created your account!',
   signUpTransferFailure: 'Something with the registration went wrong',
   signUpTransferSuccess: 'Thank you for your registration! We just sent you an email with our bank account details! Please contact us if you didn\'t receive the mail in the next minutes or you have any questions.',
   signUpTransferTicketSuccess: 'Thank you! We just sent you an email with our bank account details! Please contact us if you didn\'t receive the mail in the next minutes or you have any questions.',

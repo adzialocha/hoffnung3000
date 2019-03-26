@@ -85,7 +85,6 @@ export default {
     mailAddressAdmin: 'Email-address of admin / website owner',
     mailAddressRobot: 'Email-address of automated mail sender',
     currency: 'Currency',
-    timezone: 'Timezone',
     defaultCity: 'Default city name',
     defaultCountry: 'Default country name',
     defaultLatitude: 'Default GPS position: Latitude',

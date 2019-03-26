@@ -33,7 +33,6 @@ module.exports = {
       mailAddressRobot: configField(Sequelize.STRING),
       maximumParticipantsCount: configField(Sequelize.INTEGER, true),
       participationPrice: configField(Sequelize.FLOAT, true),
-      timezone: configField(Sequelize.STRING),
       title: configField(Sequelize.STRING),
       transferBIC: configField(Sequelize.STRING, true),
       transferBankName: configField(Sequelize.STRING, true),
