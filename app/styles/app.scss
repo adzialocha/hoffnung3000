@@ -1,15 +1,12 @@
-// vendor
+// Vendor
+@import "~normalize.css";
 
-@import "../../node_modules/normalize.css/normalize";
-
-// common
-
+// Common
 @import "common/variables";
 @import "common/mixins";
 @import "common/utils";
 
-// global
-
+// Global
 @import "base/animations";
 @import "base/buttons";
 @import "base/form";
@@ -21,8 +18,7 @@
 @import "base/tables";
 @import "base/typo";
 
-// components
-
+// Components
 @import "components/activity-list-item";
 @import "components/bar";
 @import "components/bullet";
@@ -53,17 +49,15 @@
 @import "components/sidebar";
 @import "components/sidebar-toggle";
 @import "components/slot-editor";
-@import "components/sponsors";
 @import "components/value-selector";
 @import "components/youtube";
 
-// vendors
-
+// Vendors
 @import "vendors/react-modal";
 @import "vendors/react-slider";
+@import "vendors/react-leaflet";
 
-// layout
-
+// Layout
 @import "layout/footer";
 @import "layout/header";
 @import "layout/main";

@@ -1,7 +1,6 @@
 import express from 'express'
 import expressValidation from 'express-validation'
 import httpStatus from 'http-status'
-import winston from 'winston'
 import { EmptyResultError, ValidationError } from 'sequelize'
 
 import passport from '../services/passport'
@@ -17,6 +16,7 @@ import pageController from '../controllers/page'
 import userStatusController from '../controllers/userStatus'
 
 import authRoutes from './auth'
+import configRoutes from './config'
 import conversationRoutes from './conversation'
 import eventRoutes from './event'
 import meetingRoutes from './meeting'
@@ -26,31 +26,26 @@ import profileRoutes from './profile'
 import resourceRoutes from './resource'
 import userRoutes from './user'
 
+import logger from '../helpers/logger'
+
 const router = express.Router() // eslint-disable-line new-cap
 
 // API health check route
+router.get('/health-check', (req, res) => res.send('ok'))
 
-router.get('/health-check', (req, res) =>
-  res.send('ok')
-)
-
-// public API routes
-
+// Public API routes
 router.use('/auth', authRoutes)
 
 router.route('/pages/:resourceSlug(\\D+)/')
   .get(pageController.findOneWithSlug)
 
 router.route('/meta')
-  .get(metaController.information)
+  .get(metaController.getStatusAndConfig)
 
 router.route('/preview')
-  .get(
-    eventPreviewController.findAll
-  )
+  .get(eventPreviewController.findAll)
 
-// private API routes
-
+// Private API routes
 router.use('/*', (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
     if (err) {
@@ -82,22 +77,21 @@ router.route('/upload')
 router.route('/activity')
   .get(activityController.findAll)
 
-// admin API routes
-
+// Admin API routes
 router.use(onlyAdmin)
 
+router.use('/config', configRoutes)
 router.use('/pages', pageRoutes)
 router.use('/users', userRoutes)
 
 // API error handling
-
 router.use((err, req, res, next) => {
-  if (err && process.env.NODE_ENV === 'development') {
-    winston.error(err)
+  if (err) {
+    logger.error(err.stack)
   }
 
   if (err instanceof expressValidation.ValidationError) {
-    // validation error contains errors which is an
+    // Validation error contains errors which is an
     // array of error each containing message[]
     const unifiedMessage = err.errors.map(
       error => error.messages.join('. ')

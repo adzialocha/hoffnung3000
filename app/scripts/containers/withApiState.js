@@ -8,7 +8,7 @@ export default function withApiState(WrappedComponent) {
     }
   }
 
-  return connect(mapStateToProps)((props) => {
+  return connect(mapStateToProps)(props => {
     return <WrappedComponent {...props} />
   })
 }

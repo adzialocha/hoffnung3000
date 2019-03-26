@@ -11,7 +11,7 @@ export default function withAuthState(WrappedComponent) {
     }
   }
 
-  return connect(mapStateToProps, { logout })((props) => {
+  return connect(mapStateToProps, { logout })(props => {
     return <WrappedComponent {...props} />
   })
 }

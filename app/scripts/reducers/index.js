@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { routerReducer as routing } from 'react-router-redux'
+import { connectRouter } from 'connected-react-router'
 
 import api from './api'
 import auth from './auth'
@@ -19,7 +19,7 @@ import ticket from './ticket'
 import user from './user'
 import userStatus from './userStatus'
 
-const rootReducer = combineReducers({
+export default history => combineReducers({
   api,
   auth,
   drawer,
@@ -33,11 +33,9 @@ const rootReducer = combineReducers({
   page,
   paginatedList,
   resources,
-  routing,
+  router: connectRouter(history),
   slots,
   ticket,
   user,
   userStatus,
 })
-
-export default rootReducer

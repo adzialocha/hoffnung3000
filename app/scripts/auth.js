@@ -1,5 +1,5 @@
 import { connectedReduxRedirect } from 'redux-auth-wrapper/history4/redirect'
-import { routerActions } from 'react-router-redux'
+import { routerActions } from 'connected-react-router'
 
 import { redirectWhenUnauthenticated } from './actions/auth'
 
@@ -25,7 +25,7 @@ export const shouldNotBeAuthenticated = connectedReduxRedirect({
 export const isParticipant = connectedReduxRedirect({
   redirectAction,
   redirectPath,
-  authenticatedSelector: (state) => {
+  authenticatedSelector: state => {
     return (
       state.auth.isAuthenticated &&
       (state.user.isParticipant || state.user.isAdmin) &&
@@ -38,7 +38,7 @@ export const isParticipant = connectedReduxRedirect({
 export const isVisitor = connectedReduxRedirect({
   redirectAction,
   redirectPath,
-  authenticatedSelector: (state) => {
+  authenticatedSelector: state => {
     return (
       state.auth.isAuthenticated &&
       (state.user.isVisitor || state.user.isAdmin) &&
@@ -51,7 +51,7 @@ export const isVisitor = connectedReduxRedirect({
 export const isAdmin = connectedReduxRedirect({
   redirectAction,
   redirectPath,
-  authenticatedSelector: (state) => {
+  authenticatedSelector: state => {
     return (
       state.auth.isAuthenticated &&
       state.user.isAdmin &&

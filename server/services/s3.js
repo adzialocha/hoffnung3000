@@ -1,9 +1,11 @@
 import AWS from 'aws-sdk'
 
-const BASE_PATH = `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_BUCKET_NAME}/`
+function getBasePath() {
+  return `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_BUCKET_NAME}/`
+}
 
 function urlToKey(url) {
-  return url.replace(BASE_PATH, '')
+  return url.replace(getBasePath(), '')
 }
 
 function request(method, Key, customParams, customMethod) {
@@ -28,7 +30,7 @@ function request(method, Key, customParams, customMethod) {
     let promise
 
     if (customMethod) {
-      // wrap this around a Promise since S3 SDK is not doing this for us
+      // Wrap this around a Promise since S3 SDK is not doing this for us
       promise = new Promise((customResolve, customReject) => {
         s3[method](customMethod, params, (err, data) => {
           if (err) {
@@ -46,11 +48,22 @@ function request(method, Key, customParams, customMethod) {
       .then(data => {
         resolve({
           data,
-          url: `${BASE_PATH}${Key}`,
+          url: `${getBasePath()}${Key}`,
         })
       })
       .catch(reject)
   })
+}
+
+export function hasAWSConfiguration() {
+  return [
+    'AWS_REGION',
+    'AWS_ACCESS_KEY_ID',
+    'AWS_SECRET_ACCESS_KEY',
+    'AWS_BUCKET_NAME',
+  ].find(field => {
+    return process.env[field] === ''
+  }) === undefined
 }
 
 export function putObject(Body, Key) {

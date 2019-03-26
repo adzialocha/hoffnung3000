@@ -1,21 +1,22 @@
-import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { asFormField } from '../containers'
+import { asFormField, withConfig } from '../containers'
 import { fetchSlots } from '../actions/slots'
 import { formatEventTime } from '../../../common/utils/dateFormat'
 import { generateNewSlotItems, getSlotWithIndex } from '../../../common/utils/slots'
+import { translate } from '../../../common/services/i18n'
+
 import {
   CuratedPlaceListItem,
   FormPlaceSlotSelectorPlace,
   FormPlaceSlotSelectorSlot,
 } from './'
-import { translate } from '../../../common/services/i18n'
 
 class FormPlaceSlotSelector extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     disabled: PropTypes.bool.isRequired,
     fetchSlots: PropTypes.func.isRequired,
     input: PropTypes.object.isRequired,
@@ -23,48 +24,32 @@ class FormPlaceSlotSelector extends Component {
     slots: PropTypes.array.isRequired,
   }
 
-  componentDidMount() {
-    this.generateIsoEventTimeframe(this.state.selectedSlotsIndexes)
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.place && (
-        !prevState.place ||
-        this.state.place.id !== prevState.place.id
-      )
-    ) {
-      this.props.fetchSlots(this.state.place.slug)
-    }
-
-    this.props.input.onChange(this.state)
-  }
-
   onPlaceChange(place) {
-    this.setState({
-      eventFromStr: undefined,
-      eventToStr: undefined,
+    this.props.input.onChange({
       place,
       selectedSlotsIndexes: [],
     })
+
+    this.props.fetchSlots(place.slug)
   }
 
   onSlotChange(selectedSlotsIndexes) {
-    this.generateIsoEventTimeframe(selectedSlotsIndexes)
+    this.props.input.onChange({
+      place: this.props.input.value.place,
+      selectedSlotsIndexes,
+    })
   }
 
   renderSelectedSlots() {
-    const slotIndexes = this.state.selectedSlotsIndexes
+    const slotIndexes = this.props.input.value.selectedSlotsIndexes
 
-    if (slotIndexes.length === 0) {
+    if (!slotIndexes || slotIndexes.length === 0) {
       return null
     }
 
     const slots = this.generateSlots()
     const firstSlot = getSlotWithIndex(slots, slotIndexes[0])
-    const lastSlot = getSlotWithIndex(
-      slots, slotIndexes[slotIndexes.length - 1]
-    )
+    const lastSlot = getSlotWithIndex(slots, slotIndexes[slotIndexes.length - 1])
 
     return <h4>{ formatEventTime(firstSlot.from, lastSlot.to) }</h4>
   }
@@ -78,7 +63,7 @@ class FormPlaceSlotSelector extends Component {
       )
     }
 
-    if (!this.state.place) {
+    if (!this.props.input.value.place) {
       return (
         <p>
           { translate('components.formPlaceSlotSelector.selectAPlaceFirst') }
@@ -89,7 +74,7 @@ class FormPlaceSlotSelector extends Component {
     return (
       <FormPlaceSlotSelectorSlot
         disabled={this.props.disabled}
-        selectedSlotsIndexes={this.state.selectedSlotsIndexes}
+        selectedSlotsIndexes={this.props.input.value.selectedSlotsIndexes}
         slots={this.generateSlots()}
         onChange={this.onSlotChange}
       />
@@ -97,18 +82,18 @@ class FormPlaceSlotSelector extends Component {
   }
 
   renderSelectedPlace() {
-    if (!this.state.place) {
+    if (!this.props.input.value.place) {
       return null
     }
 
-    return <CuratedPlaceListItem item={this.state.place} />
+    return <CuratedPlaceListItem item={this.props.input.value.place} />
   }
 
   renderPlaceSelector() {
     return (
       <FormPlaceSlotSelectorPlace
         disabled={this.props.disabled}
-        place={this.state.place}
+        place={this.props.input.value.place}
         onChange={this.onPlaceChange}
       />
     )
@@ -132,42 +117,17 @@ class FormPlaceSlotSelector extends Component {
   constructor(props) {
     super(props)
 
-    const { place, selectedSlotsIndexes } = props.input.value
-
-    this.state = {
-      eventFromStr: undefined,
-      eventToStr: undefined,
-      place,
-      selectedSlotsIndexes: selectedSlotsIndexes || [],
-    }
-
     this.onSlotChange = this.onSlotChange.bind(this)
     this.onPlaceChange = this.onPlaceChange.bind(this)
   }
 
   generateSlots() {
     return generateNewSlotItems(
-      this.state.place.slotSize,
-      this.props.slots
+      this.props.input.value.place.slotSize,
+      this.props.slots,
+      this.props.config.festivalDateStart,
+      this.props.config.festivalDateEnd
     )
-  }
-
-  generateIsoEventTimeframe(slotIndexes) {
-    if (slotIndexes.length === 0) {
-      return
-    }
-
-    const slots = this.generateSlots()
-    const firstSlot = getSlotWithIndex(slots, slotIndexes[0])
-    const lastSlot = getSlotWithIndex(
-      slots, slotIndexes[slotIndexes.length - 1]
-    )
-
-    this.setState({
-      eventFromStr: moment(firstSlot.from).format(),
-      eventToStr: moment(lastSlot.to).format(),
-      selectedSlotsIndexes: slotIndexes,
-    })
   }
 }
 
@@ -181,5 +141,5 @@ export default connect(
   mapStateToProps, {
     fetchSlots,
   }
-)(asFormField(FormPlaceSlotSelector))
+)(asFormField(withConfig(FormPlaceSlotSelector)))
 

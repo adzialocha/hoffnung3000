@@ -1,4 +1,5 @@
 import httpStatus from 'http-status'
+import { Op } from 'sequelize'
 
 import {
   DEFAULT_LIMIT,
@@ -19,8 +20,10 @@ import {
 import pick from '../utils/pick'
 import { APIError } from '../helpers/errors'
 import { createEventSlots, isInClosedOrder } from '../../common/utils/slots'
+import { getConfig } from '../config'
 
 import {
+  AnimalBelongsToUser,
   EventBelongsToAnimal,
   EventBelongsToManyImage,
   EventBelongsToManyResource,
@@ -46,6 +49,7 @@ const permittedFields = [
 const belongsToAnimal = {
   association: EventBelongsToAnimal,
   attributes: ['name', 'id', 'userId'],
+  include: AnimalBelongsToUser,
 }
 
 const belongsToManyResources = {
@@ -96,9 +100,9 @@ function areSlotsInClosedRange(req) {
 function areSlotsAvailable(req, fields, existingEventId) {
   const { placeId } = fields
 
-  let eventId = { $not: null }
+  let eventId = { [Op.not]: null }
   if (existingEventId) {
-    eventId = { $and: [eventId, { $not: existingEventId }] }
+    eventId = { [Op.and]: [eventId, { [Op.not]: existingEventId }] }
   }
 
   return new Promise((resolve, reject) => {
@@ -106,9 +110,9 @@ function areSlotsAvailable(req, fields, existingEventId) {
       where: {
         placeId,
         slotIndex: {
-          $in: req.body.slots,
+          [Op.in]: req.body.slots,
         },
-        $or: [{
+        [Op.or]: [{
           isDisabled: true,
         }, {
           eventId,
@@ -130,20 +134,21 @@ function areSlotsAvailable(req, fields, existingEventId) {
   })
 }
 
-function areResourcesAvailable(req, existingEventId) {
+function areResourcesAvailable(req, existingEventId, festivalDateStart) {
   const slots = createEventSlots(
     req.body.slots,
     null,
     null,
-    req.place.slotSize
+    req.place.slotSize,
+    festivalDateStart
   )
 
   const eventFrom = slots[0].from
   const eventTo = slots[slots.length - 1].to
 
-  let eventId = { $not: null }
+  let eventId = { [Op.not]: null }
   if (existingEventId) {
-    eventId = { $and: [eventId, { $not: existingEventId }] }
+    eventId = { [Op.and]: [eventId, { [Op.not]: existingEventId }] }
   }
 
   return new Promise((resolve, reject) => {
@@ -151,7 +156,7 @@ function areResourcesAvailable(req, existingEventId) {
       distinct: true,
       where: {
         id: {
-          $in: req.body.resources,
+          [Op.in]: req.body.resources,
         },
       },
       include: [{
@@ -163,15 +168,15 @@ function areResourcesAvailable(req, existingEventId) {
           as: 'slots',
           required: true,
           where: {
-            $and: [{
+            [Op.and]: [{
               eventId,
             }, {
               from: {
-                $lt: eventTo,
+                [Op.lt]: eventTo,
               },
             }, {
               to: {
-                $gt: eventFrom,
+                [Op.gt]: eventFrom,
               },
             }],
           },
@@ -193,9 +198,9 @@ function areResourcesAvailable(req, existingEventId) {
   })
 }
 
-function createEvent(req, fields) {
+function createEvent(req, fields, festivalDateStart) {
   return new Promise((resolve, reject) => {
-    return Place.findById(fields.placeId, {
+    return Place.findByPk(fields.placeId, {
       include: [
         PlaceBelongsToAnimal,
       ],
@@ -214,9 +219,9 @@ function createEvent(req, fields) {
           returning: true,
         })
           .then(event => {
-            // associate resources to event
+            // Associate resources to event
             return Resource.findAll({
-              where: { id: { $in: req.body.resources } },
+              where: { id: { [Op.in]: req.body.resources } },
               include: [{
                 association: ResourceBelongsToAnimal,
                 required: true,
@@ -225,12 +230,13 @@ function createEvent(req, fields) {
               .then(resources => {
                 event.setResources(resources)
 
-                // create slots for event
+                // Create slots for event
                 const slots = createEventSlots(
                   req.body.slots,
                   place.id,
                   event.id,
-                  place.slotSize
+                  place.slotSize,
+                  festivalDateStart
                 )
 
                 return Slot.bulkCreate(slots)
@@ -254,9 +260,9 @@ function createEvent(req, fields) {
   })
 }
 
-function updateEvent(req, fields) {
+function updateEvent(req, fields, festivalDateStart) {
   return new Promise((resolve, reject) => {
-    return Place.findById(fields.placeId, {
+    return Place.findByPk(fields.placeId, {
       include: [
         PlaceBelongsToAnimal,
       ],
@@ -280,12 +286,12 @@ function updateEvent(req, fields) {
           .then(data => {
             const event = data[1][0]
 
-            // update images
+            // Update images
             return updateImagesForObject(event, req.body.images)
               .then(() => {
-                // associate resources to event
+                // Associate resources to event
                 return Resource.findAll({
-                  where: { id: { $in: req.body.resources } },
+                  where: { id: { [Op.in]: req.body.resources } },
                   include: [{
                     association: ResourceBelongsToAnimal,
                     required: true,
@@ -294,22 +300,23 @@ function updateEvent(req, fields) {
                   .then(resources => {
                     event.setResources(resources)
 
-                    // clean up all slot before
+                    // Clean up all slot before
                     return Slot.destroy({
                       where: {
                         eventId: event.id,
                       },
                     })
                       .then(() => {
-                        // create slots for event
+                        // Create slots for event
                         const slots = createEventSlots(
                           req.body.slots,
                           place.id,
                           event.id,
-                          place.slotSize
+                          place.slotSize,
+                          festivalDateStart
                         )
 
-                        // filter out only new resources for notifications
+                        // Filter out only new resources for notifications
                         const currentResourceIds = resources.map(resource => {
                           return resource.id
                         })
@@ -338,8 +345,8 @@ function updateEvent(req, fields) {
                             })
                           })
                           .then(() => {
-                            // return the whole event with all associations
-                            return Event.findById(event.id, { include })
+                            // Return the whole event with all associations
+                            return Event.findByPk(event.id, { include })
                               .then(updatedEvent => resolve(updatedEvent))
                           })
                       })
@@ -351,8 +358,8 @@ function updateEvent(req, fields) {
   })
 }
 
-function validateEvent(req, fields, eventId) {
-  return Place.findById(fields.placeId)
+function validateEvent(req, fields, eventId, festivalDateStart) {
+  return Place.findByPk(fields.placeId)
     .then(place => {
       if (!place) {
         throw new APIError(
@@ -361,31 +368,69 @@ function validateEvent(req, fields, eventId) {
         )
       }
 
-      // keep the place, because we need it later
+      // Keep the place, because we need it later
       req.place = place
 
       return Promise.all([
         areSlotsInClosedRange(req),
         areSlotsAvailable(req, fields, eventId),
-        areResourcesAvailable(req, eventId),
+        areResourcesAvailable(req, eventId, festivalDateStart),
       ])
     })
+}
+
+function findOneWithSlug(slug, req, res, next) {
+  return Event.findOne({
+    include,
+    rejectOnEmpty: true,
+    where: {
+      slug,
+    },
+    order: [
+      [EventHasManySlots, 'from', 'ASC'],
+    ],
+  })
+    .then(data => {
+      if (!data.isPublic && req.user.isVisitor) {
+        next(
+          new APIError(
+            'Requested resource is not public',
+            httpStatus.FORBIDDEN
+          )
+        )
+        return null
+      }
+
+      return getConfig('isAnonymizationEnabled').then(config => {
+        return res.json(prepareResponse(
+          data,
+          req,
+          config.isAnonymizationEnabled
+        ))
+      })
+    })
+    .catch(err => next(err))
 }
 
 export default {
   create: (req, res, next) => {
     const fields = pick(permittedFields, req.body)
 
-    // check if everything is correct before we do anything
-    return validateEvent(req, fields)
-      .then(() => {
-        // create event
-        return createEvent(req, fields)
-          .then(event => res.json(prepareResponse(event, req)))
-      })
-      .catch(err => {
-        next(err)
-        return
+    // Check if everything is correct before we do anything
+    return getConfig('festivalDateStart')
+      .then(config => {
+        return validateEvent(req, fields, null, config.festivalDateStart)
+          .then(() => {
+            // Create event
+            return createEvent(req, fields, config.festivalDateStart)
+              .then(event => {
+                return findOneWithSlug(event.slug, req, res, next)
+              })
+          })
+          .catch(err => {
+            next(err)
+            return
+          })
       })
   },
   destroy: (req, res, next) => {
@@ -426,40 +471,23 @@ export default {
       where: req.user.isVisitor ? { isPublic: true } : {},
     })
       .then(result => {
-        res.json({
-          data: prepareResponseAll(result.rows, req),
-          limit: parseInt(limit, 10),
-          offset: parseInt(offset, 10),
-          total: result.count,
+        return getConfig('isAnonymizationEnabled').then(config => {
+          res.json({
+            data: prepareResponseAll(
+              result.rows,
+              req,
+              config.isAnonymizationEnabled
+            ),
+            limit: parseInt(limit, 10),
+            offset: parseInt(offset, 10),
+            total: result.count,
+          })
         })
       })
       .catch(err => next(err))
   },
   findOneWithSlug: (req, res, next) => {
-    return Event.findOne({
-      include,
-      rejectOnEmpty: true,
-      where: {
-        slug: req.params.resourceSlug,
-      },
-      order: [
-        [EventHasManySlots, 'from', 'ASC'],
-      ],
-    })
-      .then(data => {
-        if (!data.isPublic && req.user.isVisitor) {
-          next(
-            new APIError(
-              'Requested resource is not public',
-              httpStatus.FORBIDDEN
-            )
-          )
-          return null
-        }
-
-        return res.json(prepareResponse(data, req))
-      })
-      .catch(err => next(err))
+    return findOneWithSlug(req.params.resourceSlug, req, res, next)
   },
   lookup: (req, res, next) => {
     return lookupWithSlug(Event, req, res, next)
@@ -467,16 +495,25 @@ export default {
   update: (req, res, next) => {
     const fields = pick(permittedFields, req.body)
 
-    // check if everything is correct before we do anything
-    return validateEvent(req, fields, req.resourceId)
-      .then(() => {
-        // update event
-        return updateEvent(req, fields)
-          .then(event => res.json(prepareResponse(event, req)))
-      })
-      .catch(err => {
-        next(err)
-        return
+    // Check if everything is correct before we do anything
+    return getConfig(['festivalDateStart', 'isAnonymizationEnabled'])
+      .then(config => {
+        return validateEvent(req, fields, req.resourceId, config.festivalDateStart)
+          .then(() => {
+            // Update event
+            return updateEvent(req, fields, config.festivalDateStart)
+              .then(event => {
+                res.json(prepareResponse(
+                  event,
+                  req,
+                  config.isAnonymizationEnabled
+                ))
+              })
+          })
+          .catch(err => {
+            next(err)
+            return
+          })
       })
   },
 }

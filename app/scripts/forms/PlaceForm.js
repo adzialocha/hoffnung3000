@@ -81,6 +81,7 @@ class PlaceForm extends Component {
         </div>
       )
     }
+
     return null
   }
 
@@ -88,7 +89,9 @@ class PlaceForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
+
         <h2>{ translate('forms.common.basicInformation') }</h2>
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -96,28 +99,38 @@ class PlaceForm extends Component {
           name="title"
           type="text"
         />
+
         <Field
           component={FormTextarea}
           disabled={this.props.isLoading}
           label={translate('forms.place.description')}
           name="description"
         />
+
         <hr />
+
         <h2>{ translate('forms.common.uploadImages') }</h2>
+
         <Field
           component={FormImageUploader}
           disabled={this.props.isLoading}
           name="images"
         />
+
         <hr />
+
         <h2>{ translate('forms.place.where') }</h2>
+
         <Field
           component={FormLocationSelector}
           disabled={this.props.isLoading}
           name="location"
         />
+
         <hr />
+
         <h2>{ translate('forms.place.publicOrPrivate') }</h2>
+
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
@@ -125,15 +138,20 @@ class PlaceForm extends Component {
           label={translate('forms.place.areEventsPublic')}
           name="isPublic"
         />
+
         <hr />
+
         <h2>{ translate('forms.place.slots') }</h2>
+
         <Field
           component={FormSlotSizeEditor}
           disabled={this.props.isLoading}
           isSlotSizeVisible={this.props.isSlotSizeVisible}
           name="slots"
         />
+
         <hr />
+
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}

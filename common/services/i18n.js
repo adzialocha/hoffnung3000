@@ -1,6 +1,6 @@
 import locales from '../locales'
 
-const DEFAULT_LOCALE = 'en'
+export const DEFAULT_LOCALE = 'en'
 
 function keyToString(key) {
   if (Object.prototype.toString.call(key) === '[object Array]') {
@@ -38,7 +38,7 @@ function capitalizeWord(word) {
 
 function titleize(sentence) {
   const result = []
-  sentence.split(' ').forEach((word) => {
+  sentence.split(' ').forEach(word => {
     result.push(capitalizeWord(word))
   })
 

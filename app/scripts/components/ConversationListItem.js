@@ -1,6 +1,6 @@
-import moment from 'moment-timezone'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { DateTime } from 'luxon'
 
 import { asInfiniteListItem } from '../containers'
 
@@ -12,9 +12,9 @@ class ConversationListItem extends Component {
   }
 
   renderDate() {
-    const dateStr = moment(this.props.item.lastMessage.createdAt).format(
-      'DD.MM.YY HH:mm'
-    )
+    const dateStr = DateTime
+      .fromISO(this.props.item.lastMessage.createdAt)
+      .toFormat('dd.MM.yy HH:mm')
 
     return (
       <div className="list-item-content__subtitle ellipsis">
@@ -30,7 +30,9 @@ class ConversationListItem extends Component {
           { this.props.item.title }
           { !this.props.item.isRead ? ' *' : null }
         </div>
+
         { this.renderDate() }
+
         <div className="markdown">
           <p>{ this.previewText() }</p>
         </div>

@@ -3,6 +3,10 @@ import update from 'immutability-helper'
 import ActionTypes from '../actionTypes'
 
 const initialState = {
+  lists: {},
+}
+
+const initialStateResource = {
   currentPageIndex: 0,
   isLoading: false,
   listItems: [],
@@ -11,29 +15,32 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+  case ActionTypes.INFINITE_LIST_CLEAR:
   case ActionTypes.INFINITE_LIST_INITIALIZE:
     return update(state, {
-      currentPageIndex: { $set: 0 },
-      isLoading: { $set: true },
-      listItems: { $set: [] },
-      totalPageCount: { $set: 0 },
+      [action.meta.path]: { $set: initialStateResource },
     })
   case ActionTypes.INFINITE_LIST_REQUEST:
     return update(state, {
-      currentPageIndex: { $set: action.meta.page },
-      isLoading: { $set: true },
+      [action.meta.path]: {
+        currentPageIndex: { $set: action.meta.page },
+      },
     })
   case ActionTypes.INFINITE_LIST_SUCCESS:
     return update(state, {
-      isLoading: { $set: false },
-      listItems: { $push: action.payload.data },
-      totalPageCount: {
-        $set: Math.ceil(action.payload.total / action.payload.limit),
+      [action.meta.path]: {
+        isLoading: { $set: false },
+        listItems: { $push: action.payload.data },
+        totalPageCount: {
+          $set: Math.ceil(action.payload.total / action.payload.limit),
+        },
       },
     })
   case ActionTypes.INFINITE_LIST_FAILURE:
     return update(state, {
-      isLoading: { $set: false },
+      [action.meta.path]: {
+        isLoading: { $set: false },
+      },
     })
   default:
     return state

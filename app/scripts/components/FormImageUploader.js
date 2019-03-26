@@ -1,23 +1,26 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import { FormImageUploaderImage } from './'
 import { alert } from '../services/dialog'
 import { asFormField, withImageUpload } from '../containers'
-import { FormImageUploaderImage } from './'
 import { translate } from '../../../common/services/i18n'
 
 function convertFileToBase64(file) {
   return new Promise(resolve => {
     const reader = new FileReader()
+
     reader.onloadend = () => {
       resolve(reader.result)
     }
+
     reader.readAsDataURL(file)
   })
 }
 
 function convertFilesToBase64(files) {
   const promises = []
+
   for (let i = 0; i < files.length; i++) {
     promises.push(
       convertFileToBase64(files[i])
@@ -37,18 +40,12 @@ class FormImageUploader extends Component {
     maxImagesCount: PropTypes.number,
     removeImageFromList: PropTypes.func.isRequired,
     setUploadedImages: PropTypes.func.isRequired,
-    uploadedImages: PropTypes.array.isRequired,
     uploadImages: PropTypes.func.isRequired,
+    uploadedImages: PropTypes.array.isRequired,
   }
 
   static defaultProps = {
     maxImagesCount: undefined,
-  }
-
-  componentWillMount() {
-    if (this.props.input.value) {
-      this.props.setUploadedImages(this.props.input.value)
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -56,6 +53,7 @@ class FormImageUploader extends Component {
       const preparedImages = this.props.uploadedImages.map(image => {
         if (image.base64String) {
           return Object.assign({}, {
+            isNew: true,
             fileName: image.fileName,
           })
         }
@@ -64,6 +62,17 @@ class FormImageUploader extends Component {
       })
 
       this.props.input.onChange(preparedImages)
+    }
+
+    if (
+      this.props.input.value &&
+      !this._isInitialSet
+    ) {
+      this._isInitialSet = true
+
+      if (!this.props.input.value.find(item => item.isNew)) {
+        this.props.setUploadedImages(this.props.input.value)
+      }
     }
   }
 
@@ -79,7 +88,11 @@ class FormImageUploader extends Component {
     }
 
     const totalFilesCount = files.length + this.props.uploadedImages.length
-    if (this.props.maxImagesCount && totalFilesCount > this.props.maxImagesCount) {
+
+    if (
+      this.props.maxImagesCount &&
+      totalFilesCount > this.props.maxImagesCount
+    ) {
       alert(
         translate('components.formImageUploader.maxImageReached', {
           count: this.props.maxImagesCount,
@@ -106,7 +119,7 @@ class FormImageUploader extends Component {
   onUploadClick(event) {
     event.preventDefault()
 
-    this.refs.uploadButton.click()
+    this._uploadButtonElem.click()
   }
 
   onImageRemoveClick(imageId) {
@@ -121,6 +134,7 @@ class FormImageUploader extends Component {
         </div>
       )
     }
+
     return null
   }
 
@@ -171,11 +185,12 @@ class FormImageUploader extends Component {
       <div className="image-uploader__footer">
         <input
           multiple="multiple"
-          ref="uploadButton"
+          ref={c => { this._uploadButtonElem = c }}
           style={ { display: 'none' } }
           type="file"
           onChange={this.onFilesChange}
         />
+
         <button
           className="button button--green"
           disabled={
@@ -196,9 +211,11 @@ class FormImageUploader extends Component {
       <div className="image-uploader">
         { this.renderLoadingIndicator() }
         { this.renderErrorMessage() }
+
         <div className="image-uploader__image-list">
           { this.renderUploadedImages() }
         </div>
+
         { this.renderUploadButton() }
       </div>
     )
@@ -206,6 +223,9 @@ class FormImageUploader extends Component {
 
   constructor(props) {
     super(props)
+
+    // Workaround to only set initial input values once
+    this._isInitialSet = false
 
     this.onFilesChange = this.onFilesChange.bind(this)
     this.onImageRemoveClick = this.onImageRemoveClick.bind(this)

@@ -1,25 +1,29 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import flash from '../actions/flash'
+import { PlaceForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { confirm } from '../services/dialog'
+import { translate } from '../../../common/services/i18n'
+import { withConfig } from '../containers'
+
 import {
   deleteResource,
   fetchResource,
   updateResource,
 } from '../actions/resources'
-import { PlaceForm } from '../forms'
+
 import {
   generateNewSlotItems,
   getDisabledSlotIndexes,
 } from '../../../common/utils/slots'
-import { translate } from '../../../common/services/i18n'
 
 class PlacesEdit extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     deleteResource: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
@@ -104,23 +108,26 @@ class PlacesEdit extends Component {
 
     const location = {
       mode,
-    }
-
-    if (mode === 'gps') {
-      location.latitude = this.props.resourceData.latitude
-      location.longitude = this.props.resourceData.longitude
-    } else if (mode === 'address') {
-      location.street = this.props.resourceData.street
-      location.cityCode = this.props.resourceData.cityCode
-      location.city = this.props.resourceData.city
-      location.country = this.props.resourceData.country
+      latitude: this.props.resourceData.latitude || this.props.config.defaultLatitude,
+      longitude: this.props.resourceData.longitude || this.props.config.defaultLongitude,
+      street: this.props.resourceData.street || '',
+      cityCode: this.props.resourceData.cityCode || '',
+      city: this.props.resourceData.city || this.props.config.defaultCity,
+      country: this.props.resourceData.country || this.props.config.defaultCountry,
     }
 
     const slotSize = this.props.resourceData.slotSize
+
     const slots = {
-      slots: generateNewSlotItems(slotSize, slotData),
+      slots: generateNewSlotItems(
+        slotSize,
+        slotData,
+        this.props.config.festivalDateStart,
+        this.props.config.festivalDateEnd
+      ),
       slotSize,
     }
+
     const initialValues = {
       description,
       images,
@@ -144,6 +151,7 @@ class PlacesEdit extends Component {
     if (this.props.isLoading) {
       return <h1>{ translate('views.places.titlePlaceholder') }</h1>
     }
+
     return <h1>{ this.props.resourceData.title }</h1>
   }
 
@@ -151,12 +159,15 @@ class PlacesEdit extends Component {
     return (
       <section>
         { this.renderTitle() }
+
         <Link className="button" to="/places">
           { translate('common.backToOverview') }
         </Link>
+
         <button className="button button--red" onClick={this.onDeleteClick}>
           { translate('common.deleteButton') }
         </button>
+
         <hr />
         { this.renderForm() }
       </section>
@@ -185,11 +196,11 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(
+export default withConfig(connect(
   mapStateToProps, {
     deleteResource,
     fetchResource,
     flash,
     updateResource,
   }
-)(PlacesEdit)
+)(PlacesEdit))

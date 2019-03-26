@@ -14,7 +14,7 @@ export default function withDrawerState(WrappedComponent) {
     collapseAll,
     toggleNavigation,
     toggleSidebar,
-  })((props) => {
+  })(props => {
     return <WrappedComponent {...props} />
   })
 }

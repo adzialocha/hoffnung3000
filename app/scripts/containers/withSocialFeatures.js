@@ -16,7 +16,7 @@ export default function withSocialFeatures(WrappedComponent) {
     requestRandomMeeting,
   }
 
-  return connect(mapStateToProps, mapDispatchToProps)((props) => {
+  return connect(mapStateToProps, mapDispatchToProps)(props => {
     return <WrappedComponent {...props} />
   })
 }

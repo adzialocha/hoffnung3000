@@ -6,6 +6,6 @@ export function deleteAnimals(where) {
       where,
     })
       .then(() => resolve())
-      .catch((err) => reject(err))
+      .catch(err => reject(err))
   })
 }

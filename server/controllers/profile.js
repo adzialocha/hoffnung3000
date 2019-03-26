@@ -33,7 +33,7 @@ export function update(req, res, next) {
         limit: 1,
         returning: true,
       })
-        .then((data) => {
+        .then(data => {
           const updatedUser = data[1][0]
           res.json({
             data: updatedUser,

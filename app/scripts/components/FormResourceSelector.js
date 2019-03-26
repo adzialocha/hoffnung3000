@@ -57,7 +57,9 @@ class FormResourceSelector extends Component {
         <div className="modal__header">
           <h1>{ translate('components.formResourceSelector.title') }</h1>
         </div>
+
         { this.renderModalContainer() }
+
         <div className="modal__footer">
           <div className="button-group">
             <button
@@ -87,6 +89,7 @@ class FormResourceSelector extends Component {
     return (
       <div className="button-group">
         { this.renderModal() }
+
         <button
           className="button button--green"
           disabled={this.props.disabled}

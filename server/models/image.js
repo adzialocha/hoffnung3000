@@ -1,36 +1,36 @@
+import Sequelize from 'sequelize'
+
 import db from '../database'
 import { createAndUploadImageVersions } from '../services/imageVersions'
-import { deleteObjects } from '../services/s3'
+import { deleteImages } from '../services/upload'
 
-const Image = db.sequelize.define('image', {
+const Image = db.define('image', {
   id: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   fileName: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   largeImageUrl: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   mediumImageUrl: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   smallImageUrl: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
 })
 
-Image.hook('beforeValidate', (image) => {
+Image.addHook('beforeValidate', image => {
   if (!image.fileName) {
-    return sequelize.Promise.reject(
-      new Error('Invalid image object')
-    )
+    return Promise.reject(new Error('Invalid image object'))
   }
 
   return new Promise((resolve, reject) => {
@@ -42,12 +42,12 @@ Image.hook('beforeValidate', (image) => {
 
         resolve()
       })
-      .catch((err) => reject(err))
+      .catch(err => reject(err))
   })
 })
 
-Image.hook('beforeDestroy', (image) => {
-  return deleteObjects([
+Image.addHook('beforeDestroy', image => {
+  return deleteImages([
     image.largeImageUrl,
     image.mediumImageUrl,
     image.smallImageUrl,

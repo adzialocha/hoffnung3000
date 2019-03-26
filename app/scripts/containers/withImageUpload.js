@@ -22,7 +22,7 @@ export default function withImageUpload(WrappedComponent) {
     uploadImages,
   }
 
-  return connect(mapStateToProps, mapDispatchToProps)((props) => {
+  return connect(mapStateToProps, mapDispatchToProps)(props => {
     return <WrappedComponent {...props} />
   })
 }

@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { DateTime } from 'luxon'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { connect } from 'react-redux'
 
 import {
   FormCheckbox,
@@ -12,10 +13,17 @@ import {
   FormTextarea,
 } from '../components'
 
+import {
+  generateNewSlotItems,
+  getSlotWithIndex,
+} from '../../../common/utils/slots'
+
 import { translate } from '../../../common/services/i18n'
+import { withConfig } from '../containers'
 
 const validate = values => {
   const errors = {}
+
   if (!values.title) {
     errors.title = translate('forms.event.errors.titleRequired')
   } else if (values.title.length < 3) {
@@ -47,6 +55,7 @@ const validate = values => {
 
 class EventForm extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     errorMessage: PropTypes.string,
     eventId: PropTypes.number,
     handleSubmit: PropTypes.func.isRequired,
@@ -69,6 +78,7 @@ class EventForm extends Component {
         </div>
       )
     }
+
     return null
   }
 
@@ -97,7 +107,7 @@ class EventForm extends Component {
       return <p>{ translate('forms.event.selectPlaceAndSlotsFirst') }</p>
     }
 
-    const { eventFromStr, eventToStr } = this.props.placeSlots
+    const { eventFromStr, eventToStr } = this.generateIsoEventTimeframe(selectedSlotsIndexes)
 
     return (
       <Field
@@ -115,7 +125,9 @@ class EventForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
+
         <h2>{ translate('forms.event.what') }</h2>
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -123,6 +135,7 @@ class EventForm extends Component {
           name="title"
           type="text"
         />
+
         <Field
           component={FormTextarea}
           disabled={this.props.isLoading}
@@ -130,26 +143,36 @@ class EventForm extends Component {
           name="description"
           type="text"
         />
+
         <hr />
         <h2>{ translate('forms.common.uploadImages') }</h2>
+
         <Field
           component={FormImageUploader}
           disabled={this.props.isLoading}
           name="images"
         />
+
         <hr />
+
         <Field
           component={FormPlaceSlotSelector}
           disabled={this.props.isLoading}
           name="placeSlots"
         />
+
         <hr />
+
         <h2>{ translate('forms.event.publicOrPrivate') }</h2>
         { this.renderPrivateField() }
+
         <hr />
+
         <h2>{ translate('forms.event.pickResources') }</h2>
         { this.renderResourcesSelector() }
+
         <hr />
+
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}
@@ -159,6 +182,37 @@ class EventForm extends Component {
         </button>
       </form>
     )
+  }
+
+  generateSlots() {
+    const { place, selectedSlotsIndexes } = this.props.placeSlots
+
+    return generateNewSlotItems(
+      place.slotSize,
+      selectedSlotsIndexes,
+      this.props.config.festivalDateStart,
+      this.props.config.festivalDateEnd
+    )
+  }
+
+  generateIsoEventTimeframe(slotIndexes) {
+    if (slotIndexes.length === 0) {
+      return {
+        eventFromStr: undefined,
+        eventToStr: undefined,
+      }
+    }
+
+    const slots = this.generateSlots()
+    const firstSlot = getSlotWithIndex(slots, slotIndexes[0])
+    const lastSlot = getSlotWithIndex(
+      slots, slotIndexes[slotIndexes.length - 1]
+    )
+
+    return {
+      eventFromStr: DateTime.fromISO(firstSlot.from, { zone: 'utc' }).toISO(),
+      eventToStr: DateTime.fromISO(lastSlot.to, { zone: 'utc' }).toISO(),
+    }
   }
 }
 
@@ -174,4 +228,4 @@ export default connect(state => {
   return {
     placeSlots: selector(state, 'placeSlots'),
   }
-})(SelectingEventForm)
+})(withConfig(SelectingEventForm))

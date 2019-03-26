@@ -13,50 +13,59 @@ const include = [{
   model: Animal,
 }]
 
-export function prepareAnimalResponse(animal) {
+export function prepareAnimalResponse(animal, isAnonymous = true) {
   if (!animal) {
     return null
   }
 
   const { id, name } = animal
 
-  return {
+  const data = {
     id,
     name,
   }
+
+  if (!isAnonymous) {
+    const { user } = animal
+
+    data.userId = user.id
+    data.userName = `${user.firstname} ${user.lastname}`
+  }
+
+  return data
 }
 
-export function prepareAnimalResponseAll(animals) {
-  return animals.map(animal => prepareAnimalResponse(animal))
+export function prepareAnimalResponseAll(animals, isAnonymous) {
+  return animals.map(animal => prepareAnimalResponse(animal, isAnonymous))
 }
 
-export function prepareResponse(data, req) {
+export function prepareResponse(data, req, isAnonymous) {
   const response = data.toJSON()
 
-  // set owner flag for frontend ui
+  // Set owner flag for frontend ui
   if (typeof req.isOwnerMe !== 'undefined') {
     response.isOwnerMe = req.isOwnerMe
   } else {
     response.isOwnerMe = (data.animal.userId === req.user.id)
   }
 
-  // remove userId from animal to stay anonymous
+  // Remove userId from animal to stay anonymous
   if (response.animal) {
-    response.animal = prepareAnimalResponse(response.animal)
+    response.animal = prepareAnimalResponse(response.animal, isAnonymous)
   }
 
-  // convert markdown to html
+  // Convert markdown to html
   response.descriptionHtml = marked(response.description)
 
   return response
 }
 
-export function prepareResponseAll(rows, req) {
-  return rows.map(row => prepareResponse(row, req))
+export function prepareResponseAll(rows, req, isAnonymous) {
+  return rows.map(row => prepareResponse(row, req, isAnonymous))
 }
 
 export function lookup(model, req, res, next) {
-  return model.findById(req.params.resourceId, {
+  return model.findByPk(req.params.resourceId, {
     include,
     rejectOnEmpty: true,
   })
@@ -88,7 +97,7 @@ export function lookupWithSlug(model, req, res, next) {
 }
 
 export function findOne(model, req, res, next) {
-  return model.findById(req.params.resourceId, {
+  return model.findByPk(req.params.resourceId, {
     rejectOnEmpty: true,
   })
     .then(data => res.json(data))

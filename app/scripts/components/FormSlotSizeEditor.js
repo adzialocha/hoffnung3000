@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import ReactSlider from 'react-slider'
 
-import { asFormField } from '../containers'
+import { asFormField, withConfig } from '../containers'
 import {
   checkSlotSize,
   generateNewSlotItems,
@@ -12,33 +12,32 @@ import {
 import { SlotEditor } from './'
 import { translate } from '../../../common/services/i18n'
 
+const SLOT_SIZE_MAX = 1440 // in minutes
+const SLOT_SIZE_MIN = 0
+const SLOT_SIZE_STEP = 5
+
 class FormSlotSizeEditor extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
     isSlotSizeVisible: PropTypes.bool.isRequired,
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      this.state.isModalOpen !== nextState.isModalOpen ||
-      this.state.slots.length !== nextState.slots.length ||
-      this.state.slotSize !== nextState.slotSize
-    )
+  onSlotsChange(slots) {
+    this.props.input.onChange(this.currentValue({ slots }))
   }
 
-  componentDidUpdate() {
-    this.props.input.onChange({
-      slots: this.state.slots,
-      slotSize: this.state.slotSize,
-    })
+  onSlotSizeChange(slotSize) {
+    this.props.input.onChange(this.currentValue({ slotSize }))
   }
 
   onFocus() {
-    this.props.input.onFocus({
-      slots: this.state.slots,
-      slotSize: this.state.slotSize,
-    })
+    this.props.input.onFocus(this.currentValue())
+  }
+
+  onBlur() {
+    this.props.input.onBlur(this.currentValue())
   }
 
   onOpenClick(event) {
@@ -55,25 +54,6 @@ class FormSlotSizeEditor extends Component {
     })
   }
 
-  onChange(slotSize) {
-    this.setState({
-      slotSize,
-    })
-  }
-
-  onAfterChange(slotSize) {
-    this.setState({
-      slots: generateNewSlotItems(slotSize),
-      slotSize,
-    })
-  }
-
-  onSlotDisabledChange(slots) {
-    this.setState({
-      slots,
-    })
-  }
-
   renderSlotSize() {
     if (!this.props.isSlotSizeVisible) {
       return null
@@ -84,22 +64,22 @@ class FormSlotSizeEditor extends Component {
         <label className="form__field-label">
           { translate('components.slotSizeEditor.slotSizeLabel') }
         </label>
+
         <div className="form__field-input">
           <ReactSlider
             className="react-slider"
             disabled={this.props.disabled}
             handleActiveClassName="react-slider__handle--active"
             handleClassName="react-slider__handle"
-            max={1440}
-            min={0}
+            max={SLOT_SIZE_MAX}
+            min={SLOT_SIZE_MIN}
             orientation="horizontal"
-            step={5}
-            value={this.state.slotSize}
-            onAfterChange={this.onAfterChange}
-            onChange={this.onChange}
+            step={SLOT_SIZE_STEP}
+            value={this.props.input.value.slotSize}
+            onChange={this.onSlotSizeChange}
             onSliderClick={this.onFocus}
           />
-          <p>{ numberToSlotSizeStrHuman(this.state.slotSize) }</p>
+          <p>{ numberToSlotSizeStrHuman(this.props.input.value.slotSize) }</p>
         </div>
       </div>
     )
@@ -111,12 +91,14 @@ class FormSlotSizeEditor extends Component {
         <div className="modal__header">
           <h1>{ translate('components.slotEditor.title') }</h1>
         </div>
+
         <div className="modal__content modal__content--scrollable">
           <SlotEditor
-            slots={this.state.slots}
-            onSlotDisabledChange={this.onSlotDisabledChange}
+            slots={this.props.input.value.slots}
+            onSlotDisabledChange={this.onSlotsChange}
           />
         </div>
+
         <div className="modal__footer">
           <div className="button-group">
             <button
@@ -137,6 +119,7 @@ class FormSlotSizeEditor extends Component {
         <label className="form__field-label">
           { translate('components.slotSizeEditor.editSlotsLabel') }
         </label>
+
         <div className="form__field-input">
           <Modal
             contentLabel="FormSlotSizeEditorModal"
@@ -144,12 +127,13 @@ class FormSlotSizeEditor extends Component {
           >
             { this.renderModalContent() }
           </Modal>
+
           <div className="button-group">
             <button
               className="button button--green"
               disabled={
                 this.props.disabled ||
-                !checkSlotSize(this.state.slotSize).isValid
+                !checkSlotSize(this.props.input.value.slotSize).isValid
               }
               onClick={this.onOpenClick}
             >
@@ -170,24 +154,34 @@ class FormSlotSizeEditor extends Component {
     )
   }
 
+  currentValue(newValues = {}) {
+    // Generate new slots when slotSize changed
+    const { festivalDateStart, festivalDateEnd } = this.props.config
+
+    const slots = newValues.slotSize ? generateNewSlotItems(
+      newValues.slotSize, null, festivalDateStart, festivalDateEnd
+    ) : this.props.input.value.slots
+
+    const { slotSize } = this.props.input.value
+
+    return Object.assign({}, { slotSize, slots }, {
+      ...newValues,
+    })
+  }
+
   constructor(props) {
     super(props)
 
-    const slotSize = props.input.value.slotSize
-
     this.state = {
       isModalOpen: false,
-      slots: props.input.value.slots || generateNewSlotItems(slotSize),
-      slotSize,
     }
 
-    this.onChange = this.onChange.bind(this)
     this.onCloseClick = this.onCloseClick.bind(this)
     this.onFocus = this.onFocus.bind(this)
     this.onOpenClick = this.onOpenClick.bind(this)
-    this.onAfterChange = this.onAfterChange.bind(this)
-    this.onSlotDisabledChange = this.onSlotDisabledChange.bind(this)
+    this.onSlotSizeChange = this.onSlotSizeChange.bind(this)
+    this.onSlotsChange = this.onSlotsChange.bind(this)
   }
 }
 
-export default asFormField(FormSlotSizeEditor)
+export default withConfig(asFormField(FormSlotSizeEditor))

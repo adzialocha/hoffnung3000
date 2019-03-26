@@ -37,6 +37,7 @@ class FormPlaceSlotSelectorSlot extends Component {
         <div className="modal__header">
           <h1>{ translate('components.slotSelector.title') }</h1>
         </div>
+
         <div className="modal__content modal__content--scrollable">
           <SlotEditor
             isBookingMode={true}
@@ -46,6 +47,7 @@ class FormPlaceSlotSelectorSlot extends Component {
             onSubmit={this.onCloseClick}
           />
         </div>
+
         <div className="modal__footer">
           <div className="button-group">
             <button
@@ -75,6 +77,7 @@ class FormPlaceSlotSelectorSlot extends Component {
     return (
       <div className="button-group">
         { this.renderModal() }
+
         <button
           className="button button--green"
           disabled={this.props.disabled}

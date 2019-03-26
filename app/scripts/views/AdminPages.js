@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { push } from 'react-router-redux'
+import { connect } from 'react-redux'
+import { push } from 'connected-react-router'
 
+import { PaginatedList, PaginatedListNavigation } from '../components'
 import { deleteResource } from '../actions/resources'
 import { notification } from '../actions/flash'
-import { PaginatedList, PaginatedListNavigation } from '../components'
 import { removeFromList } from '../actions/paginatedList'
 
 class AdminPages extends Component {
@@ -60,11 +60,13 @@ class AdminPages extends Component {
     return (
       <section>
         <h1>Pages</h1>
+
         <PaginatedList
           actions={tableActions}
           columns={tableColumns}
           onSelect={this.onEditClick}
         />
+
         <div className="bar">
           <div className="bar__cell bar__cell--align-left">
             <PaginatedListNavigation
@@ -72,8 +74,11 @@ class AdminPages extends Component {
               resourceName="pages"
             />
           </div>
+
           <div className="bar__cell bar__cell--align-right">
-            <Link className="button button--blue" to="/admin/pages/new">New Page</Link>
+            <Link className="button button--blue" to="/admin/pages/new">
+              New Page
+            </Link>
           </div>
         </div>
       </section>
@@ -89,7 +94,11 @@ class AdminPages extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const currentPageIndex = 'currentPageIndex' in ownProps.match.params ? parseInt(ownProps.match.params.currentPageIndex, 10) : 0
+  const currentPageIndex = (
+    'currentPageIndex' in ownProps.match.params ? parseInt(
+      ownProps.match.params.currentPageIndex, 10
+    ) : 0
+  )
 
   return {
     currentPageIndex,

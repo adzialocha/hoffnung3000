@@ -7,9 +7,9 @@ export default function parameterize(obj) {
     return ''
   }
 
-  return '?' + Object.keys(obj).map((key) => {
+  return '?' + Object.keys(obj).map(key => {
     if (Array.isArray(obj[key])) {
-      return obj[key].map((item) => {
+      return obj[key].map(item => {
         return `${encode(key)}[]=${encode(item)}`
       }).join('&')
     }

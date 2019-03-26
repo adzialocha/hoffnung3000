@@ -10,7 +10,7 @@ export default function withAuthState(WrappedComponent) {
     }
   }
 
-  return connect(mapStateToProps, { updateStatus })((props) => {
+  return connect(mapStateToProps, { updateStatus })(props => {
     return <WrappedComponent {...props} />
   })
 }

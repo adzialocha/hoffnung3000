@@ -12,7 +12,7 @@ class FlashMessageStage extends Component {
   }
 
   renderFlashMessages() {
-    return this.props.messages.map((message) => {
+    return this.props.messages.map(message => {
       return (
         <FlashMessage
           id={message.id}

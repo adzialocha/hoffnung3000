@@ -1,15 +1,15 @@
-import { routerActions } from 'react-router-redux'
+import { routerActions } from 'connected-react-router'
 
 import ActionTypes from '../actionTypes'
 import flash from './flash'
 import { FLASH } from '../middlewares/flash'
+import { REDIRECT } from '../middlewares/redirect'
 import { jwtDecode } from '../utils/jwt'
 import { postRequest } from '../services/api'
-import { REDIRECT } from '../middlewares/redirect'
 import { translate } from '../../../common/services/i18n'
 
 export function redirectWhenUnauthenticated(location) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(
       flash({
         lifetime: 5000,
@@ -66,7 +66,7 @@ export function logout() {
   }
 }
 
-export function register(paymentMethod = 'paypal', data) {
+export function register(paymentMethod, data) {
   const meta = {
     paymentMethod,
   }
@@ -85,6 +85,12 @@ export function register(paymentMethod = 'paypal', data) {
     success[FLASH] = {
       lifetime: 30000,
       text: translate('flash.signUpTransferSuccess'),
+    }
+    success[REDIRECT] = '/'
+  } else if (paymentMethod === 'free') {
+    success[FLASH] = {
+      lifetime: 30000,
+      text: translate('flash.signUpFreeSuccess'),
     }
     success[REDIRECT] = '/'
   }
@@ -124,6 +130,12 @@ export function buyTicket(paymentMethod = 'paypal', data) {
     success[FLASH] = {
       lifetime: 30000,
       text: translate('flash.signUpTransferTicketSuccess'),
+    }
+    success[REDIRECT] = '/'
+  } else if (paymentMethod === 'free') {
+    success[FLASH] = {
+      lifetime: 30000,
+      text: translate('flash.signUpFreeSuccess'),
     }
     success[REDIRECT] = '/'
   }

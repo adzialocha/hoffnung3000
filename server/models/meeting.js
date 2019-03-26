@@ -1,25 +1,27 @@
+import Sequelize from 'sequelize'
+
 import db from '../database'
 
-const Meeting = db.sequelize.define('meeting', {
+const Meeting = db.define('meeting', {
   id: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   placeId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: false,
   },
   conversationId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: false,
   },
   from: {
-    type: db.Sequelize.DATE,
+    type: Sequelize.DATE,
     allowNull: false,
   },
   to: {
-    type: db.Sequelize.DATE,
+    type: Sequelize.DATE,
     allowNull: false,
   },
 })

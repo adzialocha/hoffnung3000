@@ -1,5 +1,6 @@
-import moment from 'moment-timezone'
 import httpStatus from 'http-status'
+import { DateTime } from 'luxon'
+import { Op } from 'sequelize'
 
 import {
   ConversationBelongsToManyAnimal,
@@ -21,37 +22,41 @@ import {
 
 import { APIError } from '../helpers/errors'
 import { formatEventTime } from '../../common/utils/dateFormat'
+import { getConfig } from '../config'
 import { isInFestivalRange } from '../../common/utils/slots'
 import { translate } from '../../common/services/i18n'
 
-const DURATION_HOURS = 1
-const DATE_MINIMUM_TO_NOW_HOURS = 1
 const ANY_DATE_FROM_NOW_MIN_HOURS = 2
+const DATE_MINIMUM_TO_NOW_HOURS = 1
+const DURATION_HOURS = 1
 
-function createConversation(place, from, to, userId) {
+function createConversation(place, from, to, user, isAnonymous) {
   return new Promise((resolve, reject) => {
     Animal.create({
-      userId,
+      userId: user.id,
     }, {
       returning: true,
     })
       .then(sendingAnimal => {
         const animalId = sendingAnimal.id
         const date = formatEventTime(from, to)
+        const timezone = from.toFormat('ZZZZ ZZ')
         const placeTitle = place.title
 
         const title = translate('api.meeting.createMessageTitle', {
           date,
+          timezone,
           placeTitle,
         })
 
         const text = translate('api.meeting.createMessageText', {
           date,
-          name: sendingAnimal.name,
+          timezone,
+          name: isAnonymous ? sendingAnimal.name : user.firstname,
           placeTitle,
         })
 
-        // create the new conversation
+        // Create the new conversation
         return Conversation.create({
           title,
           animalId,
@@ -59,7 +64,7 @@ function createConversation(place, from, to, userId) {
           .then(conversation => {
             return conversation.setAnimals([sendingAnimal])
               .then(() => {
-                // create first message in conversation
+                // Create first message in conversation
                 return Message.create({
                   animalId,
                   conversationId: conversation.id,
@@ -74,7 +79,7 @@ function createConversation(place, from, to, userId) {
               })
           })
       })
-      .catch((err) => {
+      .catch(err => {
         reject(err)
       })
   })
@@ -92,15 +97,15 @@ function getRandomPlace(from, to) {
           as: 'slots',
           required: false,
           where: {
-            $and: [{
+            [Op.and]: [{
               isDisabled: true,
             }, {
               from: {
-                $lt: to,
+                [Op.lt]: to.toISO(),
               },
             }, {
               to: {
-                $gt: from,
+                [Op.gt]: from.toISO(),
               },
             }],
           },
@@ -129,47 +134,47 @@ function getRandomPlace(from, to) {
   })
 }
 
-function createMeeting(userId, from, to) {
+function createMeeting(user, from, to, isAnonymous) {
   return getRandomPlace(from, to)
     .then(place => {
       const placeId = place.id
 
-      return createConversation(place, from, to, userId)
+      return createConversation(place, from, to, user, isAnonymous)
         .then(data => {
           const { conversation, animalId } = data
           const conversationId = conversation.id
 
           return Meeting.create({
             conversationId,
-            from,
+            from: from.toISO(),
             placeId,
-            to,
+            to: to.toISO(),
           })
             .then(() => {
               return addCreateMeetingActivity({
                 animalId,
                 place,
-                userId,
+                userId: user.id,
               })
             })
         })
     })
 }
 
-function joinMeeting(conversation, userId) {
+function joinMeeting(user, conversation, isAnonymous) {
   return Animal.create({
-    userId,
+    userId: user.id,
   }, {
     returning: true,
   })
     .then(joiningAnimal => {
       const text = translate('api.meeting.joinMessageText', {
-        name: joiningAnimal.name,
+        name: isAnonymous ? joiningAnimal.name : user.firstname,
       })
 
       return conversation.addAnimal(joiningAnimal)
         .then(() => {
-          // create message in conversation
+          // Create message in conversation
           return Message.create({
             animalId: joiningAnimal.id,
             conversationId: conversation.id,
@@ -187,83 +192,113 @@ function joinMeeting(conversation, userId) {
 
 export default {
   requestRandomMeeting: (req, res, next) => {
-    const date = req.body.date
+    const { date, isAnyDate } = req.body
+
     const where = {}
     let from
 
-    if (date) {
-      // meeting was requested with a date
-      const tresholdDate = moment()
-        .startOf('hour')
-        .add(DATE_MINIMUM_TO_NOW_HOURS, 'hours')
+    if (!isAnyDate) {
+      // Meeting was requested with a date
+      from = DateTime.fromISO(date).startOf('hour')
 
-      if (moment(date).isBefore(tresholdDate)) {
+      const tresholdDate = DateTime.local()
+        .startOf('hour')
+        .plus({ hours: DATE_MINIMUM_TO_NOW_HOURS })
+
+      if (from < tresholdDate) {
         next(
           new APIError(
             translate('api.errors.meeting.invalidDate'),
             httpStatus.BAD_REQUEST
           )
         )
+
         return null
       }
 
-      from = moment(date).startOf('hour')
-      where.from = from
+      where.from = from.toISO()
     } else {
-      // meeting was requested with any date
-      from = moment()
+      // Meeting was requested with any date
+      from = DateTime
+        .fromISO(date)
+        .plus({ hours: ANY_DATE_FROM_NOW_MIN_HOURS })
         .startOf('hour')
-        .add(ANY_DATE_FROM_NOW_MIN_HOURS, 'hours')
+
+      console.log(date, from, from.toISO())
 
       where.from = {
-        $gte: from,
+        [Op.gte]: from.toISO(),
       }
     }
 
-    const isInFestival = (
-      process.env.NODE_ENV === 'production' ? isInFestivalRange(from) : true
-    )
+    return getConfig([
+      'festivalDateStart',
+      'festivalDateEnd',
+      'isRandomMeetingEnabled',
+      'isAnonymizationEnabled',
+    ])
+      .then(config => {
+        if (!config.isRandomMeetingEnabled) {
+          next(new APIError('Random meetings are not available', httpStatus.FORBIDDEN))
+          return null
+        }
 
-    if (!isInFestival) {
-      next(
-        new APIError(
-          translate('api.errors.meeting.festivalRange'),
-          httpStatus.PRECONDITION_FAILED
+        const { festivalDateStart: start, festivalDateEnd: end } = config
+
+        const isInFestival = (
+          process.env.NODE_ENV === 'production' ? isInFestivalRange(from, start, end) : true
         )
-      )
-      return null
-    }
 
-    const to = moment(from).add(DURATION_HOURS, 'hours')
-
-    return Meeting.findOne({
-      where,
-      include: [{
-        association: MeetingBelongsToConversation,
-        include: [{
-          association: ConversationBelongsToManyAnimal,
-        }],
-      }],
-    })
-      .then(meeting => {
-        if (!meeting) {
-          return createMeeting(req.user.id, from, to)
-        }
-
-        const isAlreadyExisting = meeting.conversation.animals.find(animal => {
-          return animal.userId === req.user.id
-        })
-
-        if (isAlreadyExisting) {
-          throw new APIError(
-            translate('api.errors.meeting.alreadyJoined'),
-            httpStatus.BAD_REQUEST
+        if (!isInFestival) {
+          next(
+            new APIError(
+              translate('api.errors.meeting.festivalRange'),
+              httpStatus.PRECONDITION_FAILED
+            )
           )
+          return null
         }
 
-        return joinMeeting(meeting.conversation, req.user.id)
+        const to = from.plus({ hours: DURATION_HOURS })
+
+        return Meeting.findOne({
+          where,
+          include: [{
+            association: MeetingBelongsToConversation,
+            include: [{
+              association: ConversationBelongsToManyAnimal,
+            }],
+          }],
+        })
+          .then(meeting => {
+            if (!meeting) {
+              return createMeeting(
+                req.user,
+                from,
+                to,
+                config.isAnonymizationEnabled
+              )
+            }
+
+            const isAlreadyExisting = meeting.conversation.animals.find(animal => {
+              return animal.userId === req.user.id
+            })
+
+            if (isAlreadyExisting) {
+              throw new APIError(
+                translate('api.errors.meeting.alreadyJoined'),
+                httpStatus.BAD_REQUEST
+              )
+            }
+
+            return joinMeeting(
+              req.user,
+              meeting.conversation,
+              config.isAnonymizationEnabled
+            )
+          })
+          .then(() => res.json({ status: 'ok' }))
+          .catch(err => next(err))
       })
-      .then(() => res.json({ status: 'ok' }))
-      .catch(err => next(err))
   },
 }

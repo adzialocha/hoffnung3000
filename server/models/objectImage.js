@@ -1,16 +1,18 @@
+import Sequelize from 'sequelize'
+
 import db from '../database'
 
-const ObjectImage = db.sequelize.define('objectsImages', {
+const ObjectImage = db.define('objectsImages', {
   objectType: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     primaryKey: true,
   },
   objectId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
   },
   imageId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
   },
 })

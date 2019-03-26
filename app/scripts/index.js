@@ -1,29 +1,40 @@
-import moment from 'moment-timezone'
+import '../styles/app.scss'
+
+import Modal from 'react-modal'
 import React from 'react'
-import { ConnectedRouter  } from 'react-router-redux'
-import { createBrowserHistory } from 'history'
+import { ConnectedRouter  } from 'connected-react-router'
 import { Provider } from 'react-redux'
+import { Settings } from 'luxon'
+import { createBrowserHistory } from 'history'
 import { render } from 'react-dom'
 
-import config from '../../common/config'
 import configureStore from './store'
 import flash from './actions/flash'
-import Routes from './routes'
-import { App } from './views'
 import { checkExistingToken } from './actions/auth'
 import { getItem, hasItem } from './services/storage'
-import { translate } from '../../common/services/i18n'
+import { translate, DEFAULT_LOCALE } from '../../common/services/i18n'
+import { updateMetaInformation } from './actions/meta'
 
-moment.tz.setDefault(config.timezone)
+import Routes from './routes'
+import { App } from './views'
+
+Settings.defaultLocale = DEFAULT_LOCALE
+
+Modal.setAppElement('#app')
 
 const initialState = {}
 const history = createBrowserHistory()
 const store = configureStore(initialState, history)
 
+// Get configuration from server
+store.dispatch(updateMetaInformation())
+
+// Check auth token validity when given
 if (hasItem('token')) {
   store.dispatch(checkExistingToken(getItem('token')))
 }
 
+// Show message when user comes from PayPal checkout
 if (window.location.href.includes('?paypalSuccess')) {
   store.dispatch(
     flash({

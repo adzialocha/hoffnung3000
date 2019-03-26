@@ -3,8 +3,7 @@ node_modules
 
 # local
 .env
-public
-
-# development
-.tmp
-npm-debug.log
+dist
+static
+uploads
+webpack-assets.json

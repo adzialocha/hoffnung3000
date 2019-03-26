@@ -130,6 +130,7 @@ class EventsEdit extends Component {
     if (this.props.isLoading) {
       return <h1>{ translate('views.events.titlePlaceholder') }</h1>
     }
+
     return <h1>{ this.props.resourceData.title }</h1>
   }
 
@@ -137,13 +138,17 @@ class EventsEdit extends Component {
     return (
       <section>
         { this.renderTitle() }
+
         <Link className="button" to="/calendar">
           { translate('common.backToOverview') }
         </Link>
+
         <button className="button button--red" onClick={this.onDeleteClick}>
           { translate('common.deleteButton') }
         </button>
+
         <hr />
+
         { this.renderForm() }
       </section>
     )

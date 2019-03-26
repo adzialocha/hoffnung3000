@@ -1,32 +1,34 @@
+import Sequelize from 'sequelize'
+
 import db from '../database'
 
-const Page = db.sequelize.define('page', {
+const Page = db.define('page', {
   id: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   title: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   slug: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   content: {
-    type: db.Sequelize.TEXT,
+    type: Sequelize.TEXT,
     allowNull: false,
     defaultValue: '',
   },
   isRemovable: {
-    type: db.Sequelize.BOOLEAN,
+    type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: true,
   },

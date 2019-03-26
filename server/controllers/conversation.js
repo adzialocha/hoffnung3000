@@ -1,9 +1,11 @@
-import moment from 'moment-timezone'
 import httpStatus from 'http-status'
+import { DateTime } from 'luxon'
+import { Op } from 'sequelize'
 
 import pick from '../utils/pick'
-import { addMessageActivity } from '../services/activity'
 import { APIError } from '../helpers/errors'
+import { addMessageActivity } from '../services/activity'
+import { getConfig } from '../config'
 
 import {
   DEFAULT_LIMIT,
@@ -12,6 +14,7 @@ import {
 } from './base'
 
 import {
+  AnimalBelongsToUser,
   ConversationBelongsToManyAnimal,
   ConversationHasManyMessage,
 } from '../database/associations'
@@ -25,11 +28,11 @@ const permittedFields = [
   'title',
 ]
 
-function prepareResponse(conversation, req) {
+function prepareResponse(conversation, req, isAnonymous) {
   const response = conversation.toJSON()
 
   if (response.animals) {
-    response.animals = prepareAnimalResponseAll(response.animals)
+    response.animals = prepareAnimalResponseAll(response.animals, isAnonymous)
   }
 
   if (response.messages) {
@@ -43,17 +46,16 @@ function prepareResponse(conversation, req) {
     if (response.lastMessage.animalId === animalMe.id) {
       response.isRead = true
     } else {
-      response.isRead = moment(lastCheckedAt).isAfter(
-        response.lastMessage.createdAt
-      )
+      response.isRead = DateTime.fromISO(lastCheckedAt) > DateTime.fromISO(
+        response.lastMessage.createdAt)
     }
   }
 
   return response
 }
 
-function prepareResponseAll(rows, req) {
-  return rows.map(row => prepareResponse(row, req))
+function prepareResponseAll(rows, req, isAnonymous) {
+  return rows.map(row => prepareResponse(row, req, isAnonymous))
 }
 
 export default {
@@ -61,18 +63,18 @@ export default {
     const values = pick(permittedFields, req.body)
     const animalIds = req.body.animalIds
 
-    // get all receiving animals
+    // Get all receiving animals
     return Animal.findAll({
       where: {
         id: {
-          $in: animalIds,
+          [Op.in]: animalIds,
         },
       },
     }, {
       returning: true,
     })
       .then(receivingAnimals => {
-        // check if receiving animal is not myself
+        // Check if receiving animal is not myself
         const isMyself = receivingAnimals.find(animal => {
           return animal.userId === req.user.id
         })
@@ -87,7 +89,7 @@ export default {
           return null
         }
 
-        // are all receiving animals given?
+        // Are all receiving animals given?
         if (receivingAnimals.length !== animalIds.length) {
           next(
             new APIError(
@@ -98,7 +100,7 @@ export default {
           return null
         }
 
-        // create an animal for myself (the sending user)
+        // Create an animal for myself (the sending user)
         return Animal.create({
           userId: req.user.id,
         }, {
@@ -107,7 +109,7 @@ export default {
           .then(sendingAnimal => {
             const animals = receivingAnimals.concat([sendingAnimal])
 
-            // create the new conversation
+            // Create the new conversation
             return Conversation.create({
               title: values.title,
               animalId: sendingAnimal.id,
@@ -115,7 +117,7 @@ export default {
               .then(conversation => {
                 return conversation.setAnimals(animals)
                   .then(() => {
-                    // create first message in conversation
+                    // Create first message in conversation
                     return Message.create({
                       animalId: sendingAnimal.id,
                       conversationId: conversation.id,
@@ -147,6 +149,7 @@ export default {
       include: [
         {
           association: ConversationBelongsToManyAnimal,
+          include: AnimalBelongsToUser,
           where: {
             userId: req.user.id,
           },
@@ -162,17 +165,23 @@ export default {
       ],
     })
       .then(result => {
-        res.json({
-          data: prepareResponseAll(result.rows, req),
-          limit: parseInt(limit, 10),
-          offset: parseInt(offset, 10),
-          total: result.count,
+        return getConfig('isAnonymizationEnabled').then(config => {
+          res.json({
+            data: prepareResponseAll(
+              result.rows,
+              req,
+              config.isAnonymizationEnabled
+            ),
+            limit: parseInt(limit, 10),
+            offset: parseInt(offset, 10),
+            total: result.count,
+          })
         })
       })
       .catch(err => next(err))
   },
   lookup: (req, res, next) => {
-    return Conversation.findById(req.params.resourceId, {
+    return Conversation.findByPk(req.params.resourceId, {
       include: [
         {
           association: ConversationBelongsToManyAnimal,
@@ -202,13 +211,22 @@ export default {
       .catch(err => next(err))
   },
   findOne: (req, res, next) => {
-    return Conversation.findById(req.params.resourceId, {
-      include: [
-        ConversationBelongsToManyAnimal,
-      ],
+    return Conversation.findByPk(req.params.resourceId, {
+      include: [{
+        association: ConversationBelongsToManyAnimal,
+        include: AnimalBelongsToUser,
+      }],
       rejectOnEmpty: true,
     })
-      .then(conversation => res.json(prepareResponse(conversation, req)))
+      .then(conversation => {
+        return getConfig('isAnonymizationEnabled').then(config => {
+          return res.json(prepareResponse(
+            conversation,
+            req,
+            config.isAnonymizationEnabled
+          ))
+        })
+      })
       .catch(err => next(err))
   },
 }

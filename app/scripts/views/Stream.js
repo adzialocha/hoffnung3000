@@ -3,18 +3,16 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { PreloadImage } from '../components'
-import { withFlash } from '../containers'
-
-import config from '../../../common/config'
 import { translate } from '../../../common/services/i18n'
+import { withFlash, withConfig } from '../containers'
 
 const REFRESH_INTERVAL = 60000
 
-function fetchStream(marker) {
+function fetchStream(marker, streamServerUrl) {
   const markerStr = marker ? `?marker=${marker}` : ''
 
   return new Promise((resolve, reject) => {
-    fetch(`${config.gifStreamServer}/api/stream${markerStr}`)
+    fetch(`${streamServerUrl}/api/stream${markerStr}`)
       .then(response => {
         if (response.status === 200) {
           response.json().then(json => resolve(json))
@@ -28,6 +26,7 @@ function fetchStream(marker) {
 
 class Stream extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     flash: PropTypes.func.isRequired,
   }
 
@@ -91,6 +90,7 @@ class Stream extends Component {
         >
           { translate('views.stream.loadOlderImagesButton') }
         </button>
+
         <button
           className="button button--blue"
           disabled={this.state.isLoading}
@@ -108,6 +108,7 @@ class Stream extends Component {
         <div className="gif-stream__container">
           { this.renderImages() }
         </div>
+
         { this.renderButtons() }
         { this.renderSpinner() }
       </div>
@@ -130,7 +131,7 @@ class Stream extends Component {
 
     const marker = ignoreMarker ? null : this.state.nextMarker
 
-    fetchStream(marker)
+    fetchStream(marker, this.props.config.gifStreamServerUrl)
       .then(stream => {
         this.setState({
           images: this.state.images.concat(stream.data),
@@ -163,4 +164,4 @@ class Stream extends Component {
   }
 }
 
-export default withFlash(Stream)
+export default withFlash(withConfig('gifStreamServerUrl', true, Stream))

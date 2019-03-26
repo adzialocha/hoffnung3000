@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 
 import { fetchList } from '../actions/paginatedList'
 
@@ -20,6 +20,18 @@ class PaginatedListNavigation extends Component {
       this.props.resourceName,
       this.props.currentPageIndex - 1
     )
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.currentPageIndex !== prevProps.currentPageIndex
+      || this.props.resourceName !== prevProps.resourceName
+    ) {
+      this.props.fetchList(
+        this.props.resourceName,
+        this.props.currentPageIndex - 1
+      )
+    }
   }
 
   onPreviousPageClick() {
@@ -42,9 +54,11 @@ class PaginatedListNavigation extends Component {
         >
           &lt;
         </button>
+
         <div className="paginated-list-navigation__indicator">
           { this.props.currentPageIndex }
         </div>
+
         <button
           className="paginated-list-navigation__button"
           disabled={this.props.isLoading || !this.hasNextPage()}

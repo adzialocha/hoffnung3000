@@ -28,7 +28,7 @@ export default {
         isRemovable: true,
       },
     })
-      .then((isSuccess) => {
+      .then(isSuccess => {
         if (!isSuccess) {
           next(new APIError('Resource is not removable', httpStatus.LOCKED))
           return

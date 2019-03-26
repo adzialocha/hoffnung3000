@@ -1,16 +1,21 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
+import { PlaceForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
-import { PlaceForm } from '../forms'
-import { getDisabledSlotIndexes } from '../../../common/utils/slots'
+import { getDisabledSlotIndexes, generateNewSlotItems } from '../../../common/utils/slots'
 import { translate } from '../../../common/services/i18n'
+import { withConfig } from '../containers'
+
+const DEFAULT_MODE = 'address'
+const DEFAULT_SLOT_SIZE = 60 // in minutes
 
 class PlacesNew extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     createResource: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
@@ -46,19 +51,43 @@ class PlacesNew extends Component {
   }
 
   render() {
+    const { config } = this.props
+    const { festivalDateStart, festivalDateEnd } = config
+
+    const slots = generateNewSlotItems(
+      DEFAULT_SLOT_SIZE, null, festivalDateStart, festivalDateEnd
+    )
+
+    const initialValues = {
+      isPublic: true,
+      location: {
+        mode: DEFAULT_MODE,
+        street: '',
+        city: config.defaultCity,
+        cityCode: '',
+        country: config.defaultCountry,
+        latitude: config.defaultLatitude,
+        longitude: config.defaultLongitude,
+      },
+      slots: {
+        slotSize: DEFAULT_SLOT_SIZE,
+        slots,
+      },
+    }
+
     return (
       <section>
         <h1>{ translate('views.places.createNewTitle') }</h1>
+
         <Link className="button" to="/places">
           { translate('common.backToOverview') }
         </Link>
+
         <hr />
+
         <PlaceForm
           errorMessage={this.props.errorMessage}
-          initialValues={ {
-            isPublic: true,
-            slots: { slotSize: 60 },
-          } }
+          initialValues={initialValues}
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
         />
@@ -88,4 +117,4 @@ export default connect(
   mapStateToProps, {
     createResource,
   }
-)(PlacesNew)
+)(withConfig(PlacesNew))

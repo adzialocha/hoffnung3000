@@ -1,7 +1,5 @@
 import nodemailer from 'nodemailer'
 
-import config from '../../common/config'
-
 export default nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: process.env.SMTP_PORT,
@@ -10,6 +8,4 @@ export default nodemailer.createTransport({
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
-}, {
-  from: config.mailAddressAdmin,
 })

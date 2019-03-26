@@ -1,16 +1,18 @@
+import Sequelize from 'sequelize'
+
 import db from '../database'
 
-const Conversation = db.sequelize.define('conversation', {
+const Conversation = db.define('conversation', {
   id: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   animalId: {
-    type: db.Sequelize.INTEGER,
+    type: Sequelize.INTEGER,
   },
   title: {
-    type: db.Sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
 })

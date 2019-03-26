@@ -1,15 +1,17 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-import { initializeForm, createNewConversation } from '../actions/inbox'
 import { MessageForm } from '../forms'
+import { initializeForm, createNewConversation } from '../actions/inbox'
+import { withConfig } from '../containers'
 import { replaceTo } from '../actions/redirect'
 import { translate } from '../../../common/services/i18n'
 
 class ConversationsNew extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     createNewConversation: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
     initializeForm: PropTypes.func.isRequired,
@@ -39,15 +41,24 @@ class ConversationsNew extends Component {
   }
 
   renderReceiverNames() {
-    const names = this.props.receiverAnimals.map(animal => animal.name)
+    const names = this.props.receiverAnimals.map(animal => {
+      if (
+        this.props.config.isAnonymizationEnabled ||
+        !animal.userName
+      ) {
+        return animal.name
+      }
+
+      return animal.userName
+    })
 
     return (
       <p>
         <strong>
           { translate('views.inbox.messageTo') }
         </strong>
-        &nbsp;
-        { names.join(', ') }
+
+        &nbsp;{ names.join(', ') }
       </p>
     )
   }
@@ -56,11 +67,14 @@ class ConversationsNew extends Component {
     return (
       <section>
         <h1>{ translate('views.inbox.conversationNewTitle') }</h1>
+
         <Link className="button" to="/inbox">
           { translate('views.inbox.backToConversations') }
         </Link>
+
         <hr />
         { this.renderReceiverNames() }
+
         <MessageForm
           errorMessage={this.props.errorMessage}
           isLoading={this.props.isLoading}
@@ -79,7 +93,7 @@ class ConversationsNew extends Component {
 
 function mapStateToProps(state) {
   const { errorMessage, isLoading } = state.inbox
-  const location = state.routing.location
+  const location = state.router.location
 
   let receiverAnimals = []
   if (location.query && location.query.receiverAnimals) {
@@ -99,4 +113,4 @@ export default connect(
     initializeForm,
     replaceTo,
   }
-)(ConversationsNew)
+)(withConfig(ConversationsNew))
