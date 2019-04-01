@@ -1,0 +1,66 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  max-width: 900px;
+
+  margin: 0 auto;
+  padding: 20px;
+}
+
+p {
+  line-height: 1.5;
+}
+
+a {
+  color: #000;
+
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+
+  margin: 0 auto;
+}
+
+h1,
+h2,
+h3 {
+  text-transform: uppercase;
+
+  word-break: break-all;
+}
+
+h1 {
+  font-size: 48px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+h3 {
+  font-size: 28px;
+}
+
+nav {
+  font-weight: bold;
+}
+
+main {
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+code {
+  background-color: pink;
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HOFFNUNG 3000 - Handbook - {{ page.title }}</title>
+  <link rel="stylesheet" type="text/css" href="/assets/styles.css?{{ site.time | date: '%s%N' }}">
+</head>
+<body>
+  <header>
+    <h1>HOFFNUNG 3000<br>Handbook</h1>
+
+    <nav>
+      {% assign sorted_pages = site.html_pages | sort: 'order' %}
+
+      {% for page in sorted_pages %}
+        <a href="{{ page.url }}">{{ page.title }}</a>
+      {% endfor %}
+    </nav>
+  </header>
+
+  <main>
+    <h1>{{ page.title }}</h1>
+    {{ content }}
+  </main>
+
+  <footer>
+    <a href="https://blatt3000.de" target="_blank">BLATT 3000</a>
+    <a href="https://github.com/adzialocha/hoffnung3000" target="_blank">GitHub</a>
+  </footer>
+</body>
+</html>
