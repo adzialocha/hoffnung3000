@@ -15,7 +15,3 @@ We thought it would be interesting to experiment with how we take decisions as o
 #### How is this self-curated?
 
 HOFFNUNG 3000 is a platform which helps a group of people to organize events by creating and sharing resources and places. It can therefore be used to put up a festival which does not need any curatorial instance (like an organizer, booker, jury, etc.).
-
-#### Sounds all very strange, is it real?
-
-Yes, it is! We started with a first festival platform [VERANTWORTUNG 3000](https://github.com/adzialocha/verantwortung3000) in 2016 and realized another self-curated festival in 2017 in Berlin, named [HOFFNUNG 3000](https://blatt3000.de/hoffnung3000/).
