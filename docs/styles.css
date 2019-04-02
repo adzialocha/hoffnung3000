@@ -18,8 +18,13 @@ hr {
   background-color: #000;
 }
 
+li,
 p {
   line-height: 1.5;
+}
+
+li p {
+  margin: 0;
 }
 
 a {
