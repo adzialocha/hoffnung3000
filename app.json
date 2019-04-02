@@ -7,17 +7,20 @@
   ],
   "env": {
     "JWT_SECRET": {
-      "description": "This gets generated",
+      "description": "This gets automatically generated",
       "generator": "secret"
     },
     "DATABASE_DIALECT": {
-      "description": "We use a postgres database",
+      "description": "Defines the type of database (PostgreSQL) we want to use",
       "value": "postgres"
     },
     "NPM_CONFIG_PRODUCTION": {
-      "description": "Require dev dependencies to build app",
+      "description": "Has to be disabled to successfully build the app",
       "value": "false"
     }
+  },
+  "scripts": {
+    "postdeploy": "npm run db:migrate && npm run db:seed"
   },
   "keywords": [
     "decentralization",
