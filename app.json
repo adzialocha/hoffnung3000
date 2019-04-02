@@ -2,6 +2,7 @@
   "name": "HOFFNUNG 3000",
   "description": "Platform for decentralized, anonymized, self-curated festivals",
   "repository": "https://github.com/adzialocha/hoffnung3000",
+  "website": "https://hoffnung3000.de/",
   "addons": [
     "heroku-postgresql:hobby-dev"
   ],
@@ -22,6 +23,7 @@
   "scripts": {
     "postdeploy": "npm run db:migrate && npm run db:seed"
   },
+  "success_url": "/",
   "keywords": [
     "decentralization",
     "festival",
