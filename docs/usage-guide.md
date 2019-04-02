@@ -1,5 +1,5 @@
 ---
 layout: default
-title: Usage
+title: Usage Guide
 order: 3
 ---

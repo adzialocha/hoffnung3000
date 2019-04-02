@@ -16,7 +16,7 @@ There are different ways on how to install HOFFNUNG 3000. We tried to keep the t
 
 3. Choose a name and region, then click `Deploy app`. Wait a little as the application is being installed on your server now.
 
-4. The platform is now ready under: `https://<your-app-name>.herokuapp.com`. Read the [Usage](/usage.html) guide to learn how to use HOFFNUNG 3000.
+4. The platform is now ready under: `https://<your-app-name>.herokuapp.com`. Read the [Usage](/usage-guide.html) guide to learn how to use HOFFNUNG 3000.
 
 Please note that **this simple setup is not recommended for official festival settings**. Read further to learn how to prepare HOFFNUNG 3000 for real setups.
 
@@ -39,7 +39,7 @@ For this setup we assume you already have a running NodeJS server environment, S
 
 ### 1. Configuration
 
-Crucial settings of HOFFNUNG 3000 are configured via environment variables, further configuration can be handled via the [Admin panel](/usage.html) after setup.
+Crucial settings of HOFFNUNG 3000 are configured via environment variables, further configuration can be handled via the [Admin panel](/usage-guide.html) after setup.
 
 * Learn [here](https://devcenter.heroku.com/articles/config-vars) how to set Config Vars on Heroku
 * For other servers check out the [.env.example](https://github.com/adzialocha/hoffnung3000/blob/master/.env.example) file and copy it to `.env` (via `cp .env.example .env`)
