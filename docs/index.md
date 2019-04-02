@@ -27,4 +27,4 @@ Soluta nobis **est** eligendi optio *cumque* nihil `impedit` quo minus id quod m
 
 Possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudianda.
 
-![Test .gif](/assets/test.gif)
+![Test .gif](/images/test.gif)

@@ -1,11 +1,11 @@
-hoffnung3000-documentation
+hoffnung3000-handbook
 ===
 
-Powered by Github Pages and [Jekyll](https://jekyllrb.com).
+Powered by [Github Pages](https://help.github.com/en/articles/what-is-github-pages) and [Jekyll](https://jekyllrb.com).
 
 ## Development
 
 ```
 bundle install            // install dependencies
-bundle exec jekyl serve   // local webserver for development
+bundle exec jekyll serve  // local webserver for development
 ```
