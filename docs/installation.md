@@ -44,6 +44,8 @@ Crucial settings of HOFFNUNG 3000 are configured via environment variables, furt
 * Learn [here](https://devcenter.heroku.com/articles/config-vars) how to set Config Vars on Heroku
 * For other servers check out the [.env.example](https://github.com/adzialocha/hoffnung3000/blob/master/.env.example) file and copy it to `.env` (via `cp .env.example .env`)
 
+Make sure you've set `NPM_CONFIG_PRODUCTION` to `false` when installing HOFFNUNG 3000 via Heroku, otherwise the build process will fail. Read more about it [here](https://devcenter.heroku.com/articles/nodejs-support#skip-pruning).
+
 #### Required variables
 
 * `DATABASE_URL` pointing at your PostgreSQL database (for example *postgres://username:password@123.123.123.123:5432/dbname*)
