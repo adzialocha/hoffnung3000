@@ -8,24 +8,24 @@
 <body>
   <header>
     <h1>HOFFNUNG 3000<br>Handbook</h1>
-
     <nav>
       {% assign sorted_pages = site.html_pages | sort: 'order' %}
-
       {% for page in sorted_pages %}
         <a href="{{ page.url }}">{{ page.title }}</a>
       {% endfor %}
     </nav>
   </header>
-
   <main>
-    <h1>{{ page.title }}</h1>
-    {{ content }}
+    <article>
+      <h1>{{ page.title }}</h1>
+      {{ content }}
+    </article>
   </main>
-
   <footer>
-    <a href="https://blatt3000.de" target="_blank">BLATT 3000</a>
-    <a href="https://github.com/adzialocha/hoffnung3000" target="_blank">GitHub</a>
+    <nav>
+      <a href="https://blatt3000.de" target="_blank">BLATT 3000</a>
+      <a href="https://github.com/adzialocha/hoffnung3000" target="_blank">GitHub</a>
+    </nav>
   </footer>
 </body>
 </html>
