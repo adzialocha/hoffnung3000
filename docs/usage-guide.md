@@ -4,10 +4,16 @@ title: Usage Guide
 order: 3
 ---
 
-The HOFFNUNG 3000 page consists of two important areas:
+* Table of contents
+{:toc}
 
+## Navigation
+
+The HOFFNUNG 3000 page consists of three sections which help you to navigate through the platform:
+
+* **Content**: the main area
 * **Navigation**: click on the menu button in the top left corner to open it, from here you can reach all important pages
-* **Sidebar**: click on the button in the top right corner to expand it, here you find all social features like the *activity stream* to see what is going on, *your message inbox*, the *random meeting tool* or buttons to *log out* or *change your profile*
+* **Sidebar**: click on the button in the top right corner to expand it, here you find all social features like the *activity stream*, *your message inbox*, the *random meeting tool* or buttons to *log out* or *change your profile*
 
 ## Roles
 
@@ -15,7 +21,7 @@ Users can have three different roles on HOFFNUNG 3000:
 
 * **Visitors**: Have access to the calendar and gif-stream (when enabled)
 * **Participants**: Can use all tools to create and share resources, places and events. They can write messages to each other, see the activity stream and use the random meetings tool
-* **Admins**: Have access to the admin panel to create, update and delete users, change permissions, texts and customize the platform
+* **Admins**: Have access to the admin panel to create, update and delete users, change permissions and customize the platform
 
 ## Admins
 
@@ -27,7 +33,7 @@ After a fresh install and database setup a default admin user was created for yo
 
 2. Change your password by clicking `Profile` at the bottom of the sidebar
 
-3. Open the navigation and click `Admin`, click `Users`, select your user and change it's email address to your own
+3. Open the navigation and click `Admin`, then click `Users`, select your user by clicking `Edit`, change the email address to your own, now click `Save`
 
 ##### Manage users
 
@@ -81,3 +87,23 @@ If you want participants to watch a YouTube video before signup you can set a `S
 ##### Use the gif-stream
 
 Fill out the `gif-stream Server URL` field with your URL to enable this feature (make sure to remove any trailing slashes from the URL). The platform automatically connects to the gif-stream then. Note that you have to [set up](/installation.html) the [gif-stream-server](https://github.com/adzialocha/gif-stream-server) before.
+
+---
+
+## Self-curation
+
+##### Manage resources
+
+##### Manage places
+
+##### Manage events
+
+---
+
+## Sidebar
+
+##### Random meetings
+
+##### Activity stream
+
+##### Inbox and messages

@@ -4,6 +4,9 @@ title: Installation
 order: 2
 ---
 
+* Table of contents
+{:toc}
+
 There are different ways on how to install HOFFNUNG 3000. We tried to keep the technical steps required as small as possible, with some patience you will be able to run HOFFNUNG 3000, even if you have never dealt with these things before.
 
 ## Simple setup via Heroku
