@@ -1,7 +1,7 @@
 ---
 layout: default
 title: FAQ
-order: 4
+order: 5
 ---
 
 #### How is this decentralized?
