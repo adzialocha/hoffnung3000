@@ -12,32 +12,32 @@ Conversation.belongsToMany(Animal, {
 
 ## Features
 
-* Register `resources` (skills, items) and make them available for other users
-* Create `places` (via address, gps position or *virtual* spaces) and define time slots for other people, so they can organize events there
-* Organize `events` in `places` and use `resources` of others
-* Anonymize all participants with randomly generated [animal avatars](https://github.com/adzialocha/random-animal-name-generator/)
+* Register `resources` (skills, items, etc.) and make them available to other users
+* Create `places` (address, gps position or *virtual*) and define time slots, so other users can organize events there
+* Organize `events` in `places` and use `resources` of others to realize them
+* Users can be anonymized with randomly generated [animal avatars](https://github.com/adzialocha/random-animal-name-generator/)
 * Random meetings with random participants in random places
 * Built-in messenger and activity stream
-* `events` and `places` can be private (not visible for audience) or public
-* Document the festival as a [.gif-stream](https://github.com/adzialocha/gif-stream/blob/master/example.gif) ~ the platform frequently takes pictures from the participants smartphone or laptop cameras
+* `events` and `places` can be private (not visible to audience) or public
+* [.gif-stream](https://github.com/adzialocha/gif-stream/blob/master/example.gif) documentation tool
 
 ## Questions
 
 :arrow_forward: **How can I use this platform?**
 
-Check out the [Handbook](https://hoffnung3000.blatt3000.de) to get started.
+Check out the [Handbook](https://hoffnung3000.de) to get started.
 
 :arrow_forward: **How is this decentralized?**
 
-The participants define all locations by themselves, in this sense all events of the festival can take place "everywhere" in your city (we had participants doing performances via video stream in Tokyo while we were based in Berlin). This sort of decentralization does not have anything to do with the *technical* term. If you are interested in truly decentralized architectures like [p2p](https://en.wikipedia.org/wiki/Peer-to-peer) networks you should read about [p2panda](https://github.com/adzialocha/p2panda-specification).
+The participants define all places by themselves, in this sense all events of the festival can take place "everywhere" in your city or even outside of it. This sort of decentralization does not have anything to do with the *technical* term: If you are interested in truly decentralized architectures like [p2p](https://en.wikipedia.org/wiki/Peer-to-peer) networks you should read about [p2panda](https://github.com/adzialocha/p2panda-specification).
 
 :arrow_forward: **How is this anonymous?**
 
-We thought it would be interesting to experiment with how we take decisions as organizers, curators and visitors by obfuscating the gender and name of every festival participant with a randomly generated animal avatar. Technically it is still possible to look into the database to figure out which real person is behind what animal, in this sense the anonymity is only true for the participants using the platform.
+We thought it would be interesting to experiment with how we take decisions as organizers, curators and visitors by obfuscating the gender and realname of every festival participant with a randomly generated animal avatar. Technically it is still possible to look into the database to figure out which real person is behind what animal, in this sense the anonymity is only true for the participants using the platform.
 
 :arrow_forward: **How is this self-curated?**
 
-HOFFNUNG 3000 is a platform which helps a group of people to organize events by creating and sharing resources and places. It can therefore be used to put up a festival which does not need any curatorial instance (like an organizer, booker, jury etc.).
+HOFFNUNG 3000 is a platform which helps a group of people to organize events by creating and sharing resources and places. It can therefore be used to put up a festival which does not need any curatorial instance (like an organizer, booker, jury, etc.).
 
 :arrow_forward: **Sounds all very strange, is it real?**
 
@@ -54,25 +54,7 @@ Yes, it is! We started with a first festival platform [VERANTWORTUNG 3000](githu
 
 ## Development
 
-```
-npm install
-cp ./.env.example ./.env // edit the configuration to your needs
-npm run db:migrate // setup the database
-npm run db:seed // create initial data
-
-npm run serve // server runs by default on localhost:3000
-npm run assets:watch // run webpack watch process in a second terminal
-
-npm run lint:js
-npm run lint:scss
-npm run lint // run all linters
-
-npm run assets:build
-npm run server:build
-npm run build // run all compilcation steps
-```
-
-Read the [Handbook](https://hoffnung3000.blatt3000.de) for more information about setup, contributions, deployment of HOFFNUNG 3000.
+Read the [Handbook](https://hoffnung3000.de) for more information about setup, contributions, deployment of HOFFNUNG 3000.
 
 ## About
 
