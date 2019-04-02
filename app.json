@@ -2,5 +2,28 @@
   "name": "HOFFNUNG 3000",
   "description": "Platform for decentralized, anonymized, self-curated festivals",
   "repository": "https://github.com/adzialocha/hoffnung3000",
-  "keywords": ["decentralization", "festival", "self-curation", "platform", "node"]
+  "addons": [
+    "heroku-postgresql:hobby-dev"
+  ],
+  "env": {
+    "JWT_SECRET": {
+      "description": "This gets generated",
+      "generator": "secret"
+    },
+    "DATABASE_DIALECT": {
+      "description": "We use a postgres database",
+      "value": "postgres"
+    },
+    "NPM_CONFIG_PRODUCTION": {
+      "description": "Require dev dependencies to build app",
+      "value": "false"
+    }
+  },
+  "keywords": [
+    "decentralization",
+    "festival",
+    "self-curation",
+    "platform",
+    "node"
+  ]
 }
