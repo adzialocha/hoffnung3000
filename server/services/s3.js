@@ -1,5 +1,7 @@
 import AWS from 'aws-sdk'
 
+const s3 = new AWS.S3({ signatureVersion: 'v4' })
+
 function getBasePath() {
   return `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_BUCKET_NAME}/`
 }
@@ -18,7 +20,6 @@ function request(method, Key, customParams, customMethod) {
   }
 
   const params = Object.assign({}, defaultParams, customParams)
-  const s3 = new AWS.S3({ signatureVersion: 'v4' })
 
   if (customParams && 'Delete' in customParams) {
     params.Delete = {

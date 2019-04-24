@@ -15,13 +15,6 @@ import morgan from 'morgan'
 import path from 'path'
 import { Settings } from 'luxon'
 
-import {
-  UPLOAD_FOLDER_NAME,
-  UPLOAD_FOLDER_PATH,
-} from './middlewares/upload'
-
-import { hasAWSConfiguration } from './services/s3'
-
 const ASSETS_FOLDER_NAME = 'static'
 const ASSETS_MANIFESTO_FILE = 'webpack-assets.json'
 const ASSETS_MAX_AGE = 31557600000
@@ -35,7 +28,9 @@ function getPath(filePath) {
 // Load environment variables when in development
 const envVariables = dotenv.config({ path: getPath('.env') })
 
-// Require logger after we read env variables
+// Require logger and AWS methods after we read env variables
+const { UPLOAD_FOLDER_PATH, UPLOAD_FOLDER_NAME } = require('./middlewares/upload')
+const { hasAWSConfiguration } = require('./services/s3')
 const logger = require('./helpers/logger')
 
 function errorAndExit(message) {
