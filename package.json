@@ -9,8 +9,8 @@
   ],
   "license": "UNLICENSED",
   "engines": {
-    "node": "~10.12.0",
-    "npm": "~6.6.0"
+    "node": "~10.15.3",
+    "npm": "~6.9.0"
   },
   "scripts": {
     "assets:build": "npm run assets:clear && webpack --mode production --progress",
