@@ -13,9 +13,9 @@ There are different ways on how to install HOFFNUNG 3000. We tried to keep the t
 
 1. Register a new account on [Heroku](https://www.heroku.com) if you don't already have one
 
-2. Click the following button to automatically deploy HOFFNUNG 3000 and a database on your Heroku server:
+2. Click the following link to automatically deploy HOFFNUNG 3000 and a database on your Heroku server:
 
-    [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/adzialocha/hoffnung3000)
+    [https://heroku.com/deploy?template=https://github.com/adzialocha/hoffnung3000](https://heroku.com/deploy?template=https://github.com/adzialocha/hoffnung3000)
 
 3. Choose a name and region, then click `Deploy app`. Wait until the installation finished on your server
 
@@ -28,6 +28,8 @@ Please note that **this simple setup is not recommended for official festival se
 ## Install manually
 
 For this setup we assume you already have a running [NodeJS server environment](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04), SMTP mail server and a [PostgreSQL database](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04) installed.
+
+You can find the source code of HOFFNUNG 3000 in a git repository hosted on: [github.com/adzialocha/hoffnung3000](https://github.com/adzialocha/hoffnung3000).
 
 ### Requirements
 
@@ -97,7 +99,7 @@ npm run db:migrate
 npm run db:seed
 ```
 
-The seed will create a default admin user with email: `admin@domain.com` and passwort: `adminadmin`. Please change the credentials after first login in the admin panel.
+The seed will create a default admin user with email: `admin@domain.com` and passwort: `adminadmin`. Please [change the credentials](/usage-guide.html#change-the-default-admin-user) after first login in the admin panel.
 
 ### 4. Start server
 
