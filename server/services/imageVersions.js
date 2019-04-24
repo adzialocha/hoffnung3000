@@ -27,8 +27,7 @@ const IMAGE_VERSIONS = [{
 
 function resizeAndUpload(filePath, fileName, width, height, quality) {
   return sharp(filePath)
-    .resize(width, height)
-    .max()
+    .resize({ width, height, canvas: 'max' })
     .toFormat(IMAGE_FILE_FORMAT, { quality })
     .toBuffer()
     .then(buffer => {
