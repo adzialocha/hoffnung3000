@@ -55,7 +55,7 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-add-module-exports": "^1.0.2",
-    "copy-webpack-plugin": "^5.0.2",
+    "copy-webpack-plugin": "^5.0.3",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
     "cssnano": "^4.1.10",
@@ -78,7 +78,7 @@
     "webpack-cli": "^3.3.1"
   },
   "dependencies": {
-    "aws-sdk": "^2.441.0",
+    "aws-sdk": "^2.442.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "classnames": "^2.2.6",
@@ -130,7 +130,7 @@
     "redux-form": "^8.2.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "sequelize": "^5.7.4",
+    "sequelize": "^5.7.5",
     "sequelize-slugify": "^0.7.0",
     "sharp": "^0.22.0",
     "winston": "^3.2.1"
