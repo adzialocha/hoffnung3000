@@ -8,10 +8,14 @@ body {
 
   margin: 0 auto;
   padding: 20px;
+  padding-bottom: 40px;
 }
 
 hr {
   height: 3px;
+
+  margin-top: 60px;
+  margin-bottom: 40px;
 
   border: 0;
 
@@ -23,20 +27,35 @@ p {
   line-height: 1.5;
 }
 
+ul ul,
+li + li {
+  margin-top: 2px;
+}
+
 li p {
   margin: 0;
 }
 
 a {
+  padding-bottom: 1px;
+
+  border-bottom: 3px solid #ffc0cb;
+
   color: #000;
 
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+strong {
+  background-color: #ffc0cb;
 }
 
 img {
   max-width: 100%;
 
   margin: 0 auto;
+
+  border: 3px solid #ffc0cb;
 }
 
 h1,
@@ -45,6 +64,9 @@ h3,
 h4,
 h5,
 h6 {
+  margin-top: 60px;
+  margin-bottom: 32px;
+
   text-transform: uppercase;
 
   word-break: break-all;
@@ -59,27 +81,31 @@ h2 {
 }
 
 h3 {
-  font-size: 28px;
+  margin-bottom: 22px;
+
+  font-size: 22px;
 }
 
-h4 {
-  font-size: 20px;
-}
-
+h4,
 h5,
 h6 {
+  margin-bottom: 18px;
+
   font-size: 18px;
 }
 
 nav a {
+  display: inline-block;
+
   margin-right: 10px;
+  margin-bottom: 10px;
 
   font-weight: bold;
 }
 
 main {
-  margin-top: 60px;
-  margin-bottom: 60px;
+  margin-top: 80px;
+  margin-bottom: 80px;
 }
 
 code {
