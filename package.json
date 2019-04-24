@@ -28,7 +28,7 @@
     "lint:scss": "stylelint ./app/styles",
     "postinstall": "npm run build",
     "serve": "npm run server:watch",
-    "server:build": "babel ./server --out-dir ./dist && cp ./server/index.pug ./dist",
+    "server:build": "babel ./server --out-dir ./dist && cp ./server/index.pug ./dist && cp -r ./server/mails ./dist",
     "server:clear": "rimraf ./dist",
     "server:start": "cross-env NODE_ENV=production node ./dist/index.js",
     "server:watch": "nodemon --watch ./server --watch ./common --exec cross-env NODE_ENV=development babel-node server/index.js --source-maps inline",
