@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import {
   clearUploadedImages,
   removeImageFromList,
-  setUploadedImages,
   uploadImages,
 } from '../actions/imageUpload'
 
@@ -18,7 +17,6 @@ export default function withImageUpload(WrappedComponent) {
   const mapDispatchToProps = {
     clearUploadedImages,
     removeImageFromList,
-    setUploadedImages,
     uploadImages,
   }
 

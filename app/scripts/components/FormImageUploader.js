@@ -6,6 +6,11 @@ import { alert } from '../services/dialog'
 import { asFormField, withImageUpload } from '../containers'
 import { translate } from '../../../common/services/i18n'
 
+function isNewImage(image) {
+  // Newly uploaded images do not have an id yet
+  return !('id' in image)
+}
+
 function convertFileToBase64(file) {
   return new Promise(resolve => {
     const reader = new FileReader()
@@ -22,9 +27,7 @@ function convertFilesToBase64(files) {
   const promises = []
 
   for (let i = 0; i < files.length; i++) {
-    promises.push(
-      convertFileToBase64(files[i])
-    )
+    promises.push(convertFileToBase64(files[i]))
   }
 
   return Promise.all(promises)
@@ -39,7 +42,6 @@ class FormImageUploader extends Component {
     isLoading: PropTypes.bool.isRequired,
     maxImagesCount: PropTypes.number,
     removeImageFromList: PropTypes.func.isRequired,
-    setUploadedImages: PropTypes.func.isRequired,
     uploadImages: PropTypes.func.isRequired,
     uploadedImages: PropTypes.array.isRequired,
   }
@@ -49,31 +51,11 @@ class FormImageUploader extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.uploadedImages.length !== this.props.uploadedImages.length) {
-      const preparedImages = this.props.uploadedImages.map(image => {
-        if (image.base64String) {
-          return Object.assign({}, {
-            isNew: true,
-            fileName: image.fileName,
-          })
-        }
-
-        return image
-      })
-
-      this.props.input.onChange(preparedImages)
+    if (prevProps.uploadedImages.length === this.props.uploadedImages.length) {
+      return
     }
 
-    if (
-      this.props.input.value &&
-      !this._isInitialSet
-    ) {
-      this._isInitialSet = true
-
-      if (!this.props.input.value.find(item => item.isNew)) {
-        this.props.setUploadedImages(this.props.input.value)
-      }
-    }
+    this.updateImages(this.allImages())
   }
 
   componentWillUnmount() {
@@ -122,8 +104,14 @@ class FormImageUploader extends Component {
     this._uploadButtonElem.click()
   }
 
-  onImageRemoveClick(imageId) {
-    this.props.removeImageFromList(imageId)
+  onImageRemoveClick(removedImage) {
+    if (isNewImage(removedImage)) {
+      this.props.removeImageFromList(removedImage.fileName)
+    } else {
+      this.updateImages(this.allImages().filter(image => {
+        return image.fileName !== removedImage.fileName
+      }))
+    }
   }
 
   renderErrorMessage() {
@@ -151,11 +139,10 @@ class FormImageUploader extends Component {
   }
 
   renderUploadedImages() {
-    return this.props.uploadedImages.map((image, index) => {
+    return this.allImages().map((image, index) => {
       return (
         <FormImageUploaderImage
-          backgroundImage={image.smallImageUrl || image.base64String}
-          imageId={image.id}
+          image={image}
           key={index}
           onImageRemoveClick={this.onImageRemoveClick}
         />
@@ -221,11 +208,32 @@ class FormImageUploader extends Component {
     )
   }
 
+  allImages() {
+    // Input might not be set
+    if (!this.props.input.value) {
+      return []
+    }
+
+    // Merge currently given images and newly uploaded ones
+    const currentImages = this.props.input.value.filter(image => {
+      return !isNewImage(image)
+    })
+
+    return currentImages.concat(this.props.uploadedImages)
+  }
+
+  updateImages(images) {
+    // Inform controlling component about current images and
+    // remove base64 strings since its not needed there
+    this.props.input.onChange(images.map(image => {
+      const cleanedImage = Object.assign({}, image)
+      delete cleanedImage.base64String
+      return cleanedImage
+    }))
+  }
+
   constructor(props) {
     super(props)
-
-    // Workaround to only set initial input values once
-    this._isInitialSet = false
 
     this.onFilesChange = this.onFilesChange.bind(this)
     this.onImageRemoveClick = this.onImageRemoveClick.bind(this)

@@ -1,7 +1,6 @@
 import update from 'immutability-helper'
 
 import ActionTypes from '../actionTypes'
-import randomId from '../utils/randomId'
 
 const initialState = {
   errorMessage: '',
@@ -21,7 +20,6 @@ export default (state = initialState, action) => {
       return {
         base64String: action.meta.base64Strings[index],
         fileName,
-        id: randomId(),
       }
     })
 
@@ -35,13 +33,9 @@ export default (state = initialState, action) => {
       errorMessage: { $set: action.error.message },
       isLoading: { $set: false },
     })
-  case ActionTypes.UPLOAD_IMAGE_SET_IMAGES:
-    return update(state, {
-      uploadedImages: { $set: action.meta.images },
-    })
   case ActionTypes.UPLOAD_IMAGE_REMOVE_IMAGE: {
     const index = state.uploadedImages.findIndex(image => {
-      return image.id === action.meta.imageId
+      return image.fileName === action.meta.fileName
     })
 
     return update(state, {

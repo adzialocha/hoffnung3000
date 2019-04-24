@@ -5,8 +5,7 @@ import { translate } from '../../../common/services/i18n'
 
 class FormImageUploaderImage extends Component {
   static propTypes = {
-    backgroundImage: PropTypes.string.isRequired,
-    imageId: PropTypes.any.isRequired,
+    image: PropTypes.object.isRequired,
     onImageRemoveClick: PropTypes.func,
   }
 
@@ -17,7 +16,7 @@ class FormImageUploaderImage extends Component {
   onImageRemoveClick(event) {
     event.preventDefault()
 
-    this.props.onImageRemoveClick(this.props.imageId)
+    this.props.onImageRemoveClick(this.props.image)
   }
 
   renderRemoveButton() {
@@ -36,10 +35,14 @@ class FormImageUploaderImage extends Component {
   }
 
   render() {
+    // Take base64 encoded image when it was just uploaded
+    const { image } = this.props
+    const backgroundImage = image.id ? image.smallImageUrl : image.base64String
+
     return (
       <div
         className="image-uploader__image"
-        style={ { backgroundImage: `url(${this.props.backgroundImage})` } }
+        style={ { backgroundImage: `url(${backgroundImage})` } }
       >
         { this.renderRemoveButton() }
       </div>

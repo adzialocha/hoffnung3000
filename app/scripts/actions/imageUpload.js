@@ -18,20 +18,11 @@ export function uploadImages(images, base64Strings) {
   })
 }
 
-export function setUploadedImages(images) {
-  return {
-    type: ActionTypes.UPLOAD_IMAGE_SET_IMAGES,
-    meta: {
-      images,
-    },
-  }
-}
-
-export function removeImageFromList(imageId) {
+export function removeImageFromList(fileName) {
   return {
     type: ActionTypes.UPLOAD_IMAGE_REMOVE_IMAGE,
     meta: {
-      imageId,
+      fileName,
     },
   }
 }

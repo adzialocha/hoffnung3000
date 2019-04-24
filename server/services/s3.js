@@ -63,7 +63,7 @@ export function hasAWSConfiguration() {
     'AWS_SECRET_ACCESS_KEY',
     'AWS_BUCKET_NAME',
   ].find(field => {
-    return process.env[field] === ''
+    return !process.env[field]
   }) === undefined
 }
 
