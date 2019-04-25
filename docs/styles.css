@@ -108,6 +108,11 @@ main {
   margin-bottom: 80px;
 }
 
+pre {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
 code {
   background-color: #ffc0cb;
 }
