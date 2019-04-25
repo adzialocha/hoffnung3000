@@ -36,6 +36,10 @@ li p {
   margin: 0;
 }
 
+li em {
+  word-break: break-all;
+}
+
 a {
   padding-bottom: 1px;
 
