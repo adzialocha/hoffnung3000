@@ -209,17 +209,15 @@ class FormImageUploader extends Component {
   }
 
   allImages() {
-    // Input might not be set
-    if (!this.props.input.value) {
-      return []
-    }
+    const { input, uploadedImages } = this.props
+    const currentValue = input.value ? input.value : []
 
     // Merge currently given images and newly uploaded ones
-    const currentImages = this.props.input.value.filter(image => {
+    const currentImages = currentValue.filter(image => {
       return !isNewImage(image)
     })
 
-    return currentImages.concat(this.props.uploadedImages)
+    return currentImages.concat(uploadedImages)
   }
 
   updateImages(images) {
