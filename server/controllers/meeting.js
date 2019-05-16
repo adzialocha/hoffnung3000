@@ -224,8 +224,6 @@ export default {
         .plus({ hours: ANY_DATE_FROM_NOW_MIN_HOURS })
         .startOf('hour')
 
-      console.log(date, from, from.toISO())
-
       where.from = {
         [Op.gte]: from.toISO(),
       }
