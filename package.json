@@ -7,7 +7,7 @@
   "contributors": [
     "adzialocha"
   ],
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0",
   "engines": {
     "node": "~10.15.3",
     "npm": "~6.9.0"
