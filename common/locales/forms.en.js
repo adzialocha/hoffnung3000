@@ -102,6 +102,7 @@ export default {
     videoIntroductionId: 'Sign up video ID',
     isActivityStreamEnabled: 'Use activity stream',
     isAnonymizationEnabled: 'Use anonymized animal avatars for users',
+    isFestivalFree: 'Events are visible to non-registered visitors',
     isInboxEnabled: 'Use messaging',
     isRandomMeetingEnabled: 'Use random meetings',
     isSignUpParticipantEnabled: 'Activate partipant ticket sales',
