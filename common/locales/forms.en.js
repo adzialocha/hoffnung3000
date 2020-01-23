@@ -157,6 +157,7 @@ export default {
     publicOrPrivate: 'Is it public or private?',
     selectPlaceAndSlotsFirst: 'Please select a place and time first!',
     submit: 'Save event',
+    ticketUrl: 'Ticket website link',
     title: 'Title of your event',
     what: 'What?',
     whereAndWhen: 'Where and when?',
