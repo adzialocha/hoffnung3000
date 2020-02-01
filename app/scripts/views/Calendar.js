@@ -12,6 +12,7 @@ const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
 
 class Calendar extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     isActive: PropTypes.bool.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
@@ -31,8 +32,20 @@ class Calendar extends Component {
     this.props.push('/tickets')
   }
 
+  onFreeClick(item) {
+    this.props.push(`/eventisfree/${item.slug}`)
+  }
+
   renderItemsList() {
     if (!this.props.isAuthenticated || !this.props.isActive) {
+      if (this.props.config.festivalTicketPrice === 0) {
+        return (
+          <WrappedInfiniteList
+            resourceName="eventisfree"
+            onClick={this.onFreeClick}
+          />
+        )
+      }
       return (
         <WrappedInfiniteList
           resourceName="preview"
@@ -40,7 +53,6 @@ class Calendar extends Component {
         />
       )
     }
-
     return (
       <WrappedInfiniteList
         resourceName="events"
@@ -66,7 +78,7 @@ class Calendar extends Component {
   }
 
   renderText() {
-    if (!this.props.isAuthenticated || !this.props.isActive) {
+    if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0) {
       return <StaticPage hideTitle={true} slug="calendar-public" />
     }
 
@@ -91,6 +103,7 @@ class Calendar extends Component {
     this.onClick = this.onClick.bind(this)
     this.onEditClick = this.onEditClick.bind(this)
     this.onPreviewClick = this.onPreviewClick.bind(this)
+    this.onFreeClick = this.onFreeClick.bind(this)
   }
 }
 
@@ -98,6 +111,7 @@ function mapStateToProps(state) {
   return {
     ...state.auth,
     ...state.user,
+    ...state.meta,
   }
 }
 

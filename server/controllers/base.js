@@ -78,6 +78,7 @@ export function lookup(model, req, res, next) {
 }
 
 export function lookupWithSlug(model, req, res, next) {
+  console.log('CONSOLE LOG lookupWithSlug start')
   return model.findOne({
     include,
     rejectOnEmpty: true,
@@ -86,6 +87,7 @@ export function lookupWithSlug(model, req, res, next) {
     },
   })
     .then(data => {
+      req.isFestivalFree = true
       req.resourceId = data.id
       req.ownerId = data.animal.userId
       req.isOwnerMe = (data.animal.userId === req.user.id)

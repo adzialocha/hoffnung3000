@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Route, Switch } from 'react-router'
 
 import {
+  festivalIsFree,
   isAdmin,
   isAuthenticated,
   isParticipant,
@@ -60,6 +61,7 @@ export default class Routes extends Component {
           <Route component={isParticipant(ResourcesNew)} path="/new/resource" />
           <Route component={isParticipant(EventsEdit)} path="/events/:slug/edit" />
           <Route component={isAuthenticated(EventsShow)} path="/events/:slug" />
+          <Route component={festivalIsFree(EventsShow)} path="/eventisfree/:slug" />
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
           <Route component={isParticipant(PlacesShow)} path="/places/:slug" />
           <Route component={isParticipant(PlacesIndex)} path="/places" />
