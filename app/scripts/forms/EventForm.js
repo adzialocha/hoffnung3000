@@ -144,6 +144,14 @@ class EventForm extends Component {
           type="text"
         />
 
+        <Field
+          component={FormInput}
+          disabled={this.props.isLoading}
+          label={translate('forms.event.ticketUrl')}
+          name="ticketUrl"
+          type="text"
+        />
+
         <hr />
         <h2>{ translate('forms.common.uploadImages') }</h2>
 

@@ -42,6 +42,11 @@ const Event = db.define('event', {
     allowNull: false,
     defaultValue: '',
   },
+  ticketUrl: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    defaultValue: '',
+  },
 })
 
 slugify.slugifyModel(Event, {
