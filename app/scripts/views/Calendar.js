@@ -32,20 +32,8 @@ class Calendar extends Component {
     this.props.push('/tickets')
   }
 
-  onFreeClick(item) {
-    this.props.push(`/eventisfree/${item.slug}`)
-  }
-
   renderItemsList() {
-    if (!this.props.isAuthenticated || !this.props.isActive) {
-      if (this.props.config.festivalTicketPrice === 0) {
-        return (
-          <WrappedInfiniteList
-            resourceName="eventisfree"
-            onClick={this.onFreeClick}
-          />
-        )
-      }
+    if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0) {
       return (
         <WrappedInfiniteList
           resourceName="preview"
@@ -103,7 +91,6 @@ class Calendar extends Component {
     this.onClick = this.onClick.bind(this)
     this.onEditClick = this.onEditClick.bind(this)
     this.onPreviewClick = this.onPreviewClick.bind(this)
-    this.onFreeClick = this.onFreeClick.bind(this)
   }
 }
 

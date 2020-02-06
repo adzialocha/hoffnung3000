@@ -11,7 +11,7 @@ import { onlyAdmin } from '../middlewares/roles'
 
 import activityController from '../controllers/activity'
 import eventPreviewController from '../controllers/eventPreview'
-import freeEventController from '../controllers/freeEventController'
+import eventController from '../controllers/event'
 import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
 import userStatusController from '../controllers/userStatus'
@@ -46,11 +46,13 @@ router.route('/meta')
 router.route('/preview')
   .get(eventPreviewController.findAll)
 
-router.route('/eventisfree')
-  .get(freeEventController.findAll)
+// Public event route
+router.route('/events')
+  .get(eventController.findAll)
 
-router.route('/eventisfree/:resourceSlug')
-  .get(freeEventController.findOneWithSlug)
+// Public event route
+router.route('/events/:resourceSlug')
+  .get(eventController.findOneWithSlug)
 
 // Private API routes
 router.use('/*', (req, res, next) => {
@@ -70,7 +72,8 @@ router.use('/*', (req, res, next) => {
 })
 
 router.use('/conversations', conversationRoutes)
-router.use('/events', eventRoutes)
+// How to use all events routes except the public ones above?
+// router.use('/events', eventRoutes)
 router.use('/meeting', meetingRoutes)
 router.use('/places', placeRoutes)
 router.use('/profile', profileRoutes)
