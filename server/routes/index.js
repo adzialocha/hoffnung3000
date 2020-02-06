@@ -11,7 +11,6 @@ import { onlyAdmin } from '../middlewares/roles'
 
 import activityController from '../controllers/activity'
 import eventPreviewController from '../controllers/eventPreview'
-import eventController from '../controllers/event'
 import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
 import userStatusController from '../controllers/userStatus'
@@ -20,13 +19,14 @@ import authRoutes from './auth'
 import configRoutes from './config'
 import conversationRoutes from './conversation'
 import eventRoutes from './event'
+import eventPublicRoutes from './eventPublic'
 import meetingRoutes from './meeting'
 import pageRoutes from './page'
 import placeRoutes from './place'
 import profileRoutes from './profile'
 import resourceRoutes from './resource'
 import userRoutes from './user'
-
+import { getConfig } from '../config'
 import logger from '../helpers/logger'
 
 const router = express.Router() // eslint-disable-line new-cap
@@ -46,17 +46,26 @@ router.route('/meta')
 router.route('/preview')
   .get(eventPreviewController.findAll)
 
-// Public event route
-router.route('/events')
-  .get(eventController.findAll)
+// Check and set if festival is free for unregistered Visitors
+router.use('/*', (req, res, next) => {
+  return getConfig('festivalTicketPrice').then(config => {
+    passport.authenticate('jwt', { session: false }, (err, user) => {
+      req.freeFestival = (config.festivalTicketPrice === 0)
+      if (user) {
+        req.user = user
+        return next()
+      }
+      req.user = false
+      return next()
+    })(req, res, next)
+  })
+})
 
 // Public event route
-router.route('/events/:resourceSlug')
-  .get(eventController.findOneWithSlug)
+router.use('/events', eventPublicRoutes)
 
 // Private API routes
 router.use('/*', (req, res, next) => {
-  console.log('CONSOLE SERVER: auth route activated')
   passport.authenticate('jwt', { session: false }, (err, user) => {
     if (err) {
       return next(err)
@@ -72,8 +81,7 @@ router.use('/*', (req, res, next) => {
 })
 
 router.use('/conversations', conversationRoutes)
-// How to use all events routes except the public ones above?
-// router.use('/events', eventRoutes)
+router.use('/events', eventRoutes)
 router.use('/meeting', meetingRoutes)
 router.use('/places', placeRoutes)
 router.use('/profile', profileRoutes)
