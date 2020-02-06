@@ -5,6 +5,7 @@ import {
   isAdmin,
   isAuthenticated,
   isParticipant,
+  isParticipantOrFreeFestival,
   shouldNotBeAuthenticated,
 } from './auth'
 
@@ -61,8 +62,8 @@ export default class Routes extends Component {
           <Route component={isParticipant(EventsEdit)} path="/events/:slug/edit" />
           <Route component={isAuthenticated(EventsShow)} path="/events/:slug" />
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
-          <Route component={isParticipant(PlacesShow)} path="/places/:slug" />
-          <Route component={isParticipant(PlacesIndex)} path="/places" />
+          <Route component={isParticipantOrFreeFestival(PlacesShow)} path="/places/:slug" />
+          <Route component={isParticipantOrFreeFestival(PlacesIndex)} path="/places" />
           <Route component={isParticipant(ResourcesEdit)} path="/resources/:slug/edit" />
           <Route component={isParticipant(ResourcesIndex)} path="/resources" />
           <Route component={withConfig('isInboxEnabled', isParticipant(ConversationsNew))} path="/inbox/new" />
