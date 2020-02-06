@@ -23,6 +23,7 @@ import eventPublicRoutes from './eventPublic'
 import meetingRoutes from './meeting'
 import pageRoutes from './page'
 import placeRoutes from './place'
+import placePublicRoutes from './placePublic'
 import profileRoutes from './profile'
 import resourceRoutes from './resource'
 import userRoutes from './user'
@@ -61,8 +62,10 @@ router.use('/*', (req, res, next) => {
   })
 })
 
-// Public event route
+// Public routes when festival is free
 router.use('/events', eventPublicRoutes)
+
+router.use('/places', placePublicRoutes)
 
 // Private API routes
 router.use('/*', (req, res, next) => {
