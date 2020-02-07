@@ -1,11 +1,8 @@
 import express from 'express'
-import validate from 'express-validation'
 
 import placeController from '../controllers/place'
-import placeSlotsController from '../controllers/placeSlots'
-import placeValidation from '../validation/place'
 
-import { canRead, canCreate, canUpdate, canDelete } from '../middlewares/roles'
+import { canRead } from '../middlewares/roles'
 
 const router = express.Router() // eslint-disable-line new-cap
 

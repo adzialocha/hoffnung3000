@@ -393,7 +393,7 @@ function findOneWithSlug(slug, req, res, next) {
   })
     .then(data => {
       // get and pass config vars into function
-      getConfig(['festivalTicketPrice', 'isAnonymizationEnabled']).then(config => {
+      return getConfig(['festivalTicketPrice', 'isAnonymizationEnabled']).then(config => {
         if (!data.isPublic && (req.user.isVisitor || config.festivalTicketPrice !== 0)) {
           next(
             new APIError(
