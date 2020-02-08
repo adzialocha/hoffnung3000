@@ -54,7 +54,6 @@ router.route('/eventisfree/:resourceSlug')
 
 // Private API routes
 router.use('/*', (req, res, next) => {
-  console.log('CONSOLE SERVER: auth route activated')
   passport.authenticate('jwt', { session: false }, (err, user) => {
     if (err) {
       return next(err)
