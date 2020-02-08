@@ -337,14 +337,6 @@ class AdminConfigForm extends Component {
           name="isSignUpVisitorEnabled"
         />
 
-        <Field
-          component={FormCheckbox}
-          disabled={this.props.isLoading}
-          inline={true}
-          label={translate('forms.config.isFestivalFree')}
-          name="isFestivalFree"
-        />
-
         <hr />
 
         <h2>{ translate('forms.config.services') }</h2>
