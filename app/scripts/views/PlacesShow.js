@@ -3,11 +3,15 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import { asInfiniteList } from '../containers'
+import { CuratedEventListItem } from '../components'
 import { LocationMap, ImageGallery, AnimalLink } from '../components'
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
 import { numberToSlotSizeStrHuman } from '../../../common/utils/slots'
 import { translate } from '../../../common/services/i18n'
+
+const WrappedInfiniteList = asInfiniteList(CuratedEventListItem)
 
 class PlacesShow extends Component {
   static propTypes = {
@@ -144,6 +148,14 @@ class PlacesShow extends Component {
     )
   }
 
+  renderEventList() {
+    return (
+      <WrappedInfiniteList
+        resourceName="events"
+      />
+    )
+  }
+
   renderContent() {
     if (this.props.isLoading) {
       return <p>{ translate('common.loading') }</p>
@@ -187,6 +199,7 @@ class PlacesShow extends Component {
         { this.renderActionButton() }
         <hr />
         { this.renderContent() }
+        { this.renderEventList() }
       </section>
     )
   }
