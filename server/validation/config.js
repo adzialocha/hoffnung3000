@@ -16,6 +16,7 @@ export default {
       gifStreamServerUrl: Joi.string().empty('').uri({ scheme: ['http', 'https'] }),
       isActivityStreamEnabled: Joi.boolean().required(),
       isAnonymizationEnabled: Joi.boolean().required(),
+      isDerMarktEnabled: Joi.boolean().required(),
       isInboxEnabled: Joi.boolean().required(),
       isRandomMeetingEnabled: Joi.boolean().required(),
       isSignUpParticipantEnabled: Joi.boolean().required(),
