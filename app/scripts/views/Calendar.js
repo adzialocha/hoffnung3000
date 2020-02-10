@@ -91,9 +91,10 @@ class Calendar extends Component {
         cityCode: item.place.cityCode,
         country: item.place.country,
         key: item.id,
-        latitude: item.place.latitude || 0, // for venues without gps positions fix next
-        longitude: item.place.longitude || 0, // for venues without gps positions fix next
+        latitude: item.place.latitude,
+        longitude: item.place.longitude,
         mode: item.place.mode,
+        placeId: item.placeId,
         street: item.place.street,
         title: item.title,
       }))
@@ -102,8 +103,7 @@ class Calendar extends Component {
           <LocationMap initialCenter= { { lat: this.props.config.defaultLatitude, lng: this.props.config.defaultLongitude } } plots= {plots} />
         </div>
       )
-    }
-    return null
+    } return null
   }
 
   renderText() {

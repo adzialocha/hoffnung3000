@@ -21,7 +21,7 @@ class LocationMap extends Component {
 
   static defaultProps = {
     onClick: undefined,
-    plots: undefined,
+    plots: null,
   }
 
   onClick(event) {
@@ -51,30 +51,18 @@ class LocationMap extends Component {
   }
 
   render() {
+    // this is messy..........
     const markers = this.props.plots
     const MyMarker = ({ map, latitude, longitude }) => (
       <Marker icon={markerIcon} map={map} position={[latitude, longitude]} />
     )
 
-    const MyMarkersList = ({ map }) => {
+    const MyMarkersList = ({ map, markers }) => {
       const items = markers.map(({ key, ...props }) => (
         <MyMarker key={key} map={map} {...props} />
       ))
       return <div style={ { display: 'none' } }>{items}</div>
     }
-
-    const MyMap = () => (
-      <Map
-        center={this.props.initialCenter}
-        className="location-map"
-        doubleClickZoom={false}
-        keyboard={false}
-        scrollWheelZoom={false}
-        zoom={this.state.zoom}
-        onClick={this.onClick}
-        onZoom={this.onZoom}
-      />
-    )
 
     const MyTileLayer = () => (
       <TileLayer
@@ -85,17 +73,35 @@ class LocationMap extends Component {
 
     if (!this.state.plots) {
       return (
-        <MyMap >
+        <Map
+          center={this.props.initialCenter}
+          className="location-map"
+          doubleClickZoom={false}
+          keyboard={false}
+          scrollWheelZoom={false}
+          zoom={this.state.zoom}
+          onClick={this.onClick}
+          onZoom={this.onZoom}
+        >
           <MyTileLayer />
           <Marker icon={markerIcon} position={this.state.position} />
-        </MyMap>
+        </Map>
       )
     }
     return (
-      <MyMap >
+      <Map
+        center={this.props.initialCenter}
+        className="location-map"
+        doubleClickZoom={false}
+        keyboard={false}
+        scrollWheelZoom={false}
+        zoom={this.state.zoom}
+        onClick={this.onClick}
+        onZoom={this.onZoom}
+      >
         <MyTileLayer />
         <MyMarkersList markers={markers} />
-      </MyMap>
+      </Map>
     )
   }
 
