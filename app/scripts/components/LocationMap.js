@@ -16,10 +16,12 @@ class LocationMap extends Component {
       lng: PropTypes.number.isRequired,
     }).isRequired,
     onClick: PropTypes.func,
+    plots: PropTypes.array,
   }
 
   static defaultProps = {
     onClick: undefined,
+    plots: undefined,
   }
 
   onClick(event) {
@@ -49,7 +51,19 @@ class LocationMap extends Component {
   }
 
   render() {
-    return (
+    const markers = this.props.plots
+    const MyMarker = ({ map, latitude, longitude }) => (
+      <Marker icon={markerIcon} map={map} position={[latitude, longitude]} />
+    )
+
+    const MyMarkersList = ({ map }) => {
+      const items = markers.map(({ key, ...props }) => (
+        <MyMarker key={key} map={map} {...props} />
+      ))
+      return <div style={ { display: 'none' } }>{items}</div>
+    }
+
+    const MyMap = () => (
       <Map
         center={this.props.initialCenter}
         className="location-map"
@@ -59,14 +73,29 @@ class LocationMap extends Component {
         zoom={this.state.zoom}
         onClick={this.onClick}
         onZoom={this.onZoom}
-      >
-        <TileLayer
-          attribution='&amp;copy <a target="_blank" href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      />
+    )
 
-        <Marker icon={markerIcon} position={this.state.position} />
-      </Map>
+    const MyTileLayer = () => (
+      <TileLayer
+        attribution='&amp;copy <a target="_blank" href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+    )
+
+    if (!this.state.plots) {
+      return (
+        <MyMap >
+          <MyTileLayer />
+          <Marker icon={markerIcon} position={this.state.position} />
+        </MyMap>
+      )
+    }
+    return (
+      <MyMap >
+        <MyTileLayer />
+        <MyMarkersList markers={markers} />
+      </MyMap>
     )
   }
 
@@ -74,8 +103,10 @@ class LocationMap extends Component {
     super(props)
 
     const { lat, lng } = props.initialCenter
+    const plots = props.plots
 
     this.state = {
+      plots: plots,
       position: {
         lat,
         lng,

@@ -78,7 +78,6 @@ export function lookup(model, req, res, next) {
 }
 
 export function lookupWithSlug(model, req, res, next) {
-  console.log('CONSOLE LOG lookupWithSlug start')
   return model.findOne({
     include,
     rejectOnEmpty: true,

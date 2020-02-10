@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { CuratedEventListItem, StaticPage } from '../components'
+import { LocationMap, CuratedEventListItem, StaticPage } from '../components'
 import { asInfiniteListCalendar } from '../containers'
 import { translate } from '../../../common/services/i18n'
 
@@ -17,7 +17,11 @@ class Calendar extends Component {
     isAdmin: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     isParticipant: PropTypes.bool.isRequired,
+    listItems: PropTypes.object.isRequired,
     push: PropTypes.func.isRequired,
+  }
+
+  componentWillMount() {
   }
 
   onClick(item) {
@@ -77,6 +81,31 @@ class Calendar extends Component {
     )
   }
 
+  renderMap() {
+    if (!this.props.listItems.events) {
+      return null
+    } else if (this.props.listItems.events.listItems[0]) {
+      const allEvents = this.props.listItems.events.listItems
+      const plots = allEvents.map(item => ({
+        city: item.place.city,
+        cityCode: item.place.cityCode,
+        country: item.place.country,
+        key: item.id,
+        latitude: item.place.latitude || 0, // for venues without gps positions fix next
+        longitude: item.place.longitude || 0, // for venues without gps positions fix next
+        mode: item.place.mode,
+        street: item.place.street,
+        title: item.title,
+      }))
+      return (
+        <div>
+          <LocationMap initialCenter= { { lat: this.props.config.defaultLatitude, lng: this.props.config.defaultLongitude } } plots= {plots} />
+        </div>
+      )
+    }
+    return null
+  }
+
   renderText() {
     if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0) {
       return <StaticPage hideTitle={true} slug="calendar-public" />
@@ -93,6 +122,7 @@ class Calendar extends Component {
         { this.renderCreateButton() }
         <hr />
         { this.renderItemsList() }
+        { this.renderMap() }
       </section>
     )
   }
@@ -112,6 +142,7 @@ function mapStateToProps(state) {
     ...state.auth,
     ...state.user,
     ...state.meta,
+    listItems: state.infiniteList,
   }
 }
 

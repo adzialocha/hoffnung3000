@@ -101,6 +101,7 @@
     "jwt-decode": "^2.2.0",
     "keymirror": "^0.1.1",
     "leaflet": "^1.5.1",
+    "leaflet-geosearch": "^2.7.0",
     "luxon": "^1.13.2",
     "marked": "^0.6.2",
     "method-override": "^3.0.0",
