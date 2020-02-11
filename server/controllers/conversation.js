@@ -42,12 +42,12 @@ function prepareResponse(conversation, req, isAnonymous) {
     const animalMe = (
       req.conversation ? req.conversation.animals[0] : conversation.animals[0]
     )
-    const lastCheckedAt = animalMe.conversationsAnimals.updatedAt
+    const lastCheckedAt = animalMe.conversationsAnimals.updatedAt.toISOString()
     if (response.lastMessage.animalId === animalMe.id) {
       response.isRead = true
     } else {
       response.isRead = DateTime.fromISO(lastCheckedAt) > DateTime.fromISO(
-        response.lastMessage.createdAt)
+        response.lastMessage.createdAt.toISOString())
     }
   }
 

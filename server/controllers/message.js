@@ -29,11 +29,11 @@ function prepareResponse(message, req, isAnonymous) {
     animalMe.id === message.animal.id
   )
 
-  const lastCheckedAt = animalMe.conversationsAnimals.updatedAt
+  const lastCheckedAt = animalMe.conversationsAnimals.updatedAt.toISOString()
   if (response.animal.id === animalMe.id) {
     response.isRead = true
   } else {
-    response.isRead = DateTime.fromISO(lastCheckedAt) > DateTime.fromISO(response.createdAt)
+    response.isRead = DateTime.fromISO(lastCheckedAt) > DateTime.fromISO(response.createdAt.toISOString())
   }
 
   response.textHtml = marked(response.text)
