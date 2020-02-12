@@ -97,6 +97,9 @@ class Calendar extends Component {
         placeId: item.placeId,
         street: item.place.street,
         title: item.title,
+        place: item.place.title,
+        from: item.slots[0].from,
+        to: item.slots[0].to,
       }))
       return (
         <div>
@@ -121,8 +124,8 @@ class Calendar extends Component {
         { this.renderText() }
         { this.renderCreateButton() }
         <hr />
-        { this.renderItemsList() }
         { this.renderMap() }
+        { this.renderItemsList() }
       </section>
     )
   }

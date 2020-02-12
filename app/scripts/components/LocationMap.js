@@ -1,7 +1,7 @@
 import L from 'leaflet'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Map, TileLayer, Marker } from 'react-leaflet'
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 
 const DEFAULT_ZOOM = 13
 
@@ -53,12 +53,16 @@ class LocationMap extends Component {
   render() {
     // this is messy..........
     const markers = this.props.plots
-    const MyMarker = ({ map, latitude, longitude }) => (
-      <Marker icon={markerIcon} map={map} position={[latitude, longitude]} />
+    const MyMarker = ({ map, latitude, longitude, title, from, to }) => (
+      <Marker icon={markerIcon} map={map} position={[latitude, longitude]} >
+        <Popup>
+          {title} <br /> {from} {to}
+        </Popup>
+      </Marker>
     )
 
     const MyMarkersList = ({ map, markers }) => {
-      const items = markers.map(({ key, ...props }) => (
+      const items = markers.map(({ key,...props }) => (
         <MyMarker key={key} map={map} {...props} />
       ))
       return <div style={ { display: 'none' } }>{items}</div>
