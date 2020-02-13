@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
+import { DateTime } from 'luxon'
 
 import { LocationMap, CuratedEventListItem, StaticPage } from '../components'
 import { asInfiniteListCalendar } from '../containers'
@@ -86,24 +87,45 @@ class Calendar extends Component {
       return null
     } else if (this.props.listItems.events.listItems[0]) {
       const allEvents = this.props.listItems.events.listItems
-      const plots = allEvents.map(item => ({
-        city: item.place.city,
-        cityCode: item.place.cityCode,
-        country: item.place.country,
-        key: item.id,
-        latitude: item.place.latitude,
-        longitude: item.place.longitude,
-        mode: item.place.mode,
-        placeId: item.placeId,
-        street: item.place.street,
-        title: item.title,
-        place: item.place.title,
-        from: item.slots[0].from,
-        to: item.slots[0].to,
-      }))
+      const allVenues = []
+      allEvents.map(item => {
+        const filterVenues = allEvents.filter(i => ((item.placeId === i.placeId)))
+        const exists = allVenues.filter(x => {
+          return x.find(({ placeId }) => placeId === item.placeId)
+        })
+        if (exists.length === 0) {
+          allVenues.push(filterVenues)
+          return allVenues
+        } return null
+      })
+      const plots = allVenues.map(item => {
+        const venueEvents = item.map(i => {
+          const time = DateTime.fromISO(i.slots[0].from).toFormat('T DDDD')
+          return {
+            title: i.title,
+            time: time,
+            imageUrl: i.images[0].smallImageUrl,
+            slug: i.slug,
+          }
+        })
+        const newArrayObject = {
+          city: item[0].place.city,
+          cityCode: item[0].place.cityCode,
+          country: item[0].place.country,
+          key: item[0].id,
+          latitude: item[0].place.latitude,
+          longitude: item[0].place.longitude,
+          mode: item[0].place.mode,
+          placeId: item[0].placeId,
+          street: item[0].place.street,
+          place: item[0].place.title,
+          events: venueEvents,
+        }
+        return newArrayObject
+      })
       return (
         <div>
-          <LocationMap initialCenter= { { lat: this.props.config.defaultLatitude, lng: this.props.config.defaultLongitude } } plots= {plots} />
+          <LocationMap initialCenter= { { lat: this.props.config.defaultLatitude, lng: this.props.config.defaultLongitude } } plots={plots} />
         </div>
       )
     } return null

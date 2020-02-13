@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 
-const DEFAULT_ZOOM = 13
+const DEFAULT_ZOOM = 11
 
 const markerIcon = new L.Icon.Default({
   imagePath: '/static/',
@@ -51,19 +51,34 @@ class LocationMap extends Component {
   }
 
   render() {
-    // this is messy..........
-    const markers = this.props.plots
-    const MyMarker = ({ map, latitude, longitude, title, from, to }) => (
-      <Marker icon={markerIcon} map={map} position={[latitude, longitude]} >
+    const MyPopup = ({ events, place }) => {
+      const content = events.map((item) => (
+        <tr key={item.title}>
+          <td><img className="map-popup-img" src={item.imageUrl} /></td>
+          <td>{item.title}</td>
+          <td>{item.time}</td>
+        </tr>
+      ))
+      return (
         <Popup>
-          {title} <br /> {from} {to}
+          <b>{place}</b><br />
+          <table>
+            <tbody>{content}
+            </tbody>
+          </table>
         </Popup>
+      )
+    }
+
+    const MyMarker = ({ map, latitude, longitude, events, place }) => (
+      <Marker icon={markerIcon} map={map} position={[latitude, longitude]}>
+        <MyPopup events={events} place={place} />
       </Marker>
     )
 
     const MyMarkersList = ({ map, markers }) => {
-      const items = markers.map(({ key,...props }) => (
-        <MyMarker key={key} map={map} {...props} />
+      const items = markers.map(({ key, events, place, ...props }) => (
+        <MyMarker events={events} key={key} map={map} place={place} {...props} />
       ))
       return <div style={ { display: 'none' } }>{items}</div>
     }
@@ -104,7 +119,7 @@ class LocationMap extends Component {
         onZoom={this.onZoom}
       >
         <MyTileLayer />
-        <MyMarkersList markers={markers} />
+        <MyMarkersList markers={this.props.plots} />
       </Map>
     )
   }
