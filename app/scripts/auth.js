@@ -8,7 +8,12 @@ const redirectPath = '/login'
 
 /* eslint-disable new-cap */
 export const isAuthenticated = connectedReduxRedirect({
-  authenticatedSelector: state => state.auth.isAuthenticated,
+  // return true statements if festival is free
+  authenticatedSelector: state => {
+    return (
+      (state.auth.isAuthenticated || state.meta.config.festivalTicketPrice === 0)
+    )
+  },
   redirectAction,
   redirectPath,
   wrapperDisplayName: 'UserIsAuthenticated',
@@ -35,14 +40,28 @@ export const isParticipant = connectedReduxRedirect({
   wrapperDisplayName: 'UserIsParticipant',
 })
 
-export const isVisitor = connectedReduxRedirect({
+export const isParticipantOrFreeFestival = connectedReduxRedirect({
   redirectAction,
   redirectPath,
   authenticatedSelector: state => {
     return (
-      state.auth.isAuthenticated &&
-      (state.user.isVisitor || state.user.isAdmin) &&
-      state.user.isActive
+      (state.auth.isAuthenticated || state.meta.config.festivalTicketPrice === 0) &&
+      (state.user.isParticipant || state.user.isAdmin || state.meta.config.festivalTicketPrice === 0) &&
+      (state.user.isActive || state.meta.config.festivalTicketPrice === 0)
+    )
+  },
+  wrapperDisplayName: 'UserIsParticipantOrFreeFestival',
+})
+
+export const isVisitor = connectedReduxRedirect({
+  redirectAction,
+  redirectPath,
+  // return true statements if festival is free
+  authenticatedSelector: state => {
+    return (
+      (state.auth.isAuthenticated || state.meta.config.festivalTicketPrice === 0) &&
+      (state.user.isVisitor || state.user.isAdmin || state.meta.config.festivalTicketPrice === 0) &&
+      (state.user.isActive || state.meta.config.festivalTicketPrice === 0)
     )
   },
   wrapperDisplayName: 'UserIsVisitor',

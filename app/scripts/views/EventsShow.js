@@ -160,6 +160,10 @@ class EventsShow extends Component {
     return <h4>{ formatEventTime(firstSlot.from, lastSlot.to) }</h4>
   }
 
+  renderTicketUrl() {
+    return <p>{ this.props.resourceData.ticketUrl }</p>
+  }
+
   renderTitle() {
     if (this.props.isLoading) {
       return <h1>{ translate('views.events.titlePlaceholder') }</h1>
@@ -203,6 +207,7 @@ class EventsShow extends Component {
 
         { this.renderDescription() }
         { this.renderImageGallery() }
+        { this.renderTicketUrl() }
         <hr />
       </div>
     )

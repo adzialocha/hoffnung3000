@@ -19,13 +19,15 @@ import authRoutes from './auth'
 import configRoutes from './config'
 import conversationRoutes from './conversation'
 import eventRoutes from './event'
+import eventPublicRoutes from './eventPublic'
 import meetingRoutes from './meeting'
 import pageRoutes from './page'
 import placeRoutes from './place'
+import placePublicRoutes from './placePublic'
 import profileRoutes from './profile'
 import resourceRoutes from './resource'
 import userRoutes from './user'
-
+import { getConfig } from '../config'
 import logger from '../helpers/logger'
 
 const router = express.Router() // eslint-disable-line new-cap
@@ -45,9 +47,28 @@ router.route('/meta')
 router.route('/preview')
   .get(eventPreviewController.findAll)
 
+// Check and set if festival is free for unregistered Visitors
+router.use('/*', (req, res, next) => {
+  return getConfig('festivalTicketPrice').then(config => {
+    passport.authenticate('jwt', { session: false }, (err, user) => {
+      req.freeFestival = (config.festivalTicketPrice === 0)
+      if (user) {
+        req.user = user
+        return next()
+      }
+      req.user = false
+      return next()
+    })(req, res, next)
+  })
+})
+
+// Public routes when festival is free
+router.use('/events', eventPublicRoutes)
+
+router.use('/places', placePublicRoutes)
+
 // Private API routes
 router.use('/*', (req, res, next) => {
-  console.log('CONSOLE SERVER: auth route activated')
   passport.authenticate('jwt', { session: false }, (err, user) => {
     if (err) {
       return next(err)

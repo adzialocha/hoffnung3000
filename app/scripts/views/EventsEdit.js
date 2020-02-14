@@ -55,6 +55,7 @@ class EventsEdit extends Component {
       placeId: values.placeSlots.place.id,
       resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
+      ticketUrl,
       title,
     }
 
@@ -97,6 +98,7 @@ class EventsEdit extends Component {
       place,
       resources,
       slots,
+      ticketUrl,
       title,
     } = this.props.resourceData
 
@@ -112,6 +114,7 @@ class EventsEdit extends Component {
         place,
         selectedSlotsIndexes,
       },
+      ticketUrl,
       title,
     }
 

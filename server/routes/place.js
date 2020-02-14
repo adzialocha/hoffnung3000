@@ -10,10 +10,6 @@ import { canRead, canCreate, canUpdate, canDelete } from '../middlewares/roles'
 const router = express.Router() // eslint-disable-line new-cap
 
 router.route('/')
-  .get(
-    canRead,
-    placeController.findAll
-  )
   .post(
     canCreate,
     validate(placeValidation.createPlace),
@@ -21,11 +17,6 @@ router.route('/')
   )
 
 router.route('/:resourceSlug')
-  .get(
-    placeController.lookupWithSlug,
-    canRead,
-    placeController.findOneWithSlug
-  )
   .put(
     placeController.lookupWithSlug,
     canUpdate,

@@ -41,12 +41,14 @@ export function prepareAnimalResponseAll(animals, isAnonymous) {
 
 export function prepareResponse(data, req, isAnonymous) {
   const response = data.toJSON()
-
   // Set owner flag for frontend ui
-  if (typeof req.isOwnerMe !== 'undefined') {
-    response.isOwnerMe = req.isOwnerMe
-  } else {
-    response.isOwnerMe = (data.animal.userId === req.user.id)
+  // Check isOwner and userId if visitor === true
+  if ((req.isVisitor || req.isAdmin) === true) {
+    if (typeof req.isOwnerMe !== 'undefined') {
+      response.isOwnerMe = req.isOwnerMe
+    } else {
+      response.isOwnerMe = (data.animal.userId === req.user.id)
+    }
   }
 
   // Remove userId from animal to stay anonymous
@@ -56,7 +58,6 @@ export function prepareResponse(data, req, isAnonymous) {
 
   // Convert markdown to html
   response.descriptionHtml = marked(response.description)
-
   return response
 }
 
@@ -78,7 +79,6 @@ export function lookup(model, req, res, next) {
 }
 
 export function lookupWithSlug(model, req, res, next) {
-  console.log('CONSOLE LOG lookupWithSlug start')
   return model.findOne({
     include,
     rejectOnEmpty: true,
