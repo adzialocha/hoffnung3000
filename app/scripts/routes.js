@@ -61,6 +61,7 @@ export default class Routes extends Component {
           <Route component={isParticipant(ResourcesNew)} path="/new/resource" />
           <Route component={isParticipant(EventsEdit)} path="/events/:slug/edit" />
           <Route component={isAuthenticated(EventsShow)} path="/events/:slug" />
+          <Route component={isAuthenticated(EventsShow)} path="/eventisfree/:slug" />
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
           <Route component={isParticipantOrFreeFestival(PlacesShow)} path="/places/:slug" />
           <Route component={isParticipantOrFreeFestival(PlacesIndex)} path="/places" />
