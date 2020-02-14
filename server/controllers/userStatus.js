@@ -42,18 +42,18 @@ function getUnreadMessageCount(req) {
         // Check for unread messages
         const unreadMessages = messages.rows.filter(message => {
           const animalMe = message.conversation.animals[0]
-          const lastCheckedAt = animalMe.conversationsAnimals.updatedAt
+          const lastCheckedAt = animalMe.conversationsAnimals.updatedAt.toISOString()
 
           if (message.animalId === animalMe.id) {
             return false
           }
 
-          return DateTime.fromISO(lastCheckedAt) < DateTime.fromISO(message.createdAt)
+          return DateTime.fromISO(lastCheckedAt) < DateTime.fromISO(message.createdAt.toISOString())
         })
 
         // Check for unread messages since the last time we looked at it
         const latestMessages = unreadMessages.filter(message => {
-          return DateTime.fromISO(lastRequestAt) < DateTime.fromISO(message.createdAt)
+          return DateTime.fromISO(lastRequestAt) < DateTime.fromISO(message.createdAt.toISOString())
         })
 
         const hasNewMessages = (
