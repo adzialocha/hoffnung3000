@@ -55,14 +55,13 @@ class PlacesEdit extends Component {
     const { title, description, isPublic, images } = values
     const { slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
-    const th = this
     const successFlash = {
       text: translate('flash.updatePlaceSuccess'),
     }
     const address = String(values.location.street) + ', ' + String(values.location.cityCode) + ', ' + String(values.location.city) + ', ' + String(values.location.country)
     provider
       .search({ query: address })
-      .then(function(result) {
+      .then(result => {
         values.location.latitude = result[0].y
         values.location.longitude = result[0].x
 
@@ -75,9 +74,9 @@ class PlacesEdit extends Component {
           title,
         }
 
-        th.props.updateResource(
+        this.props.updateResource(
           'places',
-          th.props.resourceSlug,
+          this.props.resourceSlug,
           requestParams,
           successFlash,
           '/places'

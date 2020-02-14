@@ -28,14 +28,13 @@ class PlacesNew extends Component {
     const { title, description, isPublic, images } = values
     const { slotSize, slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
-    const th = this
     const flash = {
       text: translate('flash.createPlaceSuccess'),
     }
     const address = String(values.location.street) + ', ' + String(values.location.cityCode) + ', ' + String(values.location.city) + ', ' + String(values.location.country)
     provider
       .search({ query: address })
-      .then(function(result) {
+      .then(function(results => {
         values.location.latitude = result[0].y
         values.location.longitude = result[0].x
 
@@ -49,9 +48,9 @@ class PlacesNew extends Component {
           title,
         }
 
-        th.props.createResource(
+        this.props.createResource(
           'places',
-          th.props.nextRandomId,
+          this.props.nextRandomId,
           requestParams,
           flash,
           '/places'
