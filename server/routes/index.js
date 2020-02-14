@@ -11,7 +11,6 @@ import { onlyAdmin } from '../middlewares/roles'
 
 import activityController from '../controllers/activity'
 import eventPreviewController from '../controllers/eventPreview'
-import freeEventController from '../controllers/freeEventController'
 import metaController from '../controllers/meta'
 import pageController from '../controllers/page'
 import userStatusController from '../controllers/userStatus'
@@ -45,12 +44,6 @@ router.route('/meta')
 
 router.route('/preview')
   .get(eventPreviewController.findAll)
-
-router.route('/eventisfree')
-  .get(freeEventController.findAll)
-
-router.route('/eventisfree/:resourceSlug')
-  .get(freeEventController.findOneWithSlug)
 
 // Private API routes
 router.use('/*', (req, res, next) => {
