@@ -48,17 +48,6 @@ export const isVisitor = connectedReduxRedirect({
   wrapperDisplayName: 'UserIsVisitor',
 })
 
-export const festivalIsFree = connectedReduxRedirect({
-  authenticatedSelector: state => {
-    return (
-      (state.meta.config.festivalTicketPrice === 0)
-    )
-  },
-  redirectAction,
-  redirectPath,
-  wrapperDisplayName: 'FestivalIsFree',
-})
-
 export const isAdmin = connectedReduxRedirect({
   redirectAction,
   redirectPath,

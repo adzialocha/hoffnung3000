@@ -86,7 +86,6 @@ export function lookupWithSlug(model, req, res, next) {
     },
   })
     .then(data => {
-      req.isFestivalFree = true
       req.resourceId = data.id
       req.ownerId = data.animal.userId
       req.isOwnerMe = (data.animal.userId === req.user.id)
