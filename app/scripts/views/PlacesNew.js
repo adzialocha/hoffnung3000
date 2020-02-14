@@ -34,7 +34,7 @@ class PlacesNew extends Component {
     const address = String(values.location.street) + ', ' + String(values.location.cityCode) + ', ' + String(values.location.city) + ', ' + String(values.location.country)
     provider
       .search({ query: address })
-      .then(function(results => {
+      .then(results => {
         values.location.latitude = result[0].y
         values.location.longitude = result[0].x
 
