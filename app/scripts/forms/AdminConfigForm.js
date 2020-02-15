@@ -333,6 +333,14 @@ class AdminConfigForm extends Component {
           component={FormCheckbox}
           disabled={this.props.isLoading}
           inline={true}
+          label={translate('forms.config.isDerMarktEnabled')}
+          name="isDerMarktEnabled"
+        />
+
+        <Field
+          component={FormCheckbox}
+          disabled={this.props.isLoading}
+          inline={true}
           label={translate('forms.config.isSignUpVisitorEnabled')}
           name="isSignUpVisitorEnabled"
         />
