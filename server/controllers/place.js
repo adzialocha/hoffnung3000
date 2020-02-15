@@ -105,6 +105,8 @@ function preparePlaceValues(body) {
     values.cityCode = body.cityCode
     values.city = body.city
     values.country = body.country
+    values.latitude = body.latitude
+    values.longitude = body.longitude
   } else if (mode === 'gps') {
     values.latitude = body.latitude
     values.longitude = body.longitude

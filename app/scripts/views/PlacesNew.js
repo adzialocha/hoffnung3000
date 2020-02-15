@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { EsriProvider } from 'leaflet-geosearch'
 
 import { PlaceForm } from '../forms'
 import { cachedResource } from '../services/resources'
@@ -12,6 +13,7 @@ import { withConfig } from '../containers'
 
 const DEFAULT_MODE = 'address'
 const DEFAULT_SLOT_SIZE = 60 // in minutes
+const provider = new EsriProvider()
 
 class PlacesNew extends Component {
   static propTypes = {
@@ -26,28 +28,34 @@ class PlacesNew extends Component {
     const { title, description, isPublic, images } = values
     const { slotSize, slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
-
     const flash = {
       text: translate('flash.createPlaceSuccess'),
     }
+    const address = String(values.location.street) + ', ' + String(values.location.cityCode) + ', ' + String(values.location.city) + ', ' + String(values.location.country)
+    provider
+      .search({ query: address })
+      .then(results => {
+        values.location.latitude = result[0].y
+        values.location.longitude = result[0].x
 
-    const requestParams = {
-      ...values.location,
-      description,
-      disabledSlots,
-      images,
-      isPublic,
-      slotSize,
-      title,
-    }
+        const requestParams = {
+          ...values.location,
+          description,
+          disabledSlots,
+          images,
+          isPublic,
+          slotSize,
+          title,
+        }
 
-    this.props.createResource(
-      'places',
-      this.props.nextRandomId,
-      requestParams,
-      flash,
-      '/places'
-    )
+        this.props.createResource(
+          'places',
+          this.props.nextRandomId,
+          requestParams,
+          flash,
+          '/places'
+        )
+      })
   }
 
   render() {
