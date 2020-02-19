@@ -52,7 +52,7 @@ class LocationMap extends Component {
 
   render() {
     const MyPopup = ({ events, place }) => {
-      const content = events.map((item) => (
+      const content = events.map(item => (
         <tr key={item.title}>
           <td><img className="map-popup-img" src={item.imageUrl} /></td>
           <td>{item.title}</td>
