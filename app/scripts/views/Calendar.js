@@ -22,9 +22,6 @@ class Calendar extends Component {
     push: PropTypes.func.isRequired,
   }
 
-  componentWillMount() {
-  }
-
   onClick(item) {
     this.props.push(`/events/${item.slug}`)
   }

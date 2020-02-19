@@ -51,7 +51,7 @@ class LocationMap extends Component {
   }
 
   render() {
-    const MyPopup = ({ events, place }) => {
+    const EventListPopup = ({ events, place }) => {
       const content = events.map(item => (
         <tr key={item.title}>
           <td><img className="map-popup-img" src={item.imageUrl} /></td>
@@ -63,27 +63,28 @@ class LocationMap extends Component {
         <Popup>
           <b>{place}</b><br />
           <table>
-            <tbody>{content}
+            <tbody>
+            {content}
             </tbody>
           </table>
         </Popup>
       )
     }
 
-    const MyMarker = ({ map, latitude, longitude, events, place }) => (
+    const VenueMarker = ({ map, latitude, longitude, events, place }) => (
       <Marker icon={markerIcon} map={map} position={[latitude, longitude]}>
-        <MyPopup events={events} place={place} />
+        <EventListPopup events={events} place={place} />
       </Marker>
     )
 
-    const MyMarkersList = ({ map, markers }) => {
+    const VenueMarkers = ({ map, markers }) => {
       const items = markers.map(({ key, events, place, ...props }) => (
-        <MyMarker events={events} key={key} map={map} place={place} {...props} />
+        <VenueMarker events={events} key={key} map={map} place={place} {...props} />
       ))
       return <div style={ { display: 'none' } }>{items}</div>
     }
 
-    const MyTileLayer = () => (
+    const VenueMapTileLayer = () => (
       <TileLayer
         attribution='&amp;copy <a target="_blank" href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -102,7 +103,7 @@ class LocationMap extends Component {
           onClick={this.onClick}
           onZoom={this.onZoom}
         >
-          <MyTileLayer />
+          <VenueMapTileLayer />
           <Marker icon={markerIcon} position={this.state.position} />
         </Map>
       )
@@ -118,8 +119,8 @@ class LocationMap extends Component {
         onClick={this.onClick}
         onZoom={this.onZoom}
       >
-        <MyTileLayer />
-        <MyMarkersList markers={this.props.plots} />
+        <VenueMapTileLayer />
+        <VenueMarkers markers={this.props.plots} />
       </Map>
     )
   }
