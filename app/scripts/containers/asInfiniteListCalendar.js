@@ -63,9 +63,9 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
         <WrappedListItemComponent
           className="list-item--half"
           item={item}
+          placeIdFilter={this.props.placeIdFilter}
           onClick={this.props.onClick}
           onEditClick={this.props.onEditClick}
-          placeIdFilter={this.props.placeIdFilter}
         />
       )
     }
@@ -101,9 +101,8 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       }
 
       return listItems.map((item, index) => {
-        console.log(item)
         if ( placeIdFilter !== undefined ) {
-          if( placeIdFilter !== item.placeId ) {
+          if ( placeIdFilter !== item.placeId ) {
             return null
           }
         }

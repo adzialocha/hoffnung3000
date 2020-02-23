@@ -101,6 +101,10 @@ class EventForm extends Component {
   }
 
   renderResourcesSelector() {
+    if (this.props.config.isDerMarktEnabled) {
+      return null
+    }
+
     const { place, selectedSlotsIndexes } = this.props.placeSlots
 
     if (!place || !place.id || selectedSlotsIndexes.length === 0) {
