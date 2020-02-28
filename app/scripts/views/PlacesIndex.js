@@ -12,6 +12,9 @@ const WrappedInfiniteList = asInfiniteList(CuratedPlaceListItem)
 
 class PlacesIndex extends Component {
   static propTypes = {
+    isAdmin: PropTypes.bool.isRequired,
+    isAuthenticated: PropTypes.bool.isRequired,
+    isParticipant: PropTypes.bool.isRequired,
     push: PropTypes.func.isRequired,
   }
 
@@ -33,14 +36,24 @@ class PlacesIndex extends Component {
     )
   }
 
+  renderCreateButton() {
+    if (!(this.props.isParticipant || this.props.isAdmin) || !this.props.isAuthenticated) {
+      return null
+    }
+
+    return (
+      <Link className="button button--green" to="/new/place">
+        { translate('views.places.createNewButton') }
+      </Link>
+    )
+  }
+
   render() {
     return (
       <section>
         <h1>{ translate('views.places.indexTitle') }</h1>
+        { this.renderCreateButton() }
         <StaticPage hideTitle={true} slug="places" />
-        <Link className="button button--green" to="/new/place">
-          { translate('views.places.createNewButton') }
-        </Link>
         <hr />
         { this.renderItemsList() }
       </section>
@@ -55,8 +68,15 @@ class PlacesIndex extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    ...state.auth,
+    ...state.user,
+  }
+}
+
 export default connect(
-  null, {
+  mapStateToProps, {
     push,
   }
 )(PlacesIndex)
