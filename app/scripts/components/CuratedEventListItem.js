@@ -7,13 +7,14 @@ import { translate } from '../../../common/services/i18n'
 
 class CuratedEventListItem extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     isActive: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     item: PropTypes.object.isRequired,
   }
 
   renderPlaceName() {
-    if (!this.props.isAuthenticated || !this.props.isActive) {
+    if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0 ) {
       return (
         <div className="list-item-content__description ellipsis">
           { translate('components.curatedEventListItem.getATicket') }
