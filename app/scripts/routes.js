@@ -63,8 +63,8 @@ export default class Routes extends Component {
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
           <Route component={isParticipant(PlacesShow)} path="/places/:slug" />
           <Route component={isParticipant(PlacesIndex)} path="/places" />
-          <Route component={isParticipant(ResourcesEdit)} path="/resources/:slug/edit" />
-          <Route component={isParticipant(ResourcesIndex)} path="/resources" />
+          <Route component={withConfig('isDerMarktEnabled', isParticipant(ResourcesEdit))} path="/resources/:slug/edit" />
+          <Route component={withConfig('isDerMarktEnabled', isParticipant(ResourcesIndex))} path="/resources" />
           <Route component={withConfig('isInboxEnabled', isParticipant(ConversationsNew))} path="/inbox/new" />
           <Route component={withConfig('isInboxEnabled', isParticipant(ConversationsShow))} path="/inbox/conversations/:id" />
           <Route component={withConfig('isInboxEnabled', isParticipant(ConversationsIndex))} path="/inbox" />
