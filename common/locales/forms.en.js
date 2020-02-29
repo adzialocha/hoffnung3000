@@ -104,6 +104,7 @@ export default {
     isAnonymizationEnabled: 'Use anonymized animal avatars for users',
     isInboxEnabled: 'Use messaging',
     isRandomMeetingEnabled: 'Use random meetings',
+    isDerMarktEnabled: 'Use Der Markt',
     isSignUpParticipantEnabled: 'Activate partipant ticket sales',
     isSignUpVisitorEnabled: 'Activate visitor ticket sales',
     gifStreamServerUrl: 'gif-stream Server URL',
