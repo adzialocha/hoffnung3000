@@ -100,7 +100,18 @@ class EventForm extends Component {
     )
   }
 
+  renderResourcesTitle() {
+    if (!this.props.config.isDerMarktEnabled) {
+      return null
+    }
+    return <h2>{ translate('forms.event.pickResources') }</h2>
+  }
+
   renderResourcesSelector() {
+    if (!this.props.config.isDerMarktEnabled) {
+      return null
+    }
+
     const { place, selectedSlotsIndexes } = this.props.placeSlots
 
     if (!place || !place.id || selectedSlotsIndexes.length === 0) {
@@ -168,7 +179,7 @@ class EventForm extends Component {
 
         <hr />
 
-        <h2>{ translate('forms.event.pickResources') }</h2>
+        { this.renderResourcesTitle() }
         { this.renderResourcesSelector() }
 
         <hr />
