@@ -467,7 +467,7 @@ export default {
 
       // if user is undefined and festival is free then set isVisitor = true
       if (!req.user && config.festivalTicketPrice === 0) {
-        isVisitor = false
+        isVisitor = true
       } else {
         isVisitor = req.user.isVisitor
       }
