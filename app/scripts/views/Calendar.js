@@ -7,6 +7,7 @@ import { push } from 'connected-react-router'
 import { CuratedEventListItem, StaticPage } from '../components'
 import { asInfiniteListCalendar } from '../containers'
 import { translate } from '../../../common/services/i18n'
+import { withConfig } from '../containers'
 
 const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
 
@@ -107,4 +108,4 @@ export default connect(
   mapStateToProps, {
     push,
   }
-)(Calendar)
+)(withConfig(Calendar))
