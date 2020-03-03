@@ -82,6 +82,10 @@ class Calendar extends Component {
   }
 
   renderMap() {
+    if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0) {
+      return null
+    }
+
     const allEvents = this.props.listItems
     let uniqueVenues = []
 
