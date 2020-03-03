@@ -23,7 +23,7 @@ class EventsNew extends Component {
       text: translate('flash.createEventSuccess'),
     }
 
-    const { title, description, isPublic, images } = values
+    const { title, description, isPublic, images, ticketUrl, socialMedia, websiteUrl } = values
 
     const requestParams = {
       description,
@@ -32,7 +32,10 @@ class EventsNew extends Component {
       placeId: values.placeSlots.place.id,
       resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
+      socialMedia,
+      ticketUrl,
       title,
+      websiteUrl,
     }
 
     this.props.createResource(
