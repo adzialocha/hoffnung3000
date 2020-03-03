@@ -6,6 +6,7 @@ import { EmptyResultError, ValidationError } from 'sequelize'
 import passport from '../services/passport'
 import { APIError } from '../helpers/errors'
 
+import checkConfig from '../middlewares/configs'
 import upload from '../middlewares/upload'
 import { onlyAdmin } from '../middlewares/roles'
 
@@ -61,12 +62,12 @@ router.use('/*', (req, res, next) => {
   })(req, res, next)
 })
 
-router.use('/conversations', conversationRoutes)
+router.use('/conversations', checkConfig('isInboxEnabled'), conversationRoutes)
 router.use('/events', eventRoutes)
-router.use('/meeting', meetingRoutes)
+router.use('/meeting', checkConfig('isRandomMeetingEnabled'), meetingRoutes)
 router.use('/places', placeRoutes)
 router.use('/profile', profileRoutes)
-router.use('/resources', resourceRoutes)
+router.use('/resources', checkConfig('isDerMarktEnabled'), resourceRoutes)
 
 router.route('/status')
   .get(userStatusController.status)
