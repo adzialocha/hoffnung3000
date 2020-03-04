@@ -6,11 +6,13 @@ import placeSlotsController from '../controllers/placeSlots'
 import placeValidation from '../validation/place'
 
 import { canRead, canCreate, canUpdate, canDelete } from '../middlewares/roles'
+import { checkTicketStatus } from '../middlewares/status'
 
 const router = express.Router() // eslint-disable-line new-cap
 
 router.route('/')
   .get(
+    checkTicketStatus,
     canRead,
     placeController.findAll
   )
@@ -22,6 +24,7 @@ router.route('/')
 
 router.route('/:resourceSlug')
   .get(
+    checkTicketStatus,
     placeController.lookupWithSlug,
     canRead,
     placeController.findOneWithSlug
