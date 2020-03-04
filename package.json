@@ -9,8 +9,8 @@
   ],
   "license": "AGPL-3.0",
   "engines": {
-    "node": "~10.15.3",
-    "npm": "~6.9.0"
+    "node": "~11.15.0",
+    "npm": "~6.13.7"
   },
   "scripts": {
     "assets:build": "npm run assets:clear && webpack --mode production --progress",
