@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { PlaceForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
-import { getDisabledSlotIndexes, generateNewSlotItems } from '../../../common/utils/slots'
+import { getDisabledSlotIndexes, generateNewSlotItems, generateNewDisabledSlotItems } from '../../../common/utils/slots'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
@@ -54,7 +54,7 @@ class PlacesNew extends Component {
     const { config } = this.props
     const { festivalDateStart, festivalDateEnd } = config
 
-    const slots = generateNewSlotItems(
+    const slots = generateNewDisabledSlotItems(
       DEFAULT_SLOT_SIZE, null, festivalDateStart, festivalDateEnd
     )
 

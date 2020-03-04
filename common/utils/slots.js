@@ -120,6 +120,35 @@ export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateS
 
   return slotItems
 }
+export function generateNewDisabledSlotItems(slotSize, existingSlots = [], festivalDateStart, festivalDateEnd) {
+  const slotItems = []
+
+  if (!checkSlotSize(slotSize).isValid) {
+    return slotItems
+  }
+
+  let slotIndex = 0
+  let from = DateTime.fromISO(festivalDateStart, { zone: 'utc' })
+  let to = addSlotDuration(from, slotSize)
+
+  while (isInFestivalRange(to, festivalDateStart, festivalDateEnd)) {
+    slotItems.push({
+      eventId: null,
+      from,
+      fromTimeStr: from.toFormat(TIME_FORMAT),
+      isDisabled: true,
+      slotIndex,
+      to,
+      toTimeStr: to.toFormat(TIME_FORMAT),
+    })
+
+    slotIndex += 1
+    from = addSlotDuration(from, slotSize)
+    to = addSlotDuration(from, slotSize)
+  }
+
+  return slotItems
+}
 
 export function getSlotTimes(slotSize, slotIndex, festivalDateStart) {
   const from = DateTime
