@@ -2,6 +2,8 @@ import Activity from '../models/activity'
 import Animal from '../models/animal'
 import User from '../models/user'
 
+import { AnimalBelongsToUser } from '../database/associations'
+import { getConfig } from '../config'
 import { sendActivityNotification } from '../helpers/mailTemplate'
 import { translate } from '../../common/services/i18n'
 
@@ -15,30 +17,40 @@ function addActivity(data) {
 
 function sendMail(data) {
   return new Promise((resolve, reject) => {
-    Animal.findByPk(data.animalId)
-      .then(animal => {
-        return User.findByPk(data.userId)
-          .then(user => {
-            const subject = translate(`api.activityMails.${data.type}.subject`)
-            const message = translate(`api.activityMails.${data.type}.message`, {
-              name: animal.name,
-              objectTitle: data.objectTitle,
-              objectType: data.objectType,
-            })
-
-            const locals = {
-              message,
-            }
-
-            return sendActivityNotification(
-              subject,
-              locals,
-              user.email
-            )
-          })
+    return getConfig('isAnonymizationEnabled').then(config => {
+      Animal.findByPk(data.animalId, {
+        include: AnimalBelongsToUser,
       })
-      .then(() => resolve())
-      .catch(err => reject(err))
+        .then(animal => {
+          let name = animal.name
+
+          if (!config.isAnonymizationEnabled) {
+            name = `${animal.user.firstname} ${animal.user.lastname}`
+          }
+
+          return User.findByPk(data.userId)
+            .then(user => {
+              const subject = translate(`api.activityMails.${data.type}.subject`)
+              const message = translate(`api.activityMails.${data.type}.message`, {
+                name,
+                objectTitle: data.objectTitle,
+                objectType: data.objectType,
+              })
+
+              const locals = {
+                message,
+              }
+
+              return sendActivityNotification(
+                subject,
+                locals,
+                user.email
+              )
+            })
+        })
+        .then(() => resolve())
+        .catch(err => reject(err))
+    })
   })
 }
 
