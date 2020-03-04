@@ -120,7 +120,7 @@ export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateS
 
   return slotItems
 }
-export function generateNewDisabledSlotItems(slotSize, existingSlots = [], festivalDateStart, festivalDateEnd) {
+export function generateNewDisabledSlotItems(slotSize, festivalDateStart, festivalDateEnd) {
   const slotItems = []
 
   if (!checkSlotSize(slotSize).isValid) {
