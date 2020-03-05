@@ -5,28 +5,33 @@ import eventController from '../controllers/event'
 import eventValidation from '../validation/event'
 
 import { canReadAsVisitor, canCreate, canUpdate, canDelete } from '../middlewares/roles'
-import { checkTicketStatus } from '../middlewares/status'
+import { grantWhenFestivalFree } from '../middlewares/authorizeFreeFestival'
+import { authorizeJWT } from '../middlewares/authorizeJWT'
+import { checkUser } from '../middlewares/checkUser'
 
 const router = express.Router() // eslint-disable-line new-cap
 
 router.route('/')
   .get(
-    checkTicketStatus,
-    canReadAsVisitor,
+    checkUser,
+    grantWhenFestivalFree,
     eventController.findAll
   )  
   .post(
+    authorizeJWT,
     canCreate,
     validate(eventValidation.createEvent),
     eventController.create
   )
   .put(
+    authorizeJWT,
     eventController.lookup,
     canUpdate,
     validate(eventValidation.updateEvent),
     eventController.update
   )
   .delete(
+    authorizeJWT,
     eventController.lookup,
     canDelete,
     eventController.destroy
@@ -34,9 +39,9 @@ router.route('/')
 
 router.route('/:resourceSlug')
   .get(
-    checkTicketStatus,
+    checkUser,
     eventController.lookup,
-    canReadAsVisitor,
+    grantWhenFestivalFree,
     eventController.findOneWithSlug
   )
 

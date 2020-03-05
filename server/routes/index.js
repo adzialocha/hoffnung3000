@@ -8,7 +8,7 @@ import { APIError } from '../helpers/errors'
 
 import upload from '../middlewares/upload'
 import { onlyAdmin } from '../middlewares/roles'
-import { checkUserStatus } from '../middlewares/status'
+import { authorizeJWT } from '../middlewares/authorizeJWT'
 
 import activityController from '../controllers/activity'
 import eventPreviewController from '../controllers/eventPreview'
@@ -46,20 +46,12 @@ router.route('/preview')
   .get(eventPreviewController.findAll)
 
 // Public API routes when festivalTicketPrice === 0
-router.use(checkUserStatus)
 
 router.use('/events', eventRoutes)
 router.use('/places', placeRoutes)
 
 // Private API routes
-router.use('/*', (req, res, next) => {
-  if (!req.user) {
-    return next(
-      new APIError('Unauthorized', httpStatus.UNAUTHORIZED)
-    )
-  }
-  return next()
-})
+router.use(authorizeJWT)
 
 router.use('/conversations', conversationRoutes)
 router.use('/meeting', meetingRoutes)

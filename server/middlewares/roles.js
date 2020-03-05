@@ -3,13 +3,13 @@ import httpStatus from 'http-status'
 import { APIError } from '../helpers/errors'
 
 function checkRole(checkVisitor, checkParticipant, checkOwner, req, res, next) {
-  if (!req.user && req.freeFestival !== true) {
+  if (!req.user) {
     return next(
       new APIError('Access forbidden', httpStatus.FORBIDDEN, true)
     )
   }
 
-  if (!req.user.isActive && req.freeFestival !== true) {
+  if (!req.user.isActive) {
     return next(
       new APIError('Access forbidden', httpStatus.FORBIDDEN, true)
     )
@@ -27,7 +27,7 @@ function checkRole(checkVisitor, checkParticipant, checkOwner, req, res, next) {
     return next()
   }
 
-  if ((checkVisitor && req.user.isVisitor) || req.freeFestival === true) {
+  if (checkVisitor && req.user.isVisitor) {
     return next()
   }
 
