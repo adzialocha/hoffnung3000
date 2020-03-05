@@ -21,6 +21,8 @@ export default {
     title: 'All activities',
   },
   places: {
+    accessibilityInfoHeader: 'Accessibility Information',
+    capacityHeader: 'Capacity',
     createNewButton: 'Create place',
     createNewTitle: 'Create new place',
     indexTitle: 'Places',

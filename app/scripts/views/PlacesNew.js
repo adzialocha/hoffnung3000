@@ -33,6 +33,8 @@ class PlacesNew extends Component {
 
     const requestParams = {
       ...values.location,
+      accessibilityInfo,
+      capacity,
       description,
       disabledSlots,
       images,
@@ -63,7 +65,7 @@ class PlacesNew extends Component {
       location: {
         mode: DEFAULT_MODE,
         street: '',
-        city: config.defaultCity,
+        city: '',
         cityCode: '',
         country: config.defaultCountry,
         latitude: config.defaultLatitude,
