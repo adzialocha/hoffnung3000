@@ -3,7 +3,6 @@ import expressValidation from 'express-validation'
 import httpStatus from 'http-status'
 import { EmptyResultError, ValidationError } from 'sequelize'
 
-import passport from '../services/passport'
 import { APIError } from '../helpers/errors'
 
 import upload from '../middlewares/upload'

@@ -1,10 +1,9 @@
-import httpStatus from 'http-status'
 import passport from '../services/passport'
 
 // This for setting the user value when the festival is free for checing if user is owner later.
 
 function checkJWT(req, res, next) {
-  return passport.authenticate('jwt', { session: false }, (err, user) => {
+  passport.authenticate('jwt', { session: false }, (err, user) => {
     if (err) {
       return next(err)
     }

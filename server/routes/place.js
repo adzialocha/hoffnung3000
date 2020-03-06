@@ -28,8 +28,8 @@ router.route('/')
 router.route('/:resourceSlug')
   .get(
     checkUser,
-    placeController.lookupWithSlug,
     grantWhenFestivalFree,
+    placeController.lookupWithSlug,
     placeController.findOneWithSlug
   )
   .put(
