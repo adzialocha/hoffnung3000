@@ -391,22 +391,21 @@ function findOneWithSlug(slug, req, res, next) {
     ],
   })
     .then(data => {
-      // get and pass config vars into function
-      return getConfig(['festivalTicketPrice', 'isAnonymizationEnabled']).then(config => {
-        if (!data.isPublic && (req.user.isVisitor || config.festivalTicketPrice !== 0)) {
-          next(
-            new APIError(
-              'Requested resource is not public',
-              httpStatus.FORBIDDEN
-            )
+      if (!data.isPublic && req.user.isVisitor) {
+        next(
+          new APIError(
+            'Requested resource is not public',
+            httpStatus.FORBIDDEN
           )
-          return null
-        }
+        )
+        return null
+      }
 
+      return getConfig('isAnonymizationEnabled').then(config => {
         return res.json(prepareResponse(
           data,
           req,
-          config.isAnonymizationEnabled,
+          config.isAnonymizationEnabled
         ))
       })
     })
@@ -442,59 +441,50 @@ export default {
       .catch(err => next(err))
   },
   findAll: (req, res, next) => {
-    // get and pass config vars into function
-    return getConfig(['festivalTicketPrice', 'isAnonymizationEnabled']).then(config => {
-      let isVisitor
+    const {
+      limit = DEFAULT_LIMIT,
+      offset = DEFAULT_OFFSET,
+    } = req.query
 
-      const {
-        limit = DEFAULT_LIMIT,
-        offset = DEFAULT_OFFSET,
-      } = req.query
-
-      const includeForVisitors = [
-        belongsToAnimal,
-        belongsToManyResources,
-        {
-          association: EventBelongsToPlace,
-          required: true,
-          where: {
-            isPublic: true,
-          },
+    const includeForVisitors = [
+      belongsToAnimal,
+      belongsToManyResources,
+      {
+        association: EventBelongsToPlace,
+        required: true,
+        where: {
+          isPublic: true,
         },
-        EventBelongsToManyImage,
-        hasManySlots,
-      ]
+      },
+      EventBelongsToManyImage,
+      hasManySlots,
+    ]
 
-      // if user is undefined and festival is free then set isVisitor = true
-      if (!req.user && config.festivalTicketPrice === 0) {
-        isVisitor = true
-      } else {
-        isVisitor = req.user.isVisitor
-      }
-
-      return Event.findAndCountAll({
-        distinct: true,
-        include: isVisitor ? includeForVisitors : include,
-        limit,
-        offset,
-        order: [
-          [EventHasManySlots, 'from', 'ASC'],
-        ],
-        where: isVisitor ? { isPublic: true } : {},
-      })
-        .then(result => {
-          return res.json({
+    return Event.findAndCountAll({
+      distinct: true,
+      include: req.user.isVisitor ? includeForVisitors : include,
+      limit,
+      offset,
+      order: [
+        [EventHasManySlots, 'from', 'ASC'],
+      ],
+      where: req.user.isVisitor ? { isPublic: true } : {},
+    })
+      .then(result => {
+        return getConfig('isAnonymizationEnabled').then(config => {
+          res.json({
             data: prepareResponseAll(
               result.rows,
               req,
-              config.isAnonymizationEnabled,
+              config.isAnonymizationEnabled
             ),
             limit: parseInt(limit, 10),
             offset: parseInt(offset, 10),
             total: result.count,
           })
-        }).catch(err => next(err))
-    })
+        })
+      })
+      .catch(err => next(err))
   },
   findOneWithSlug: (req, res, next) => {
     return findOneWithSlug(req.params.resourceSlug, req, res, next)
