@@ -65,7 +65,7 @@ class PlacesNew extends Component {
       location: {
         mode: DEFAULT_MODE,
         street: '',
-        city: '',
+        city: config.defaultCity,
         cityCode: '',
         country: config.defaultCountry,
         latitude: config.defaultLatitude,
