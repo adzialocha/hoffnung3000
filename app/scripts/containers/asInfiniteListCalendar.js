@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { connect } from 'react-redux'
 
 import { fetchList, clearList } from '../actions/infiniteList'
+import { fetchResourceList } from '../actions/resourceList'
 import { translate } from '../../../common/services/i18n'
 
 export default function asInfiniteListCalendar(WrappedListItemComponent) {
@@ -12,6 +13,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       clearList: PropTypes.func.isRequired,
       currentPageIndex: PropTypes.number,
       fetchList: PropTypes.func.isRequired,
+      fetchResourceList: PropTypes.func.isRequired,
       isLoading: PropTypes.bool,
       listItems: PropTypes.array,
       onClick: PropTypes.func,
@@ -31,6 +33,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
 
     componentWillMount() {
       this.props.fetchList(this.props.resourceName, 0)
+      this.props.fetchResourceList('events')
     }
 
     componentWillUnmount() {
@@ -166,6 +169,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     mapStateToProps, {
       clearList,
       fetchList,
+      fetchResourceList,
     }
   )(InfiniteListContainer)
 }
