@@ -10,6 +10,7 @@ import {
   FormInput,
   FormPlaceSlotSelector,
   FormResourceSelector,
+  FormTagSelector,
   FormTextarea,
 } from '../components'
 
@@ -138,6 +139,23 @@ class EventForm extends Component {
     )
   }
 
+  renderFormTagSelectorInputor() {
+    const defaultTags = this.props.config.defaultTags.map(tag =>{
+      return { label: tag, value: tag }
+    })
+
+    return (
+      <Field
+        component={FormTagSelector}
+        defaultTags={defaultTags}
+        disabled={this.props.isLoading}
+        label={translate('forms.event.tags')}
+        multi={true}
+        name="tags"
+      />
+    )
+  }
+
   render() {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
@@ -158,14 +176,6 @@ class EventForm extends Component {
           disabled={this.props.isLoading}
           label={translate('forms.event.description')}
           name="description"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.event.tags')}
-          name="tags"
           type="text"
         />
 
@@ -190,6 +200,8 @@ class EventForm extends Component {
 
         <h2>{ translate('forms.event.publicOrPrivate') }</h2>
         { this.renderPrivateField() }
+
+        { this.renderFormTagSelectorInputor() }
 
         <hr />
 

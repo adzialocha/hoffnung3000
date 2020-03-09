@@ -36,9 +36,6 @@ class EventsNew extends Component {
       title,
     }
 
-    requestParams.tags = requestParams.tags.split(',')
-    console.log(requestParams)
-
     this.props.createResource(
       'events',
       this.props.nextRandomId,
