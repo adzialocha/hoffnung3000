@@ -17,6 +17,7 @@ import { translate } from '../../../common/services/i18n'
 
 class EventsEdit extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     deleteResource: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
@@ -58,9 +59,6 @@ class EventsEdit extends Component {
       tags,
       title,
     }
-
-    requestParams.tags = requestParams.tags.split(',')
-    console.log(requestParams)
 
     this.props.updateResource(
       'events',
@@ -173,8 +171,10 @@ function mapStateToProps(state, ownProps) {
   const { errorMessage } = state.resources
   const resource = cachedResource('events', resourceSlug)
   const { isLoading, object: resourceData } = resource
+  const config = state.meta.config
 
   return {
+    config,
     errorMessage,
     isLoading,
     resourceData,
