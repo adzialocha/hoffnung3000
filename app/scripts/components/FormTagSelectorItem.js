@@ -16,12 +16,12 @@ class FormTagSelectorItem extends Component {
   render() {
     const { eventTags, label, clickedTag } = this.props
     return (
-      <div
+      <tag 
         style={JSON.parse(eventTags).includes(clickedTag) === true ? { backgroundColor: 'red' } : null}
         onClick={this.handleClick}
       >
         {label}
-      </div>
+      </tag>
     )
   }
 
