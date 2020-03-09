@@ -149,7 +149,6 @@ class EventForm extends Component {
         component={FormTagSelector}
         defaultTags={defaultTags}
         disabled={this.props.isLoading}
-        label={translate('forms.event.tags')}
         multi={true}
         name="tags"
       />
@@ -179,6 +178,10 @@ class EventForm extends Component {
           type="text"
         />
 
+        <h2>{translate('forms.event.tags')}</h2>
+
+        { this.renderFormTagSelectorInputor() }
+
         <hr />
         <h2>{ translate('forms.common.uploadImages') }</h2>
 
@@ -200,8 +203,6 @@ class EventForm extends Component {
 
         <h2>{ translate('forms.event.publicOrPrivate') }</h2>
         { this.renderPrivateField() }
-
-        { this.renderFormTagSelectorInputor() }
 
         <hr />
 
