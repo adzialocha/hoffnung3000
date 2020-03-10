@@ -27,8 +27,8 @@ class FormTagSelector extends Component {
               clickedTag={value}
               defaultTags={defaultTags}
               disabled={disabled}
-              eventTags={input.value === '' ? JSON.stringify([]) : JSON.stringify(input.value)}
-              input={input}
+              eventTags={input.value === '' ? [] : input.value}
+              onChange={input.onChange}
               key={value}
               label={label}
             />

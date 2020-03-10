@@ -5,19 +5,19 @@ class FormTagSelectorItem extends Component {
   static propTypes = {
     clickedTag: PropTypes.string.isRequired,
     eventTags: PropTypes.string.isRequired,
-    input: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
   }
 
   onSelect(tagValue) {
-    this.props.input.onChange(tagValue)
+    this.props.onChange(tagValue)
   }
 
   render() {
     const { eventTags, label, clickedTag } = this.props
     return (
       <tag
-        style={JSON.parse(eventTags).includes(clickedTag) === true ? { backgroundColor: 'red' } : null}
+        style={eventTags.includes(clickedTag) === true ? { backgroundColor: 'red' } : null}
         onClick={this.handleClick}
       >
         {label}
@@ -37,7 +37,7 @@ class FormTagSelectorItem extends Component {
   }
 
   handleClick() {
-    this.updateTags(JSON.parse(this.props.eventTags), this.props.clickedTag, this.onSelect)
+    this.updateTags(this.props.eventTags, this.props.clickedTag, this.onSelect)
   }
 
   constructor(props) {
