@@ -18,6 +18,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       listItems: PropTypes.array,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
+      resourceListItems: PropTypes.array,
       resourceName: PropTypes.string.isRequired,
       totalPageCount: PropTypes.number,
     }
@@ -28,6 +29,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       listItems: [],
       onClick: undefined,
       onEditClick: undefined,
+      resourceListItems: [],
       totalPageCount: undefined,
     }
 
@@ -89,17 +91,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       )
     }
 
-    renderListItems() {
-      const { listItems } = this.props
-
-      if (!this.props.isLoading && listItems.length === 0) {
-        return (
-          <p className="infinite-list-container__spinner">
-            { translate('components.common.emptyList') }
-          </p>
-        )
-      }
-
+    renderListItems(listItems) {
       return listItems.map((item, index) => {
         const previousItem = index > 0 ? listItems[index - 1] : null
 
@@ -143,13 +135,31 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     render() {
       return (
         <div className="infinite-list-container infinite-list-container--half-items">
-          { this.renderListItems() }
+          { this.chooseEventList() }
 
           <div className="infinite-list-container__item infinite-list-container__item--full">
             { this.renderLoadMoreButton() }
           </div>
         </div>
       )
+    }
+
+    chooseEventList() {
+      const paginatedListItems = this.props.listItems
+      const filteredListItems = this.props.resourceListItems
+
+      if (!this.props.isLoading && (paginatedListItems.length === 0 || filteredListItems.length === 0)) {
+        return (
+          <p className="infinite-list-container__spinner">
+            { translate('components.common.emptyList') }
+          </p>
+        )
+      }
+      const filter = true
+      if (filter === true) {
+        return this.renderListItems(filteredListItems)
+      }
+      return this.renderListItems(paginatedListItems)
     }
 
     constructor(props) {
@@ -162,6 +172,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
   function mapStateToProps(state, props) {
     return {
       ...state.infiniteList[props.resourceName],
+      ...state.resourceList,
     }
   }
 
