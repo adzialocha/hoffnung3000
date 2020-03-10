@@ -8,14 +8,14 @@ import placeValidation from '../validation/place'
 import { canRead, canCreate, canUpdate, canDelete } from '../middlewares/roles'
 import { grantWhenFestivalFree } from '../middlewares/authorizeFreeFestival'
 import { authorizeJWT } from '../middlewares/authorizeJWT'
-import { checkUser } from '../middlewares/checkUser'
+import { getUserWhenAuthenticated } from '../middlewares/getUserWhenAuthenticated'
 
 const router = express.Router() // eslint-disable-line new-cap
 
 router.route('/')
   .get(
-    checkUser,
     grantWhenFestivalFree,
+    getUserWhenAuthenticated,
     placeController.findAll
   )
   .post(
@@ -27,8 +27,8 @@ router.route('/')
 
 router.route('/:resourceSlug')
   .get(
-    checkUser,
     grantWhenFestivalFree,
+    getUserWhenAuthenticated,
     placeController.lookupWithSlug,
     placeController.findOneWithSlug
   )
