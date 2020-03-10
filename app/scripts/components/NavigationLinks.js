@@ -29,6 +29,10 @@ const ADMIN_NAVIGATION = CURATION_NAVIGATION.concat([
 
 const PARTICIPANT_NAVIGATION = CURATION_NAVIGATION
 
+const PLACES_PUBLIC_NAVIGATION = [
+  { localeKey: 'places', url: '/places' },
+]
+
 const VISITOR_NAVIGATION = [
   { localeKey: 'stream', url: '/stream', withConfig: 'gifStreamServerUrl' },
 ]
@@ -90,6 +94,8 @@ class NavigationLinks extends Component {
       return this.renderNavigation(PARTICIPANT_NAVIGATION)
     } else if (this.props.isVisitor) {
       return this.renderNavigation(VISITOR_NAVIGATION)
+    } else if (this.props.config.festivalTicketPrice === 0) {
+      return this.renderNavigation(PLACES_PUBLIC_NAVIGATION)
     }
 
     return this.renderNavigation(DEFAULT_NAVIGATION)
