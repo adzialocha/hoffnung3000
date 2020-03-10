@@ -30,6 +30,7 @@ const Config = db.define('config', {
   gifStreamServerUrl: configField(Sequelize.STRING, true),
   isActivityStreamEnabled: configField(Sequelize.BOOLEAN),
   isAnonymizationEnabled: configField(Sequelize.BOOLEAN),
+  isDerMarktEnabled: configField(Sequelize.BOOLEAN),
   isInboxEnabled: configField(Sequelize.BOOLEAN),
   isRandomMeetingEnabled: configField(Sequelize.BOOLEAN),
   isSignUpParticipantEnabled: configField(Sequelize.BOOLEAN),

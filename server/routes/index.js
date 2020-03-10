@@ -5,6 +5,7 @@ import { EmptyResultError, ValidationError } from 'sequelize'
 
 import { APIError } from '../helpers/errors'
 
+import checkConfig from '../middlewares/configs'
 import upload from '../middlewares/upload'
 import { onlyAdmin } from '../middlewares/roles'
 import { authorizeJWT } from '../middlewares/authorizeJWT'
@@ -52,10 +53,10 @@ router.use('/places', placeRoutes)
 // Private API routes
 router.use(authorizeJWT)
 
-router.use('/conversations', conversationRoutes)
-router.use('/meeting', meetingRoutes)
+router.use('/conversations', checkConfig('isInboxEnabled'), conversationRoutes)
+router.use('/meeting', checkConfig('isRandomMeetingEnabled'), meetingRoutes)
 router.use('/profile', profileRoutes)
-router.use('/resources', resourceRoutes)
+router.use('/resources', checkConfig('isDerMarktEnabled'), resourceRoutes)
 
 router.route('/status')
   .get(userStatusController.status)
