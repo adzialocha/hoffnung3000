@@ -139,7 +139,7 @@ class EventForm extends Component {
     )
   }
 
-  renderFormTagSelectorInputor() {
+  renderFormTagSelector() {
     const defaultTags = this.props.config.defaultTags.map(tag =>{
       return { label: tag, value: tag }
     })
@@ -180,7 +180,7 @@ class EventForm extends Component {
 
         <h2>{translate('forms.event.tags')}</h2>
 
-        { this.renderFormTagSelectorInputor() }
+        { this.renderFormTagSelector() }
 
         <hr />
         <h2>{ translate('forms.common.uploadImages') }</h2>

@@ -5,7 +5,7 @@ import ActionTypes from '../actionTypes'
 const initialState = {
   isLoading: false,
   resourceListItems: [],
-  filterTags: []
+  filterTags: [],
 }
 
 export default (state = initialState, action) => {
