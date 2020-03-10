@@ -3,25 +3,25 @@ import PropTypes from 'prop-types'
 
 class FormTagSelectorItem extends Component {
   static propTypes = {
-    clickedTag: PropTypes.string.isRequired,
-    eventTags: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    tagArray: PropTypes.string.isRequired,
+    thisTag: PropTypes.string.isRequired,
   }
 
-  onSelect(tagValue) {
-    this.props.onChange(tagValue)
+  onSelect(selectedTags) {
+    this.props.onChange(selectedTags)
   }
 
   render() {
-    const { eventTags, label, clickedTag } = this.props
+    const { tagArray, label, thisTag } = this.props
     return (
-      <tag
-        style={eventTags.includes(clickedTag) === true ? { backgroundColor: 'red' } : null}
+      <div
+        className={JSON.parse(tagArray).includes(thisTag) === true ? 'tag tag--selected' : 'tag'}
         onClick={this.handleClick}
       >
         {label}
-      </tag>
+      </div>
     )
   }
 
@@ -37,7 +37,7 @@ class FormTagSelectorItem extends Component {
   }
 
   handleClick() {
-    this.updateTags(this.props.eventTags, this.props.clickedTag, this.onSelect)
+    this.updateTags(JSON.parse(this.props.tagArray), this.props.thisTag, this.onSelect)
   }
 
   constructor(props) {

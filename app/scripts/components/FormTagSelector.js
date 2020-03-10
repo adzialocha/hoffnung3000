@@ -23,14 +23,14 @@ class FormTagSelector extends Component {
         {this.props.defaultTags.map(({ label, value }) => (
           <div key={value}>
             <FormTagSelectorItem
-              {...input}
-              clickedTag={value}
               defaultTags={defaultTags}
               disabled={disabled}
-              eventTags={input.value === '' ? [] : input.value}
-              onChange={input.onChange}
               key={value}
               label={label}
+              tagArray={input.value === '' ? JSON.stringify([]) : JSON.stringify(input.value)}
+              thisTag={value}
+              onChange={input.onChange}
+              {...input}
             />
           </div>
         ))}
