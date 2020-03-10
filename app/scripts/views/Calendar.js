@@ -7,8 +7,9 @@ import { push } from 'connected-react-router'
 import { CuratedEventListItem, StaticPage } from '../components'
 import { asInfiniteListCalendar } from '../containers'
 import { translate } from '../../../common/services/i18n'
+import { TagSelector } from '../components'
 
-const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
+const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem, TagSelector)
 
 class Calendar extends Component {
   static propTypes = {
