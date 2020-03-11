@@ -72,8 +72,8 @@ class EventsShow extends Component {
     return <p>{ this.props.resourceData.websiteUrl }</p>
   }
 
-  renderSocialMedia() {
-    return <p>{ this.props.resourceData.socialMedia }</p>
+  renderadditionalInfo() {
+    return <p>{ this.props.resourceData.additionalInfo }</p>
   }
 
   renderOwner() {
@@ -217,7 +217,7 @@ class EventsShow extends Component {
         { this.renderImageGallery() }
         { this.renderTicketUrl() }
         { this.renderWebsiteUrl() }
-        { this.renderSocialMedia() }
+        { this.renderadditionalInfo() }
       </div>
     )
   }
