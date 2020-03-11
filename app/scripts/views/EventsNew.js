@@ -23,7 +23,7 @@ class EventsNew extends Component {
       text: translate('flash.createEventSuccess'),
     }
 
-    const { title, description, isPublic, images, additionalInfo  } = values
+    const { tags, title, description, isPublic, images, additionalInfo  } = values
     let { ticketUrl, websiteUrl } = values
 
     if (websiteUrl === 'https://') {websiteUrl = undefined}
@@ -38,6 +38,7 @@ class EventsNew extends Component {
       resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
       ticketUrl,
+      tags,
       title,
       websiteUrl,
     }

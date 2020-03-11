@@ -17,6 +17,7 @@ import { translate } from '../../../common/services/i18n'
 
 class EventsEdit extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     deleteResource: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
@@ -46,7 +47,7 @@ class EventsEdit extends Component {
       text: translate('flash.updateEventSuccess'),
     }
 
-    const { title, description, isPublic, images, additionalInfo  } = values
+    const { tags, title, description, isPublic, images, additionalInfo  } = values
     let { ticketUrl, websiteUrl } = values
 
     if (websiteUrl === 'https://') {websiteUrl = undefined}
@@ -61,6 +62,7 @@ class EventsEdit extends Component {
       slots: values.placeSlots.selectedSlotsIndexes,
       additionalInfo,
       ticketUrl,
+      tags,
       title,
       websiteUrl,
     }
@@ -105,6 +107,7 @@ class EventsEdit extends Component {
       place,
       resources,
       slots,
+      tags,
       title,
     } = this.props.resourceData
 
@@ -130,6 +133,7 @@ class EventsEdit extends Component {
       },
       additionalInfo,
       ticketUrl,
+      tags,
       title,
       websiteUrl,
     }
@@ -186,8 +190,10 @@ function mapStateToProps(state, ownProps) {
   const { errorMessage } = state.resources
   const resource = cachedResource('events', resourceSlug)
   const { isLoading, object: resourceData } = resource
+  const config = state.meta.config
 
   return {
+    config,
     errorMessage,
     isLoading,
     resourceData,
