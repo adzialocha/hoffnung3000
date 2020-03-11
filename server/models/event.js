@@ -47,7 +47,7 @@ const Event = db.define('event', {
     allowNull: false,
     defaultValue: '',
   },
-  socialMedia: {
+  additionalInfo: {
     type: Sequelize.STRING,
     allowNull: false,
     defaultValue: '',

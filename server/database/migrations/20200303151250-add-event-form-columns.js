@@ -3,7 +3,7 @@ module.exports = {
     return Promise.all([
       queryInterface.addColumn(
         'events',
-        'socialMedia',
+        'additionalInfo',
         {
           type: Sequelize.STRING,
         }
@@ -26,7 +26,7 @@ module.exports = {
   },
   down: queryInterface => {
     return Promise.all([
-      queryInterface.removeColumn('events', 'socialMedia'),
+      queryInterface.removeColumn('events', 'additionalInfo'),
       queryInterface.removeColumn('events', 'ticketUrl'),
       queryInterface.removeColumn('events', 'websiteUrl'),
     ])

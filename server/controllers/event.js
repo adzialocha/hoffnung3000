@@ -43,7 +43,7 @@ const permittedFields = [
   'images',
   'isPublic',
   'placeId',
-  'socialMedia',
+  'additionalInfo',
   'ticketUrl',
   'title',
   'websiteUrl',
