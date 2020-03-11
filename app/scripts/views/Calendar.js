@@ -7,11 +7,8 @@ import { push } from 'connected-react-router'
 import { CuratedEventListItem, StaticPage } from '../components'
 import { asInfiniteListCalendar } from '../containers'
 import { translate } from '../../../common/services/i18n'
-<<<<<<< HEAD
 import { withConfig } from '../containers'
-=======
 import { TagSelector } from '../components'
->>>>>>> Implement TagSelector for filtered event lists in infiniteListCalendar
 
 const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem, TagSelector)
 
