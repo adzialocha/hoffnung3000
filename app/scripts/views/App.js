@@ -14,7 +14,6 @@ import {
 class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
-    config: PropTypes.object.isRequired,
   }
 
   render() {
