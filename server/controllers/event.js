@@ -42,6 +42,7 @@ const permittedFields = [
   'description',
   'images',
   'isPublic',
+  'tags',
   'placeId',
   'additionalInfo',
   'ticketUrl',
