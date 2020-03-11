@@ -6,6 +6,32 @@ form {
   margin: 0 auto;
 }
 
+.tag {
+  display: block;
+
+  font-weight: $font-weight-bold;
+  font-size: $font-size-base;
+
+  text-align: center;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  &:focus,
+  &:hover {
+    background-color: $gray-light;
+  }
+}
+
+.tag--selected {
+  background-color: $green;
+
+  &:focus,
+  &:hover {
+    background-color: lighten($green, 25%);
+  }
+}
+
 label {
   display: block;
 
