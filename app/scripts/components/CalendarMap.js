@@ -63,7 +63,7 @@ class CalendarMap extends Component {
         onPopupClick(event.target.parentElement.attributes.slug.value)
       }
       const content = events.map(item => (
-        <tr key={item.title} slug={item.slug} onClick={handleClick}>
+        <tr className={'map-popup'} key={item.title} slug={item.slug} onClick={handleClick}>
           <td><img className="map-popup-img" src={item.imageUrl} /></td>
           <td>{item.title}</td>
           <td>{item.time}</td>
