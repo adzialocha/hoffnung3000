@@ -26,8 +26,8 @@ class EventsNew extends Component {
     const { tags, title, description, isPublic, images, additionalInfo  } = values
     let { ticketUrl, websiteUrl } = values
 
-    if (websiteUrl === 'https://') {websiteUrl = undefined}
-    if (ticketUrl === 'https://') {ticketUrl = undefined}
+    if (websiteUrl === 'https://') {websiteUrl = ''}
+    if (ticketUrl === 'https://') {ticketUrl = ''}  
 
     const requestParams = {
       additionalInfo,
