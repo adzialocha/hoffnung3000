@@ -55,7 +55,7 @@ const Event = db.define('event', {
   websiteUrl: {
     type: Sequelize.STRING,
     allowNull: false,
-
+  },
   tags: {
     type: Sequelize.ARRAY(Sequelize.STRING),
     allowNull: true,

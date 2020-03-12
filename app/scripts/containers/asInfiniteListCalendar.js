@@ -184,6 +184,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     render() {
       return (
         <div className="infinite-list-container__item infinite-list-container__item--full">
+          <h3>{ translate('views.events.tagSelectorTitle') }</h3>
           { this.renderTagSelector() }
           <div className="infinite-list-container infinite-list-container--half-items">
             { this.renderEventList() }
