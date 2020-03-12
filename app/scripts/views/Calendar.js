@@ -106,7 +106,7 @@ class Calendar extends Component {
           result.push({
             title: event.title,
             time: time,
-            imageUrl: event.images[0].smallImageUrl,
+            imageUrl: event.images.length > 0 ? event.images[0].smallImageUrl : null,
             slug: event.slug,
           })
         }
