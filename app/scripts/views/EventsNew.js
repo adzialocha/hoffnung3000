@@ -27,7 +27,7 @@ class EventsNew extends Component {
     let { ticketUrl, websiteUrl } = values
 
     if (websiteUrl === 'https://') {websiteUrl = ''}
-    if (ticketUrl === 'https://') {ticketUrl = ''}  
+    if (ticketUrl === 'https://') {ticketUrl = ''}
 
     const requestParams = {
       additionalInfo,
