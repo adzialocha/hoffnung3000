@@ -67,6 +67,7 @@ class EventsNew extends Component {
             {
               {
                 isPublic: true,
+                tags: [],
                 ticketUrl: 'https://',
                 websiteUrl: 'https://',
               }

@@ -154,6 +154,7 @@ export default {
       selectPlace: 'Please select a place for your event',
       selectPlaceAndTime: 'You did\'t select any time or place for your event',
       selectTime: 'Please select a time slot for your event',
+      setTags: 'Please select at least one tag',
       titleRequired: 'Please give your event a title',
       validUrl: 'Please enter website in this format: "https://website.com"',
     },
