@@ -1,7 +1,9 @@
+import { connect } from 'react-redux'
 import L from 'leaflet'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import { push } from 'connected-react-router'
 
 const DEFAULT_ZOOM = 11
 
@@ -17,11 +19,16 @@ class CalendarMap extends Component {
     }).isRequired,
     onClick: PropTypes.func,
     plots: PropTypes.array,
+    push: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
     onClick: undefined,
     plots: null,
+  }
+
+  onPopupClick(slug) {
+    this.props.push(`/events/${slug}`)
   }
 
   onClick(event) {
@@ -51,9 +58,12 @@ class CalendarMap extends Component {
   }
 
   render() {
-    const EventListPopup = ({ events, place }) => {
+    const EventListPopup = ({ events, place, onPopupClick }) => {
+      function handleClick(event) {
+        onPopupClick(event.target.parentElement.attributes.slug.value)
+      }
       const content = events.map(item => (
-        <tr key={item.title} slug={item.slug}>
+        <tr key={item.title} slug={item.slug} onClick={handleClick}>
           <td><img className="map-popup-img" src={item.imageUrl} /></td>
           <td>{item.title}</td>
           <td>{item.time}</td>
@@ -73,7 +83,7 @@ class CalendarMap extends Component {
 
     const VenueMarker = ({ map, latitude, longitude, events, place }) => (
       <Marker icon={markerIcon} map={map} position={[latitude, longitude]}>
-        <EventListPopup events={events} place={place} />
+        <EventListPopup events={events} place={place} onPopupClick={this.onPopupClick} />
       </Marker>
     )
 
@@ -123,9 +133,19 @@ class CalendarMap extends Component {
       zoom: DEFAULT_ZOOM,
     }
 
+    this.onPopupClick = this.onPopupClick.bind(this)
     this.onClick = this.onClick.bind(this)
     this.onZoom = this.onZoom.bind(this)
   }
 }
 
-export default CalendarMap
+function mapStateToProps(state) {
+  return {}
+}
+
+
+export default connect(
+  mapStateToProps, {
+    push,
+  }
+)(CalendarMap)
