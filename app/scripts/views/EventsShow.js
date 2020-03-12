@@ -64,6 +64,18 @@ class EventsShow extends Component {
     )
   }
 
+  renderTicketUrl() {
+    return <p>{ this.props.resourceData.ticketUrl }</p>
+  }
+
+  renderWebsiteUrl() {
+    return <p>{ this.props.resourceData.websiteUrl }</p>
+  }
+
+  renderadditionalInfo() {
+    return <p>{ this.props.resourceData.additionalInfo }</p>
+  }
+
   renderOwner() {
     if (this.props.isVisitor && this.props.isActive) {
       return null
@@ -203,7 +215,9 @@ class EventsShow extends Component {
 
         { this.renderDescription() }
         { this.renderImageGallery() }
-        <hr />
+        { this.renderTicketUrl() }
+        { this.renderWebsiteUrl() }
+        { this.renderadditionalInfo() }
       </div>
     )
   }

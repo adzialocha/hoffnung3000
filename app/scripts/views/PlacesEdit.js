@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { EsriProvider } from 'leaflet-geosearch'
 
 import flash from '../actions/flash'
 import { PlaceForm } from '../forms'
@@ -20,6 +21,8 @@ import {
   generateNewSlotItems,
   getDisabledSlotIndexes,
 } from '../../../common/utils/slots'
+
+const provider = new EsriProvider()
 
 class PlacesEdit extends Component {
   static propTypes = {
@@ -57,24 +60,33 @@ class PlacesEdit extends Component {
       text: translate('flash.updatePlaceSuccess'),
     }
 
-    const requestParams = {
-      ...values.location,
-      accessibilityInfo,
-      capacity,
-      description,
-      disabledSlots,
-      images,
-      isPublic,
-      title,
-    }
+    const address = `${values.location.street}, ${values.location.cityCode}, ${values.location.city}`
 
-    this.props.updateResource(
-      'places',
-      this.props.resourceSlug,
-      requestParams,
-      successFlash,
-      '/places'
-    )
+    provider
+      .search({ query: address })
+      .then(result => {
+        values.location.latitude = result[0].y
+        values.location.longitude = result[0].x
+
+        const requestParams = {
+          ...values.location,
+          accessibilityInfo,
+          capacity,
+          description,
+          disabledSlots,
+          images,
+          isPublic,
+          title,
+        }
+
+        this.props.updateResource(
+          'places',
+          this.props.resourceSlug,
+          requestParams,
+          successFlash,
+          '/places'
+        )
+      })
   }
 
   onDeleteClick() {
