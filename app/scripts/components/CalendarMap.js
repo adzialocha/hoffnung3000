@@ -139,10 +139,9 @@ class CalendarMap extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps() {
   return {}
 }
-
 
 export default connect(
   mapStateToProps, {
