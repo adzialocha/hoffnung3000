@@ -111,6 +111,8 @@ export default {
   },
   place: {
     errors: {
+      accessibilityInfoRequired: 'Please enter accessibility information',
+      capacityRequired: 'Please enter place capacity',
       cityCodeRequired: 'The given address is incomplete. Please fill in the city code field',
       cityRequired: 'The given address is incomplete. Please fill in the city field',
       countryRequired: 'The given address is incomplete. Please fill in the country field',
@@ -125,6 +127,8 @@ export default {
       titleMinLength: 'The title has to have a minimum of {len} characters',
       titleRequired: 'Please give your place a title',
     },
+    accessibilityInfo: 'Accessibility information',
+    capacity: 'Capacity',
     areEventsPublic: 'Events in this place are visible in the calendar',
     description: 'Describe your place',
     publicOrPrivate: 'Is it public or private?',
