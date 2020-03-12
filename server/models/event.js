@@ -45,7 +45,7 @@ const Event = db.define('event', {
   tags: {
     type: Sequelize.ARRAY(Sequelize.STRING),
     allowNull: true,
-    defaultValue: '',
+    defaultValue: [],
   },
 })
 

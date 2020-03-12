@@ -41,6 +41,12 @@ const validate = values => {
     )
   }
 
+  if (values.tags) {
+    if (values.tags.length === 0) {
+    errors.tags = translate('forms.event.errors.setTags')
+    }
+  }
+
   if (values.placeSlots) {
     if (!values.placeSlots.place) {
       errors.placeSlots = translate('forms.event.errors.selectPlace')
