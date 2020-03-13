@@ -24,8 +24,10 @@ class AdminConfigPanel extends Component {
   }
 
   onSave() {
-    const defaultTagsArray = this.props.form.values.defaultTags.split(', ')
-    this.props.form.values.defaultTags = defaultTagsArray
+    const defaultTags = this.props.form.values.defaultTags
+    if (!Array.isArray(defaultTags)) {
+      this.props.form.values.defaultTags = defaultTags.replace(/\s+/g, '').split(',')
+    }
     this.props.saveConfiguration(this.props.form.values)
   }
 
