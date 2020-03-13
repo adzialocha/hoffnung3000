@@ -180,8 +180,6 @@ function resetPassword(req, res, next) {
 
 export default {
   login,
-  paypalCheckoutCancel,
-  paypalCheckoutSuccess,
   requestResetToken,
   resetPassword,
   signup,
