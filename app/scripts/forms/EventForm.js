@@ -162,6 +162,7 @@ class EventForm extends Component {
           disabled={this.props.isLoading}
           label={translate('forms.event.description')}
           name="description"
+          placeholder={translate('forms.event.textFieldPlaceholder')}
           type="text"
         />
 
@@ -186,6 +187,7 @@ class EventForm extends Component {
           disabled={this.props.isLoading}
           label={translate('forms.event.additionalInfo')}
           name="additionalInfo"
+          placeholder={translate('forms.event.textFieldPlaceholder')}
           type="text"
         />
 

@@ -158,6 +158,7 @@ export default {
     publicOrPrivate: 'Is it public or private?',
     selectPlaceAndSlotsFirst: 'Please select a place and time first!',
     submit: 'Save event',
+    textFieldPlaceholder: 'You can use Markdown code to style text in this field in the following ways:\n\n **bold text** & *italicized text* \n web image ![](https://www.image.jpg) \n web link [title](https://www.example.com) \n\n When you save your event, the styling and images will show up.',
     ticketUrl: 'Ticket website link',
     title: 'Title of your event',
     additionalInfo: 'Any extra info (like social media handles etc..)',
