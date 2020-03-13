@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker } from 'react-leaflet'
 
-const DEFAULT_ZOOM = 13
+const DEFAULT_ZOOM = 1
 
 const markerIcon = new L.Icon.Default({
   imagePath: '/static/',
