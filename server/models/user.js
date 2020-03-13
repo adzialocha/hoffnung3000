@@ -21,13 +21,6 @@ const User = db.define('user', {
       notEmpty: true,
     },
   },
-  lastname: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
   password: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -51,29 +44,6 @@ const User = db.define('user', {
     validate: {
       notEmpty: true,
     },
-  },
-  phone: {
-    type: Sequelize.STRING,
-  },
-  street: {
-    type: Sequelize.STRING,
-  },
-  cityCode: {
-    type: Sequelize.STRING,
-  },
-  city: {
-    type: Sequelize.STRING,
-  },
-  country: {
-    type: Sequelize.STRING,
-  },
-  paymentId: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
-  paymentMethod: {
-    type: Sequelize.STRING,
-    allowNull: true,
   },
   isActive: {
     type: Sequelize.BOOLEAN,

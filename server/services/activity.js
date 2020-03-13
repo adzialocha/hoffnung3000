@@ -25,7 +25,7 @@ function sendMail(data) {
           let name = animal.name
 
           if (!config.isAnonymizationEnabled) {
-            name = `${animal.user.firstname} ${animal.user.lastname}`
+            name = `${animal.user.firstname}`
           }
 
           return User.findByPk(data.userId)
