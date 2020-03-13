@@ -16,23 +16,23 @@ export default {
   },
   activityMails: {
     RECEIVED_MESSAGE: {
-      subject: 'YOU RECEIVED A NEW MESSAGE',
+      subject: 'You received a new message',
       message: '{name} sent you a message on the platform!',
     },
     RECEIVED_REQUEST: {
-      subject: 'YOU RECEIVED A REQUEST',
+      subject: 'You received a request',
       message: '{name} requests your {objectType} "{objectTitle}" for an event!',
     },
     CREATE_RANDOM_MEETING: {
-      subject: 'YOU CREATED A RANDOM MEETING',
+      subject: 'You created a random meeting',
       message: 'You created a random meeting!\n\nYou can wait now for other participants who might join in!\n\nAlso a conversation related to this random meeting was just openend in your inbox, check it on the platform.\n\nThere you can start the dialogue with other attending participants you might eventually meet soon <3',
     },
     JOIN_RANDOM_MEETING: {
-      subject: 'SOMEONE JOINED YOUR RANDOM MEETING',
+      subject: 'Someone joined your random meeting',
       message: '{name} joined one of your random meetings!',
     },
     JOIN_RANDOM_MEETING_ME: {
-      subject: 'YOU JOINED A RANDOM MEETING',
+      subject: 'You joined a random meeting',
       message: 'You joined a random meeting!\n\nA conversation related to this random meeting was just openend in your inbox, check it on the platform for further details like time and place.\n\nThere you can start the dialogue with other attending participants you might eventually meet soon <3',
     },
   },

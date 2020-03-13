@@ -65,25 +65,10 @@ function sendMail(locals, subject, receiver, templateName, sender) {
   })
 }
 
-export function sendWireTransferDetails(locals, receiver) {
-  return getConfig()
-    .then(config => {
-      const subject = `${config.title} TRANSFER DETAILS`
-
-      return sendMail(
-        { ...locals, config },
-        subject,
-        receiver,
-        'wireTransferDetails',
-        config.mailAddressAdmin,
-      )
-    })
-}
-
 export function sendRegistrationComplete(locals, receiver) {
   return getConfig()
     .then(config => {
-      const subject = `WELCOME TO ${config.title}`
+      const subject = `Welcome to ${config.title}`
 
       return sendMail(
         { ...locals, config },
@@ -98,7 +83,7 @@ export function sendRegistrationComplete(locals, receiver) {
 export function sendAdminRegistrationNotification(locals) {
   return getConfig()
     .then(config => {
-      const subject = 'NEW REGISTRATION'
+      const subject = 'New registration'
 
       return sendMail(
         { ...locals, config },
@@ -113,7 +98,7 @@ export function sendAdminRegistrationNotification(locals) {
 export function sendPasswordReset(locals, receiver) {
   return getConfig()
     .then(config => {
-      const subject = 'PASSWORD RESET'
+      const subject = 'Password reset'
 
       return sendMail(
         { ...locals, config },
