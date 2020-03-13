@@ -29,23 +29,7 @@ class TicketWizard extends Component {
       isCheckoutClicked: true,
     })
 
-    this.props.buyTicket('free', this.props.form.values)
-  }
-
-  onPayPalCheckout() {
-    this.setState({
-      isCheckoutClicked: true,
-    })
-
-    this.props.buyTicket('paypal', this.props.form.values)
-  }
-
-  onTransferCheckout() {
-    this.setState({
-      isCheckoutClicked: true,
-    })
-
-    this.props.buyTicket('transfer', this.props.form.values)
+    this.props.buyTicket(this.props.form.values)
   }
 
   onTermsAcceptedChanged() {
@@ -80,38 +64,6 @@ class TicketWizard extends Component {
     return null
   }
 
-  renderPayPalButton() {
-    if (!this.props.config.isPayPalEnabled) {
-      return null
-    }
-
-    return (
-      <button
-        className="button button--rainbow"
-        disabled={!this.state.isTermsAccepted || this.props.isLoading}
-        onClick={this.onPayPalCheckout}
-      >
-        { translate('components.common.payViaPayPal') }
-      </button>
-    )
-  }
-
-  renderTransferButton() {
-    if (!this.props.config.isTransferEnabled) {
-      return null
-    }
-
-    return (
-      <button
-        className="button button--rainbow"
-        disabled={!this.state.isTermsAccepted || this.props.isLoading}
-        onClick={this.onTransferCheckout}
-      >
-        { translate('components.common.payViaTransfer') }
-      </button>
-    )
-  }
-
   renderPaymentButtons() {
     if (this.state.isCheckoutClicked && this.props.isLoading) {
       return (
@@ -119,25 +71,9 @@ class TicketWizard extends Component {
       )
     }
 
-    if (this.props.config.festivalTicketPrice === 0) {
-      return (
-        <div className="button-group">
-          { this.renderFreeButton() }
-        </div>
-      )
-    }
-
-    if (
-      !this.props.config.isTransferEnabled &&
-      !this.props.config.isPayPalEnabled
-    ) {
-      return <p>Warning: No payment was configured</p>
-    }
-
     return (
       <div className="button-group">
-        { this.renderPayPalButton() }
-        { this.renderTransferButton() }
+        { this.renderFreeButton() }
       </div>
     )
   }
@@ -246,9 +182,7 @@ class TicketWizard extends Component {
 
     this.nextStep = this.nextStep.bind(this)
     this.onFreeCheckout = this.onFreeCheckout.bind(this)
-    this.onPayPalCheckout = this.onPayPalCheckout.bind(this)
     this.onTermsAcceptedChanged = this.onTermsAcceptedChanged.bind(this)
-    this.onTransferCheckout = this.onTransferCheckout.bind(this)
     this.previousStep = this.previousStep.bind(this)
   }
 }

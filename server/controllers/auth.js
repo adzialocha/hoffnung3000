@@ -6,7 +6,6 @@ import checkout from '../services/checkout'
 import db from '../database'
 import pick from '../utils/pick'
 import { APIError } from '../helpers/errors'
-import { executePayment } from '../services/paypal'
 import { generateRandomHash } from '../utils/randomHash'
 import { generateToken } from '../services/passport'
 import { getConfig } from '../config'
@@ -15,7 +14,6 @@ import { translate } from '../../common/services/i18n'
 import {
   sendAdminRegistrationNotification,
   sendPasswordReset,
-  sendRegistrationComplete,
 } from '../helpers/mailTemplate'
 
 const PASSWORD_RESET_EXPIRY = 15 // Minutes
@@ -26,139 +24,45 @@ const permittedFields = [
   'password',
 ]
 
-function getProduct(config) {
-  return {
-    name: config.title,
-    description: translate('api.products.participation'),
-    price: config.participationPrice,
-  }
-}
-
 function signup(req, res, next) {
   const fields = pick(permittedFields, req.body)
   fields.isParticipant = true
 
-  const { email, paymentMethod } = fields
+  const { email } = fields
 
-  return getConfig([
-    'description',
-    'isSignUpParticipantEnabled',
-    'maximumParticipantsCount',
-    'participationPrice',
-    'title',
-  ])
+  return getConfig(['isSignUpParticipantEnabled'])
     .then(config => {
       if (!config.isSignUpParticipantEnabled) {
         next(new APIError('Sign up is not available', httpStatus.FORBIDDEN))
         return null
       }
 
-      if (paymentMethod === 'free' && config.participationPrice !== 0) {
-        next(
-          new APIError(
-            translate('api.errors.auth.paymentMethodError'),
-            httpStatus.BAD_REQUEST
-          )
-        )
-        return null
-      }
-
-      return User.count({ where: { isParticipant: true } })
-        .then(count => {
-          if (config.maximumParticipantsCount !== 0 && count >= config.maximumParticipantsCount) {
+      return User.findOne({ where: { email } })
+        .then(existingUser => {
+          if (existingUser) {
             next(
               new APIError(
-                translate('api.errors.auth.registrationLimitExceeded'),
-                httpStatus.LOCKED
+                translate('api.errors.auth.userExistsAlready'),
+                httpStatus.BAD_REQUEST
               )
             )
             return null
           }
 
-          const product = getProduct(config)
-
-          return User.findOne({ where: { email } })
-            .then(existingUser => {
-              if (existingUser) {
-                next(
-                  new APIError(
-                    translate('api.errors.auth.userExistsAlready'),
-                    httpStatus.BAD_REQUEST
-                  )
-                )
-                return null
-              }
-
-              return User.create(fields, { returning: true })
-                .then(user => {
-                  return checkout(paymentMethod, user, product)
-                    .then(data => {
-                      sendAdminRegistrationNotification({
-                        paymentMethod,
-                        product,
-                        user,
-                      })
-                      res.json(data)
-                    })
-                    .catch(err => next(err))
-                })
-                .catch(err => next(err))
-            })
-        })
-    })
-}
-
-function paypalCheckoutSuccess(req, res, next) {
-  const { paymentId, PayerID } = req.query
-
-  const queryParams = {
-    where: {
-      paymentId,
-      paymentMethod: 'paypal',
-    },
-    limit: 1,
-    rejectOnEmpty: true,
-  }
-
-  return getConfig(['title', 'description'])
-    .then(config => {
-      return getProduct(config)
-    })
-    .then(product => {
-      return User
-        .findOne(queryParams)
-        .then(user => {
-          executePayment(paymentId, PayerID)
-            .then(() => {
-              return User.update({ isActive: true }, queryParams)
-                .then(() => {
-                  sendRegistrationComplete({
-                    product,
+          return User.create(fields, { returning: true })
+            .then(user => {
+              return checkout(user)
+                .then(data => {
+                  sendAdminRegistrationNotification({
                     user,
-                  }, user.email)
-
-                  res.redirect('/?paypalSuccess')
+                  })
+                  res.json(data)
                 })
                 .catch(err => next(err))
             })
-            .catch(() => next(
-              new APIError(
-                translate('api.errors.auth.paymentError'),
-                httpStatus.INTERNAL_SERVER_ERROR
-              )
-            ))
+            .catch(err => next(err))
         })
-        .catch(() => next(
-          new APIError(
-            translate('api.errors.auth.paymentMethodError'),
-            httpStatus.BAD_REQUEST
-          )
-        ))
     })
-}
-
-function paypalCheckoutCancel(req, res) {
-  res.redirect('/?paypalCancel')
 }
 
 function login(req, res, next) {

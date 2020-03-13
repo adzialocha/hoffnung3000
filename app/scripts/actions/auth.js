@@ -66,44 +66,29 @@ export function logout() {
   }
 }
 
-export function register(paymentMethod, data) {
-  const meta = {
-    paymentMethod,
-  }
-
+export function register(data) {
   const payload = {
     ...data,
-    paymentMethod,
   }
 
   const success = {
     type: ActionTypes.AUTH_REGISTER_SUCCESS,
-    meta,
   }
 
-  if (paymentMethod === 'transfer') {
-    success[FLASH] = {
-      lifetime: 30000,
-      text: translate('flash.signUpTransferSuccess'),
-    }
-    success[REDIRECT] = '/'
-  } else if (paymentMethod === 'free') {
-    success[FLASH] = {
-      lifetime: 30000,
-      text: translate('flash.signUpFreeSuccess'),
-    }
-    success[REDIRECT] = '/'
+  success[FLASH] = {
+    lifetime: 30000,
+    text: translate('flash.signUpFreeSuccess'),
   }
+
+  success[REDIRECT] = '/'
 
   return postRequest(['auth', 'signup'], payload, {
     request: {
       type: ActionTypes.AUTH_REGISTER_REQUEST,
-      meta,
     },
     success,
     failure: {
       type: ActionTypes.AUTH_REGISTER_FAILURE,
-      meta,
       [FLASH]: {
         text: translate('flash.signUpTransferFailure'),
       },
@@ -111,44 +96,28 @@ export function register(paymentMethod, data) {
   })
 }
 
-export function buyTicket(paymentMethod = 'paypal', data) {
-  const meta = {
-    paymentMethod,
-  }
-
+export function buyTicket(data) {
   const payload = {
     ...data,
-    paymentMethod,
   }
 
   const success = {
     type: ActionTypes.AUTH_TICKET_SUCCESS,
-    meta,
   }
 
-  if (paymentMethod === 'transfer') {
-    success[FLASH] = {
-      lifetime: 30000,
-      text: translate('flash.signUpTransferTicketSuccess'),
-    }
-    success[REDIRECT] = '/'
-  } else if (paymentMethod === 'free') {
-    success[FLASH] = {
-      lifetime: 30000,
-      text: translate('flash.signUpFreeSuccess'),
-    }
-    success[REDIRECT] = '/'
+  success[FLASH] = {
+    lifetime: 30000,
+    text: translate('flash.signUpFreeSuccess'),
   }
+  success[REDIRECT] = '/'
 
   return postRequest(['auth', 'signup', 'ticket'], payload, {
     request: {
       type: ActionTypes.AUTH_TICKET_REQUEST,
-      meta,
     },
     success,
     failure: {
       type: ActionTypes.AUTH_TICKET_FAILURE,
-      meta,
       [FLASH]: {
         text: translate('flash.signUpTransferFailure'),
       },

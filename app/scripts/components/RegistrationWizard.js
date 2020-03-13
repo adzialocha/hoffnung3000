@@ -45,23 +45,7 @@ class RegistrationWizard extends Component {
       isCheckoutClicked: true,
     })
 
-    this.props.register('free', this.props.form.values)
-  }
-
-  onPayPalCheckout() {
-    this.setState({
-      isCheckoutClicked: true,
-    })
-
-    this.props.register('paypal', this.props.form.values)
-  }
-
-  onTransferCheckout() {
-    this.setState({
-      isCheckoutClicked: true,
-    })
-
-    this.props.register('transfer', this.props.form.values)
+    this.props.register(this.props.form.values)
   }
 
   onTermsAcceptedChanged() {
@@ -101,62 +85,14 @@ class RegistrationWizard extends Component {
     )
   }
 
-  renderPayPalButton() {
-    if (!this.props.config.isPayPalEnabled) {
-      return null
-    }
-
-    return (
-      <button
-        className="button button--rainbow"
-        disabled={!this.state.isTermsAccepted || this.props.isLoading}
-        onClick={this.onPayPalCheckout}
-      >
-        { translate('components.common.payViaPayPal') }
-      </button>
-    )
-  }
-
-  renderTransferButton() {
-    if (!this.props.config.isTransferEnabled) {
-      return null
-    }
-
-    return (
-      <button
-        className="button button--rainbow"
-        disabled={!this.state.isTermsAccepted || this.props.isLoading}
-        onClick={this.onTransferCheckout}
-      >
-        { translate('components.common.payViaTransfer') }
-      </button>
-    )
-  }
-
   renderPaymentButtons() {
     if (this.state.isCheckoutClicked && this.props.isLoading) {
       return <p>{ translate('common.loading') }</p>
     }
 
-    if (this.props.config.participationPrice === 0) {
-      return (
-        <div className="button-group">
-          { this.renderFreeButton() }
-        </div>
-      )
-    }
-
-    if (
-      !this.props.config.isTransferEnabled &&
-      !this.props.config.isPayPalEnabled
-    ) {
-      return <p>Warning: No payment was configured</p>
-    }
-
     return (
       <div className="button-group">
-        { this.renderPayPalButton() }
-        { this.renderTransferButton() }
+        { this.renderFreeButton() }
       </div>
     )
   }

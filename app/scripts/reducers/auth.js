@@ -26,12 +26,6 @@ export default (state = initialState, action) => {
       errorMessage: { $set: '' },
     })
   case ActionTypes.AUTH_REGISTER_SUCCESS:
-    if (action.meta.paymentMethod === 'paypal') {
-      window.setTimeout(() => {
-        window.location.assign(action.payload.redirect)
-      })
-      return state
-    }
     return update(state, {
       isLoading: { $set: false },
     })

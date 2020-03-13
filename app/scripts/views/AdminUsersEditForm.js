@@ -52,8 +52,6 @@ class AdminUsersEditForm extends Component {
           ID: { this.props.resourceData.id }<br />
           Created at: { createdAt.toFormat(DATE_FORMAT) }<br />
           Updated at: { updatedAt.toFormat(DATE_FORMAT) }<br />
-          Payment Method: { this.props.resourceData.paymentMethod }<br />
-          Payment ID: { this.props.resourceData.paymentId }
         </code>
       </div>
     )

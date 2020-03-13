@@ -20,12 +20,6 @@ export default (state = initialState, action) => {
       isLoading: { $set: true },
     })
   case ActionTypes.AUTH_TICKET_SUCCESS:
-    if (action.meta.paymentMethod === 'paypal') {
-      window.setTimeout(() => {
-        window.location.assign(action.payload.redirect)
-      })
-      return state
-    }
     return update(state, {
       isLoading: { $set: false },
     })

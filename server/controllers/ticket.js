@@ -18,64 +18,40 @@ function signup(req, res, next) {
   const fields = pick(permittedFields, req.body)
   fields.isVisitor = true
 
-  const { email, paymentMethod } = fields
+  const { email } = fields
 
-  return getConfig([
-    'description',
-    'festivalTicketPrice',
-    'isSignUpVisitorEnabled',
-    'title',
-  ])
-    .then(config => {
-      if (!config.isSignUpVisitorEnabled) {
-        next(new APIError('Ticket sales are not available', httpStatus.FORBIDDEN))
-        return null
-      }
+  return getConfig(['isSignUpVisitorEnabled']).then(config => {
+    if (!config.isSignUpVisitorEnabled) {
+      next(new APIError('Ticket sales are not available', httpStatus.FORBIDDEN))
+      return null
+    }
 
-      if (paymentMethod === 'free' && config.festivalTicketPrice !== 0) {
-        next(
-          new APIError(
-            translate('api.errors.auth.unknownPaymentMethod'),
-            httpStatus.BAD_REQUEST
-          )
-        )
-        return null
-      }
-
-      return User.findOne({ where: { email } })
-        .then(existingUser => {
-          if (existingUser) {
-            next(
-              new APIError(
-                translate('api.errors.auth.userExistsAlready'),
-                httpStatus.BAD_REQUEST
-              )
+    return User.findOne({ where: { email } })
+      .then(existingUser => {
+        if (existingUser) {
+          next(
+            new APIError(
+              translate('api.errors.auth.userExistsAlready'),
+              httpStatus.BAD_REQUEST
             )
-            return null
-          }
+          )
+          return null
+        }
 
-          const product = {
-            name: config.title,
-            description: translate('api.products.ticket'),
-            price: config.festivalTicketPrice,
-          }
-
-          return User.create(fields, { returning: true })
-            .then(user => {
-              return checkout(paymentMethod, user, product)
-                .then(data => {
-                  sendAdminRegistrationNotification({
-                    paymentMethod,
-                    product,
-                    user,
-                  })
-                  res.json(data)
+        return User.create(fields, { returning: true })
+          .then(user => {
+            return checkout(user)
+              .then(data => {
+                sendAdminRegistrationNotification({
+                  user,
                 })
-                .catch(err => next(err))
-            })
-            .catch(err => next(err))
-        })
-    })
+                res.json(data)
+              })
+              .catch(err => next(err))
+          })
+          .catch(err => next(err))
+      })
+  })
 }
 
 export default {
