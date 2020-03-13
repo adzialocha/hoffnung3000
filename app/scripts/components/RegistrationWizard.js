@@ -252,9 +252,7 @@ class RegistrationWizard extends Component {
 
     this.nextStep = this.nextStep.bind(this)
     this.onFreeCheckout = this.onFreeCheckout.bind(this)
-    this.onPayPalCheckout = this.onPayPalCheckout.bind(this)
     this.onTermsAcceptedChanged = this.onTermsAcceptedChanged.bind(this)
-    this.onTransferCheckout = this.onTransferCheckout.bind(this)
     this.onVideoEnd = this.onVideoEnd.bind(this)
     this.previousStep = this.previousStep.bind(this)
   }
