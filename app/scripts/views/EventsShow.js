@@ -68,8 +68,8 @@ class EventsShow extends Component {
     return (
       <div>
         <p>
-          <a href={ this.props.resourceData.ticketUrl }>
-            { this.props.resourceData.ticketUrl}
+          <a href={this.props.resourceData.ticketUrl}>
+            {this.props.resourceData.ticketUrl}
           </a>
         </p>
       </div>
@@ -80,8 +80,8 @@ class EventsShow extends Component {
     return (
       <div>
         <p>
-          <a href={ this.props.resourceData.websiteUrl }>
-            { this.props.resourceData.websiteUrl}
+          <a href={this.props.resourceData.websiteUrl}>
+            {this.props.resourceData.websiteUrl}
           </a>
         </p>
       </div>
