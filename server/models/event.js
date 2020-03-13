@@ -48,7 +48,7 @@ const Event = db.define('event', {
     defaultValue: '',
   },
   additionalInfo: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false,
     defaultValue: '',
   },
