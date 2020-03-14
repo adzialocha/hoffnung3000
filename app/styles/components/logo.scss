@@ -1,18 +1,23 @@
 .logo {
   width: 100%;
+  height: 65px;
 
-  font-weight: $font-weight-bold;
-  font-size: $font-size-xxl;
-
-  text-align: center;
+  background-image: url("https://liebe3000.s3.eu-central-1.amazonaws.com/static/lovechaosquarantine-logo.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 
   a {
+    display: block;
+
+    height: 100%;
+
     text-decoration: none;
   }
 }
 
 @include media-breakpoint(xs) {
   .logo {
-    font-size: $font-size-md;
+    height: 40px;
   }
 }
