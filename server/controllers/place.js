@@ -38,6 +38,8 @@ const include = [
 ]
 
 const permittedFields = [
+  'accessibilityInfo',
+  'capacity',
   'city',
   'cityCode',
   'country',
@@ -86,6 +88,8 @@ function areSlotsBooked(placeId, slotIndexes) {
 
 function preparePlaceValues(body) {
   const {
+    accessibilityInfo,
+    capacity,
     description,
     isPublic,
     mode,
@@ -99,6 +103,8 @@ function preparePlaceValues(body) {
   } = body
 
   const values = {
+    accessibilityInfo,
+    capacity,
     description,
     images: body.images || [],
     isPublic,

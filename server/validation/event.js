@@ -9,7 +9,11 @@ export default {
       placeId: Joi.number().required(),
       resources: Joi.array().items(Joi.number()).required(),
       slots: Joi.array().min(1).unique().items(Joi.number()).required(),
+      additionalInfo: Joi.string().allow(''),
+      ticketUrl: Joi.string().uri().allow(''),
+      tags: Joi.array(),
       title: Joi.string().min(3).required(),
+      websiteUrl: Joi.string().uri().allow(''),
     },
   },
   updateEvent: {
@@ -20,7 +24,11 @@ export default {
       placeId: Joi.number().required(),
       resources: Joi.array().items(Joi.number()).required(),
       slots: Joi.array().min(1).unique().items(Joi.number()).required(),
+      additionalInfo: Joi.string().allow(''),
+      ticketUrl: Joi.string().uri().allow(''),
+      tags: Joi.array(),
       title: Joi.string().min(3).required(),
+      websiteUrl: Joi.string().uri().allow(''),
     },
     params: {
       resourceSlug: Joi.string().required(),

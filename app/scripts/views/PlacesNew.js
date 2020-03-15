@@ -43,6 +43,8 @@ class PlacesNew extends Component {
 
         const requestParams = {
           ...values.location,
+          accessibilityInfo,
+          capacity,
           description,
           disabledSlots,
           images,

@@ -30,6 +30,10 @@ class AdminConfigPanel extends Component {
     values.defaultLatitude = latitude
     values.defaultLongitude = longitude
     values.defaultZoom = zoom
+    const defaultTags = this.props.form.values.defaultTags
+    if (!Array.isArray(defaultTags)) {
+      this.props.form.values.defaultTags = defaultTags.replace(/\s+/g, '').split(',')
+    }
     this.props.saveConfiguration(this.props.form.values)
   }
 

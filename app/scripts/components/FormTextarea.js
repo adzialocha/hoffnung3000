@@ -10,13 +10,14 @@ class FormTextarea extends Component {
   }
 
   render() {
-    const { disabled, input } = this.props
+    const { disabled, input, ...rest } = this.props
 
     return (
       <textarea
         className="form__field-input"
         disabled={disabled}
         {...input}
+        {...rest}
       />
     )
   }
