@@ -71,6 +71,12 @@ const Place = db.define('place', {
   country: {
     type: Sequelize.STRING,
   },
+  accessibilityInfo: {
+    type: Sequelize.STRING,
+  },
+  capacity: {
+    type: Sequelize.STRING,
+  },
 })
 
 slugify.slugifyModel(Place, {

@@ -52,6 +52,12 @@ function sendMail(locals, subject, receiver, templateName, sender) {
           return resolve()
         }
 
+        // Do not send real emails when in development
+        if (process.env.SMTP_HOST === undefined) {
+          logger.info(`Send mail: ${JSON.stringify(mailOptions)}`)
+          return resolve()
+        }
+
         return mail.sendMail(mailOptions, err => {
           if (err) {
             reject(err)
