@@ -6,13 +6,11 @@ form {
   margin: 0 auto;
 }
 
-.tag {
-  display: block;
+.tag {  
 
   font-weight: $font-weight-bold;
   font-size: $font-size-base;
-
-  text-align: center;
+  padding: 5px;
   text-transform: uppercase;
 
   cursor: pointer;
@@ -21,6 +19,13 @@ form {
   &:hover {
     background-color: $gray-light;
   }
+}
+
+.tag-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .tag--selected {

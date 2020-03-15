@@ -18,6 +18,7 @@ class FormTagSelectorItem extends Component {
     return (
       <div
         className={JSON.parse(tagArray).includes(thisTag) === true ? 'tag tag--selected' : 'tag'}
+        key={thisTag}
         onClick={this.handleClick}
       >
         {label}
