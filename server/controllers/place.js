@@ -109,7 +109,7 @@ function preparePlaceValues(body) {
     city,
     country,
     latitude,
-    longitude
+    longitude,
   }
 
   if (body.slotSize) {
