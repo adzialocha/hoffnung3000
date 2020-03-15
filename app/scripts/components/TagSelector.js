@@ -22,18 +22,16 @@ class TagSelector extends Component {
   render() {
     const { defaultTags, tagArray, onChange } = this.props
     return (
-      <div>
+      <div className="tag-container">
         {this.props.defaultTags.map(({ label, value }) => (
-          <div key={value}>
-            <FormTagSelectorItem
-              defaultTags={defaultTags}
-              key={value}
-              label={label}
-              tagArray={JSON.stringify(tagArray)}
-              thisTag={value}
-              onChange={onChange}
-            />
-          </div>
+          <FormTagSelectorItem
+            defaultTags={defaultTags}
+            key={value}
+            label={label}
+            tagArray={JSON.stringify(tagArray)}
+            thisTag={value}
+            onChange={onChange}
+          />
         ))}
       </div>
     )

@@ -19,20 +19,18 @@ class FormTagSelector extends Component {
   render() {
     const { input, defaultTags, disabled } = this.props
     return (
-      <div>
+      <div className="tag-container">
         {this.props.defaultTags.map(({ label, value }) => (
-          <div key={value}>
-            <FormTagSelectorItem
-              defaultTags={defaultTags}
-              disabled={disabled}
-              key={value}
-              label={label}
-              tagArray={input.value === '' ? JSON.stringify([]) : JSON.stringify(input.value)}
-              thisTag={value}
-              onChange={input.onChange}
-              {...input}
-            />
-          </div>
+          <FormTagSelectorItem
+            defaultTags={defaultTags}
+            disabled={disabled}
+            key={value}
+            label={label}
+            tagArray={input.value === '' ? JSON.stringify([]) : JSON.stringify(input.value)}
+            thisTag={value}
+            onChange={input.onChange}
+            {...input}
+          />
         ))}
       </div>
     )
