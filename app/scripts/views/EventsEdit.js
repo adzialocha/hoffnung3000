@@ -46,7 +46,7 @@ class EventsEdit extends Component {
       text: translate('flash.updateEventSuccess'),
     }
 
-    const { title, description, isPublic, images } = values
+    const { tags, title, description, isPublic, images } = values
 
     const requestParams = {
       description,
@@ -55,6 +55,7 @@ class EventsEdit extends Component {
       placeId: values.placeSlots.place.id,
       resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
+      tags,
       title,
     }
 
@@ -97,6 +98,7 @@ class EventsEdit extends Component {
       place,
       resources,
       slots,
+      tags,
       title,
     } = this.props.resourceData
 
@@ -112,6 +114,7 @@ class EventsEdit extends Component {
         place,
         selectedSlotsIndexes,
       },
+      tags,
       title,
     }
 

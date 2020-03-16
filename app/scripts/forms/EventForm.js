@@ -10,6 +10,7 @@ import {
   FormInput,
   FormPlaceSlotSelector,
   FormResourceSelector,
+  FormTagSelector,
   FormTextarea,
 } from '../components'
 
@@ -38,6 +39,12 @@ const validate = values => {
     errors.description = translate(
       'forms.common.errors.minLength', { len: 20 }
     )
+  }
+
+  if (values.tags) {
+    if (values.tags.length === 0) {
+      errors.tags = translate('forms.event.errors.setTags')
+    }
   }
 
   if (values.placeSlots) {
@@ -138,6 +145,22 @@ class EventForm extends Component {
     )
   }
 
+  renderFormTagSelector() {
+    const defaultTags = this.props.config.defaultTags.map(tag =>{
+      return { label: tag, value: tag }
+    })
+
+    return (
+      <Field
+        component={FormTagSelector}
+        defaultTags={defaultTags}
+        disabled={this.props.isLoading}
+        multi={true}
+        name="tags"
+      />
+    )
+  }
+
   render() {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
@@ -160,6 +183,10 @@ class EventForm extends Component {
           name="description"
           type="text"
         />
+
+        <h2>{translate('forms.event.tags')}</h2>
+
+        { this.renderFormTagSelector() }
 
         <hr />
         <h2>{ translate('forms.common.uploadImages') }</h2>

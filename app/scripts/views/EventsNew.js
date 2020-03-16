@@ -23,7 +23,7 @@ class EventsNew extends Component {
       text: translate('flash.createEventSuccess'),
     }
 
-    const { title, description, isPublic, images } = values
+    const { tags, title, description, isPublic, images } = values
 
     const requestParams = {
       description,
@@ -32,6 +32,7 @@ class EventsNew extends Component {
       placeId: values.placeSlots.place.id,
       resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
+      tags,
       title,
     }
 
@@ -55,7 +56,13 @@ class EventsNew extends Component {
         <hr />
         <EventForm
           errorMessage={this.props.errorMessage}
-          initialValues={ { isPublic: true } }
+          initialValues=
+            {
+              {
+                isPublic: true,
+                tags: [],
+              }
+            }
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
         />
