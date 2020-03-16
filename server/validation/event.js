@@ -9,6 +9,7 @@ export default {
       placeId: Joi.number().required(),
       resources: Joi.array().items(Joi.number()).required(),
       slots: Joi.array().min(1).unique().items(Joi.number()).required(),
+      tags: Joi.array(),
       title: Joi.string().min(3).required(),
     },
   },
@@ -20,6 +21,7 @@ export default {
       placeId: Joi.number().required(),
       resources: Joi.array().items(Joi.number()).required(),
       slots: Joi.array().min(1).unique().items(Joi.number()).required(),
+      tags: Joi.array(),
       title: Joi.string().min(3).required(),
     },
     params: {
