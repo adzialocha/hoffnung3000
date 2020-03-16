@@ -19,12 +19,12 @@ class Calendar extends Component {
     isAdmin: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     isParticipant: PropTypes.bool.isRequired,
-    listItems: PropTypes.array.isRequired,
+    resourceListItems: PropTypes.array.isRequired,
     push: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
-    listItems: [],
+    resourceListItems: [],
   }
 
   onClick(item) {
@@ -86,7 +86,7 @@ class Calendar extends Component {
       return null
     }
 
-    const allEvents = this.props.listItems
+    const allEvents = this.props.resourceListItems
     let uniqueVenues = []
 
     if (allEvents.length === 0) {
@@ -160,7 +160,7 @@ function mapStateToProps(state) {
     ...state.auth,
     ...state.user,
     ...state.meta,
-    ...state.infiniteList.events,
+    ...state.resourceList,
   }
 }
 
