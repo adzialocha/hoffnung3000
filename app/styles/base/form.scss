@@ -6,6 +6,37 @@ form {
   margin: 0 auto;
 }
 
+.tag {  
+
+  font-weight: $font-weight-bold;
+  font-size: $font-size-base;
+  padding: 5px;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  &:focus,
+  &:hover {
+    background-color: $gray-light;
+  }
+}
+
+.tag-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tag--selected {
+  background-color: $green;
+
+  &:focus,
+  &:hover {
+    background-color: lighten($green, 25%);
+  }
+}
+
 label {
   display: block;
 
