@@ -23,6 +23,7 @@ const Config = db.define('config', {
   defaultCountry: configField(Sequelize.CHAR),
   defaultLatitude: configField(Sequelize.FLOAT),
   defaultLongitude: configField(Sequelize.FLOAT),
+  defaultZoom: configField(Sequelize.INTEGER),
   description: configField(Sequelize.STRING),
   festivalDateEnd: configField(Sequelize.DATEONLY),
   festivalDateStart: configField(Sequelize.DATEONLY),
