@@ -10,6 +10,7 @@ export default {
       defaultLatitude: Joi.number().required(),
       defaultLongitude: Joi.number().required(),
       description: Joi.string().required(),
+      defaultTags: Joi.array(),
       festivalDateEnd: Joi.string().isoDate().required(),
       festivalDateStart: Joi.string().isoDate().required(),
       festivalTicketPrice: Joi.number(),
