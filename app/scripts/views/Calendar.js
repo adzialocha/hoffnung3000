@@ -19,8 +19,8 @@ class Calendar extends Component {
     isAdmin: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     isParticipant: PropTypes.bool.isRequired,
-    resourceListItems: PropTypes.array.isRequired,
     push: PropTypes.func.isRequired,
+    resourceListItems: PropTypes.array.isRequired,
   }
 
   static defaultProps = {
@@ -128,7 +128,16 @@ class Calendar extends Component {
     })
     return (
       <div>
-        <CalendarMap initialCenter= { { lat: this.props.config.defaultLatitude, lng: this.props.config.defaultLongitude } } plots={mapVenuePlots} />
+        <CalendarMap
+          defaultZoom={this.props.config.defaultZoom}
+          initialCenter={
+            {
+              lat: this.props.config.defaultLatitude,
+              lng: this.props.config.defaultLongitude,
+            }
+          }
+          plots={mapVenuePlots}
+        />
       </div>
     )
   }
