@@ -13,6 +13,7 @@ const markerIcon = new L.Icon.Default({
 
 class CalendarMap extends Component {
   static propTypes = {
+    defaultZoom: PropTypes.number.isRequired,
     initialCenter: PropTypes.shape({
       lat: PropTypes.number.isRequired,
       lng: PropTypes.number.isRequired,
@@ -108,7 +109,7 @@ class CalendarMap extends Component {
         doubleClickZoom={false}
         keyboard={false}
         scrollWheelZoom={false}
-        zoom={this.state.zoom}
+        zoom={this.props.defaultZoom}
         onClick={this.onClick}
         onZoom={this.onZoom}
       >
