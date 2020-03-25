@@ -460,24 +460,37 @@ export default {
       hasManySlots,
     ]
 
-    console.log('findAll', limit, offset)
-
     return Event.findAndCountAll({
       distinct: true,
       include: req.user.isVisitor ? includeForVisitors : include,
-      // @TODO: Quick fix for now as we run into problems with Sequelize
-      // not being able to do correct associations + count
-      // https://github.com/sequelize/sequelize/issues/7344
-      limit: 5000,
-      offset: 0,
-      subQuery: true,
+      limit,
+      offset,
       order: [
         [EventHasManySlots, 'from', 'ASC'],
       ],
       where: req.user.isVisitor ? { isPublic: true } : {},
     })
       .then(result => {
-        console.log(result.rows)
+        // @TODO: Quick fix to prevent Sequelize bug where slots are empty. We
+        // assign slots manually to the events here.
+        // Related: https://github.com/sequelize/sequelize/issues/7344
+        Slot.findAll({
+          where: {
+            id: {
+              [Op.in]: result.rows.map(item => item.id),
+            },
+          },
+        }).then(resultSlots => {
+          result.rows.forEach(row => {
+            const slots = resultSlots.filter(item => {
+              return item.eventId === row.id
+            })
+
+            row.set('slots', slots, {
+              raw: true,
+            })
+          })
+        })
 
         return getConfig('isAnonymizationEnabled').then(config => {
           res.json({
