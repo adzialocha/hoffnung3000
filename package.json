@@ -130,7 +130,7 @@
     "redux-form": "^8.2.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "sequelize": "sequelize/sequelize#master",
+    "sequelize": "^5.21.5",
     "sequelize-slugify": "^0.7.0",
     "sharp": "^0.22.1",
     "winston": "^3.2.1"
