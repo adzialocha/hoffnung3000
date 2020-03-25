@@ -465,8 +465,12 @@ export default {
     return Event.findAndCountAll({
       distinct: true,
       include: req.user.isVisitor ? includeForVisitors : include,
-      limit,
-      offset,
+      // @TODO: Quick fix for now as we run into problems with Sequelize
+      // not being able to do correct associations + count
+      // https://github.com/sequelize/sequelize/issues/7344
+      limit: 5000,
+      offset: 0,
+      subQuery: true,
       order: [
         [EventHasManySlots, 'from', 'ASC'],
       ],
