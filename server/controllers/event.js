@@ -460,6 +460,8 @@ export default {
       hasManySlots,
     ]
 
+    console.log('findAll', limit, offset)
+
     return Event.findAndCountAll({
       distinct: true,
       include: req.user.isVisitor ? includeForVisitors : include,
@@ -471,6 +473,8 @@ export default {
       where: req.user.isVisitor ? { isPublic: true } : {},
     })
       .then(result => {
+        console.log(result.rows)
+
         return getConfig('isAnonymizationEnabled').then(config => {
           res.json({
             data: prepareResponseAll(
