@@ -51,7 +51,7 @@ const validate = values => {
       errors.tags = translate('forms.event.errors.setTags')
     }
   }
-  
+
   if (values.ticketUrl && values.ticketUrl !== 'https://') {
     if (!isValidURL(values.ticketUrl)) {
       errors.ticketUrl = translate(

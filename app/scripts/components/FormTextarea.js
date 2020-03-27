@@ -23,7 +23,6 @@ class FormTextarea extends Component {
         disabled={disabled}
         placeholder={placeholder}
         {...input}
-        {...rest}
       />
     )
   }
