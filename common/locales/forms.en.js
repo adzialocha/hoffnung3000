@@ -6,6 +6,7 @@ export default {
       maxLength: 'This field can\'t be longer than {len} characters',
     },
     basicInformation: 'Basic information',
+    markdownPlaceholder: 'You can use Markdown code to style text in this field in the following ways:\n\n **bold text** & *italicized text* \n web image ![](https://www.image.jpg) \n web link [title](https://www.example.com) \n\n When you save your event, the styling and images will show up.',
     uploadImages: 'Upload images',
     submit: 'Save',
   },

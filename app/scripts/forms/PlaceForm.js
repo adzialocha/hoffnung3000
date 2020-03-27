@@ -113,6 +113,7 @@ class PlaceForm extends Component {
           disabled={this.props.isLoading}
           label={translate('forms.place.description')}
           name="description"
+          placeholder={translate('forms.common.markdownPlaceholder')}
         />
 
         <Field
