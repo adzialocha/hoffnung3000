@@ -49,7 +49,7 @@ class PlacesEdit extends Component {
   }
 
   onSubmit(values) {
-    const { title, description, isPublic, images } = values
+    const { accessibilityInfo, capacity, title, description, isPublic, images } = values
     const { slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
 
@@ -59,6 +59,8 @@ class PlacesEdit extends Component {
 
     const requestParams = {
       ...values.location,
+      accessibilityInfo,
+      capacity,
       description,
       disabledSlots,
       images,
@@ -98,6 +100,8 @@ class PlacesEdit extends Component {
     }
 
     const {
+      accessibilityInfo,
+      capacity,
       description,
       images,
       isPublic,
@@ -129,6 +133,8 @@ class PlacesEdit extends Component {
     }
 
     const initialValues = {
+      accessibilityInfo,
+      capacity,
       description,
       images,
       isPublic,
