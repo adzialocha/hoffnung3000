@@ -14,8 +14,8 @@ const router = express.Router() // eslint-disable-line new-cap
 
 router.route('/')
   .get(
-    grantWhenFestivalFree,
     getUserWhenAuthenticated,
+    grantWhenFestivalFree,
     placeController.findAll
   )
   .post(
@@ -27,8 +27,8 @@ router.route('/')
 
 router.route('/:resourceSlug')
   .get(
-    grantWhenFestivalFree,
     getUserWhenAuthenticated,
+    grantWhenFestivalFree,
     placeController.lookupWithSlug,
     placeController.findOneWithSlug
   )
