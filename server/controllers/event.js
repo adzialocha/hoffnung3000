@@ -44,7 +44,10 @@ const permittedFields = [
   'isPublic',
   'placeId',
   'tags',
+  'additionalInfo',
+  'ticketUrl',
   'title',
+  'websiteUrl',
 ]
 
 const belongsToAnimal = {

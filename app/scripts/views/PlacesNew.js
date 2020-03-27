@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { EsriProvider } from 'leaflet-geosearch'
 
 import { PlaceForm } from '../forms'
 import { cachedResource } from '../services/resources'
@@ -12,6 +13,7 @@ import { withConfig } from '../containers'
 
 const DEFAULT_MODE = 'address'
 const DEFAULT_SLOT_SIZE = 60 // in minutes
+const provider = new EsriProvider()
 
 class PlacesNew extends Component {
   static propTypes = {
@@ -23,7 +25,7 @@ class PlacesNew extends Component {
   }
 
   onSubmit(values) {
-    const { title, description, isPublic, images } = values
+    const { accessibilityInfo, capacity, title, description, isPublic, images } = values
     const { slotSize, slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
 
@@ -31,23 +33,34 @@ class PlacesNew extends Component {
       text: translate('flash.createPlaceSuccess'),
     }
 
-    const requestParams = {
-      ...values.location,
-      description,
-      disabledSlots,
-      images,
-      isPublic,
-      slotSize,
-      title,
-    }
+    const address = `${values.location.street}, ${values.location.cityCode}, ${values.location.city}`
 
-    this.props.createResource(
-      'places',
-      this.props.nextRandomId,
-      requestParams,
-      flash,
-      '/places'
-    )
+    provider
+      .search({ query: address })
+      .then(result => {
+        values.location.latitude = result[0].y
+        values.location.longitude = result[0].x
+
+        const requestParams = {
+          ...values.location,
+          accessibilityInfo,
+          capacity,
+          description,
+          disabledSlots,
+          images,
+          isPublic,
+          slotSize,
+          title,
+        }
+
+        this.props.createResource(
+          'places',
+          this.props.nextRandomId,
+          requestParams,
+          flash,
+          '/places'
+        )
+      })
   }
 
   render() {

@@ -31,7 +31,7 @@ export default {
     addressMode: 'Regular address',
     city: 'City',
     cityCode: 'City code',
-    clickMap: 'Click on the map to mark a position for your place.',
+    clickMap: 'Click on the map to change location.',
     country: 'Country',
     currentGpsPosition: 'Selected position (latitude and longitude)',
     gpsPositionMode: 'GPS position',

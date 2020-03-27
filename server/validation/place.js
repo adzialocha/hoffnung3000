@@ -3,6 +3,8 @@ import Joi from 'joi'
 export default {
   createPlace: {
     body: {
+      accessibilityInfo: Joi.string().required(),
+      capacity: Joi.string().required(),
       city: Joi.any().when('mode', { is: 'address', then: Joi.required() }),
       cityCode: Joi.any().when('mode', { is: 'address', then: Joi.required() }),
       country: Joi.any().when('mode', { is: 'address', then: Joi.required() }),
@@ -20,6 +22,7 @@ export default {
   },
   updatePlace: {
     body: {
+      capacity: Joi.string().required(),
       city: Joi.any().when('mode', { is: 'address', then: Joi.required() }),
       cityCode: Joi.any().when('mode', { is: 'address', then: Joi.required() }),
       country: Joi.any().when('mode', { is: 'address', then: Joi.required() }),

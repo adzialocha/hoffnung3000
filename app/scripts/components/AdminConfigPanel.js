@@ -28,14 +28,28 @@ class AdminConfigPanel extends Component {
     if (!Array.isArray(defaultTags)) {
       this.props.form.values.defaultTags = defaultTags.replace(/\s+/g, '').split(',')
     }
+    const values = this.props.form.values
+    const { defaultGPS } = values
+    const { latitude, longitude, zoom } = defaultGPS
+    values.defaultLatitude = latitude
+    values.defaultLongitude = longitude
+    values.defaultZoom = zoom
     this.props.saveConfiguration(this.props.form.values)
   }
 
   render() {
+    const config = this.props.config
+    const defaultGPS = {
+      latitude: config.defaultLatitude,
+      longitude: config.defaultLongitude,
+      zoom: config.defaultZoom,
+    }
+    config.defaultGPS = defaultGPS
+
     return (
       <AdminConfigForm
         errorMessage={this.props.errorMessage}
-        initialValues={ { ...this.props.config } }
+        initialValues={ { ...config } }
         isLoading={this.props.isLoading}
         onSubmit={this.onSave}
       />
