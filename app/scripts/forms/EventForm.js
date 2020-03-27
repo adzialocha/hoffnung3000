@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Fragment, Component } from 'react'
 import { DateTime } from 'luxon'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
@@ -121,7 +121,24 @@ class EventForm extends Component {
     )
   }
 
+  renderResourcesTitle() {
+    if (!this.props.config.isDerMarktEnabled) {
+      return null
+    }
+
+    return (
+      <Fragment>
+        <hr />
+        <h2>{ translate('forms.event.pickResources') }</h2>
+      </Fragment>
+    )
+  }
+
   renderResourcesSelector() {
+    if (!this.props.config.isDerMarktEnabled) {
+      return null
+    }
+
     const { place, selectedSlotsIndexes } = this.props.placeSlots
 
     if (!place || !place.id || selectedSlotsIndexes.length === 0) {
@@ -215,10 +232,8 @@ class EventForm extends Component {
 
         <hr />
 
-        <h2>{ translate('forms.event.pickResources') }</h2>
+        { this.renderResourcesTitle() }
         { this.renderResourcesSelector() }
-
-        <hr />
 
         <button
           className="form__submit button button--blue"

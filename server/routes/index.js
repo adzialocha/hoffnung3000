@@ -3,11 +3,12 @@ import expressValidation from 'express-validation'
 import httpStatus from 'http-status'
 import { EmptyResultError, ValidationError } from 'sequelize'
 
-import passport from '../services/passport'
 import { APIError } from '../helpers/errors'
 
+import checkConfig from '../middlewares/configs'
 import upload from '../middlewares/upload'
 import { onlyAdmin } from '../middlewares/roles'
+import { authorizeJWT } from '../middlewares/authorizeJWT'
 
 import activityController from '../controllers/activity'
 import eventPreviewController from '../controllers/eventPreview'
@@ -25,7 +26,6 @@ import placeRoutes from './place'
 import profileRoutes from './profile'
 import resourceRoutes from './resource'
 import userRoutes from './user'
-
 import logger from '../helpers/logger'
 
 const router = express.Router() // eslint-disable-line new-cap
@@ -45,28 +45,18 @@ router.route('/meta')
 router.route('/preview')
   .get(eventPreviewController.findAll)
 
-// Private API routes
-router.use('/*', (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, (err, user) => {
-    if (err) {
-      return next(err)
-    }
-    if (!user) {
-      return next(
-        new APIError('Unauthorized', httpStatus.UNAUTHORIZED)
-      )
-    }
-    req.user = user
-    return next()
-  })(req, res, next)
-})
+// Public API routes when festivalTicketPrice === 0
 
-router.use('/conversations', conversationRoutes)
 router.use('/events', eventRoutes)
-router.use('/meeting', meetingRoutes)
 router.use('/places', placeRoutes)
+
+// Private API routes
+router.use(authorizeJWT)
+
+router.use('/conversations', checkConfig('isInboxEnabled'), conversationRoutes)
+router.use('/meeting', checkConfig('isRandomMeetingEnabled'), meetingRoutes)
 router.use('/profile', profileRoutes)
-router.use('/resources', resourceRoutes)
+router.use('/resources', checkConfig('isDerMarktEnabled'), resourceRoutes)
 
 router.route('/status')
   .get(userStatusController.status)

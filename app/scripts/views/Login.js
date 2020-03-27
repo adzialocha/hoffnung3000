@@ -30,11 +30,6 @@ class Login extends Component {
         <hr />
         <ul className="inline-navigation inline-navigation--vertical">
           <li className="inline-navigation__item">
-            <Link to="/tickets">
-              { translate('views.login.registerAsVisitor') }
-            </Link>
-          </li>
-          <li className="inline-navigation__item">
             <Link to="/register">
               { translate('views.login.registerAsParticipant') }
             </Link>
