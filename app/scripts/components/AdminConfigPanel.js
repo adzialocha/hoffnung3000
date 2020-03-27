@@ -24,6 +24,10 @@ class AdminConfigPanel extends Component {
   }
 
   onSave() {
+    const defaultTags = this.props.form.values.defaultTags
+    if (!Array.isArray(defaultTags)) {
+      this.props.form.values.defaultTags = defaultTags.replace(/\s+/g, '').split(',')
+    }
     const values = this.props.form.values
     const { defaultGPS } = values
     const { latitude, longitude, zoom } = defaultGPS
