@@ -56,6 +56,7 @@ export function prepareResponse(data, req, isAnonymous) {
 
   // Convert markdown to html
   response.descriptionHtml = marked(response.description)
+  if (response.additionalInfo) { response.additionalInfoHtml = marked(response.additionalInfo) }
 
   return response
 }
