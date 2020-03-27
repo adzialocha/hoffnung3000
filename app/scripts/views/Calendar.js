@@ -3,8 +3,9 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
+import { DateTime } from 'luxon'
 
-import { CuratedEventListItem, StaticPage } from '../components'
+import { CalendarMap, CuratedEventListItem, StaticPage } from '../components'
 import { asInfiniteListCalendar } from '../containers'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
@@ -19,6 +20,11 @@ class Calendar extends Component {
     isAuthenticated: PropTypes.bool.isRequired,
     isParticipant: PropTypes.bool.isRequired,
     push: PropTypes.func.isRequired,
+    resourceListItems: PropTypes.array.isRequired,
+  }
+
+  static defaultProps = {
+    resourceListItems: [],
   }
 
   onClick(item) {
@@ -75,6 +81,67 @@ class Calendar extends Component {
     return <StaticPage hideTitle={true} slug="calendar" />
   }
 
+  renderMap() {
+    if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0) {
+      return null
+    }
+
+    const allEvents = this.props.resourceListItems
+    let uniqueVenues = []
+
+    if (allEvents.length === 0) {
+      return null
+    }
+
+    uniqueVenues = allEvents
+      .map(event => event.placeId)
+      .map((event, index, final) => final.indexOf(event) === index && index)
+      .filter(event => allEvents[event]).map(event => allEvents[event].place)
+      .filter(place => place.mode !== 'virtual')
+
+    const mapVenuePlots = uniqueVenues.map(venue => {
+      const venueEvents = allEvents.reduce((result, event) => {
+        if (venue.id === event.placeId) {
+          const time = DateTime.fromISO(event.slots[0].from).toFormat('T DDDD')
+          result.push({
+            title: event.title,
+            time: time,
+            imageUrl: event.images.length > 0 ? event.images[0].smallImageUrl : null,
+            slug: event.slug,
+          })
+        }
+        return result
+      }, [])
+
+      return {
+        city: venue.city,
+        cityCode: venue.cityCode,
+        country: venue.country,
+        key: venue.id,
+        latitude: venue.latitude,
+        longitude: venue.longitude,
+        mode: venue.mode,
+        street: venue.street,
+        place: venue.title,
+        events: venueEvents,
+      }
+    })
+    return (
+      <div>
+        <CalendarMap
+          defaultZoom={this.props.config.defaultZoom}
+          initialCenter={
+            {
+              lat: this.props.config.defaultLatitude,
+              lng: this.props.config.defaultLongitude,
+            }
+          }
+          plots={mapVenuePlots}
+        />
+      </div>
+    )
+  }
+
   render() {
     return (
       <section>
@@ -82,6 +149,7 @@ class Calendar extends Component {
         { this.renderText() }
         { this.renderCreateButton() }
         <hr />
+        { this.renderMap() }
         { this.renderItemsList() }
       </section>
     )
@@ -101,6 +169,7 @@ function mapStateToProps(state) {
     ...state.auth,
     ...state.user,
     ...state.meta,
+    ...state.resourceList,
   }
 }
 

@@ -3,23 +3,25 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker } from 'react-leaflet'
 
-const DEFAULT_ZOOM = 13
-
 const markerIcon = new L.Icon.Default({
   imagePath: '/static/',
 })
 
 class LocationMap extends Component {
   static propTypes = {
+    defaultZoom: PropTypes.number,
     initialCenter: PropTypes.shape({
       lat: PropTypes.number.isRequired,
       lng: PropTypes.number.isRequired,
     }).isRequired,
     onClick: PropTypes.func,
+    onZoom: PropTypes.func,
   }
 
   static defaultProps = {
+    defaultZoom: 13,
     onClick: undefined,
+    onZoom: undefined,
   }
 
   onClick(event) {
@@ -42,12 +44,6 @@ class LocationMap extends Component {
     })
   }
 
-  onZoom(event) {
-    this.setState({
-      zoom: event.target._zoom,
-    })
-  }
-
   render() {
     return (
       <Map
@@ -56,9 +52,9 @@ class LocationMap extends Component {
         doubleClickZoom={false}
         keyboard={false}
         scrollWheelZoom={false}
-        zoom={this.state.zoom}
+        zoom={this.props.defaultZoom}
         onClick={this.onClick}
-        onZoom={this.onZoom}
+        onZoom={this.props.onZoom}
       >
         <TileLayer
           attribution='&amp;copy <a target="_blank" href="https://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -80,11 +76,9 @@ class LocationMap extends Component {
         lat,
         lng,
       },
-      zoom: DEFAULT_ZOOM,
     }
 
     this.onClick = this.onClick.bind(this)
-    this.onZoom = this.onZoom.bind(this)
   }
 }
 

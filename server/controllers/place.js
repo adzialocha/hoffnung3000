@@ -94,6 +94,12 @@ function preparePlaceValues(body) {
     isPublic,
     mode,
     title,
+    street,
+    cityCode,
+    city,
+    country,
+    latitude,
+    longitude,
   } = body
 
   const values = {
@@ -104,16 +110,12 @@ function preparePlaceValues(body) {
     isPublic,
     mode,
     title,
-  }
-
-  if (mode === 'address') {
-    values.street = body.street
-    values.cityCode = body.cityCode
-    values.city = body.city
-    values.country = body.country
-  } else if (mode === 'gps') {
-    values.latitude = body.latitude
-    values.longitude = body.longitude
+    street,
+    cityCode,
+    city,
+    country,
+    latitude,
+    longitude,
   }
 
   if (body.slotSize) {
