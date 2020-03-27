@@ -33,10 +33,6 @@ const validate = values => {
 
   if (!values.accessibilityInfo) {
     errors.accessibilityInfo = translate('forms.place.errors.accessibilityInfoRequired')
-  } else if (values.accessibilityInfo.length < 8) {
-    errors.accessibilityInfo = translate(
-      'forms.place.errors.accessibilityInfoLength', { len: 8 }
-    )
   }
 
   if (!values.capacity) {
