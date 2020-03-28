@@ -69,7 +69,7 @@ class StaticPage extends Component {
 
   render() {
     return (
-      <div className="page">
+      <div className={`${this.props.slug} page`}>
         { this.renderPageContent() }
       </div>
     )
