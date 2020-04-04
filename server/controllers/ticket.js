@@ -9,15 +9,11 @@ import { sendAdminRegistrationNotification } from '../helpers/mailTemplate'
 import { translate } from '../../common/services/i18n'
 
 const permittedFields = [
-  'city',
-  'cityCode',
-  'country',
   'email',
   'firstname',
   'lastname',
   'password',
   'paymentMethod',
-  'street',
 ]
 
 function signup(req, res, next) {
