@@ -89,6 +89,7 @@ class Calendar extends Component {
 
     const allEvents = this.props.resourceListItems
     let uniqueVenues = []
+    let virtualVenues = []
 
     if (allEvents.length === 0) {
       return null
@@ -99,6 +100,12 @@ class Calendar extends Component {
       .map((event, index, final) => final.indexOf(event) === index && index)
       .filter(event => allEvents[event]).map(event => allEvents[event].place)
       .filter(place => place.mode !== 'virtual')
+
+    virtualVenues = allEvents
+      .map(event => event.placeId)
+      .map((event, index, final) => final.indexOf(event) === index && index)
+      .filter(event => allEvents[event]).map(event => allEvents[event].place)
+      .filter(place => place.mode === 'virtual')
 
     const mapVenuePlots = uniqueVenues.map(venue => {
       const venueEvents = allEvents.reduce((result, event) => {
@@ -127,6 +134,27 @@ class Calendar extends Component {
         events: venueEvents,
       }
     })
+
+    let virtualEvents = virtualVenues.map(venue => {
+      const venueEvents = allEvents.reduce((result, event) => {
+        if (venue.id === event.placeId) {
+          const time = DateTime.fromISO(event.slots[0].from).toFormat('T DDDD')
+          result.push({
+            title: event.title,
+            time: time,
+            imageUrl: event.images.length > 0 ? event.images[0].smallImageUrl : null,
+            slug: event.slug,
+            place: venue.title,
+          })
+        }
+        return result
+      }, [])
+
+      return venueEvents
+    })
+
+    virtualEvents = [].concat.apply([], virtualEvents)
+
     return (
       <div>
         <CalendarMap
@@ -138,6 +166,7 @@ class Calendar extends Component {
             }
           }
           plots={mapVenuePlots}
+          virtualEvents={virtualEvents}
         />
       </div>
     )

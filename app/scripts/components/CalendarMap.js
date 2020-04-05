@@ -11,6 +11,11 @@ const markerIcon = new L.Icon.Default({
   imagePath: '/static/',
 })
 
+const customMarker = new L.Icon({
+  iconUrl: '/static/virtualeventslogo.png',
+  iconSize: [40, 40],
+})
+
 class CalendarMap extends Component {
   static propTypes = {
     defaultZoom: PropTypes.number.isRequired,
@@ -18,14 +23,14 @@ class CalendarMap extends Component {
       lat: PropTypes.number.isRequired,
       lng: PropTypes.number.isRequired,
     }).isRequired,
-    onClick: PropTypes.func,
     plots: PropTypes.array,
     push: PropTypes.func.isRequired,
+    virtualEvents: PropTypes.array,
   }
 
   static defaultProps = {
-    onClick: undefined,
     plots: null,
+    virtualEvents: null,
   }
 
   onPopupClick(slug) {
@@ -33,16 +38,7 @@ class CalendarMap extends Component {
   }
 
   onClick(event) {
-    if (!this.props.onClick) {
-      return
-    }
-
     const { lat, lng } = event.latlng
-
-    this.props.onClick({
-      latitude: lat,
-      longitude: lng,
-    })
 
     this.setState({
       position: {
@@ -104,16 +100,19 @@ class CalendarMap extends Component {
 
     return (
       <Map
-        center={this.props.initialCenter}
+        center={this.state.position}
         className="location-map"
         doubleClickZoom={false}
         keyboard={false}
-        scrollWheelZoom={false}
-        zoom={this.props.defaultZoom}
+        scrollWheelZoom={true}
+        zoom={this.state.zoom}
         onClick={this.onClick}
         onZoom={this.onZoom}
       >
         <VenueMapTileLayer />
+        <Marker icon={customMarker} position={this.state.position}>
+          <EventListPopup events={this.props.virtualEvents} place={'VIRTUAL REALITY'} onPopupClick={this.onPopupClick} />
+        </Marker>
         <VenueMarkers markers={this.props.plots} />
       </Map>
     )
