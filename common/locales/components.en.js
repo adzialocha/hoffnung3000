@@ -57,7 +57,7 @@ export default {
     profileButton: 'Profile',
     randomMeetingDescription: 'Randomly meet other participants at a random place today',
     randomMeetingTitle: 'Random meetings',
-    signUpButton: 'Register as participant',
+    signUpButton: 'Register as organiser',
     signUpHeader: 'We invite all activists, artists, theoreticians, performers, musicians, hackers and everyone else to register.',
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
