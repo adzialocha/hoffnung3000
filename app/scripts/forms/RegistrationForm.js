@@ -139,7 +139,7 @@ class RegistrationForm extends Component {
           disabled={this.props.isLoading}
           type="submit"
         >
-          { translate('forms.auth.nextStepButton') }
+          { translate('components.common.freeCheckout') }
         </button>
       </form>
     )
