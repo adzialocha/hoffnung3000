@@ -104,8 +104,8 @@ class CalendarMap extends Component {
         className="location-map"
         doubleClickZoom={false}
         keyboard={false}
-        scrollWheelZoom={false}
-        zoom={this.props.defaultZoom}
+        scrollWheelZoom={true}
+        zoom={this.state.zoom}
         onClick={this.onClick}
         onZoom={this.onZoom}
       >
