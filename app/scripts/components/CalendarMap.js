@@ -12,7 +12,7 @@ const markerIcon = new L.Icon.Default({
 })
 
 const customMarker = new L.Icon({
-  iconUrl: '../../../static/virtualeventslogo.png',
+  iconUrl: '/static/virtualeventslogo.png',
   iconSize: [40, 40],
 })
 
