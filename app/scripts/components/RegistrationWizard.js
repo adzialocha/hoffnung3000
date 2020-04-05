@@ -10,7 +10,7 @@ import { register } from '../actions/auth'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
-const totalSteps = 3
+const totalSteps = 2
 
 const videoOptions = {
   playerVars: {
