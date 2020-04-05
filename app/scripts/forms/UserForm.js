@@ -95,35 +95,6 @@ class UserForm extends Component {
         { this.renderPasswordField() }
         <hr />
         <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label="Street and number"
-          name="street"
-          type="text"
-        />
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label="City code"
-          name="cityCode"
-          type="text"
-        />
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label="City"
-          name="city"
-          type="text"
-        />
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label="Country"
-          name="country"
-          type="text"
-        />
-        <hr />
-        <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
           inline={true}

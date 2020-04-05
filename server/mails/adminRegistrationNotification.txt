@@ -4,10 +4,6 @@ Firstname: ${user.firstname}
 Lastname: ${user.lastname}
 Email: ${user.email}
 
-Payment product: ${product.name} - ${product.description}
-Payment price: ${product.price} €
-Payment method: ${paymentMethod}
-
 <3
 
 ${config.title} BOT

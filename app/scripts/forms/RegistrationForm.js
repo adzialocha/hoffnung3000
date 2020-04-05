@@ -40,22 +40,6 @@ const validate = values => {
     errors.passwordRepeat = translate('forms.auth.errors.passwordMatch')
   }
 
-  if (!values.street) {
-    errors.street = translate('forms.auth.errors.streetRequired')
-  }
-
-  if (!values.cityCode) {
-    errors.cityCode = translate('forms.auth.errors.cityCodeRequired')
-  }
-
-  if (!values.city) {
-    errors.city = translate('forms.auth.errors.cityRequired')
-  }
-
-  if (!values.country) {
-    errors.country = translate('forms.auth.errors.countryRequired')
-  }
-
   if (!values.phone) {
     errors.phone = translate('forms.auth.errors.phoneRequired')
   }
@@ -146,42 +130,6 @@ class RegistrationForm extends Component {
           label={translate('forms.auth.passwordRepeat')}
           name="passwordRepeat"
           type="password"
-        />
-
-        <hr />
-
-        <h2>{ translate('forms.auth.yourAddress') }</h2>
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.auth.streetAndNumber')}
-          name="street"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.auth.cityCode')}
-          name="cityCode"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.auth.city')}
-          name="city"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.auth.country')}
-          name="country"
-          type="text"
         />
 
         <hr />
