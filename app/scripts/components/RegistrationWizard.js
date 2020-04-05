@@ -218,7 +218,7 @@ class RegistrationWizard extends Component {
         <RegistrationForm
           errorMessage={this.props.errorMessage}
           isLoading={this.props.isLoading}
-          onSubmit={this.nextStep}
+          onSubmit={this.onFreeCheckout}
         />
       </div>
     )
