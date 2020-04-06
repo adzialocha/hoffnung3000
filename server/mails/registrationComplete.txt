@@ -8,7 +8,7 @@ While the co-organisers at Antiuni HQ help administrate the platform, it’s the
 
 Anyone can host an Antiuniversity event. You don’t have to be an expert on the subject you want to share and we don’t ask for any proof of education or experience. We appreciate that people learn in different ways and we respect them all.
 
-This year we are running two festivals, Antiuniversity May Day Fest(May)  and our usual Antiuniversity Festival (June). 
+This year we are running two festivals, Antiuniversity May Day Fest (May) and our usual Antiuniversity Festival (June). 
 
 Antiuniversity May Day Fest is a mini festival in a new, experimental format. During a time of social distancing, we invite Antiuni organisers and guests to find new radical ways to come together and re-politicise our present. 
 
@@ -21,33 +21,8 @@ The programme will go live on the 26th April.
 
 Our new registration system will simplify the registration process and spread the work of organising a festival across all participants. You will now be able to upload your event directly and instantaneously to the Antiuni website. No more boring admin emails!
 
-Brief event set-up guide: 
-
-EVENT VENUE
-
-Do you already have a venue arranged for your event?
-
-Yes:  If you already have a venue then before creating an event you need to register it. Go to the *PLACES* tab, on the left hand sidebar, and click *CREATE PLACE*. Fill in all place details. You will be given the choice to make “slots” available, these are the times where the place is available for events to happen. Make the slot times for your event available, any other free slots can be made available for other people to book. If your venue is virtual then you may want to still register it in the same way, or use one of the pre-registered Antiuni spaces for web conference events.
-
-No: Go to the next step.
-
-CREATE EVENT
-
-Click on the CALENDAR tab and then click on CREATE EVENT. 
-
-Fill the different fields in. Select a place amongst the ones already registered on the website. You can then select a time slot (yours will turn green, red fields are already taken).
-
-And save! It will instantly be visible on the calendar if you tick the ‘public’ box.
-
-(Make sure all fields are filled)
-
-EDIT EVENT
-
-When you are logged-in you can always edit your event if you have made a mistake or something has changed. Remember not to edit too much or too close to the date. The changes might not reach the participants, or confuse them.
-
 Follow this link for an in-depth event set-up [GUIDE].
 When organising an event, there are many things to think about. 
-
 Follow this link for some more information on how the anituniversity [WORKS].
 Thanks for registering!
 
