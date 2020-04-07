@@ -14,6 +14,12 @@ class Footer extends Component {
             </NavLink>
           </li>
 
+          <li className="inline-navigation__item inline-navigation__programme">
+            <NavLink to="/pages/calendar">
+              { translate('components.footer.programme') }
+            </NavLink>
+          </li>
+
           <li className="inline-navigation__item">
             <NavLink to="/pages/about">
               { translate('components.footer.about') }
@@ -21,20 +27,14 @@ class Footer extends Component {
           </li>
 
           <li className="inline-navigation__item">
-            <NavLink to="/pages/information">
-              { translate('components.footer.information') }
+            <NavLink to="/pages/resources-info">
+              { translate('components.footer.resources') }
             </NavLink>
           </li>
 
           <li className="inline-navigation__item">
             <NavLink to="/pages/contact">
               { translate('components.footer.contact') }
-            </NavLink>
-          </li>
-
-          <li className="inline-navigation__item">
-            <NavLink to="/pages/imprint">
-              { translate('components.footer.imprint') }
             </NavLink>
           </li>
         </ul>
