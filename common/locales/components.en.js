@@ -11,7 +11,7 @@ export default {
   navigationLinks: {
     about: 'About',
     admin: 'Admin',
-    calendar: 'Calendar',
+    calendar: 'Programme',
     contact: 'Contact',
     home: 'Home',
     information: 'Information',
