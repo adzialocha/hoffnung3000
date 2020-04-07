@@ -166,7 +166,7 @@ export default {
     about: 'About',
     contact: 'Contact',
     home: 'Home',
-    imprint: 'Imprint',
-    information: 'Information',
+    programme: 'Programme',
+    resources: 'Resources',
   },
 }
