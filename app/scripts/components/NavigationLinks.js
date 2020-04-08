@@ -13,7 +13,6 @@ const PRIMARY_NAVIGATION = [
 ]
 
 const SECONDARY_NAVIGATION = [
-  { localeKey: 'information', url: '/pages/information' },
   { localeKey: 'contact', url: '/pages/contact' },
 ]
 
