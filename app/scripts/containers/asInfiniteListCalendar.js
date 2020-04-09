@@ -16,6 +16,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       listItems: PropTypes.array,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
+      placeIdFilter: PropTypes.number,
       resourceName: PropTypes.string.isRequired,
       totalPageCount: PropTypes.number,
     }
@@ -26,6 +27,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       listItems: [],
       onClick: undefined,
       onEditClick: undefined,
+      placeIdFilter: undefined,
       totalPageCount: undefined,
     }
 
@@ -61,6 +63,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
         <WrappedListItemComponent
           className="list-item--half"
           item={item}
+          placeIdFilter={this.props.placeIdFilter}
           onClick={this.props.onClick}
           onEditClick={this.props.onEditClick}
         />
@@ -87,7 +90,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     }
 
     renderListItems() {
-      const { listItems } = this.props
+      const { listItems, placeIdFilter } = this.props
 
       if (!this.props.isLoading && listItems.length === 0) {
         return (
@@ -98,6 +101,12 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       }
 
       return listItems.map((item, index) => {
+        if ( placeIdFilter !== undefined ) {
+          if ( placeIdFilter !== item.placeId ) {
+            return null
+          }
+        }
+
         const previousItem = index > 0 ? listItems[index - 1] : null
 
         const dateA = DateTime.fromISO(item.slots[0].from)
@@ -159,6 +168,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
   function mapStateToProps(state, props) {
     return {
       ...state.infiniteList[props.resourceName],
+      ...state.infiniteList[props.placeIdFilter],
     }
   }
 

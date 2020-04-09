@@ -23,6 +23,7 @@ export default {
   places: {
     createNewButton: 'Create place',
     createNewTitle: 'Create new place',
+    eventsHeader: 'Events at this place',
     indexTitle: 'Places',
     isPrivatePlace: 'This place is not visible to the audience',
     locationHeader: 'Location',
