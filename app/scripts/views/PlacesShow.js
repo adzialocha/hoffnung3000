@@ -2,42 +2,24 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { push } from 'connected-react-router'
 
-import { asInfiniteListCalendar } from '../containers'
-import { CuratedEventListItem } from '../components'
 import { LocationMap, ImageGallery, AnimalLink } from '../components'
 import { cachedResource } from '../services/resources'
 import { fetchResource } from '../actions/resources'
 import { numberToSlotSizeStrHuman } from '../../../common/utils/slots'
 import { translate } from '../../../common/services/i18n'
 
-const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
-
 class PlacesShow extends Component {
   static propTypes = {
     fetchResource: PropTypes.func.isRequired,
     isError: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    push: PropTypes.func.isRequired,
     resourceData: PropTypes.object.isRequired,
     resourceSlug: PropTypes.string.isRequired,
   }
 
   componentWillMount() {
     this.props.fetchResource('places', this.props.resourceSlug)
-  }
-
-  onClick(item) {
-    this.props.push(`/events/${item.slug}`)
-  }
-
-  onEditClick(item) {
-    this.props.push(`/events/${item.slug}/edit`)
-  }
-
-  onPreviewClick() {
-    this.props.push('/tickets')
   }
 
   renderActionButton() {
@@ -162,19 +144,6 @@ class PlacesShow extends Component {
     )
   }
 
-  renderEventList() {
-    return (
-      <div><h1>{ translate('views.places.eventsHeader') }</h1>
-        <WrappedInfiniteList
-          placeIdFilter={this.props.resourceData.id}
-          resourceName="events"
-          onClick={this.onClick}
-          onEditClick={this.onEditClick}
-        />
-      </div>
-    )
-  }
-
   renderContent() {
     if (this.props.isLoading) {
       return <p>{ translate('common.loading') }</p>
@@ -218,16 +187,12 @@ class PlacesShow extends Component {
         { this.renderActionButton() }
         <hr />
         { this.renderContent() }
-        { this.renderEventList() }
       </section>
     )
   }
 
   constructor(props) {
     super(props)
-
-    this.onClick = this.onClick.bind(this)
-    this.onEditClick = this.onEditClick.bind(this)
   }
 }
 
@@ -247,6 +212,5 @@ function mapStateToProps(state, ownProps) {
 export default connect(
   mapStateToProps, {
     fetchResource,
-    push,
   }
 )(PlacesShow)
