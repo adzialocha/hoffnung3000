@@ -21,6 +21,8 @@ export default {
     title: 'All activities',
   },
   places: {
+    accessibilityInfoHeader: 'Accessibility Information',
+    capacityHeader: 'Capacity',
     createNewButton: 'Create place',
     createNewTitle: 'Create new place',
     eventsHeader: 'Events at this place',
@@ -43,6 +45,7 @@ export default {
     createNewTitle: 'Create new event',
     isPrivateEvent: 'This event is not visible to the audience',
     loadMoreEvents: 'Load more events',
+    tagSelectorTitle: 'Filter by event tags',
     titlePlaceholder: 'Event',
   },
   inbox: {

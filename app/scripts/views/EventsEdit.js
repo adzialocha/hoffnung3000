@@ -45,8 +45,11 @@ class EventsEdit extends Component {
     const updateFlash = {
       text: translate('flash.updateEventSuccess'),
     }
+    const { tags, title, description, isPublic, images, additionalInfo  } = values
+    let { ticketUrl, websiteUrl } = values
 
-    const { title, description, isPublic, images } = values
+    if (websiteUrl === 'https://') {websiteUrl = ''}
+    if (ticketUrl === 'https://') {ticketUrl = ''}
 
     const requestParams = {
       description,
@@ -55,7 +58,11 @@ class EventsEdit extends Component {
       placeId: values.placeSlots.place.id,
       resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
+      tags,
+      additionalInfo,
+      ticketUrl,
       title,
+      websiteUrl,
     }
 
     this.props.updateResource(
@@ -90,6 +97,7 @@ class EventsEdit extends Component {
     }
 
     const {
+      additionalInfo,
       description,
       id,
       images,
@@ -97,8 +105,17 @@ class EventsEdit extends Component {
       place,
       resources,
       slots,
+      tags,
       title,
     } = this.props.resourceData
+
+    let {
+      ticketUrl,
+      websiteUrl,
+    } = this.props.resourceData
+
+    if (websiteUrl === '') {websiteUrl = 'https://'}
+    if (ticketUrl === '') {ticketUrl = 'https://'}
 
     const selectedSlotsIndexes = slots.map(slot => slot.slotIndex)
     selectedSlotsIndexes.sort((slotA, slotB) => slotA - slotB)
@@ -112,7 +129,11 @@ class EventsEdit extends Component {
         place,
         selectedSlotsIndexes,
       },
+      tags,
+      additionalInfo,
+      ticketUrl,
       title,
+      websiteUrl,
     }
 
     return (

@@ -175,6 +175,28 @@ class PlacesShow extends Component {
     )
   }
 
+  renderAccessibilityInfo() {
+    return (
+      <div>
+        <strong>
+          { translate('views.places.accessibilityInfoHeader') }
+        </strong>
+        <p>{ this.props.resourceData.accessibilityInfo }</p>
+      </div>
+    )
+  }
+
+  renderCapacity() {
+    return (
+      <div>
+        <strong>
+          { translate('views.places.capacityHeader') }
+        </strong>
+        <p>{ this.props.resourceData.capacity }</p>
+      </div>
+    )
+  }
+
   renderContent() {
     if (this.props.isLoading) {
       return <p>{ translate('common.loading') }</p>
@@ -188,6 +210,8 @@ class PlacesShow extends Component {
         { this.renderImageGallery() }
         <hr />
         { this.renderAddress() }
+        { this.renderAccessibilityInfo() }
+        { this.renderCapacity() }
         <hr />
         { this.renderSlotSize() }
         <hr />

@@ -7,15 +7,21 @@ class FormTextarea extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
+    placeholder: PropTypes.string,
+  }
+
+  static defaultProps = {
+    placeholder: '',
   }
 
   render() {
-    const { disabled, input } = this.props
+    const { disabled, input, placeholder } = this.props
 
     return (
       <textarea
         className="form__field-input"
         disabled={disabled}
+        placeholder={placeholder}
         {...input}
       />
     )

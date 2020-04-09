@@ -2,16 +2,18 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { EsriProvider } from 'leaflet-geosearch'
 
 import { PlaceForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
-import { getDisabledSlotIndexes, generateNewSlotItems } from '../../../common/utils/slots'
+import { getDisabledSlotIndexes, generateNewDisabledSlotItems, generateNewSlotItems } from '../../../common/utils/slots'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
 const DEFAULT_MODE = 'address'
 const DEFAULT_SLOT_SIZE = 60 // in minutes
+const provider = new EsriProvider()
 
 class PlacesNew extends Component {
   static propTypes = {
@@ -22,8 +24,47 @@ class PlacesNew extends Component {
     nextRandomId: PropTypes.string.isRequired,
   }
 
+  componentWillMount() {
+    const { config } = this.props
+    const { festivalDateStart, festivalDateEnd } = config
+
+    const slots = generateNewSlotItems(DEFAULT_SLOT_SIZE, [], festivalDateStart, festivalDateEnd)
+
+    this.setState({
+      generatedSlots: {
+        slots: slots,
+        disableSlots: false,
+      },
+    })
+  }
+
+  onDisableSlotsChange(event) {
+    const { config } = this.props
+    const { festivalDateStart, festivalDateEnd } = config
+    let slots = null
+    let disableSlots = false
+
+    if (event) {
+      slots = generateNewDisabledSlotItems(
+        DEFAULT_SLOT_SIZE, festivalDateStart, festivalDateEnd
+      )
+      disableSlots = true
+    } else {
+      slots = generateNewSlotItems(
+        DEFAULT_SLOT_SIZE, [], festivalDateStart, festivalDateEnd
+      )
+      disableSlots = false
+    }
+    this.setState({
+      generatedSlots: {
+        slots: slots,
+        disableSlots: disableSlots,
+      },
+    })
+  }
+
   onSubmit(values) {
-    const { title, description, isPublic, images } = values
+    const { accessibilityInfo, capacity, title, description, isPublic, images } = values
     const { slotSize, slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
 
@@ -31,32 +72,38 @@ class PlacesNew extends Component {
       text: translate('flash.createPlaceSuccess'),
     }
 
-    const requestParams = {
-      ...values.location,
-      description,
-      disabledSlots,
-      images,
-      isPublic,
-      slotSize,
-      title,
-    }
+    const address = `${values.location.street}, ${values.location.cityCode}, ${values.location.city}`
 
-    this.props.createResource(
-      'places',
-      this.props.nextRandomId,
-      requestParams,
-      flash,
-      '/places'
-    )
+    provider
+      .search({ query: address })
+      .then(result => {
+        values.location.latitude = result[0].y
+        values.location.longitude = result[0].x
+
+        const requestParams = {
+          ...values.location,
+          accessibilityInfo,
+          capacity,
+          description,
+          disabledSlots,
+          images,
+          isPublic,
+          slotSize,
+          title,
+        }
+
+        this.props.createResource(
+          'places',
+          this.props.nextRandomId,
+          requestParams,
+          flash,
+          '/places'
+        )
+      })
   }
 
   render() {
     const { config } = this.props
-    const { festivalDateStart, festivalDateEnd } = config
-
-    const slots = generateNewSlotItems(
-      DEFAULT_SLOT_SIZE, null, festivalDateStart, festivalDateEnd
-    )
 
     const initialValues = {
       isPublic: true,
@@ -71,8 +118,9 @@ class PlacesNew extends Component {
       },
       slots: {
         slotSize: DEFAULT_SLOT_SIZE,
-        slots,
+        slots: this.state.generatedSlots.slots,
       },
+      areSlotsDisabled: this.state.generatedSlots.disableSlots,
     }
 
     return (
@@ -89,6 +137,7 @@ class PlacesNew extends Component {
           errorMessage={this.props.errorMessage}
           initialValues={initialValues}
           isLoading={this.props.isLoading}
+          onDisableSlotsChange={this.onDisableSlotsChange}
           onSubmit={this.onSubmit}
         />
       </section>
@@ -99,6 +148,7 @@ class PlacesNew extends Component {
     super(props)
 
     this.onSubmit = this.onSubmit.bind(this)
+    this.onDisableSlotsChange = this.onDisableSlotsChange.bind(this)
   }
 }
 

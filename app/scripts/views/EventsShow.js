@@ -64,6 +64,43 @@ class EventsShow extends Component {
     )
   }
 
+  renderTicketUrl() {
+    return (
+      <div>
+        <p>
+          <a href={this.props.resourceData.ticketUrl}>
+            {this.props.resourceData.ticketUrl}
+          </a>
+        </p>
+      </div>
+    )
+  }
+
+  renderWebsiteUrl() {
+    return (
+      <div>
+        <p>
+          <a href={this.props.resourceData.websiteUrl}>
+            {this.props.resourceData.websiteUrl}
+          </a>
+        </p>
+      </div>
+    )
+  }
+
+  renderAdditionalInfo() {
+    return (
+      <div>
+        <div
+          className="markdown"
+          dangerouslySetInnerHTML={ {
+            __html: this.props.resourceData.additionalInfoHtml,
+          } }
+        />
+      </div>
+    )
+  }
+
   renderOwner() {
     if (this.props.isVisitor && this.props.isActive) {
       return null
@@ -203,7 +240,9 @@ class EventsShow extends Component {
 
         { this.renderDescription() }
         { this.renderImageGallery() }
-        <hr />
+        { this.renderTicketUrl() }
+        { this.renderWebsiteUrl() }
+        { this.renderAdditionalInfo() }
       </div>
     )
   }

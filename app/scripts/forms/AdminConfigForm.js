@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormInput, FormCheckbox } from '../components'
+import { FormInput, FormCheckbox, FormLocationMap } from '../components'
 
 import { translate } from '../../../common/services/i18n'
 
@@ -119,6 +119,14 @@ class AdminConfigForm extends Component {
           type="text"
         />
 
+        <Field
+          component={FormInput}
+          disabled={this.props.isLoading}
+          label={translate('forms.config.defaultTags')}
+          name="defaultTags"
+          type="text"
+        />
+
         <hr />
 
         <h2>{ translate('forms.config.mails') }</h2>
@@ -166,19 +174,10 @@ class AdminConfigForm extends Component {
         />
 
         <Field
-          component={FormInput}
+          component={FormLocationMap}
           disabled={this.props.isLoading}
-          label={translate('forms.config.defaultLatitude')}
-          name="defaultLatitude"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.config.defaultLongitude')}
-          name="defaultLongitude"
-          type="text"
+          label={translate('forms.config.defaultFestivalGPS')}
+          name="defaultGPS"
         />
 
         <hr />
@@ -371,10 +370,12 @@ class AdminConfigForm extends Component {
   }
 }
 
-export default reduxForm({
+AdminConfigForm = reduxForm({
   // destroyOnUnmount: false,
   enableReinitialize: true,
   // forceUnregisterOnUnmount: true,
   form: 'config',
   validate,
 })(AdminConfigForm)
+
+export default AdminConfigForm
