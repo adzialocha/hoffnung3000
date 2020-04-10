@@ -37,7 +37,7 @@ export default {
     indexTitle: 'Der Markt',
   },
   events: {
-    calendarTitle: 'Calendar',
+    calendarTitle: 'Programme',
     createNewButton: 'Create event',
     createNewTitle: 'Create new event',
     isPrivateEvent: 'This event is not visible to the audience',
