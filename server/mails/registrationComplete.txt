@@ -4,28 +4,35 @@ Welcome to ${config.title}.
 
 Thanks for signing up. You are now officially registered! 
 
-While the co-organisers at Antiuni HQ help administrate the platform, it’s the events’ organisers who make the Antiuniversity what it is. The idea is that all of us - organisers, hosts and guests - work collaboratively to create and share new forms of knowledge and develop new skills.
+While the co-organisers at Antiuni HQ help administrate the festival, it’s the events’ organisers who make the Antiuniversity what it is. The idea is that all of us - organisers, hosts and guests - work collaboratively to create and share new forms of knowledge and develop new skills.
 
 Anyone can host an Antiuniversity event. You don’t have to be an expert on the subject you want to share and we don’t ask for any proof of education or experience. We appreciate that people learn in different ways and we respect them all.
 
-This year we are running two festivals, Antiuniversity May Day Fest (May) and our usual Antiuniversity Festival (June). 
+This year we are running two festivals, Antiuniversity May Day Fest (May 1 to 3) and our usual Antiuniversity Festival (June 6 to 13). 
 
 Antiuniversity May Day Fest is a mini festival in a new, experimental format. During a time of social distancing, we invite Antiuni organisers and guests to find new radical ways to come together and re-politicise our present. 
 
-There is no application process - all events are included as long as they follow the Antiuni principles outlined here (in short - cause no harm)
+The summer fest will cover all your usual educating, agitating and organising themes - everyone is welcome to submit an event on any subject. 
 
-Registration for both of these festivals (may/june) will open on 12 April. 
+There is no application process - all events are included as long as they follow the Antiuni principles outlined here http://www.antiuniversity.org/ABOUT (in short - cause no harm)
 
-You may have a fully formed idea, with a platform and a specific audience in mind, or you might want to discuss your ideas with us. We will be holding facilitation sessions on Zoom, on Friday 17 April at 7pm or Saturday 18 April at 2pm
-The programme will go live on the 26th April.
+Registration for both of these festivals (May/June) opens on 12 April and the programme will go live on the 26th April. Registration for the June festival will close on 9 May.
+
+You may have a fully formed idea, with a platform and a specific audience in mind, or you might want to discuss your ideas with us. We will be holding facilitation sessions on Zoom, on Friday 17 April at 7pm https://zoom.us/meeting/register/tZEvc-6rrjwsigNnzCL6umh8WcCz2qev-A or Saturday 18 April at 2pm https://zoom.us/meeting/register/uZcpduCsrD8vWHXr9bKITylVE72d2zBlvA
 
 Our new registration system will simplify the registration process and spread the work of organising a festival across all participants. You will now be able to upload your event directly and instantaneously to the Antiuni website. No more boring admin emails!
 
-Follow this link for an in-depth event set-up [GUIDE].
-When organising an event, there are many things to think about. 
-Follow this link for some more information on how the anituniversity [WORKS].
+Follow this link for an in-depth event set-up guide: 
+
+https://2020.antiuniversity.org/pages/registration-how-to
+
+When organising an event, there are many things to think about, follow this link for some more information on how the anituniversity works: 
+
+https://2020.antiuniversity.org/pages/registration-full
+
 Thanks for registering!
 
 If you have any questions you can contact us on antiuniversitynow@gmail.com,
 
 Love and solidarity, the ${config.title} team.
+
