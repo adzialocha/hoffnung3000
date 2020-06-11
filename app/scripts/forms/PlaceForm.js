@@ -31,6 +31,14 @@ const validate = values => {
     )
   }
 
+  if (!values.accessibilityInfo) {
+    errors.accessibilityInfo = translate('forms.place.errors.accessibilityInfoRequired')
+  }
+
+  if (!values.capacity) {
+    errors.capacity = translate('forms.place.errors.capacityRequired')
+  }
+
   if (values.location) {
     if (values.location.mode === 'gps') {
       if (!values.location.latitude || !values.location.longitude) {
@@ -65,12 +73,14 @@ class PlaceForm extends Component {
     handleSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     isSlotSizeVisible: PropTypes.bool,
+    onDisableSlotsChange: PropTypes.func,
   }
 
   static defaultProps = {
     errorMessage: undefined,
     isLoading: false,
     isSlotSizeVisible: true,
+    onDisableSlotsChange: undefined,
   }
 
   renderErrorMessage() {
@@ -105,6 +115,23 @@ class PlaceForm extends Component {
           disabled={this.props.isLoading}
           label={translate('forms.place.description')}
           name="description"
+          placeholder={translate('forms.common.markdownPlaceholder')}
+        />
+
+        <Field
+          component={FormInput}
+          disabled={this.props.isLoading}
+          label={translate('forms.place.capacity')}
+          name="capacity"
+          type="text"
+        />
+
+        <Field
+          component={FormInput}
+          disabled={this.props.isLoading}
+          label={translate('forms.place.accessibilityInfo')}
+          name="accessibilityInfo"
+          type="text"
         />
 
         <hr />
@@ -142,6 +169,15 @@ class PlaceForm extends Component {
         <hr />
 
         <h2>{ translate('forms.place.slots') }</h2>
+
+        <Field
+          component={FormCheckbox}
+          disabled={this.props.isLoading}
+          inline={true}
+          label={translate('forms.place.areSlotsDisabled')}
+          name="areSlotsDisabled"
+          onChange={this.props.onDisableSlotsChange}
+        />
 
         <Field
           component={FormSlotSizeEditor}

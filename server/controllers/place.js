@@ -38,6 +38,8 @@ const include = [
 ]
 
 const permittedFields = [
+  'accessibilityInfo',
+  'capacity',
   'city',
   'cityCode',
   'country',
