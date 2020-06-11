@@ -1,5 +1,5 @@
 import express from 'express'
-import validate from 'express-validation'
+import { validate } from 'express-validation'
 
 import meetingController from '../controllers/meeting'
 import meetingValidation from '../validation/meeting'

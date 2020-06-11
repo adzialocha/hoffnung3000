@@ -77,10 +77,19 @@ router.use('/users', userRoutes)
 // API error handling
 router.use((err, req, res, next) => {
   if (err) {
-    logger.error(err.stack)
+    logger.error(err, err.stack)
   }
 
   if (err instanceof expressValidation.ValidationError) {
+    const unifiedMessage = Object.keys(err.details).reduce((acc, key) => {
+      err.details[key].forEach(error => {
+        acc.push(error.message)
+      })
+      return acc
+    }, []).join(' and ')
+    const apiError = new APIError(unifiedMessage, httpStatus.BAD_REQUEST, true)
+    return next(apiError)
+  } else if (err instanceof ValidationError) {
     // Validation error contains errors which is an
     // array of error each containing message[]
     const unifiedMessage = err.errors.map(
@@ -90,12 +99,6 @@ router.use((err, req, res, next) => {
     return next(error)
   } else if (err instanceof EmptyResultError) {
     const apiError = new APIError(err.message, httpStatus.NOT_FOUND, true)
-    return next(apiError)
-  } else if (err instanceof ValidationError) {
-    const unifiedMessage = err.errors.map(
-      error => error.message
-    ).join(' and ')
-    const apiError = new APIError(unifiedMessage, httpStatus.BAD_REQUEST, true)
     return next(apiError)
   } else if (!(err instanceof APIError)) {
     const apiError = new APIError(err.message, err.status, err.isPublic)

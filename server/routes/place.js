@@ -1,5 +1,5 @@
 import express from 'express'
-import validate from 'express-validation'
+import { validate } from 'express-validation'
 
 import placeController from '../controllers/place'
 import placeSlotsController from '../controllers/placeSlots'

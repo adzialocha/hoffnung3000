@@ -1,5 +1,5 @@
 import express from 'express'
-import validate from 'express-validation'
+import { validate } from 'express-validation'
 
 import authController from '../controllers/auth'
 import authValidation from '../validation/auth'
