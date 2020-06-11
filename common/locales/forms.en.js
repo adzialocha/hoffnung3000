@@ -126,6 +126,7 @@ export default {
       titleRequired: 'Please give your place a title',
     },
     areEventsPublic: 'Events in this place are visible in the calendar',
+    areSlotsDisabled: 'Disable all slots at this place by default',
     description: 'Describe your place',
     publicOrPrivate: 'Is it public or private?',
     slots: 'When is it bookable?',
