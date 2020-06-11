@@ -9,8 +9,8 @@
   ],
   "license": "AGPL-3.0",
   "engines": {
-    "node": "~10.15.3",
-    "npm": "~6.9.0"
+    "node": "~11.15.0",
+    "npm": "~6.13.7"
   },
   "scripts": {
     "assets:build": "npm run assets:clear && webpack --mode production --progress",
@@ -108,7 +108,7 @@
     "mime": "^2.4.3",
     "morgan": "^1.9.1",
     "multer": "^1.4.1",
-    "nodemailer": "^6.1.1",
+    "nodemailer": "^6.4.4",
     "normalize.css": "^8.0.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
