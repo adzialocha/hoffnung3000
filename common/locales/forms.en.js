@@ -6,6 +6,7 @@ export default {
       maxLength: 'This field can\'t be longer than {len} characters',
     },
     basicInformation: 'Basic information',
+    markdownPlaceholder: 'You can use Markdown code to style text in this field in the following ways:\n\n **bold text** & *italicized text* \n web image ![](https://www.image.jpg) \n web link [title](https://www.example.com) \n\n When you save your event, the styling and images will show up.',
     uploadImages: 'Upload images',
     submit: 'Save',
   },
@@ -111,6 +112,8 @@ export default {
   },
   place: {
     errors: {
+      accessibilityInfoRequired: 'Please enter accessibility information',
+      capacityRequired: 'Please enter place capacity',
       cityCodeRequired: 'The given address is incomplete. Please fill in the city code field',
       cityRequired: 'The given address is incomplete. Please fill in the city field',
       countryRequired: 'The given address is incomplete. Please fill in the country field',
@@ -125,6 +128,8 @@ export default {
       titleMinLength: 'The title has to have a minimum of {len} characters',
       titleRequired: 'Please give your place a title',
     },
+    accessibilityInfo: 'Accessibility information',
+    capacity: 'Capacity',
     areEventsPublic: 'Events in this place are visible in the calendar',
     areSlotsDisabled: 'Disable all slots at this place by default',
     description: 'Describe your place',
