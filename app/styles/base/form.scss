@@ -101,6 +101,10 @@ textarea {
   padding: 15px;
 }
 
+textarea[name="additionalInfo"] {
+  min-height: 120px;
+}
+
 input {
   &[type="email"],
   &[type="password"],

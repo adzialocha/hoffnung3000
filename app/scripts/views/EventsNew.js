@@ -23,9 +23,14 @@ class EventsNew extends Component {
       text: translate('flash.createEventSuccess'),
     }
 
-    const { tags, title, description, isPublic, images } = values
+    const { tags, title, description, isPublic, images, additionalInfo  } = values
+    let { ticketUrl, websiteUrl } = values
+
+    if (websiteUrl === 'https://') {websiteUrl = ''}
+    if (ticketUrl === 'https://') {ticketUrl = ''}
 
     const requestParams = {
+      additionalInfo,
       description,
       images,
       isPublic,
@@ -33,7 +38,9 @@ class EventsNew extends Component {
       resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
       tags,
+      ticketUrl,
       title,
+      websiteUrl,
     }
 
     this.props.createResource(
@@ -61,6 +68,8 @@ class EventsNew extends Component {
               {
                 isPublic: true,
                 tags: [],
+                ticketUrl: 'https://',
+                websiteUrl: 'https://',
               }
             }
           isLoading={this.props.isLoading}
