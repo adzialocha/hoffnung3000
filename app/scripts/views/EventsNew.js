@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import getIds from '../utils/getIds'
-import { cachedResource } from '../services/resources'
-import { createResource } from '../actions/resources'
 import { EventForm } from '../forms'
 import { StaticPage } from '../components'
+import { cachedResource } from '../services/resources'
+import { createResource } from '../actions/resources'
 import { translate } from '../../../common/services/i18n'
 
 class EventsNew extends Component {
@@ -26,8 +26,13 @@ class EventsNew extends Component {
     const { tags, title, description, isPublic, images, additionalInfo  } = values
     let { ticketUrl, websiteUrl } = values
 
-    if (websiteUrl === 'https://') {websiteUrl = ''}
-    if (ticketUrl === 'https://') {ticketUrl = ''}
+    if (websiteUrl === 'https://') {
+      websiteUrl = ''
+    }
+
+    if (ticketUrl === 'https://') {
+      ticketUrl = ''
+    }
 
     const requestParams = {
       additionalInfo,
@@ -57,21 +62,23 @@ class EventsNew extends Component {
       <section>
         <h1>{ translate('views.events.createNewTitle') }</h1>
         <StaticPage hideTitle={true} slug="new-event" />
+
         <Link className="button" to="/calendar">
           { translate('common.backToOverview') }
         </Link>
+
         <hr />
+
         <EventForm
           errorMessage={this.props.errorMessage}
-          initialValues=
+          initialValues={
             {
-              {
-                isPublic: true,
-                tags: [],
-                ticketUrl: 'https://',
-                websiteUrl: 'https://',
-              }
+              isPublic: true,
+              tags: [],
+              ticketUrl: 'https://',
+              websiteUrl: 'https://',
             }
+          }
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
         />

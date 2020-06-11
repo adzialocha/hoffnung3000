@@ -43,7 +43,7 @@ const Event = db.define('event', {
     defaultValue: '',
   },
   tags: {
-    type: Sequelize.ARRAY(Sequelize.STRING),
+    type: Sequelize.ARRAY(Sequelize.STRING), /* eslint-disable-line new-cap */
     allowNull: true,
     defaultValue: [],
   },

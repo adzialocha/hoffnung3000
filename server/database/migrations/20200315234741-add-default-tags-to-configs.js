@@ -4,7 +4,7 @@ module.exports = {
       'configs',
       'defaultTags',
       {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+        type: Sequelize.ARRAY(Sequelize.STRING), /* eslint-disable-line new-cap */
         allowNull: true,
       }
     )

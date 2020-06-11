@@ -53,9 +53,9 @@ function sendMail(locals, subject, receiver, templateName, sender) {
         }
 
         // Do not try to send emails when SMTP_HOST not set
-        if (process.env.SMTP_HOST === undefined) {
-          logger.info(`Could not send email SMTP_HOST not set`)
-          return resolve()
+        if (!process.env.SMTP_HOST) {
+          logger.info('Could not send email. SMTP_HOST is not set!')
+          return reject()
         }
 
         return mail.sendMail(mailOptions, err => {

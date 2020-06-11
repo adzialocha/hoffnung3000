@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import flash from '../actions/flash'
 import getIds from '../utils/getIds'
+import { EventForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { confirm } from '../services/dialog'
-import { EventForm } from '../forms'
 import {
   deleteResource,
   fetchResource,
@@ -52,7 +52,7 @@ class EventsEdit extends Component {
     if (websiteUrl === 'https://') {
       websiteUrl = ''
     }
-    
+
     if (ticketUrl === 'https://') {
       ticketUrl = ''
     }
@@ -120,8 +120,13 @@ class EventsEdit extends Component {
       websiteUrl,
     } = this.props.resourceData
 
-    if (websiteUrl === '') {websiteUrl = 'https://'}
-    if (ticketUrl === '') {ticketUrl = 'https://'}
+    if (websiteUrl === '') {
+      websiteUrl = 'https://'
+    }
+
+    if (ticketUrl === '') {
+      ticketUrl = 'https://'
+    }
 
     const selectedSlotsIndexes = slots.map(slot => slot.slotIndex)
     selectedSlotsIndexes.sort((slotA, slotB) => slotA - slotB)

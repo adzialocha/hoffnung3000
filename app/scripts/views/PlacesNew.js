@@ -24,20 +24,6 @@ class PlacesNew extends Component {
     nextRandomId: PropTypes.string.isRequired,
   }
 
-  componentWillMount() {
-    const { config } = this.props
-    const { festivalDateStart, festivalDateEnd } = config
-
-    const slots = generateNewSlotItems(DEFAULT_SLOT_SIZE, [], festivalDateStart, festivalDateEnd)
-
-    this.setState({
-      generatedSlots: {
-        slots: slots,
-        disableSlots: false,
-      },
-    })
-  }
-
   onDisableSlotsChange(event) {
     const { config } = this.props
     const { festivalDateStart, festivalDateEnd } = config
@@ -64,7 +50,7 @@ class PlacesNew extends Component {
   }
 
   onSubmit(values) {
-    const { accessibilityInfo, capacity, title, description, isPublic, images } = values
+    const { title, description, isPublic, images } = values
     const { slotSize, slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
 
@@ -140,6 +126,22 @@ class PlacesNew extends Component {
         />
       </section>
     )
+  }
+
+  // @TODO: Update to modern React API
+  /* eslint-disable-next-line camelcase */
+  UNSAFE_componentWillMount() {
+    const { config } = this.props
+    const { festivalDateStart, festivalDateEnd } = config
+
+    const slots = generateNewSlotItems(DEFAULT_SLOT_SIZE, [], festivalDateStart, festivalDateEnd)
+
+    this.setState({
+      generatedSlots: {
+        slots: slots,
+        disableSlots: false,
+      },
+    })
   }
 
   constructor(props) {

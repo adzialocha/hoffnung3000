@@ -18,10 +18,6 @@ class PlacesShow extends Component {
     resourceSlug: PropTypes.string.isRequired,
   }
 
-  componentWillMount() {
-    this.props.fetchResource('places', this.props.resourceSlug)
-  }
-
   renderActionButton() {
     if (!this.props.resourceData.isOwnerMe) {
       return null
@@ -41,6 +37,7 @@ class PlacesShow extends Component {
     if (this.props.resourceData.isPublic) {
       return null
     }
+
     return (
       <div className="bullet bullet--centered ellipsis">
         { translate('views.places.isPrivatePlace') }
@@ -192,6 +189,7 @@ class PlacesShow extends Component {
     if (this.props.isLoading) {
       return <h1>{ translate('views.places.titlePlaceholder') }</h1>
     }
+
     return <h1>{ this.props.resourceData.title }</h1>
   }
 
@@ -213,6 +211,12 @@ class PlacesShow extends Component {
         { this.renderContent() }
       </section>
     )
+  }
+
+  // @TODO: Update to modern React API
+  /* eslint-disable-next-line camelcase */
+  UNSAFE_componentWillMount() {
+    this.props.fetchResource('places', this.props.resourceSlug)
   }
 
   constructor(props) {

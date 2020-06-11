@@ -20,10 +20,6 @@ class EventsShow extends Component {
     resourceSlug: PropTypes.string.isRequired,
   }
 
-  componentWillMount() {
-    this.props.fetchResource('events', this.props.resourceSlug)
-  }
-
   renderActionButton() {
     if (!this.props.resourceData.isOwnerMe) {
       return null
@@ -265,6 +261,12 @@ class EventsShow extends Component {
         { this.renderContent() }
       </section>
     )
+  }
+
+  // @TODO: Update to modern React API
+  /* eslint-disable-next-line camelcase */
+  UNSAFE_componentWillMount() {
+    this.props.fetchResource('events', this.props.resourceSlug)
   }
 
   constructor(props) {

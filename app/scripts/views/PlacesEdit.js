@@ -52,7 +52,7 @@ class PlacesEdit extends Component {
   }
 
   onSubmit(values) {
-    const { accessibilityInfo, capacity, title, description, isPublic, images } = values
+    const { title, description, isPublic, images } = values
     const { slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
 

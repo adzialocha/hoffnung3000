@@ -35,11 +35,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       totalPageCount: undefined,
     }
 
-    componentWillMount() {
-      this.props.fetchList(this.props.resourceName, 0)
-      this.props.fetchResourceList('events')
-    }
-
     componentWillUnmount() {
       this.props.clearList(this.props.resourceName)
     }
@@ -68,18 +63,21 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     }
 
     renderTagSelector() {
-      if (this.props.defaultTags.length !== 0) {
-        const defaultTags = this.props.defaultTags.map(tag =>{
-          return { label: tag, value: tag }
-        })
-        return (
-          <TagSelector
-            defaultTags={defaultTags}
-            tagArray={this.state.filterTags}
-            onChange={this.onTagFilterChange}
-          />
-        )
-      } return null
+      if (this.props.defaultTags.length === 0) {
+        return null
+      }
+
+      const defaultTags = this.props.defaultTags.map(tag =>{
+        return { label: tag, value: tag }
+      })
+
+      return (
+        <TagSelector
+          defaultTags={defaultTags}
+          tagArray={this.state.filterTags}
+          onChange={this.onTagFilterChange}
+        />
+      )
     }
 
     renderListItemContent(item) {
@@ -157,7 +155,13 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       const paginatedListItems = this.props.listItems
       const allEventsList = this.props.resourceListItems
 
-      if (!this.props.isLoading && (paginatedListItems.length === 0 || allEventsList.length === 0)) {
+      if (
+        !this.props.isLoading &&
+        (
+          paginatedListItems.length === 0 ||
+          allEventsList.length === 0
+        )
+      ) {
         return (
           <p className="infinite-list-container__spinner">
             { translate('components.common.emptyList') }
@@ -173,10 +177,12 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
         }
         return null
       })
+
       if (filterTags.length !== 0) {
         // show filtered list
         return this.renderListItems(filteredListItems)
       }
+
       // show paginated list
       return this.renderListItems(paginatedListItems)
     }
@@ -196,8 +202,17 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
         </div>
       )
     }
+
+    // @TODO: Update to modern React API
+    /* eslint-disable-next-line camelcase */
+    UNSAFE_componentWillMount() {
+      this.props.fetchList(this.props.resourceName, 0)
+      this.props.fetchResourceList('events')
+    }
+
     constructor(props) {
       super(props)
+
       this.state = {
         filterTags: [],
       }

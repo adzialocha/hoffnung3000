@@ -61,7 +61,6 @@ if (!fs.existsSync(getPath(ASSETS_FOLDER_NAME))) {
 marked.setOptions({
   breaks: true,
   gfm: true,
-  sanitize: true,
   smartypants: true,
   tables: false,
 })
