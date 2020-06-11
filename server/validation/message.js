@@ -1,12 +1,12 @@
-import Joi from 'joi'
+import { Joi } from 'express-validation'
 
 export default {
   createMessage: {
-    body: {
+    body: Joi.object({
       text: Joi.string().required(),
-    },
-    params: {
+    }),
+    params: Joi.object({
       resourceId: Joi.number().required(),
-    },
+    }),
   },
 }

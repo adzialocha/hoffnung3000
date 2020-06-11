@@ -1,17 +1,17 @@
-import Joi from 'joi'
+import { Joi } from 'express-validation'
 
 export default {
   updateConfig: {
-    body: {
+    body: Joi.object({
       baseUrl: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
       currency: Joi.string().uppercase().length(3).required(),
       defaultCity: Joi.string().required(),
       defaultCountry: Joi.string().required(),
       defaultLatitude: Joi.number().required(),
       defaultLongitude: Joi.number().required(),
+      defaultTags: Joi.array().items(Joi.string()),
       defaultZoom: Joi.number().required(),
       description: Joi.string().required(),
-      defaultTags: Joi.array(),
       festivalDateEnd: Joi.string().isoDate().required(),
       festivalDateStart: Joi.string().isoDate().required(),
       festivalTicketPrice: Joi.number(),
@@ -34,6 +34,6 @@ export default {
       transferReceiverName: Joi.string().empty(''),
       videoHomeId: Joi.string().empty(''),
       videoIntroductionId: Joi.string().empty(''),
-    },
+    }),
   },
 }

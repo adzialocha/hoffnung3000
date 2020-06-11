@@ -1,8 +1,8 @@
-import Joi from 'joi'
+import { Joi } from 'express-validation'
 
 export default {
   createPlace: {
-    body: {
+    body: Joi.object({
       accessibilityInfo: Joi.string().required(),
       capacity: Joi.string().required(),
       city: Joi.any().when('mode', { is: 'address', then: Joi.required() }),
@@ -18,10 +18,10 @@ export default {
       slotSize: Joi.number().min(1).max(1440).required(),
       street: Joi.any().when('mode', { is: 'address', then: Joi.required() }),
       title: Joi.string().min(3).required(),
-    },
+    }),
   },
   updatePlace: {
-    body: {
+    body: Joi.object({
       capacity: Joi.string().required(),
       city: Joi.any().when('mode', { is: 'address', then: Joi.required() }),
       cityCode: Joi.any().when('mode', { is: 'address', then: Joi.required() }),
@@ -35,9 +35,9 @@ export default {
       mode: Joi.string().allow('gps', 'address', 'virtual').required(),
       street: Joi.any().when('mode', { is: 'address', then: Joi.required() }),
       title: Joi.string().min(3).required(),
-    },
-    params: {
+    }),
+    params: Joi.object({
       resourceSlug: Joi.string().required(),
-    },
+    }),
   },
 }
