@@ -15,7 +15,7 @@ class FormTextarea extends Component {
   }
 
   render() {
-    const { disabled, input, placeholder } = this.props
+    const { disabled, input, placeholder, ...rest } = this.props
 
     return (
       <textarea
@@ -23,6 +23,7 @@ class FormTextarea extends Component {
         disabled={disabled}
         placeholder={placeholder}
         {...input}
+        {...rest}
       />
     )
   }

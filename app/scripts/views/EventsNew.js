@@ -23,16 +23,23 @@ class EventsNew extends Component {
       text: translate('flash.createEventSuccess'),
     }
 
-    const { title, description, isPublic, images } = values
+    const { title, description, isPublic, images, additionalInfo  } = values
+    let { ticketUrl, websiteUrl } = values
+
+    if (websiteUrl === 'https://') {websiteUrl = ''}
+    if (ticketUrl === 'https://') {ticketUrl = ''}
 
     const requestParams = {
+      additionalInfo,
       description,
       images,
       isPublic,
       placeId: values.placeSlots.place.id,
       resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
+      ticketUrl,
       title,
+      websiteUrl,
     }
 
     this.props.createResource(
@@ -55,7 +62,14 @@ class EventsNew extends Component {
         <hr />
         <EventForm
           errorMessage={this.props.errorMessage}
-          initialValues={ { isPublic: true } }
+          initialValues=
+            {
+              {
+                isPublic: true,
+                ticketUrl: 'https://',
+                websiteUrl: 'https://',
+              }
+            }
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
         />

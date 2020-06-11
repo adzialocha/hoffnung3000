@@ -8,6 +8,7 @@ export default function withAuthState(WrappedComponent) {
     return {
       ...state.auth,
       ...state.user,
+      ...state.meta,
     }
   }
 

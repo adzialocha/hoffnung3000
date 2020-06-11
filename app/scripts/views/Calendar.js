@@ -7,11 +7,13 @@ import { push } from 'connected-react-router'
 import { CuratedEventListItem, StaticPage } from '../components'
 import { asInfiniteListCalendar } from '../containers'
 import { translate } from '../../../common/services/i18n'
+import { withConfig } from '../containers'
 
 const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
 
 class Calendar extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     isActive: PropTypes.bool.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
@@ -32,7 +34,7 @@ class Calendar extends Component {
   }
 
   renderItemsList() {
-    if (!this.props.isAuthenticated || !this.props.isActive) {
+    if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0) {
       return (
         <WrappedInfiniteList
           resourceName="preview"
@@ -66,7 +68,7 @@ class Calendar extends Component {
   }
 
   renderText() {
-    if (!this.props.isAuthenticated || !this.props.isActive) {
+    if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0) {
       return <StaticPage hideTitle={true} slug="calendar-public" />
     }
 
@@ -98,6 +100,7 @@ function mapStateToProps(state) {
   return {
     ...state.auth,
     ...state.user,
+    ...state.meta,
   }
 }
 
@@ -105,4 +108,4 @@ export default connect(
   mapStateToProps, {
     push,
   }
-)(Calendar)
+)(withConfig(Calendar))

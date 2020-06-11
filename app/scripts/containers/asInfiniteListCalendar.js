@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { connect } from 'react-redux'
 
 import { fetchList, clearList } from '../actions/infiniteList'
+import { fetchResourceList } from '../actions/resourceList'
 import { translate } from '../../../common/services/i18n'
 
 export default function asInfiniteListCalendar(WrappedListItemComponent) {
@@ -12,10 +13,12 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       clearList: PropTypes.func.isRequired,
       currentPageIndex: PropTypes.number,
       fetchList: PropTypes.func.isRequired,
+      fetchResourceList: PropTypes.func.isRequired,
       isLoading: PropTypes.bool,
       listItems: PropTypes.array,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
+      resourceListItems: PropTypes.array,
       resourceName: PropTypes.string.isRequired,
       totalPageCount: PropTypes.number,
     }
@@ -26,11 +29,13 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       listItems: [],
       onClick: undefined,
       onEditClick: undefined,
+      resourceListItems: [],
       totalPageCount: undefined,
     }
 
     componentWillMount() {
       this.props.fetchList(this.props.resourceName, 0)
+      this.props.fetchResourceList('events')
     }
 
     componentWillUnmount() {
@@ -86,17 +91,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       )
     }
 
-    renderListItems() {
-      const { listItems } = this.props
-
-      if (!this.props.isLoading && listItems.length === 0) {
-        return (
-          <p className="infinite-list-container__spinner">
-            { translate('components.common.emptyList') }
-          </p>
-        )
-      }
-
+    renderListItems(listItems) {
       return listItems.map((item, index) => {
         const previousItem = index > 0 ? listItems[index - 1] : null
 
@@ -140,13 +135,31 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     render() {
       return (
         <div className="infinite-list-container infinite-list-container--half-items">
-          { this.renderListItems() }
+          { this.chooseEventList() }
 
           <div className="infinite-list-container__item infinite-list-container__item--full">
             { this.renderLoadMoreButton() }
           </div>
         </div>
       )
+    }
+
+    chooseEventList() {
+      const paginatedListItems = this.props.listItems
+      const filteredListItems = this.props.resourceListItems
+
+      if (!this.props.isLoading && (paginatedListItems.length === 0 || filteredListItems.length === 0)) {
+        return (
+          <p className="infinite-list-container__spinner">
+            { translate('components.common.emptyList') }
+          </p>
+        )
+      }
+      const filter = true
+      if (filter === true) {
+        return this.renderListItems(filteredListItems)
+      }
+      return this.renderListItems(paginatedListItems)
     }
 
     constructor(props) {
@@ -159,6 +172,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
   function mapStateToProps(state, props) {
     return {
       ...state.infiniteList[props.resourceName],
+      ...state.resourceList,
     }
   }
 
@@ -166,6 +180,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     mapStateToProps, {
       clearList,
       fetchList,
+      fetchResourceList,
     }
   )(InfiniteListContainer)
 }

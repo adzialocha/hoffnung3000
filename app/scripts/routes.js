@@ -4,7 +4,9 @@ import { Route, Switch } from 'react-router'
 import {
   isAdmin,
   isAuthenticated,
+  isAuthenticatedOrFestivalIsFree,
   isParticipant,
+  isParticipantOrFestivalIsFree,
   shouldNotBeAuthenticated,
 } from './auth'
 
@@ -59,10 +61,13 @@ export default class Routes extends Component {
           <Route component={isParticipant(PlacesNew)} path="/new/place" />
           <Route component={isParticipant(ResourcesNew)} path="/new/resource" />
           <Route component={isParticipant(EventsEdit)} path="/events/:slug/edit" />
-          <Route component={isAuthenticated(EventsShow)} path="/events/:slug" />
+          <Route component={isAuthenticatedOrFestivalIsFree(EventsShow)} path="/events/:slug" />
+          <Route component={isAuthenticatedOrFestivalIsFree(EventsShow)} path="/eventisfree/:slug" />
           <Route component={isParticipant(PlacesEdit)} path="/places/:slug/edit" />
-          <Route component={isParticipant(PlacesShow)} path="/places/:slug" />
-          <Route component={isParticipant(PlacesIndex)} path="/places" />
+          <Route component={isParticipantOrFestivalIsFree(PlacesShow)} path="/places/:slug" />
+          <Route component={isParticipantOrFestivalIsFree(PlacesIndex)} path="/places" />
+          <Route component={isParticipant(ResourcesEdit)} path="/resources/:slug/edit" />
+          <Route component={isParticipant(ResourcesIndex)} path="/resources" />
           <Route component={withConfig('isDerMarktEnabled', isParticipant(ResourcesEdit))} path="/resources/:slug/edit" />
           <Route component={withConfig('isDerMarktEnabled', isParticipant(ResourcesIndex))} path="/resources" />
           <Route component={withConfig('isInboxEnabled', isParticipant(ConversationsNew))} path="/inbox/new" />
