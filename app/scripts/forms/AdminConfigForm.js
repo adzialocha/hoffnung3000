@@ -119,6 +119,14 @@ class AdminConfigForm extends Component {
           type="text"
         />
 
+        <Field
+          component={FormInput}
+          disabled={this.props.isLoading}
+          label={translate('forms.config.defaultTags')}
+          name="defaultTags"
+          type="text"
+        />
+
         <hr />
 
         <h2>{ translate('forms.config.mails') }</h2>

@@ -46,11 +46,16 @@ class EventsEdit extends Component {
       text: translate('flash.updateEventSuccess'),
     }
 
-    const { title, description, isPublic, images, additionalInfo  } = values
+    const { tags, title, description, isPublic, images, additionalInfo } = values
     let { ticketUrl, websiteUrl } = values
 
-    if (websiteUrl === 'https://') {websiteUrl = ''}
-    if (ticketUrl === 'https://') {ticketUrl = ''}
+    if (websiteUrl === 'https://') {
+      websiteUrl = ''
+    }
+    
+    if (ticketUrl === 'https://') {
+      ticketUrl = ''
+    }
 
     const requestParams = {
       description,
@@ -59,6 +64,7 @@ class EventsEdit extends Component {
       placeId: values.placeSlots.place.id,
       resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
+      tags,
       additionalInfo,
       ticketUrl,
       title,
@@ -105,6 +111,7 @@ class EventsEdit extends Component {
       place,
       resources,
       slots,
+      tags,
       title,
     } = this.props.resourceData
 
@@ -128,6 +135,7 @@ class EventsEdit extends Component {
         place,
         selectedSlotsIndexes,
       },
+      tags,
       additionalInfo,
       ticketUrl,
       title,
