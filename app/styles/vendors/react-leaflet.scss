@@ -645,7 +645,7 @@
   margin: 0 auto;
 
   -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
-  filter: progid:dximagetransform.microsoft.matrix(M11=.70710678, M12=.70710678, M21=-.70710678, M22=.70710678);
+  filter: progid:dximagetransform.microsoft.matrix(m11=.70710678, m12=.70710678, m21=-.70710678, m22=.70710678);
 }
 
 .leaflet-oldie .leaflet-popup-tip-container {

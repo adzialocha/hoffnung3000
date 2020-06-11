@@ -6,11 +6,12 @@ form {
   margin: 0 auto;
 }
 
-.tag {  
+.tag {
+  padding: 5px;
 
   font-weight: $font-weight-bold;
   font-size: $font-size-base;
-  padding: 5px;
+
   text-transform: uppercase;
 
   cursor: pointer;
@@ -22,10 +23,12 @@ form {
 }
 
 .tag-container {
-  width: 100%;
   display: flex;
-  justify-content: center;
+
+  width: 100%;
+
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .tag--selected {
