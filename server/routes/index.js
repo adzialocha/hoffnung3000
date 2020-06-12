@@ -1,7 +1,7 @@
 import express from 'express'
 import expressValidation from 'express-validation'
 import httpStatus from 'http-status'
-import { EmptyResultError, ValidationError } from 'sequelize'
+import sequelize from 'sequelize'
 
 import { APIError } from '../helpers/errors'
 
@@ -89,15 +89,15 @@ router.use((err, req, res, next) => {
     }, []).join(' and ')
     const apiError = new APIError(unifiedMessage, httpStatus.BAD_REQUEST, true)
     return next(apiError)
-  } else if (err instanceof ValidationError) {
+  } else if (err instanceof sequelize.ValidationError) {
     // Validation error contains errors which is an
     // array of error each containing message[]
     const unifiedMessage = err.errors.map(
-      error => error.messages.join('. ')
+      error => error.message
     ).join(' and ')
     const error = new APIError(unifiedMessage, httpStatus.BAD_REQUEST, true)
     return next(error)
-  } else if (err instanceof EmptyResultError) {
+  } else if (err instanceof sequelize.EmptyResultError) {
     const apiError = new APIError(err.message, httpStatus.NOT_FOUND, true)
     return next(apiError)
   } else if (!(err instanceof APIError)) {
