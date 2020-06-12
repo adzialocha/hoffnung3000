@@ -8,24 +8,29 @@ import { translate } from '../../../common/services/i18n'
 
 const validate = values => {
   const errors = {}
+
   if (!values.password) {
     errors.password = translate('forms.auth.errors.passwordRequired')
   }
+
   if (!values.newPassword) {
     errors.newPassword = translate('forms.auth.errors.passwordRequired')
   } else if (values.newPassword.length < 8) {
-    errors.password = translate(
+    errors.newPassword = translate(
       'forms.auth.errors.passwordLength', {
         len: 8,
       }
     )
   }
+
   if (!values.newPasswordRepeat) {
     errors.newPasswordRepeat = translate('forms.auth.errors.passwordRepeat')
   }
+
   if (values.newPasswordRepeat !== values.newPassword) {
     errors.newPasswordRepeat = translate('forms.auth.errors.passwordMatch')
   }
+
   return errors
 }
 
@@ -49,6 +54,7 @@ class ProfileForm extends Component {
         </div>
       )
     }
+
     return null
   }
 
@@ -56,7 +62,9 @@ class ProfileForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
+
         <h2>{ translate('forms.auth.changePassword') }</h2>
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -64,6 +72,7 @@ class ProfileForm extends Component {
           name="password"
           type="password"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -71,6 +80,7 @@ class ProfileForm extends Component {
           name="newPassword"
           type="password"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -78,6 +88,7 @@ class ProfileForm extends Component {
           name="newPasswordRepeat"
           type="password"
         />
+
         <hr />
 
         <button
