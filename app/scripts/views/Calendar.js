@@ -8,6 +8,7 @@ import { push } from 'connected-react-router'
 import { CalendarMap, CuratedEventListItem, StaticPage } from '../components'
 import { TagSelector } from '../components'
 import { asInfiniteListCalendar } from '../containers'
+import { formatEventTime } from '../../../common/utils/dateFormat'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
@@ -124,7 +125,8 @@ class Calendar extends Component {
     const mapVenuePlots = uniqueVenues.map(venue => {
       const venueEvents = allEvents.reduce((result, event) => {
         if (venue.id === event.placeId) {
-          const time = DateTime.fromISO(event.slots[0].from).toFormat('T DDDD')
+          const time = formatEventTime(event.slots[0].from, event.slots[event.slots.length - 1].to)
+
           result.push({
             title: event.title,
             time: time,
@@ -152,10 +154,11 @@ class Calendar extends Component {
     const virtualEvents = virtualVenues.map(venue => {
       return allEvents.reduce((result, event) => {
         if (venue.id === event.placeId) {
-          const time = DateTime.fromISO(event.slots[0].from).toFormat('T DDDD')
+          const time = formatEventTime(event.slots[0].from, event.slots[event.slots.length - 1].to)
+
           result.push({
             title: event.title,
-            time: time,
+            time,
             imageUrl: event.images.length > 0 ? event.images[0].smallImageUrl : null,
             slug: event.slug,
             place: venue.title,
