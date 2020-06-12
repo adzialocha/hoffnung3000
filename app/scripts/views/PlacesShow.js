@@ -92,6 +92,10 @@ class PlacesShow extends Component {
             { `${cityCode} ${city}` }<br />
             { country }<br />
           </p>
+
+          {latitude && longitude ? (
+            <LocationMap initialCenter={ { lat: latitude, lng: longitude } } />
+          ) : null}
         </div>
       )
     }
@@ -147,6 +151,7 @@ class PlacesShow extends Component {
         <strong>
           { translate('views.places.accessibilityInfoHeader') }
         </strong>
+
         <p>{ this.props.resourceData.accessibilityInfo }</p>
       </div>
     )
@@ -158,6 +163,7 @@ class PlacesShow extends Component {
         <strong>
           { translate('views.places.capacityHeader') }
         </strong>
+
         <p>{ this.props.resourceData.capacity }</p>
       </div>
     )
@@ -176,6 +182,7 @@ class PlacesShow extends Component {
         { this.renderImageGallery() }
         <hr />
         { this.renderAddress() }
+        <hr />
         { this.renderAccessibilityInfo() }
         { this.renderCapacity() }
         <hr />

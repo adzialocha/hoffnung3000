@@ -169,4 +169,7 @@ export default {
     imprint: 'Imprint',
     information: 'Information',
   },
+  calendarMap: {
+    virtualPlace: 'Virtual Place',
+  },
 }

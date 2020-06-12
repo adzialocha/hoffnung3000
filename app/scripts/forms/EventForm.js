@@ -167,18 +167,26 @@ class EventForm extends Component {
   }
 
   renderFormTagSelector() {
+    if (this.props.config.defaultTags.length === 0) {
+      return null
+    }
+
     const defaultTags = this.props.config.defaultTags.map(tag =>{
       return { label: tag, value: tag }
     })
 
     return (
-      <Field
-        component={FormTagSelector}
-        defaultTags={defaultTags}
-        disabled={this.props.isLoading}
-        multi={true}
-        name="tags"
-      />
+      <Fragment>
+        <h2>{translate('forms.event.tags')}</h2>
+
+        <Field
+          component={FormTagSelector}
+          defaultTags={defaultTags}
+          disabled={this.props.isLoading}
+          multi={true}
+          name="tags"
+        />
+      </Fragment>
     )
   }
 
@@ -231,8 +239,6 @@ class EventForm extends Component {
           type="text"
         />
 
-        <h2>{translate('forms.event.tags')}</h2>
-
         { this.renderFormTagSelector() }
 
         <hr />
@@ -257,10 +263,10 @@ class EventForm extends Component {
         <h2>{ translate('forms.event.publicOrPrivate') }</h2>
         { this.renderPrivateField() }
 
-        <hr />
-
         { this.renderResourcesTitle() }
         { this.renderResourcesSelector() }
+
+        <hr />
 
         <button
           className="form__submit button button--blue"

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { DateTime } from 'luxon'
 import { connect } from 'react-redux'
 
@@ -72,11 +72,15 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       })
 
       return (
-        <TagSelector
-          defaultTags={defaultTags}
-          tagArray={this.state.filterTags}
-          onChange={this.onTagFilterChange}
-        />
+        <Fragment>
+          <h3>{ translate('views.events.tagSelectorTitle') }</h3>
+
+          <TagSelector
+            defaultTags={defaultTags}
+            tagArray={this.state.filterTags}
+            onChange={this.onTagFilterChange}
+          />
+        </Fragment>
       )
     }
 
@@ -190,8 +194,8 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     render() {
       return (
         <div className="infinite-list-container__item infinite-list-container__item--full">
-          <h3>{ translate('views.events.tagSelectorTitle') }</h3>
           { this.renderTagSelector() }
+
           <div className="infinite-list-container infinite-list-container--half-items">
             { this.renderEventList() }
 

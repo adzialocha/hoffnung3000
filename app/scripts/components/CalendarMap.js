@@ -1,9 +1,11 @@
-import { connect } from 'react-redux'
 import L from 'leaflet'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
+
+import { translate } from '../../../common/services/i18n'
 
 const DEFAULT_ZOOM = 11
 
@@ -110,9 +112,15 @@ class CalendarMap extends Component {
         onZoom={this.onZoom}
       >
         <VenueMapTileLayer />
+
         <Marker icon={customMarker} position={this.state.position}>
-          <EventListPopup events={this.props.virtualEvents} place={'VIRTUAL REALITY'} onPopupClick={this.onPopupClick} />
+          <EventListPopup
+            events={this.props.virtualEvents}
+            place={translate('components.calendarMap.virtualPlace')}
+            onPopupClick={this.onPopupClick}
+          />
         </Marker>
+
         <VenueMarkers markers={this.props.plots} />
       </Map>
     )

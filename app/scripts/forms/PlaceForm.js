@@ -73,14 +73,12 @@ class PlaceForm extends Component {
     handleSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     isSlotSizeVisible: PropTypes.bool,
-    onDisableSlotsChange: PropTypes.func,
   }
 
   static defaultProps = {
     errorMessage: undefined,
     isLoading: false,
     isSlotSizeVisible: true,
-    onDisableSlotsChange: undefined,
   }
 
   renderErrorMessage() {
@@ -169,15 +167,6 @@ class PlaceForm extends Component {
         <hr />
 
         <h2>{ translate('forms.place.slots') }</h2>
-
-        <Field
-          component={FormCheckbox}
-          disabled={this.props.isLoading}
-          inline={true}
-          label={translate('forms.place.areSlotsDisabled')}
-          name="areSlotsDisabled"
-          onChange={this.props.onDisableSlotsChange}
-        />
 
         <Field
           component={FormSlotSizeEditor}

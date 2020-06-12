@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
-import { DateTime } from 'luxon'
 
 import { CalendarMap, CuratedEventListItem, StaticPage } from '../components'
+import { TagSelector } from '../components'
 import { asInfiniteListCalendar } from '../containers'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
-import { TagSelector } from '../components'
 
 const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem, TagSelector)
 
@@ -41,7 +41,12 @@ class Calendar extends Component {
   }
 
   renderItemsList() {
-    if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0) {
+    if (
+      (
+        !this.props.isAuthenticated ||
+        !this.props.isActive
+      ) && this.props.config.festivalTicketPrice !== 0
+    ) {
       return (
         <WrappedInfiniteList
           resourceName="preview"
@@ -61,8 +66,10 @@ class Calendar extends Component {
 
   renderCreateButton() {
     if (
-      !(this.props.isParticipant || this.props.isAdmin) ||
-      !this.props.isAuthenticated
+      !(
+        this.props.isParticipant ||
+        this.props.isAdmin
+      ) || !this.props.isAuthenticated
     ) {
       return null
     }
@@ -75,7 +82,12 @@ class Calendar extends Component {
   }
 
   renderText() {
-    if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0) {
+    if (
+      (
+        !this.props.isAuthenticated ||
+        !this.props.isActive
+      ) && this.props.config.festivalTicketPrice !== 0
+    ) {
       return <StaticPage hideTitle={true} slug="calendar-public" />
     }
 
@@ -83,25 +95,27 @@ class Calendar extends Component {
   }
 
   renderMap() {
-    if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0) {
+    if (
+      (
+        !this.props.isAuthenticated ||
+        !this.props.isActive
+      ) && this.props.config.festivalTicketPrice !== 0
+    ) {
       return null
     }
 
     const allEvents = this.props.resourceListItems
-    let uniqueVenues = []
-    let virtualVenues = []
-
-    if (allEvents.length === 0) {
+    if (!allEvents) {
       return null
     }
 
-    uniqueVenues = allEvents
+    const uniqueVenues = allEvents
       .map(event => event.placeId)
       .map((event, index, final) => final.indexOf(event) === index && index)
       .filter(event => allEvents[event]).map(event => allEvents[event].place)
       .filter(place => place.mode !== 'virtual')
 
-    virtualVenues = allEvents
+    const virtualVenues = allEvents
       .map(event => event.placeId)
       .map((event, index, final) => final.indexOf(event) === index && index)
       .filter(event => allEvents[event]).map(event => allEvents[event].place)
@@ -135,8 +149,8 @@ class Calendar extends Component {
       }
     })
 
-    let virtualEvents = virtualVenues.map(venue => {
-      const venueEvents = allEvents.reduce((result, event) => {
+    const virtualEvents = virtualVenues.map(venue => {
+      return allEvents.reduce((result, event) => {
         if (venue.id === event.placeId) {
           const time = DateTime.fromISO(event.slots[0].from).toFormat('T DDDD')
           result.push({
@@ -149,26 +163,20 @@ class Calendar extends Component {
         }
         return result
       }, [])
-
-      return venueEvents
     })
 
-    virtualEvents = [].concat.apply([], virtualEvents)
-
     return (
-      <div>
-        <CalendarMap
-          defaultZoom={this.props.config.defaultZoom}
-          initialCenter={
-            {
-              lat: this.props.config.defaultLatitude,
-              lng: this.props.config.defaultLongitude,
-            }
+      <CalendarMap
+        defaultZoom={this.props.config.defaultZoom}
+        initialCenter={
+          {
+            lat: this.props.config.defaultLatitude,
+            lng: this.props.config.defaultLongitude,
           }
-          plots={mapVenuePlots}
-          virtualEvents={virtualEvents}
-        />
-      </div>
+        }
+        plots={mapVenuePlots}
+        virtualEvents={virtualEvents}
+      />
     )
   }
 

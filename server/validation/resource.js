@@ -6,6 +6,8 @@ export default {
       eventId: Joi.number(),
       from: Joi.string().isoDate(),
       to: Joi.string().isoDate(),
+      limit: Joi.number(),
+      offset: Joi.number(),
     }),
   },
   createResource: {
