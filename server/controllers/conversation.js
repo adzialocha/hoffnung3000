@@ -2,7 +2,7 @@ import httpStatus from 'http-status'
 import { DateTime } from 'luxon'
 import { Op } from 'sequelize'
 
-import pick from '../utils/pick'
+import pick from '../../common/utils/pick'
 import { APIError } from '../helpers/errors'
 import { addMessageActivity } from '../services/activity'
 import { getConfig } from '../config'

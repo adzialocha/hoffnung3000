@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import Scroll from 'react-scroll'
 import { connect } from 'react-redux'
 
+import pick from '../../../common/utils/pick'
 import { StaticPage } from './'
 import { TicketForm } from '../forms'
 import { buyTicket } from '../actions/auth'
@@ -10,6 +11,18 @@ import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
 const totalSteps = 2
+
+const permittedFields = [
+  'city',
+  'cityCode',
+  'country',
+  'email',
+  'firstname',
+  'lastname',
+  'password',
+  'paymentMethod',
+  'street',
+]
 
 class TicketWizard extends Component {
   static propTypes = {
@@ -29,7 +42,7 @@ class TicketWizard extends Component {
       isCheckoutClicked: true,
     })
 
-    this.props.buyTicket('free', this.props.form.values)
+    this.props.buyTicket('free', pick(permittedFields, this.props.form.values))
   }
 
   onPayPalCheckout() {
@@ -37,7 +50,7 @@ class TicketWizard extends Component {
       isCheckoutClicked: true,
     })
 
-    this.props.buyTicket('paypal', this.props.form.values)
+    this.props.buyTicket('paypal', pick(permittedFields, this.props.form.values))
   }
 
   onTransferCheckout() {
@@ -45,7 +58,7 @@ class TicketWizard extends Component {
       isCheckoutClicked: true,
     })
 
-    this.props.buyTicket('transfer', this.props.form.values)
+    this.props.buyTicket('transfer', pick(permittedFields, this.props.form.values))
   }
 
   onTermsAcceptedChanged() {

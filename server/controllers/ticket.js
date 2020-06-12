@@ -2,7 +2,7 @@ import httpStatus from 'http-status'
 
 import User from '../models/user'
 import checkout from '../services/checkout'
-import pick from '../utils/pick'
+import pick from '../../common/utils/pick'
 import { APIError } from '../helpers/errors'
 import { getConfig } from '../config'
 import { sendAdminRegistrationNotification } from '../helpers/mailTemplate'

@@ -11,7 +11,7 @@ import {
 import { updateImagesForObject } from '../handlers/image'
 import { deleteResourcesByIds } from '../handlers/resource'
 
-import pick from '../utils/pick'
+import pick from '../../common/utils/pick'
 
 import {
   AnimalBelongsToUser,

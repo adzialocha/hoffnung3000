@@ -22,18 +22,16 @@ class Login extends Component {
     return (
       <section>
         <h1>{ translate('views.login.title') }</h1>
+
         <LoginForm
           errorMessage={this.props.errorMessage}
           isLoading={this.props.isLoading}
           onSubmit={this.onSubmit}
         />
+
         <hr />
+
         <ul className="inline-navigation inline-navigation--vertical">
-          <li className="inline-navigation__item">
-            <Link to="/register">
-              { translate('views.login.registerAsParticipant') }
-            </Link>
-          </li>
           <li className="inline-navigation__item">
             <Link to="/forgot">
               { translate('views.login.forgotPassword') }

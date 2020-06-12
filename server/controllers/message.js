@@ -8,7 +8,7 @@ import {
 } from './base'
 
 import db from '../database'
-import pick from '../utils/pick'
+import pick from '../../common/utils/pick'
 
 import ConversationAnimal from '../models/conversationAnimal'
 import Message from '../models/message'

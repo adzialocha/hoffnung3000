@@ -19,7 +19,7 @@ import {
   PlaceHasManySlots,
 } from '../database/associations'
 
-import pick from '../utils/pick'
+import pick from '../../common/utils/pick'
 import { APIError } from '../helpers/errors'
 import { createDisabledSlots } from '../../common/utils/slots'
 import { getConfig } from '../config'

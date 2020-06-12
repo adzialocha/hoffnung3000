@@ -2,7 +2,7 @@ import marked from 'marked'
 
 import Animal from '../models/animal'
 
-import pick from '../utils/pick'
+import pick from '../../common/utils/pick'
 
 export const DEFAULT_LIMIT = 50
 export const DEFAULT_OFFSET = 0
