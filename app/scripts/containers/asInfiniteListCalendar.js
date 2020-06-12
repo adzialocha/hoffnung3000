@@ -73,6 +73,8 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
 
       return (
         <Fragment>
+          <hr />
+
           <h3>{ translate('views.events.tagSelectorTitle') }</h3>
 
           <TagSelector
@@ -80,6 +82,8 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
             tagArray={this.state.filterTags}
             onChange={this.onTagFilterChange}
           />
+
+          <hr />
         </Fragment>
       )
     }

@@ -30,7 +30,15 @@ class AdminPagesEditForm extends Component {
       text: 'Successfully updated page',
     }
 
-    this.props.updateResource('pages', this.props.resourceId, values, flash)
+    const { slug, title, content } = values
+
+    const newValues = {
+      slug,
+      title,
+      content,
+    }
+
+    this.props.updateResource('pages', this.props.resourceId, newValues, flash)
   }
 
   renderForm() {

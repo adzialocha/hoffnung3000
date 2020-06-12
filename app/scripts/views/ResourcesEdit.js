@@ -45,10 +45,18 @@ class ResourcesEdit extends Component {
       text: translate('flash.updateResourceSuccess'),
     }
 
+    const { description, images, title } = values
+
+    const newValues = {
+      description,
+      images,
+      title,
+    }
+
     this.props.updateResource(
       'resources',
       this.props.resourceSlug,
-      values,
+      newValues,
       successFlash,
       '/resources'
     )
@@ -90,6 +98,7 @@ class ResourcesEdit extends Component {
     if (this.props.isLoading) {
       return <h1>{ translate('views.resources.titlePlaceholder') }</h1>
     }
+
     return <h1>{ this.props.resourceData.title }</h1>
   }
 
@@ -97,12 +106,15 @@ class ResourcesEdit extends Component {
     return (
       <section>
         { this.renderTitle() }
+
         <Link className="button" to="/resources">
           { translate('common.backToOverview') }
         </Link>
+
         <button className="button button--red" onClick={this.onDeleteClick}>
           { translate('common.deleteButton') }
         </button>
+
         <hr />
         { this.renderForm() }
       </section>

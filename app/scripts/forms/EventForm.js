@@ -177,6 +177,8 @@ class EventForm extends Component {
 
     return (
       <Fragment>
+        <hr />
+
         <h2>{translate('forms.event.tags')}</h2>
 
         <Field
@@ -213,6 +215,8 @@ class EventForm extends Component {
           placeholder={translate('forms.event.textFieldPlaceholder')}
           type="text"
         />
+
+        <hr />
 
         <Field
           component={FormInput}
