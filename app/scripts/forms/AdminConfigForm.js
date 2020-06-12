@@ -45,12 +45,8 @@ const validate = values => {
     errors.defaultCountry = translate('forms.common.errors.required')
   }
 
-  if (!values.defaultLatitude) {
-    errors.defaultLatitude = translate('forms.common.errors.required')
-  }
-
-  if (!values.defaultLongitude) {
-    errors.defaultLongitude = translate('forms.common.errors.required')
+  if (!values.defaultGPS) {
+    errors.defaultGPS = translate('forms.common.errors.required')
   }
 
   if (!values.festivalDateStart) {
@@ -371,9 +367,7 @@ class AdminConfigForm extends Component {
 }
 
 AdminConfigForm = reduxForm({
-  // destroyOnUnmount: false,
   enableReinitialize: true,
-  // forceUnregisterOnUnmount: true,
   form: 'config',
   validate,
 })(AdminConfigForm)
