@@ -14,7 +14,12 @@ class CuratedEventListItem extends Component {
   }
 
   renderPlaceName() {
-    if ((!this.props.isAuthenticated || !this.props.isActive) && this.props.config.festivalTicketPrice !== 0 ) {
+    if (
+      (
+        !this.props.isAuthenticated ||
+        !this.props.isActive
+      ) && this.props.config.festivalTicketPrice !== 0
+    ) {
       return (
         <div className="list-item-content__description ellipsis">
           { translate('components.curatedEventListItem.getATicket') }
@@ -43,9 +48,11 @@ class CuratedEventListItem extends Component {
         <div className="list-item-content__title ellipsis">
           { this.props.item.title }
         </div>
+
         <div className="list-item-content__subtitle ellipsis">
           { this.renderEventTime() }
         </div>
+
         { this.renderPlaceName() }
       </div>
     )
