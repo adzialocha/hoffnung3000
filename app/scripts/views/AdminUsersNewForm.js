@@ -3,9 +3,26 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import pick from '../../../common/utils/pick'
+import { UserForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
-import { UserForm } from '../forms'
+
+const permittedFields = [
+  'city',
+  'cityCode',
+  'country',
+  'email',
+  'firstname',
+  'isActive',
+  'isAdmin',
+  'isParticipant',
+  'isVisitor',
+  'lastname',
+  'password',
+  'phone',
+  'street',
+]
 
 class AdminUsersNewForm extends Component {
   static propTypes = {
@@ -23,7 +40,7 @@ class AdminUsersNewForm extends Component {
     this.props.createResource(
       'users',
       this.props.nextRandomId,
-      values,
+      pick(permittedFields, values),
       flash,
       '/admin/users/all'
     )

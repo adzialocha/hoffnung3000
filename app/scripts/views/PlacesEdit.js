@@ -7,6 +7,7 @@ import flash from '../actions/flash'
 import { PlaceForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { confirm } from '../services/dialog'
+import { findGPSCoordinates } from '../services/gps'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
@@ -49,7 +50,7 @@ class PlacesEdit extends Component {
   }
 
   onSubmit(values) {
-    const { title, description, isPublic, images } = values
+    const { accessibilityInfo, capacity, title, description, isPublic, images } = values
     const { slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
 
@@ -57,22 +58,44 @@ class PlacesEdit extends Component {
       text: translate('flash.updatePlaceSuccess'),
     }
 
-    const requestParams = {
-      ...values.location,
-      description,
-      disabledSlots,
-      images,
-      isPublic,
-      title,
-    }
+    const preparePlaceValues = new Promise(resolve => {
+      const requestParams = {
+        ...values.location,
+        accessibilityInfo,
+        capacity,
+        description,
+        disabledSlots,
+        images,
+        isPublic,
+        title,
+      }
 
-    this.props.updateResource(
-      'places',
-      this.props.resourceSlug,
-      requestParams,
-      successFlash,
-      '/places'
-    )
+      if (values.location.mode === 'address') {
+        // Try to fetch the GPS coordinates of this address
+        const address = `${values.location.street}, ${values.location.cityCode}, ${values.location.city}`
+
+        findGPSCoordinates(address)
+          .then(({ latitude, longitude }) => {
+            resolve(Object.assign({}, requestParams, {
+              latitude,
+              longitude,
+            }))
+          })
+      } else {
+        resolve(requestParams)
+      }
+    })
+
+    preparePlaceValues
+      .then(requestParams => {
+        this.props.updateResource(
+          'places',
+          this.props.resourceSlug,
+          requestParams,
+          successFlash,
+          '/places'
+        )
+      })
   }
 
   onDeleteClick() {
@@ -98,6 +121,8 @@ class PlacesEdit extends Component {
     }
 
     const {
+      accessibilityInfo,
+      capacity,
       description,
       images,
       isPublic,
@@ -129,6 +154,8 @@ class PlacesEdit extends Component {
     }
 
     const initialValues = {
+      accessibilityInfo,
+      capacity,
       description,
       images,
       isPublic,

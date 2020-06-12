@@ -4,6 +4,7 @@ import Scroll from 'react-scroll'
 import YouTube from 'react-youtube'
 import { connect } from 'react-redux'
 
+import pick from '../../../common/utils/pick'
 import { RegistrationForm } from '../forms'
 import { StaticPage } from './'
 import { register } from '../actions/auth'
@@ -11,6 +12,19 @@ import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
 const totalSteps = 3
+
+const permittedFields = [
+  'city',
+  'cityCode',
+  'country',
+  'email',
+  'firstname',
+  'lastname',
+  'password',
+  'paymentMethod',
+  'phone',
+  'street',
+]
 
 const videoOptions = {
   playerVars: {
@@ -45,7 +59,7 @@ class RegistrationWizard extends Component {
       isCheckoutClicked: true,
     })
 
-    this.props.register('free', this.props.form.values)
+    this.props.register('free', pick(permittedFields, this.props.form.values))
   }
 
   onPayPalCheckout() {
@@ -53,7 +67,7 @@ class RegistrationWizard extends Component {
       isCheckoutClicked: true,
     })
 
-    this.props.register('paypal', this.props.form.values)
+    this.props.register('paypal', pick(permittedFieldsthis, this.props.form.values))
   }
 
   onTransferCheckout() {
@@ -61,7 +75,7 @@ class RegistrationWizard extends Component {
       isCheckoutClicked: true,
     })
 
-    this.props.register('transfer', this.props.form.values)
+    this.props.register('transfer', pick(permittedFieldsthisthis, this.props.form.values))
   }
 
   onTermsAcceptedChanged() {

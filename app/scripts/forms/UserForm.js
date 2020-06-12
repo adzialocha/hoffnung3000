@@ -63,6 +63,7 @@ class UserForm extends Component {
     return (
       <form className="form" onSubmit={this.props.handleSubmit}>
         { this.renderErrorMessage() }
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -70,6 +71,7 @@ class UserForm extends Component {
           name="firstname"
           type="text"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -77,7 +79,9 @@ class UserForm extends Component {
           name="lastname"
           type="text"
         />
+
         <hr />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -85,6 +89,7 @@ class UserForm extends Component {
           name="phone"
           type="text"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -92,8 +97,11 @@ class UserForm extends Component {
           name="email"
           type="email"
         />
+
         { this.renderPasswordField() }
+
         <hr />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -101,6 +109,7 @@ class UserForm extends Component {
           name="street"
           type="text"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -108,6 +117,7 @@ class UserForm extends Component {
           name="cityCode"
           type="text"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -115,6 +125,7 @@ class UserForm extends Component {
           name="city"
           type="text"
         />
+
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
@@ -122,7 +133,9 @@ class UserForm extends Component {
           name="country"
           type="text"
         />
+
         <hr />
+
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
@@ -130,6 +143,7 @@ class UserForm extends Component {
           label="Administrator"
           name="isAdmin"
         />
+
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
@@ -137,6 +151,7 @@ class UserForm extends Component {
           label="Participates at festival"
           name="isParticipant"
         />
+
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
@@ -144,7 +159,9 @@ class UserForm extends Component {
           label="Visitor"
           name="isVisitor"
         />
+
         <hr />
+
         <Field
           component={FormCheckbox}
           disabled={this.props.isLoading}
@@ -152,7 +169,9 @@ class UserForm extends Component {
           label="Account is enabled (Payment accepted)"
           name="isActive"
         />
+
         <hr />
+
         <button
           className="form__submit button button--blue"
           disabled={this.props.isLoading}

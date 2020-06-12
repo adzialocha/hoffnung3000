@@ -19,7 +19,7 @@ import {
   PlaceHasManySlots,
 } from '../database/associations'
 
-import pick from '../utils/pick'
+import pick from '../../common/utils/pick'
 import { APIError } from '../helpers/errors'
 import { createDisabledSlots } from '../../common/utils/slots'
 import { getConfig } from '../config'
@@ -38,6 +38,8 @@ const include = [
 ]
 
 const permittedFields = [
+  'accessibilityInfo',
+  'capacity',
   'city',
   'cityCode',
   'country',
@@ -86,28 +88,34 @@ function areSlotsBooked(placeId, slotIndexes) {
 
 function preparePlaceValues(body) {
   const {
+    accessibilityInfo,
+    capacity,
     description,
     isPublic,
     mode,
     title,
+    street,
+    cityCode,
+    city,
+    country,
+    latitude,
+    longitude,
   } = body
 
   const values = {
+    accessibilityInfo,
+    capacity,
     description,
     images: body.images || [],
     isPublic,
     mode,
     title,
-  }
-
-  if (mode === 'address') {
-    values.street = body.street
-    values.cityCode = body.cityCode
-    values.city = body.city
-    values.country = body.country
-  } else if (mode === 'gps') {
-    values.latitude = body.latitude
-    values.longitude = body.longitude
+    street,
+    cityCode,
+    city,
+    country,
+    latitude,
+    longitude,
   }
 
   if (body.slotSize) {

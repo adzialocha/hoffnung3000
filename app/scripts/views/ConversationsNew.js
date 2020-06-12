@@ -24,15 +24,6 @@ class ConversationsNew extends Component {
     receiverAnimals: [],
   }
 
-  componentWillMount() {
-    if (this.props.receiverAnimals.length === 0) {
-      this.props.replaceTo('/inbox')
-      return
-    }
-
-    this.props.initializeForm()
-  }
-
   onSubmit(values) {
     const { text, title } = values
     const animalIds = this.props.receiverAnimals.map(animal => animal.id)
@@ -82,6 +73,17 @@ class ConversationsNew extends Component {
         />
       </section>
     )
+  }
+
+  // @TODO: Update to modern React API
+  /* eslint-disable-next-line camelcase */
+  UNSAFE_componentWillMount() {
+    if (this.props.receiverAnimals.length === 0) {
+      this.props.replaceTo('/inbox')
+      return
+    }
+
+    this.props.initializeForm()
   }
 
   constructor(props) {

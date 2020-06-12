@@ -1,5 +1,5 @@
 import express from 'express'
-import validate from 'express-validation'
+import { validate } from 'express-validation'
 
 import metaController from '../controllers/meta'
 import configValidation from '../validation/config'

@@ -43,6 +43,22 @@ class SlotEditor extends Component {
     slots: [],
   }
 
+  onToggleAll() {
+    const slots = this.state.slots.reduce((acc, item) => {
+      if (!item.eventId) {
+        item.isDisabled = !item.isDisabled
+      }
+      acc.push(item)
+      return acc
+    }, [])
+
+    this.setState({
+      slots,
+    })
+
+    this.props.onSlotDisabledChange(this.state.slots)
+  }
+
   onSlotDisabledChange(slot, status) {
     const slots = this.state.slots.reduce((acc, item) => {
       if (item.slotIndex === slot.slotIndex) {
@@ -133,6 +149,7 @@ class SlotEditor extends Component {
   render() {
     return (
       <div className="slot-editor">
+        <button onClick={this.onToggleAll}>Toggle ALL</button>
         { this.renderContent() }
       </div>
     )
@@ -148,6 +165,7 @@ class SlotEditor extends Component {
 
     this.onSlotBookedChange = this.onSlotBookedChange.bind(this)
     this.onSlotDisabledChange = this.onSlotDisabledChange.bind(this)
+    this.onToggleAll = this.onToggleAll.bind(this)
   }
 }
 

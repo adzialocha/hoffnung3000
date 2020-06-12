@@ -1,10 +1,11 @@
-import Joi from 'joi'
+import { Joi } from 'express-validation'
 
 export default {
   createConversation: {
-    body: {
+    body: Joi.object({
       animalIds: Joi.array().min(1).items(Joi.number()).required(),
       title: Joi.string().min(3).required(),
-    },
+      text: Joi.string().required(),
+    }),
   },
 }

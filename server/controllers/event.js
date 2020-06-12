@@ -17,7 +17,7 @@ import {
   addRequestResourcesActivity,
 } from '../services/activity'
 
-import pick from '../utils/pick'
+import pick from '../../common/utils/pick'
 import { APIError } from '../helpers/errors'
 import { createEventSlots, isInClosedOrder } from '../../common/utils/slots'
 import { getConfig } from '../config'
@@ -43,7 +43,11 @@ const permittedFields = [
   'images',
   'isPublic',
   'placeId',
+  'tags',
+  'additionalInfo',
+  'ticketUrl',
   'title',
+  'websiteUrl',
 ]
 
 const belongsToAnimal = {
@@ -440,6 +444,7 @@ export default {
       })
       .catch(err => next(err))
   },
+
   findAll: (req, res, next) => {
     const {
       limit = DEFAULT_LIMIT,
@@ -459,6 +464,30 @@ export default {
       EventBelongsToManyImage,
       hasManySlots,
     ]
+
+    if (req.query.fetchAll) {
+      return Event.findAndCountAll({
+        distinct: true,
+        include: req.user.isVisitor ? includeForVisitors : include,
+        order: [
+          [EventHasManySlots, 'from', 'ASC'],
+        ],
+        where: req.user.isVisitor ? { isPublic: true } : {},
+      })
+        .then(result => {
+          return getConfig('isAnonymizationEnabled').then(config => {
+            res.json({
+              data: prepareResponseAll(
+                result.rows,
+                req,
+                config.isAnonymizationEnabled
+              ),
+              total: result.count,
+            })
+          })
+        })
+        .catch(err => next(err))
+    }
 
     return Event.findAndCountAll({
       distinct: true,

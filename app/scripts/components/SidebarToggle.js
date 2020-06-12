@@ -16,24 +16,6 @@ class SidebarToggle extends Component {
     unreadMessagesCount: PropTypes.number.isRequired,
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    const isPending = nextProps.pendingRequests > 0
-
-    if (isPending && !nextState.hasPendingRequests) {
-      timeout = setTimeout(() => {
-        this.setState({
-          hasPendingRequests: true,
-        })
-      }, SPINNER_TRESHOLD)
-    } else if (!isPending && nextState.hasPendingRequests) {
-      clearTimeout(timeout)
-
-      this.setState({
-        hasPendingRequests: false,
-      })
-    }
-  }
-
   render() {
     const hasUnreadMessages = this.props.unreadMessagesCount > 0
 
@@ -53,6 +35,26 @@ class SidebarToggle extends Component {
         <div className={sidebarToggleClasses} />
       </button>
     )
+  }
+
+  // @TODO: Update to modern React API
+  /* eslint-disable-next-line camelcase */
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
+    const isPending = nextProps.pendingRequests > 0
+
+    if (isPending && !nextState.hasPendingRequests) {
+      timeout = setTimeout(() => {
+        this.setState({
+          hasPendingRequests: true,
+        })
+      }, SPINNER_TRESHOLD)
+    } else if (!isPending && nextState.hasPendingRequests) {
+      clearTimeout(timeout)
+
+      this.setState({
+        hasPendingRequests: false,
+      })
+    }
   }
 
   constructor(props) {

@@ -15,6 +15,7 @@ module.exports = {
       gifStreamServerUrl: '',
       isActivityStreamEnabled: true,
       isAnonymizationEnabled: true,
+      isDerMarktEnabled: true,
       isInboxEnabled: true,
       isRandomMeetingEnabled: true,
       isSignUpParticipantEnabled: true,

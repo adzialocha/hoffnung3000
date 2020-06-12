@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Fragment, Component } from 'react'
 import { DateTime } from 'luxon'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
@@ -10,6 +10,7 @@ import {
   FormInput,
   FormPlaceSlotSelector,
   FormResourceSelector,
+  FormTagSelector,
   FormTextarea,
 } from '../components'
 
@@ -23,6 +24,11 @@ import { withConfig } from '../containers'
 
 const validate = values => {
   const errors = {}
+
+  function isValidURL(string) {
+    const res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g)
+    return (res !== null)
+  }
 
   if (!values.title) {
     errors.title = translate('forms.event.errors.titleRequired')
@@ -38,6 +44,28 @@ const validate = values => {
     errors.description = translate(
       'forms.common.errors.minLength', { len: 20 }
     )
+  }
+
+  if (values.tags) {
+    if (values.tags.length === 0) {
+      errors.tags = translate('forms.event.errors.setTags')
+    }
+  }
+
+  if (values.ticketUrl && values.ticketUrl !== 'https://') {
+    if (!isValidURL(values.ticketUrl)) {
+      errors.ticketUrl = translate(
+        'forms.event.errors.validUrl'
+      )
+    }
+  }
+
+  if (values.websiteUrl && values.websiteUrl !== 'https://') {
+    if (!isValidURL(values.websiteUrl)) {
+      errors.websiteUrl = translate(
+        'forms.event.errors.validUrl'
+      )
+    }
   }
 
   if (values.placeSlots) {
@@ -100,7 +128,24 @@ class EventForm extends Component {
     )
   }
 
+  renderResourcesTitle() {
+    if (!this.props.config.isDerMarktEnabled) {
+      return null
+    }
+
+    return (
+      <Fragment>
+        <hr />
+        <h2>{ translate('forms.event.pickResources') }</h2>
+      </Fragment>
+    )
+  }
+
   renderResourcesSelector() {
+    if (!this.props.config.isDerMarktEnabled) {
+      return null
+    }
+
     const { place, selectedSlotsIndexes } = this.props.placeSlots
 
     if (!place || !place.id || selectedSlotsIndexes.length === 0) {
@@ -118,6 +163,32 @@ class EventForm extends Component {
         name="resources"
         to={eventToStr}
       />
+    )
+  }
+
+  renderFormTagSelector() {
+    if (this.props.config.defaultTags.length === 0) {
+      return null
+    }
+
+    const defaultTags = this.props.config.defaultTags.map(tag =>{
+      return { label: tag, value: tag }
+    })
+
+    return (
+      <Fragment>
+        <hr />
+
+        <h2>{translate('forms.event.tags')}</h2>
+
+        <Field
+          component={FormTagSelector}
+          defaultTags={defaultTags}
+          disabled={this.props.isLoading}
+          multi={true}
+          name="tags"
+        />
+      </Fragment>
     )
   }
 
@@ -141,8 +212,38 @@ class EventForm extends Component {
           disabled={this.props.isLoading}
           label={translate('forms.event.description')}
           name="description"
+          placeholder={translate('forms.event.textFieldPlaceholder')}
           type="text"
         />
+
+        <hr />
+
+        <Field
+          component={FormInput}
+          disabled={this.props.isLoading}
+          label={translate('forms.event.websiteUrl')}
+          name="websiteUrl"
+          type="text"
+        />
+
+        <Field
+          component={FormInput}
+          disabled={this.props.isLoading}
+          label={translate('forms.event.ticketUrl')}
+          name="ticketUrl"
+          type="text"
+        />
+
+        <Field
+          component={FormTextarea}
+          disabled={this.props.isLoading}
+          label={translate('forms.event.additionalInfo')}
+          name="additionalInfo"
+          placeholder={translate('forms.event.textFieldPlaceholder')}
+          type="text"
+        />
+
+        { this.renderFormTagSelector() }
 
         <hr />
         <h2>{ translate('forms.common.uploadImages') }</h2>
@@ -166,9 +267,7 @@ class EventForm extends Component {
         <h2>{ translate('forms.event.publicOrPrivate') }</h2>
         { this.renderPrivateField() }
 
-        <hr />
-
-        <h2>{ translate('forms.event.pickResources') }</h2>
+        { this.renderResourcesTitle() }
         { this.renderResourcesSelector() }
 
         <hr />

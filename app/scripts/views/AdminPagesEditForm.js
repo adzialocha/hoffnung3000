@@ -3,9 +3,16 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import pick from '../../../common/utils/pick'
 import { cachedResource } from '../services/resources'
 import { fetchResource, updateResource } from '../actions/resources'
 import { PageForm } from '../forms'
+
+const permittedFields = [
+  'slug',
+  'title',
+  'content',
+]
 
 class AdminPagesEditForm extends Component {
   static propTypes = {
@@ -30,7 +37,7 @@ class AdminPagesEditForm extends Component {
       text: 'Successfully updated page',
     }
 
-    this.props.updateResource('pages', this.props.resourceId, values, flash)
+    this.props.updateResource('pages', this.props.resourceId, pick(permittedFields, values), flash)
   }
 
   renderForm() {
