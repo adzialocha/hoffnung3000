@@ -3,9 +3,16 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import pick from '../../../common/utils/pick'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
 import { PageForm } from '../forms'
+
+const permittedFields = [
+  'slug',
+  'title',
+  'content',
+]
 
 class AdminPagesNewForm extends Component {
   static propTypes = {
@@ -23,7 +30,7 @@ class AdminPagesNewForm extends Component {
     this.props.createResource(
       'pages',
       this.props.nextRandomId,
-      values,
+      pick(permittedFields, values),
       flash,
       '/admin/pages/all'
     )
@@ -35,6 +42,7 @@ class AdminPagesNewForm extends Component {
         <h1>New Page</h1>
         <Link className="button" to="/admin/pages/all/1">Back to overview</Link>
         <hr />
+
         <PageForm
           errorMessage={this.props.errorMessage}
           isLoading={this.props.isLoading}

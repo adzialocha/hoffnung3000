@@ -4,9 +4,25 @@ import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import pick from '../../../common/utils/pick'
 import { UserForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { fetchResource, updateResource } from '../actions/resources'
+
+const permittedFields = [
+  'city',
+  'cityCode',
+  'country',
+  'email',
+  'firstname',
+  'isAdmin',
+  'isActive',
+  'isParticipant',
+  'isVisitor',
+  'lastname',
+  'phone',
+  'street',
+]
 
 class AdminUsersEditForm extends Component {
   static propTypes = {
@@ -31,7 +47,7 @@ class AdminUsersEditForm extends Component {
       text: 'Successfully updated user',
     }
 
-    this.props.updateResource('users', this.props.resourceId, values, flash)
+    this.props.updateResource('users', this.props.resourceId, pick(permittedFields, values), flash)
   }
 
   renderMeta() {
