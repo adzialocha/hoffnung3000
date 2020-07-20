@@ -395,7 +395,7 @@ function findOneWithSlug(slug, req, res, next) {
     ],
   })
     .then(data => {
-      if (!data.isPublic && req.user.isVisitor) {
+      if ((!data.isPublic || !data.place.isPublic) && req.user.isVisitor) {
         next(
           new APIError(
             'Requested resource is not public',

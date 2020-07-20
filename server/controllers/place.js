@@ -136,6 +136,16 @@ function findOneWithSlug(slug, req, res, next) {
     },
   })
     .then(data => {
+      if (!data.isPublic && req.user.isVisitor) {
+        next(
+          new APIError(
+            'Requested resource is not public',
+            httpStatus.FORBIDDEN
+          )
+        )
+        return null
+      }
+
       return getConfig('isAnonymizationEnabled').then(config => {
         const response = prepareResponse(
           data,
@@ -202,6 +212,7 @@ export default {
       order: [
         ['createdAt', 'DESC'],
       ],
+      where: req.user.isVisitor ? { isPublic: true } : {},
     })
       .then(result => {
         return getConfig('isAnonymizationEnabled').then(config => {
