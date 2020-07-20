@@ -14,16 +14,10 @@ import { withConfig } from '../containers'
 const totalSteps = 3
 
 const permittedFields = [
-  'city',
-  'cityCode',
-  'country',
   'email',
   'firstname',
   'lastname',
   'password',
-  'paymentMethod',
-  'phone',
-  'street',
 ]
 
 const videoOptions = {

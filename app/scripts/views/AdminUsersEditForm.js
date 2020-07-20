@@ -10,9 +10,6 @@ import { cachedResource } from '../services/resources'
 import { fetchResource, updateResource } from '../actions/resources'
 
 const permittedFields = [
-  'city',
-  'cityCode',
-  'country',
   'email',
   'firstname',
   'isAdmin',
@@ -20,8 +17,6 @@ const permittedFields = [
   'isParticipant',
   'isVisitor',
   'lastname',
-  'phone',
-  'street',
 ]
 
 class AdminUsersEditForm extends Component {

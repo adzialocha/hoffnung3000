@@ -85,54 +85,12 @@ class UserForm extends Component {
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label="Mobile phone number"
-          name="phone"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
           label="E-Mail-Address"
           name="email"
           type="email"
         />
 
         { this.renderPasswordField() }
-
-        <hr />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label="Street and number"
-          name="street"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label="City code"
-          name="cityCode"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label="City"
-          name="city"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label="Country"
-          name="country"
-          type="text"
-        />
 
         <hr />
 

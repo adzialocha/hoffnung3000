@@ -9,9 +9,6 @@ import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
 
 const permittedFields = [
-  'city',
-  'cityCode',
-  'country',
   'email',
   'firstname',
   'isActive',
@@ -20,8 +17,6 @@ const permittedFields = [
   'isVisitor',
   'lastname',
   'password',
-  'phone',
-  'street',
 ]
 
 class AdminUsersNewForm extends Component {
