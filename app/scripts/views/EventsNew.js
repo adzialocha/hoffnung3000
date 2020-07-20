@@ -73,7 +73,7 @@ class EventsNew extends Component {
           errorMessage={this.props.errorMessage}
           initialValues={
             {
-              isPublic: true,
+              isPublic: false,
               tags: [],
               ticketUrl: 'https://',
               websiteUrl: 'https://',
