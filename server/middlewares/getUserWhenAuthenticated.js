@@ -12,7 +12,10 @@ export function getUserWhenAuthenticated(req, res, next) {
     if (user) {
       req.user = user
     } else {
-      req.user = {}
+      req.user = {
+        isVisitor: true,
+        isParticipant: false,
+      }
     }
 
     next()

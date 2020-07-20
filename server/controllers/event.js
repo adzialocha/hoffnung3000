@@ -465,35 +465,10 @@ export default {
       hasManySlots,
     ]
 
-    if (req.query.fetchAll) {
-      return Event.findAndCountAll({
-        distinct: true,
-        include: req.user.isVisitor ? includeForVisitors : include,
-        order: [
-          [EventHasManySlots, 'from', 'ASC'],
-        ],
-        where: req.user.isVisitor ? { isPublic: true } : {},
-      })
-        .then(result => {
-          return getConfig('isAnonymizationEnabled').then(config => {
-            res.json({
-              data: prepareResponseAll(
-                result.rows,
-                req,
-                config.isAnonymizationEnabled
-              ),
-              total: result.count,
-            })
-          })
-        })
-        .catch(err => next(err))
-    }
-
     return Event.findAndCountAll({
+      ...req.query.fetchAll ? null : { limit, offset },
       distinct: true,
       include: req.user.isVisitor ? includeForVisitors : include,
-      limit,
-      offset,
       order: [
         [EventHasManySlots, 'from', 'ASC'],
       ],
