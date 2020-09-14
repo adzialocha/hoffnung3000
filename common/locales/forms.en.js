@@ -142,12 +142,12 @@ export default {
   },
   resource: {
     errors: {
-      descriptionRequired: 'Describe your resource a little',
-      titleRequired: 'Please give your resource a title',
+      descriptionRequired: 'Describe your interests / ideas a little',
+      titleRequired: 'Please give it a name',
     },
-    description: 'Describe your resource briefly',
+    description: 'Describe your interests / ideas',
     submit: 'Done. Save it!',
-    title: 'Title of your resource',
+    title: 'Name',
   },
   event: {
     errors: {
