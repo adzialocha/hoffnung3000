@@ -16,7 +16,7 @@ export default {
     home: 'Home',
     information: 'Information',
     places: 'Places',
-    resources: 'Der Markt',
+    resources: 'Resources',
     stream: 'Stream',
     tickets: 'Tickets',
   },

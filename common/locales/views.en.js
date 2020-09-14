@@ -36,7 +36,7 @@ export default {
     createNewButton: 'Create resources',
     createNewTitle: 'Create new resources',
     titlePlaceholder: 'Resource',
-    indexTitle: 'Der Markt',
+    indexTitle: 'Resources',
   },
   events: {
     calendarTitle: 'Calendar',
