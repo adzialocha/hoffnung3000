@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { PlaceForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { createResource } from '../actions/resources'
+import { findGPSCoordinates } from '../services/gps'
 import { getDisabledSlotIndexes, generateNewSlotItems } from '../../../common/utils/slots'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
@@ -23,7 +24,7 @@ class PlacesNew extends Component {
   }
 
   onSubmit(values) {
-    const { title, description, isPublic, images } = values
+    const { accessibilityInfo, capacity, title, description, isPublic, images } = values
     const { slotSize, slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []
 
@@ -31,32 +32,49 @@ class PlacesNew extends Component {
       text: translate('flash.createPlaceSuccess'),
     }
 
-    const requestParams = {
-      ...values.location,
-      description,
-      disabledSlots,
-      images,
-      isPublic,
-      slotSize,
-      title,
-    }
+    const preparePlaceValues = new Promise(resolve => {
+      const requestParams = {
+        ...values.location,
+        accessibilityInfo,
+        capacity,
+        description,
+        disabledSlots,
+        images,
+        isPublic,
+        slotSize,
+        title,
+      }
 
-    this.props.createResource(
-      'places',
-      this.props.nextRandomId,
-      requestParams,
-      flash,
-      '/places'
-    )
+      if (values.location.mode === 'address') {
+        // Try to fetch the GPS coordinates of this address
+        const address = `${values.location.street}, ${values.location.cityCode}, ${values.location.city}`
+
+        findGPSCoordinates(address)
+          .then(({ latitude, longitude }) => {
+            resolve(Object.assign({}, requestParams, {
+              latitude,
+              longitude,
+            }))
+          })
+      } else {
+        resolve(requestParams)
+      }
+    })
+
+    preparePlaceValues
+      .then(requestParams => {
+        this.props.createResource(
+          'places',
+          this.props.nextRandomId,
+          requestParams,
+          flash,
+          '/places'
+        )
+      })
   }
 
   render() {
     const { config } = this.props
-    const { festivalDateStart, festivalDateEnd } = config
-
-    const slots = generateNewSlotItems(
-      DEFAULT_SLOT_SIZE, null, festivalDateStart, festivalDateEnd
-    )
 
     const initialValues = {
       isPublic: true,
@@ -71,8 +89,9 @@ class PlacesNew extends Component {
       },
       slots: {
         slotSize: DEFAULT_SLOT_SIZE,
-        slots,
+        slots: this.state.generatedSlots.slots,
       },
+      areSlotsDisabled: this.state.generatedSlots.disableSlots,
     }
 
     return (
@@ -93,6 +112,22 @@ class PlacesNew extends Component {
         />
       </section>
     )
+  }
+
+  // @TODO: Update to modern React API
+  /* eslint-disable-next-line camelcase */
+  UNSAFE_componentWillMount() {
+    const { config } = this.props
+    const { festivalDateStart, festivalDateEnd } = config
+
+    const slots = generateNewSlotItems(DEFAULT_SLOT_SIZE, [], festivalDateStart, festivalDateEnd)
+
+    this.setState({
+      generatedSlots: {
+        slots: slots,
+        disableSlots: false,
+      },
+    })
   }
 
   constructor(props) {

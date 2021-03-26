@@ -42,6 +42,14 @@ Read the [Handbook](https://hoffnung3000.de) for more information about setup, c
 
 HOFFNUNG 3000 was developed for a self-curated festival for music, art and theory organized by [BLATT 3000](https://blatt3000.de) and [Klangkeller](http://www.klangkeller.net/), 24.-26.08.17 in Berlin - HOFFNUNG 3000 is an experiment in social, artistic and theoretical collaboration. Feel free to use the platform for your own festivals. :panda_face:
 
+## Projects using the platform
+
+* https://blatt3000.de/ (HOFFNUNG 3000 festival, Berlin DE)
+* https://2020.antiuniversity.org/ (ANTI UNIVERSITY 2020, London UK)
+* https://freilauf.camp/ (DIY Bike Camp, Berlin DE)
+* https://www.femmusicgather.org/ (Feminist UdK Course 2020, Berlin DE)
+* https://www.molekuel-festival.de/ (Music festival, Cologne DE)
+
 ## License
 
 GNU Affero General Public License v3.0 `AGPL-3.0`

@@ -1,13 +1,14 @@
 import express from 'express'
 import expressValidation from 'express-validation'
 import httpStatus from 'http-status'
-import { EmptyResultError, ValidationError } from 'sequelize'
+import sequelize from 'sequelize'
 
-import passport from '../services/passport'
 import { APIError } from '../helpers/errors'
 
+import checkConfig from '../middlewares/configs'
 import upload from '../middlewares/upload'
 import { onlyAdmin } from '../middlewares/roles'
+import { authorizeJWT } from '../middlewares/authorizeJWT'
 
 import activityController from '../controllers/activity'
 import eventPreviewController from '../controllers/eventPreview'
@@ -25,7 +26,6 @@ import placeRoutes from './place'
 import profileRoutes from './profile'
 import resourceRoutes from './resource'
 import userRoutes from './user'
-
 import logger from '../helpers/logger'
 
 const router = express.Router() // eslint-disable-line new-cap
@@ -45,28 +45,18 @@ router.route('/meta')
 router.route('/preview')
   .get(eventPreviewController.findAll)
 
-// Private API routes
-router.use('/*', (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, (err, user) => {
-    if (err) {
-      return next(err)
-    }
-    if (!user) {
-      return next(
-        new APIError('Unauthorized', httpStatus.UNAUTHORIZED)
-      )
-    }
-    req.user = user
-    return next()
-  })(req, res, next)
-})
+// Public API routes when festivalTicketPrice === 0
 
-router.use('/conversations', conversationRoutes)
 router.use('/events', eventRoutes)
-router.use('/meeting', meetingRoutes)
 router.use('/places', placeRoutes)
+
+// Private API routes
+router.use(authorizeJWT)
+
+router.use('/conversations', checkConfig('isInboxEnabled'), conversationRoutes)
+router.use('/meeting', checkConfig('isRandomMeetingEnabled'), meetingRoutes)
 router.use('/profile', profileRoutes)
-router.use('/resources', resourceRoutes)
+router.use('/resources', checkConfig('isDerMarktEnabled'), resourceRoutes)
 
 router.route('/status')
   .get(userStatusController.status)
@@ -87,25 +77,28 @@ router.use('/users', userRoutes)
 // API error handling
 router.use((err, req, res, next) => {
   if (err) {
-    logger.error(err.stack)
+    logger.error(err, err.stack)
   }
 
   if (err instanceof expressValidation.ValidationError) {
+    const unifiedMessage = Object.keys(err.details).reduce((acc, key) => {
+      err.details[key].forEach(error => {
+        acc.push(error.message)
+      })
+      return acc
+    }, []).join(' and ')
+    const apiError = new APIError(unifiedMessage, httpStatus.BAD_REQUEST, true)
+    return next(apiError)
+  } else if (err instanceof sequelize.ValidationError) {
     // Validation error contains errors which is an
     // array of error each containing message[]
     const unifiedMessage = err.errors.map(
-      error => error.messages.join('. ')
+      error => error.message
     ).join(' and ')
     const error = new APIError(unifiedMessage, httpStatus.BAD_REQUEST, true)
     return next(error)
-  } else if (err instanceof EmptyResultError) {
+  } else if (err instanceof sequelize.EmptyResultError) {
     const apiError = new APIError(err.message, httpStatus.NOT_FOUND, true)
-    return next(apiError)
-  } else if (err instanceof ValidationError) {
-    const unifiedMessage = err.errors.map(
-      error => error.message
-    ).join(' and ')
-    const apiError = new APIError(unifiedMessage, httpStatus.BAD_REQUEST, true)
     return next(apiError)
   } else if (!(err instanceof APIError)) {
     const apiError = new APIError(err.message, err.status, err.isPublic)

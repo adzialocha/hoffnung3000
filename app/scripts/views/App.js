@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
+import { withConfig } from '../containers'
 import {
   FlashMessageStage,
   Footer,
@@ -28,4 +30,12 @@ class App extends Component {
   }
 }
 
-export default App
+function mapStateToProps(state) {
+  return {
+    ...state.meta,
+  }
+}
+
+export default connect(
+  mapStateToProps, {}
+)(withConfig(App))

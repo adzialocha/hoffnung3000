@@ -40,13 +40,6 @@ export default function withConfig(...args) {
       updateMetaInformation: PropTypes.func.isRequired,
     }
 
-    componentWillMount() {
-      // Fetch configuration from server when not given yet
-      if (!this.props.isReady && !this.props.isLoading) {
-        this.props.updateMetaInformation()
-      }
-    }
-
     render() {
       if (!this.props.isReady) {
         return null
@@ -62,6 +55,15 @@ export default function withConfig(...args) {
       }
 
       return <WrappedComponent config={this.props.config} {...this.props} />
+    }
+
+    // @TODO: Update to modern React API
+    /* eslint-disable-next-line camelcase */
+    UNSAFE_componentWillMount() {
+      // Fetch configuration from server when not given yet
+      if (!this.props.isReady && !this.props.isLoading) {
+        this.props.updateMetaInformation()
+      }
     }
   }
 

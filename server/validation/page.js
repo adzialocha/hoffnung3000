@@ -1,21 +1,21 @@
-import Joi from 'joi'
+import { Joi } from 'express-validation'
 
 export default {
   createPage: {
-    body: {
+    body: Joi.object({
       slug: Joi.string().required(),
       title: Joi.string().required(),
       content: Joi.string().required(),
-    },
+    }),
   },
   updatePage: {
-    body: {
+    body: Joi.object({
       slug: Joi.string().required(),
       title: Joi.string().required(),
       content: Joi.string().required(),
-    },
-    params: {
+    }),
+    params: Joi.object({
       resourceId: Joi.string().required(),
-    },
+    }),
   },
 }

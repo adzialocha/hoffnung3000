@@ -1,14 +1,16 @@
-import Joi from 'joi'
+import { Joi } from 'express-validation'
 
 export default {
   updateConfig: {
-    body: {
+    body: Joi.object({
       baseUrl: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
       currency: Joi.string().uppercase().length(3).required(),
       defaultCity: Joi.string().required(),
       defaultCountry: Joi.string().required(),
       defaultLatitude: Joi.number().required(),
       defaultLongitude: Joi.number().required(),
+      defaultTags: Joi.array().items(Joi.string()),
+      defaultZoom: Joi.number().required(),
       description: Joi.string().required(),
       festivalDateEnd: Joi.string().isoDate().required(),
       festivalDateStart: Joi.string().isoDate().required(),
@@ -16,6 +18,7 @@ export default {
       gifStreamServerUrl: Joi.string().empty('').uri({ scheme: ['http', 'https'] }),
       isActivityStreamEnabled: Joi.boolean().required(),
       isAnonymizationEnabled: Joi.boolean().required(),
+      isDerMarktEnabled: Joi.boolean().required(),
       isInboxEnabled: Joi.boolean().required(),
       isRandomMeetingEnabled: Joi.boolean().required(),
       isSignUpParticipantEnabled: Joi.boolean().required(),
@@ -31,6 +34,6 @@ export default {
       transferReceiverName: Joi.string().empty(''),
       videoHomeId: Joi.string().empty(''),
       videoIntroductionId: Joi.string().empty(''),
-    },
+    }),
   },
 }

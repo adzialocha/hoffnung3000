@@ -69,12 +69,12 @@ class FormSlotSizeEditor extends Component {
           <ReactSlider
             className="react-slider"
             disabled={this.props.disabled}
-            handleActiveClassName="react-slider__handle--active"
-            handleClassName="react-slider__handle"
             max={SLOT_SIZE_MAX}
             min={SLOT_SIZE_MIN}
             orientation="horizontal"
             step={SLOT_SIZE_STEP}
+            thumbActiveClassName="react-slider__handle--active"
+            thumbClassName="react-slider__handle"
             value={this.props.input.value.slotSize}
             onChange={this.onSlotSizeChange}
             onSliderClick={this.onFocus}

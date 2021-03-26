@@ -1,5 +1,5 @@
 import express from 'express'
-import validate from 'express-validation'
+import { validate } from 'express-validation'
 
 import resourceController from '../controllers/resource'
 import resourceValidation from '../validation/resource'

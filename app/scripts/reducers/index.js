@@ -13,6 +13,7 @@ import meeting from './meeting'
 import meta from './meta'
 import page from './page'
 import paginatedList from './paginatedList'
+import resourceList from './resourceList'
 import resources from './resources'
 import slots from './slots'
 import ticket from './ticket'
@@ -32,6 +33,7 @@ export default history => combineReducers({
   meta,
   page,
   paginatedList,
+  resourceList,
   resources,
   router: connectRouter(history),
   slots,

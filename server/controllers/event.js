@@ -17,7 +17,7 @@ import {
   addRequestResourcesActivity,
 } from '../services/activity'
 
-import pick from '../utils/pick'
+import pick from '../../common/utils/pick'
 import { APIError } from '../helpers/errors'
 import { createEventSlots, isInClosedOrder } from '../../common/utils/slots'
 import { getConfig } from '../config'
@@ -43,7 +43,11 @@ const permittedFields = [
   'images',
   'isPublic',
   'placeId',
+  'tags',
+  'additionalInfo',
+  'ticketUrl',
   'title',
+  'websiteUrl',
 ]
 
 const belongsToAnimal = {
@@ -391,7 +395,7 @@ function findOneWithSlug(slug, req, res, next) {
     ],
   })
     .then(data => {
-      if (!data.isPublic && req.user.isVisitor) {
+      if ((!data.isPublic || !data.place.isPublic) && req.user.isVisitor) {
         next(
           new APIError(
             'Requested resource is not public',
@@ -440,6 +444,7 @@ export default {
       })
       .catch(err => next(err))
   },
+
   findAll: (req, res, next) => {
     const {
       limit = DEFAULT_LIMIT,
@@ -461,10 +466,9 @@ export default {
     ]
 
     return Event.findAndCountAll({
+      ...req.query.fetchAll ? null : { limit, offset },
       distinct: true,
       include: req.user.isVisitor ? includeForVisitors : include,
-      limit,
-      offset,
       order: [
         [EventHasManySlots, 'from', 'ASC'],
       ],

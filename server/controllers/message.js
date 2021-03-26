@@ -8,7 +8,7 @@ import {
 } from './base'
 
 import db from '../database'
-import pick from '../utils/pick'
+import pick from '../../common/utils/pick'
 
 import ConversationAnimal from '../models/conversationAnimal'
 import Message from '../models/message'
@@ -53,29 +53,22 @@ export default {
   create: (req, res, next) => {
     const values = pick(permittedFields, req.body)
 
-    return getConfig('isInboxEnabled').then(config => {
-      if (!config.isInboxEnabled) {
-        next(new APIError('Messaging is not available', httpStatus.FORBIDDEN))
-        return null
-      }
-
-      // Create a message in that conversation
-      return Message.create({
-        animalId: req.meAnimal.id,
-        conversationId: req.conversation.id,
-        text: values.text,
-      })
-        .then(() => {
-          return addMessageActivity({
-            sendingAnimal: req.meAnimal,
-            receivingAnimals: req.otherAnimals,
-          })
-        })
-        .then(() => {
-          res.json({ status: 'ok' })
-        })
-        .catch(err => next(err))
+    // Create a message in that conversation
+    return Message.create({
+      animalId: req.meAnimal.id,
+      conversationId: req.conversation.id,
+      text: values.text,
     })
+      .then(() => {
+        return addMessageActivity({
+          sendingAnimal: req.meAnimal,
+          receivingAnimals: req.otherAnimals,
+        })
+      })
+      .then(() => {
+        res.json({ status: 'ok' })
+      })
+      .catch(err => next(err))
   },
   findAll: (req, res, next) => {
     const {
@@ -83,15 +76,7 @@ export default {
       offset = DEFAULT_OFFSET,
     } = req.query
 
-    return getConfig([
-      'isInboxEnabled',
-      'isAnonymizationEnabled',
-    ]).then(config => {
-      if (!config.isInboxEnabled) {
-        next(new APIError('Messaging is not available', httpStatus.FORBIDDEN))
-        return null
-      }
-
+    return getConfig(['isAnonymizationEnabled']).then(config => {
       // Find related conversation
       return Message.findAndCountAll({
         where: {

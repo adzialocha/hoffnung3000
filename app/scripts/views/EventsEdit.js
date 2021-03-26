@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import flash from '../actions/flash'
 import getIds from '../utils/getIds'
+import { EventForm } from '../forms'
 import { cachedResource } from '../services/resources'
 import { confirm } from '../services/dialog'
-import { EventForm } from '../forms'
 import {
   deleteResource,
   fetchResource,
@@ -46,7 +46,16 @@ class EventsEdit extends Component {
       text: translate('flash.updateEventSuccess'),
     }
 
-    const { title, description, isPublic, images } = values
+    const { tags, title, description, isPublic, images, additionalInfo } = values
+    let { ticketUrl, websiteUrl } = values
+
+    if (websiteUrl === 'https://') {
+      websiteUrl = ''
+    }
+
+    if (ticketUrl === 'https://') {
+      ticketUrl = ''
+    }
 
     const requestParams = {
       description,
@@ -55,7 +64,11 @@ class EventsEdit extends Component {
       placeId: values.placeSlots.place.id,
       resources: getIds(values.resources),
       slots: values.placeSlots.selectedSlotsIndexes,
+      tags,
+      additionalInfo,
+      ticketUrl,
       title,
+      websiteUrl,
     }
 
     this.props.updateResource(
@@ -90,6 +103,7 @@ class EventsEdit extends Component {
     }
 
     const {
+      additionalInfo,
       description,
       id,
       images,
@@ -97,8 +111,22 @@ class EventsEdit extends Component {
       place,
       resources,
       slots,
+      tags,
       title,
     } = this.props.resourceData
+
+    let {
+      ticketUrl,
+      websiteUrl,
+    } = this.props.resourceData
+
+    if (websiteUrl === '') {
+      websiteUrl = 'https://'
+    }
+
+    if (ticketUrl === '') {
+      ticketUrl = 'https://'
+    }
 
     const selectedSlotsIndexes = slots.map(slot => slot.slotIndex)
     selectedSlotsIndexes.sort((slotA, slotB) => slotA - slotB)
@@ -112,7 +140,11 @@ class EventsEdit extends Component {
         place,
         selectedSlotsIndexes,
       },
+      tags,
+      additionalInfo,
+      ticketUrl,
       title,
+      websiteUrl,
     }
 
     return (

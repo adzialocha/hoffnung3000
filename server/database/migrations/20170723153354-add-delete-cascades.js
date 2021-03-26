@@ -1,9 +1,10 @@
 module.exports = {
   up: queryInterface => {
     return Promise.all([
-      queryInterface.addConstraint('places', ['animalId'], {
+      queryInterface.addConstraint('places', {
         name: 'place_animal_id_fkey',
         type: 'FOREIGN KEY',
+        fields: ['animalId'],
         references: {
           field: 'id',
           table: 'animals',
@@ -11,9 +12,10 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
-      queryInterface.addConstraint('events', ['animalId'], {
+      queryInterface.addConstraint('events', {
         name: 'event_animal_id_fkey',
         type: 'FOREIGN KEY',
+        fields: ['animalId'],
         references: {
           field: 'id',
           table: 'animals',
@@ -21,9 +23,10 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
-      queryInterface.addConstraint('resources', ['animalId'], {
+      queryInterface.addConstraint('resources', {
         name: 'resource_animal_id_fkey',
         type: 'FOREIGN KEY',
+        fields: ['animalId'],
         references: {
           field: 'id',
           table: 'animals',
@@ -31,19 +34,20 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
-      queryInterface.addConstraint('resourcesEvents', ['resourceId'], {
+      queryInterface.addConstraint('resourcesEvents', {
         name: 'resources_events_resource_id_fkey',
         type: 'FOREIGN KEY',
+        fields: ['resourceId'],
         references: {
           field: 'id',
           table: 'resources',
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE', onUpdate: 'CASCADE',
       }),
-      queryInterface.addConstraint('resourcesEvents', ['eventId'], {
+      queryInterface.addConstraint('resourcesEvents', {
         name: 'resources_events_event_id_fkey',
         type: 'FOREIGN KEY',
+        fields: ['eventId'],
         references: {
           field: 'id',
           table: 'events',

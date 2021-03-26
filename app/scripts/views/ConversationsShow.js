@@ -25,13 +25,6 @@ class ConversationsShow extends Component {
     sendNewMessage: PropTypes.func.isRequired,
   }
 
-  componentWillMount() {
-    this.props.fetchResource(
-      'conversations',
-      this.props.conversationId
-    )
-  }
-
   onSubmit(values) {
     this.props.sendNewMessage(
       this.props.conversationId,
@@ -120,6 +113,15 @@ class ConversationsShow extends Component {
     )
   }
 
+  // @TODO: Update to modern React API
+  /* eslint-disable-next-line camelcase */
+  UNSAFE_componentWillMount() {
+    this.props.fetchResource(
+      'conversations',
+      this.props.conversationId
+    )
+  }
+
   constructor(props) {
     super(props)
 
@@ -130,10 +132,12 @@ class ConversationsShow extends Component {
 function mapStateToProps(state, ownProps) {
   const conversationId = ownProps.match.params.id
   const resource = cachedResource('conversations', conversationId)
+
   const {
     isLoading: isLoadingConversation,
     object: conversationData,
   } = resource
+
   const {
     errorMessage,
     isLoading: isLoadingMessage,

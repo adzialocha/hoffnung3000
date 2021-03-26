@@ -1,8 +1,8 @@
-import Joi from 'joi'
+import { Joi } from 'express-validation'
 
 export default {
   signup: {
-    body: {
+    body: Joi.object({
       city: Joi.string().required(),
       cityCode: Joi.string().required(),
       country: Joi.string().required(),
@@ -13,23 +13,23 @@ export default {
       paymentMethod: Joi.string().allow('paypal', 'transfer').required(),
       phone: Joi.string().required(),
       street: Joi.string().required(),
-    },
+    }),
   },
   login: {
-    body: {
+    body: Joi.object({
       email: Joi.string().email().required(),
       password: Joi.string().required(),
-    },
+    }),
   },
   requestResetToken: {
-    body: {
+    body: Joi.object({
       email: Joi.string().email().required(),
-    },
+    }),
   },
   resetPassword: {
-    body: {
+    body: Joi.object({
       password: Joi.string().min(8).required(),
       token: Joi.string().required(),
-    },
+    }),
   },
 }

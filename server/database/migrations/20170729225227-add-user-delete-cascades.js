@@ -1,9 +1,10 @@
 module.exports = {
   up: queryInterface => {
     return Promise.all([
-      queryInterface.addConstraint('animals', ['userId'], {
+      queryInterface.addConstraint('animals', {
         name: 'animal_user_id_fkey',
         type: 'FOREIGN KEY',
+        fields: ['userId'],
         references: {
           field: 'id',
           table: 'users',
@@ -11,9 +12,10 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
-      queryInterface.addConstraint('slots', ['placeId'], {
+      queryInterface.addConstraint('slots', {
         name: 'slot_place_id_fkey',
         type: 'FOREIGN KEY',
+        fields: ['placeId'],
         references: {
           field: 'id',
           table: 'places',
@@ -21,9 +23,10 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
-      queryInterface.addConstraint('slots', ['eventId'], {
+      queryInterface.addConstraint('slots', {
         name: 'slot_event_id_fkey',
         type: 'FOREIGN KEY',
+        fields: ['eventId'],
         references: {
           field: 'id',
           table: 'events',
@@ -31,9 +34,10 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
-      queryInterface.addConstraint('conversations', ['animalId'], {
+      queryInterface.addConstraint('conversations', {
         name: 'conversation_animal_id_fkey',
         type: 'FOREIGN KEY',
+        fields: ['animalId'],
         references: {
           field: 'id',
           table: 'animals',
@@ -41,9 +45,10 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
-      queryInterface.addConstraint('messages', ['animalId'], {
+      queryInterface.addConstraint('messages', {
         name: 'message_animal_id_fkey',
         type: 'FOREIGN KEY',
+        fields: ['animalId'],
         references: {
           field: 'id',
           table: 'animals',
@@ -51,9 +56,10 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
-      queryInterface.addConstraint('messages', ['conversationId'], {
+      queryInterface.addConstraint('messages', {
         name: 'message_conversation_id_fkey',
         type: 'FOREIGN KEY',
+        fields: ['conversationId'],
         references: {
           field: 'id',
           table: 'conversations',

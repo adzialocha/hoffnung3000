@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-import { FormInput, FormCheckbox } from '../components'
+import { FormInput, FormCheckbox, FormLocationMap } from '../components'
 
 import { translate } from '../../../common/services/i18n'
 
@@ -45,12 +45,8 @@ const validate = values => {
     errors.defaultCountry = translate('forms.common.errors.required')
   }
 
-  if (!values.defaultLatitude) {
-    errors.defaultLatitude = translate('forms.common.errors.required')
-  }
-
-  if (!values.defaultLongitude) {
-    errors.defaultLongitude = translate('forms.common.errors.required')
+  if (!values.defaultGPS) {
+    errors.defaultGPS = translate('forms.common.errors.required')
   }
 
   if (!values.festivalDateStart) {
@@ -119,6 +115,14 @@ class AdminConfigForm extends Component {
           type="text"
         />
 
+        <Field
+          component={FormInput}
+          disabled={this.props.isLoading}
+          label={translate('forms.config.defaultTags')}
+          name="defaultTags"
+          type="text"
+        />
+
         <hr />
 
         <h2>{ translate('forms.config.mails') }</h2>
@@ -166,19 +170,10 @@ class AdminConfigForm extends Component {
         />
 
         <Field
-          component={FormInput}
+          component={FormLocationMap}
           disabled={this.props.isLoading}
-          label={translate('forms.config.defaultLatitude')}
-          name="defaultLatitude"
-          type="text"
-        />
-
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.config.defaultLongitude')}
-          name="defaultLongitude"
-          type="text"
+          label={translate('forms.config.defaultFestivalGPS')}
+          name="defaultGPS"
         />
 
         <hr />
@@ -325,6 +320,14 @@ class AdminConfigForm extends Component {
           component={FormCheckbox}
           disabled={this.props.isLoading}
           inline={true}
+          label={translate('forms.config.isDerMarktEnabled')}
+          name="isDerMarktEnabled"
+        />
+
+        <Field
+          component={FormCheckbox}
+          disabled={this.props.isLoading}
+          inline={true}
           label={translate('forms.config.isSignUpParticipantEnabled')}
           name="isSignUpParticipantEnabled"
         />
@@ -363,10 +366,10 @@ class AdminConfigForm extends Component {
   }
 }
 
-export default reduxForm({
-  // destroyOnUnmount: false,
+AdminConfigForm = reduxForm({
   enableReinitialize: true,
-  // forceUnregisterOnUnmount: true,
   form: 'config',
   validate,
 })(AdminConfigForm)
+
+export default AdminConfigForm

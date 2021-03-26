@@ -19,23 +19,71 @@ class AdminConfigPanel extends Component {
     form: {},
   }
 
-  componentWillMount() {
-    this.props.updateMetaInformation(true)
-  }
-
   onSave() {
-    this.props.saveConfiguration(this.props.form.values)
+    // Create an updated / new config
+    const newConfig = Object.assign({}, this.props.form.values)
+    const oldConfig = this.props.config
+
+    const { defaultTags, defaultGPS } = this.props.form.values
+
+    // Prepare new default tags
+    if (!Array.isArray(defaultTags) && defaultTags) {
+      newConfig.defaultTags = defaultTags.replace(/\s+/g, '').split(',')
+    } else {
+      newConfig.defaultTags = defaultTags || []
+    }
+
+    // Prepare new default GPS position
+    if (defaultGPS) {
+      const { latitude, longitude, zoom } = defaultGPS
+
+      newConfig.defaultLatitude = latitude || oldConfig.defaultLatitude
+      newConfig.defaultLongitude = longitude || oldConfig.defaultLongitude
+      newConfig.defaultZoom = zoom || oldConfig.defaultZoom
+    }
+
+    // Fill in fields from older config, when not set and store it!
+    const config = Object.assign({}, this.props.config, newConfig)
+
+    // Remove unused fields
+    delete config.defaultGPS
+    delete config.isTransferEnabled
+    delete config.isPayPalEnabled
+    delete config.app
+
+    this.props.saveConfiguration(config)
   }
 
   render() {
+    const config = Object.assign({}, this.props.config)
+
+    // Convert GPS position to form format
+    const defaultGPS = {
+      latitude: config.defaultLatitude,
+      longitude: config.defaultLongitude,
+      zoom: config.defaultZoom,
+    }
+
+    config.defaultGPS = defaultGPS
+
+    delete config.defaultLatitude
+    delete config.defaultLongitude
+    delete config.zoom
+
     return (
       <AdminConfigForm
         errorMessage={this.props.errorMessage}
-        initialValues={ { ...this.props.config } }
+        initialValues={ { ...config } }
         isLoading={this.props.isLoading}
         onSubmit={this.onSave}
       />
     )
+  }
+
+  // @TODO: Update to modern React API
+  /* eslint-disable-next-line camelcase */
+  UNSAFE_componentWillMount() {
+    this.props.updateMetaInformation(true)
   }
 
   constructor(props) {

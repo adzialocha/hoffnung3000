@@ -23,6 +23,8 @@ const Config = db.define('config', {
   defaultCountry: configField(Sequelize.CHAR),
   defaultLatitude: configField(Sequelize.FLOAT),
   defaultLongitude: configField(Sequelize.FLOAT),
+  defaultTags: configField(Sequelize.ARRAY(Sequelize.STRING), true), /* eslint-disable-line new-cap */
+  defaultZoom: configField(Sequelize.INTEGER),
   description: configField(Sequelize.STRING),
   festivalDateEnd: configField(Sequelize.DATEONLY),
   festivalDateStart: configField(Sequelize.DATEONLY),
@@ -30,6 +32,7 @@ const Config = db.define('config', {
   gifStreamServerUrl: configField(Sequelize.STRING, true),
   isActivityStreamEnabled: configField(Sequelize.BOOLEAN),
   isAnonymizationEnabled: configField(Sequelize.BOOLEAN),
+  isDerMarktEnabled: configField(Sequelize.BOOLEAN),
   isInboxEnabled: configField(Sequelize.BOOLEAN),
   isRandomMeetingEnabled: configField(Sequelize.BOOLEAN),
   isSignUpParticipantEnabled: configField(Sequelize.BOOLEAN),

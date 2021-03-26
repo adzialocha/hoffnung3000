@@ -4,7 +4,7 @@ import AssetsPlugin from 'assets-webpack-plugin'
 import CopyPlugin from 'copy-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin'
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
 
 const APP_FILE_NAME = 'app'
 const VENDORS_FILE_NAME = 'lib'
@@ -65,7 +65,9 @@ module.exports = (env, options) => {
             {
               loader: 'sass-loader',
               options: {
-                indentedSyntax: false,
+                sassOptions: {
+                  outputStyle: isDevelopment ? 'nested' : 'compressed',
+                },
                 sourceMap: isDevelopment,
               },
             },
@@ -75,9 +77,7 @@ module.exports = (env, options) => {
     },
     optimization: {
       minimizer: [
-        new UglifyJsPlugin({
-          cache: true,
-          parallel: true,
+        new TerserPlugin({
           sourceMap: isDevelopment,
         }),
         new OptimizeCssAssetsPlugin(),
@@ -95,11 +95,13 @@ module.exports = (env, options) => {
     devtool: isDevelopment ? 'cheap-module-source-map' : undefined,
     plugins: [
       new AssetsPlugin(),
-      new CopyPlugin([{
-        flatten: true,
-        from: getPath(`${PATH_SRC}/images/*`),
-        to: getPath(PATH_DIST),
-      }]),
+      new CopyPlugin({
+        patterns: [{
+          flatten: true,
+          from: getPath(`${PATH_SRC}/images/*`),
+          to: getPath(PATH_DIST),
+        }],
+      }),
       new MiniCssExtractPlugin({
         filename: `${filename}.css`,
       }),

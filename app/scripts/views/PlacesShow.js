@@ -18,10 +18,6 @@ class PlacesShow extends Component {
     resourceSlug: PropTypes.string.isRequired,
   }
 
-  componentWillMount() {
-    this.props.fetchResource('places', this.props.resourceSlug)
-  }
-
   renderActionButton() {
     if (!this.props.resourceData.isOwnerMe) {
       return null
@@ -41,6 +37,7 @@ class PlacesShow extends Component {
     if (this.props.resourceData.isPublic) {
       return null
     }
+
     return (
       <div className="bullet bullet--centered ellipsis">
         { translate('views.places.isPrivatePlace') }
@@ -95,6 +92,10 @@ class PlacesShow extends Component {
             { `${cityCode} ${city}` }<br />
             { country }<br />
           </p>
+
+          {latitude && longitude ? (
+            <LocationMap initialCenter={ { lat: latitude, lng: longitude } } />
+          ) : null}
         </div>
       )
     }
@@ -144,6 +145,30 @@ class PlacesShow extends Component {
     )
   }
 
+  renderAccessibilityInfo() {
+    return (
+      <div>
+        <strong>
+          { translate('views.places.accessibilityInfoHeader') }
+        </strong>
+
+        <p>{ this.props.resourceData.accessibilityInfo }</p>
+      </div>
+    )
+  }
+
+  renderCapacity() {
+    return (
+      <div>
+        <strong>
+          { translate('views.places.capacityHeader') }
+        </strong>
+
+        <p>{ this.props.resourceData.capacity }</p>
+      </div>
+    )
+  }
+
   renderContent() {
     if (this.props.isLoading) {
       return <p>{ translate('common.loading') }</p>
@@ -158,6 +183,9 @@ class PlacesShow extends Component {
         <hr />
         { this.renderAddress() }
         <hr />
+        { this.renderAccessibilityInfo() }
+        { this.renderCapacity() }
+        <hr />
         { this.renderSlotSize() }
         <hr />
       </div>
@@ -168,6 +196,7 @@ class PlacesShow extends Component {
     if (this.props.isLoading) {
       return <h1>{ translate('views.places.titlePlaceholder') }</h1>
     }
+
     return <h1>{ this.props.resourceData.title }</h1>
   }
 
@@ -189,6 +218,12 @@ class PlacesShow extends Component {
         { this.renderContent() }
       </section>
     )
+  }
+
+  // @TODO: Update to modern React API
+  /* eslint-disable-next-line camelcase */
+  UNSAFE_componentWillMount() {
+    this.props.fetchResource('places', this.props.resourceSlug)
   }
 
   constructor(props) {
