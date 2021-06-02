@@ -1,9 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import YouTube from 'react-youtube'
 
-import { StaticPage } from '../components'
+import { StaticPage, SimpleEventListItem } from '../components'
 import { translate } from '../../../common/services/i18n'
 import { withAuthState, withConfig } from '../containers'
+import { asSimpleEventList } from '../containers'
+
+const SimpleEventList = asSimpleEventList(SimpleEventListItem)
 
 const HomeVideo = withConfig('videoHomeId', props => {
   const videoOptions = {
@@ -45,6 +48,9 @@ class Home extends Component {
       <section>
         <StaticPage slug="home" />
         <HomeVideo />
+        <SimpleEventList
+          resourceName="events"
+        />
       </section>
     )
   }
