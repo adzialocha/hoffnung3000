@@ -15,7 +15,8 @@ $_modal-header-height: 55px;
   flex-wrap: wrap;
 
   .infinite-list-container__item {
-    width: 50%;
+    width: 250px;
+    margin: 3px;
   }
 
   .infinite-list-container__item--full {
@@ -33,9 +34,14 @@ $_modal-header-height: 55px;
   font-size: $font-size-xl;
 }
 
-@include media-breakpoint(xs) {
+@include media-breakpoint(md) {
   .infinite-list-container--half-items {
     .infinite-list-container__item {
+      width: 250px;
+      margin: auto;
+    }
+
+    .infinite-list-container__item--full {
       width: 100%;
     }
   }
