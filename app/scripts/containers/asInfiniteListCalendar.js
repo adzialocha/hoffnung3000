@@ -50,6 +50,10 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       return this.setState({ filterTags: selectedTags })
     }
 
+    onDateFilterChange(selectedDates) {
+      return this.setState({ filterDates: selectedDates })
+    }
+
     renderSpinner() {
       if (!this.props.isLoading) {
         return null
@@ -81,6 +85,25 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
             defaultTags={defaultTags}
             tagArray={this.state.filterTags}
             onChange={this.onTagFilterChange}
+          />
+
+          <hr />
+        </Fragment>
+      )
+    }
+
+    renderDateSelector() {
+      const eventDates = this.props.listItems.map(event => DateTime.fromISO(event.slots[0].from).toFormat('dd-MMM'))
+        .sort((a, b) => new Date(a) - new Date(b))
+        .filter((v, i, a) => a.indexOf(v) === i)
+        .map(date => {return { label: date, value: date }})
+      return (
+        <Fragment>
+
+          <TagSelector
+            defaultTags={eventDates}
+            tagArray={this.state.filterDates}
+            onChange={this.onDateFilterChange}
           />
 
           <hr />
@@ -177,16 +200,27 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
         )
       }
 
+      const filterDates = this.state.filterDates
+      let filteredListItems = allEventsList
+      if (filterDates.length !== 0) {
+        filteredListItems = filteredListItems.filter(event => {
+          const eventDate = DateTime.fromISO(event.slots[0].from).toFormat('dd-MMM')
+          return filterDates.includes(eventDate)
+        })
+      }
+
       // filter allEventsList by array of tags
       const filterTags = this.state.filterTags
-      const filteredListItems = allEventsList.filter(event => {
-        if (event.tags) {
-          return event.tags.some(tag => filterTags.includes(tag))
-        }
-        return null
-      })
-
       if (filterTags.length !== 0) {
+        filteredListItems = filteredListItems.filter(event => {
+          if (event.tags) {
+            return event.tags.some(tag => filterTags.includes(tag))
+          }
+          return null
+        })
+      }
+
+      if (filterDates.length !== 0 || filterTags.length !== 0) {
         // show filtered list
         return this.renderListItems(filteredListItems)
       }
@@ -199,6 +233,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       return (
         <div className="infinite-list-container__item infinite-list-container__item--full">
           { this.renderTagSelector() }
+          { this.renderDateSelector() }
 
           <div className="infinite-list-container infinite-list-container--half-items">
             { this.renderEventList() }
@@ -223,8 +258,10 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
 
       this.state = {
         filterTags: [],
+        filterDates: [],
       }
 
+      this.onDateFilterChange = this.onDateFilterChange.bind(this)
       this.onTagFilterChange = this.onTagFilterChange.bind(this)
       this.onLoadMoreClick = this.onLoadMoreClick.bind(this)
     }
