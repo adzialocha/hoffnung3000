@@ -56,14 +56,14 @@ class CalendarMap extends Component {
     })
   }
 
-  render() {
-    const EventListPopup = ({ events, place, onPopupClick }) => {
-      function handleClick(event) {
-        onPopupClick(event.target.parentElement.attributes.slug.value)
-      }
+  onPopupMapClick(event) {
+    onPopupClick(event.target.parentElement.attributes.slug.value)
+  }
 
+  render() {
+    const EventListPopup = ({ events, place }) => {
       const content = events.map(item => (
-        <tr className={'map-popup'} key={item.title} slug={item.slug} onClick={handleClick}>
+        <tr className={'map-popup'} key={item.title} slug={item.slug} onClick={this.onPopupMapClick}>
           <td><img className="map-popup-img" src={item.imageUrl} /></td>
           <td>{item.title}</td>
           <td>{item.time}</td>
@@ -120,7 +120,6 @@ class CalendarMap extends Component {
           <EventListPopup
             events={this.props.virtualEvents}
             place={translate('components.calendarMap.virtualPlace')}
-            onPopupClick={this.onPopupClick}
           />
         </Marker>
 
