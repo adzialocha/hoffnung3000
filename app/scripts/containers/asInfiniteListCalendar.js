@@ -235,7 +235,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       ...state.infiniteList[props.resourceName],
       ...state.resourceList,
       ...state.meta.config,
-
     }
   }
 
