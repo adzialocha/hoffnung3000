@@ -8,6 +8,7 @@ module.exports = {
       defaultCountry: 'Germany',
       defaultLatitude: 52.53647,
       defaultLongitude: 13.40780,
+      defaultTags: '{}',
       description: 'HOFFNUNG 3000 is a festival',
       festivalDateEnd: '2017-08-27',
       festivalDateStart: '2017-08-24',
