@@ -2,7 +2,7 @@
 
 Platform for decentralized, anonymized, self-curated festivals.
 
-```
+```javascript
 Conversation.belongsToMany(Animal, {
   as: 'animals',
   foreignKey: 'conversationId',
@@ -44,12 +44,27 @@ HOFFNUNG 3000 was developed for a self-curated festival for music, art and theor
 
 ## Projects using the platform
 
-* https://blatt3000.de/ (HOFFNUNG 3000 festival, Berlin DE)
-* https://2020.antiuniversity.org/ (ANTI UNIVERSITY 2020, London UK)
-* https://freilauf.camp/ (DIY Bike Camp, Berlin DE)
+* https://blatt3000.de/ (HOFFNUNG 3000 2017, Berlin DE)
+* https://festival.antiuniversity.org/ (ANTI UNIVERSITY 2020 & 2021, London UK)
+* https://openfutures.ch/ (Open Futures 2021, Zürich CH)
+* https://freilauf.camp/ (DIY Bike Camp 2020, Berlin DE)
 * https://www.femmusicgather.org/ (Feminist UdK Course 2020, Berlin DE)
-* https://www.molekuel-festival.de/ (Music festival, Cologne DE)
+* https://www.molekuel-festival.de/ (Music festival 2020, Cologne DE)
+
+*🛸 Please note that some of these websites might not be online anymore.*
+
+## Related projects
+
+* [`hoffnung3000-jekyll-theme`](https://github.com/sandreae/hoffnung3000-jekyll-theme): Turn your current HOFFNUNG 3000 instance into a Jekyll archive page.
+* [`gif-stream-server`](https://github.com/adzialocha/gif-stream-server): .gif stream server for HOFFNUNG 3000.
+* [`random-animal-name-generator`](https://github.com/adzialocha/random-animal-name-generator/): Package to generate random animal names.
+* [`p2panda`](https://github.com/p2panda/handbook): p2p protocol which originated from HOFFNUNG 3000.
+
+## Contributors
+
+* [`@adzialocha`](https://github.com/adzialocha)
+* [`@sandreae`](https://github.com/sandreae)
 
 ## License
 
-GNU Affero General Public License v3.0 `AGPL-3.0`
+GNU Affero General Public License v3.0 [`AGPL-3.0`](LICENSE)
