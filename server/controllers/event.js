@@ -473,6 +473,7 @@ export default {
         [EventHasManySlots, 'from', 'ASC'],
       ],
       where: req.user.isVisitor ? { isPublic: true } : {},
+      subQuery: false,
     })
       .then(result => {
         return getConfig('isAnonymizationEnabled').then(config => {
