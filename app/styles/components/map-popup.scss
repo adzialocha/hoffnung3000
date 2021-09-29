@@ -1,11 +1,23 @@
-.map-popup-img {
-  display: block;
+.map-popup-event-list {
+  max-height: 250px;
 
-  max-width: 80px;
+  overflow-y: scroll;
 
-  margin: 0 auto;
+  width: 100%;
 }
 
 .map-popup {
   cursor: pointer;
+}
+
+.map-popup-img {
+  width: 20%;
+}
+
+.map-popup-title {
+  width: 50%;
+}
+
+.map-popup-time {
+  width: 30%;
 }

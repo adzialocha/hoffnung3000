@@ -35,7 +35,8 @@ class CalendarMap extends Component {
     virtualEvents: null,
   }
 
-  onPopupClick(slug) {
+  onPopupClick(event) {
+    const slug = event.target.parentElement.attributes.slug.value
     this.props.push(`/events/${slug}`)
   }
 
@@ -56,37 +57,35 @@ class CalendarMap extends Component {
     })
   }
 
-  onPopupMapClick(event) {
-    onPopupClick(event.target.parentElement.attributes.slug.value)
-  }
-
   render() {
     const EventListPopup = ({ events, place }) => {
-      const content = events.map(item => (
-        <tr className={'map-popup'} key={item.title} slug={item.slug} onClick={this.onPopupMapClick}>
-          <td><img className="map-popup-img" src={item.imageUrl} /></td>
-          <td>{item.title}</td>
-          <td>{item.time}</td>
+      const content = events.map(event => (
+        <tr className={'map-popup'} key={event.slug} slug={event.slug} onClick={this.onPopupClick}>
+          <td className="map-popup-img" ><img src={event.imageUrl} /></td>
+          <td className="map-popup-title">{event.title}</td>
+          <td className="map-popup-time">{event.time}</td>
         </tr>
       ))
 
       return (
         <Popup>
-          <strong>{place}</strong>
-          <br />
+          <div className={'map-popup-event-list'}>
+            <strong>{place}</strong>
+            <br />
 
-          <table>
-            <tbody>
-              {content}
-            </tbody>
-          </table>
+            <table>
+              <tbody>
+                {content}
+              </tbody>
+            </table>
+          </div>
         </Popup>
       )
     }
 
     const VenueMarker = ({ map, latitude, longitude, events, place }) => (
       <Marker icon={markerIcon} map={map} position={[latitude, longitude]}>
-        <EventListPopup events={events} place={place} onPopupClick={this.onPopupClick} />
+        <EventListPopup events={events} place={place} />
       </Marker>
     )
 
@@ -118,7 +117,7 @@ class CalendarMap extends Component {
 
         <Marker icon={customMarker} position={this.state.position}>
           <EventListPopup
-            events={this.props.virtualEvents}
+            events={this.props.virtualEvents.flat()}
             place={translate('components.calendarMap.virtualPlace')}
           />
         </Marker>
