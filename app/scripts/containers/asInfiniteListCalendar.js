@@ -93,7 +93,8 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     }
 
     renderDateSelector() {
-      const eventDates = this.props.listItems.map(event => DateTime.fromISO(event.slots[0].from).toFormat('dd-MMM'))
+      const eventDates = this.props.resourceListItems.map(event => DateTime.fromISO(event.slots[0].from)
+        .toFormat('dd-MMM'))
         .sort((a, b) => new Date(a) - new Date(b))
         .filter((v, i, a) => a.indexOf(v) === i)
         .map(date => {return { label: date, value: date }})
