@@ -1,0 +1,19 @@
+
+.simple-list-item {
+  display: flex;
+
+  width: 100%;
+  min-width: 100%;
+  min-height: 15px;
+  margin: 0px;
+}
+
+.simple-list-item--clickable {
+  transition: background .2s linear;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray-lighter;
+  }
+}
