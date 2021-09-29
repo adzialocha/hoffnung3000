@@ -545,7 +545,7 @@
   text-align: center;
 }
 
-.leaflet-popup-content-wrapper {
+.leaflet-popup-content-wrapper {  
   padding: 1px;
 
   border-radius: 12px;
@@ -554,6 +554,9 @@
 }
 
 .leaflet-popup-content {
+  
+  width: 400px !important;
+  
   margin: 13px 19px;
 
   line-height: 1.4;

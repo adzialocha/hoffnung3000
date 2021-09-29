@@ -61,22 +61,24 @@ class CalendarMap extends Component {
     const EventListPopup = ({ events, place }) => {
       const content = events.map(event => (
         <tr className={'map-popup'} key={event.slug} slug={event.slug} onClick={this.onPopupClick}>
-          <td><img className="map-popup-img" src={event.imageUrl} /></td>
-          <td>{event.title}</td>
-          <td>{event.time}</td>
+          <td className="map-popup-img" ><img src={event.imageUrl} /></td>
+          <td className="map-popup-title">{event.title}</td>
+          <td className="map-popup-time">{event.time}</td>
         </tr>
       ))
 
       return (
         <Popup>
-          <strong>{place}</strong>
-          <br />
+          <div className={'map-popup-event-list'}>
+            <strong>{place}</strong>
+            <br />
 
-          <table>
-            <tbody>
-              {content}
-            </tbody>
-          </table>
+            <table>
+              <tbody>
+                {content}
+              </tbody>
+            </table>
+          </div>
         </Popup>
       )
     }
