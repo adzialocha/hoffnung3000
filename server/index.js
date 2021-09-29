@@ -58,12 +58,14 @@ if (!fs.existsSync(getPath(ASSETS_FOLDER_NAME))) {
 }
 
 // Markdown settings
+const { renderer } = require('./services/marked')
 marked.setOptions({
   breaks: true,
   gfm: true,
   smartypants: true,
   tables: false,
 })
+marked.use({ renderer })
 
 // Set default timezone
 Settings.defaultZoneName = 'utc'
