@@ -65,6 +65,7 @@
   width: 1600px;
   height: 1600px;
   -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
 }
 
 .leaflet-marker-icon,
@@ -116,6 +117,7 @@
 /* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
 .leaflet-overlay-pane svg {
   -moz-user-select: none;
+  user-select: none;
 }
 
 .leaflet-pane { z-index: 400; }
@@ -545,7 +547,7 @@
   text-align: center;
 }
 
-.leaflet-popup-content-wrapper {  
+.leaflet-popup-content-wrapper {
   padding: 1px;
 
   border-radius: 12px;
@@ -554,9 +556,8 @@
 }
 
 .leaflet-popup-content {
-  
   width: 400px !important;
-  
+
   margin: 13px 19px;
 
   line-height: 1.4;
