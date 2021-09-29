@@ -83,7 +83,7 @@ class CalendarMap extends Component {
 
     const VenueMarker = ({ map, latitude, longitude, events, place }) => (
       <Marker icon={markerIcon} map={map} position={[latitude, longitude]}>
-        <EventListPopup events={events} place={place} onPopupClick={this.onPopupClick} />
+        <EventListPopup events={events} place={place} />
       </Marker>
     )
 
@@ -115,7 +115,7 @@ class CalendarMap extends Component {
 
         <Marker icon={customMarker} position={this.state.position}>
           <EventListPopup
-            events={this.props.virtualEvents}
+            events={this.props.virtualEvents.flat()}
             place={translate('components.calendarMap.virtualPlace')}
           />
         </Marker>
