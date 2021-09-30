@@ -7,6 +7,7 @@ class Newsletter extends Component {
     return (
       <section>
         <StaticPage slug="newsletter" />
+        <hr />
         <NewsletterSubscription />
       </section>
     )
