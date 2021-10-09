@@ -117,7 +117,7 @@
     "paypal-rest-sdk": "^1.8.1",
     "pg": "^8.7.1",
     "pug": "^3.0.2",
-    "random-animal-name-generator": "^0.1.1",
+    "random-animal-name-generator": "git://github.com/adzialocha/random-animal-name-generator.git#pokemon",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.8.0",
