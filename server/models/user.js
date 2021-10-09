@@ -14,14 +14,7 @@ const User = db.define('user', {
     primaryKey: true,
     autoIncrement: true,
   },
-  firstname: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
-  lastname: {
+  username: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
@@ -51,21 +44,6 @@ const User = db.define('user', {
     validate: {
       notEmpty: true,
     },
-  },
-  phone: {
-    type: Sequelize.STRING,
-  },
-  street: {
-    type: Sequelize.STRING,
-  },
-  cityCode: {
-    type: Sequelize.STRING,
-  },
-  city: {
-    type: Sequelize.STRING,
-  },
-  country: {
-    type: Sequelize.STRING,
   },
   paymentId: {
     type: Sequelize.STRING,

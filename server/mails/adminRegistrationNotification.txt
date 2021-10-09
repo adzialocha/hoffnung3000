@@ -1,12 +1,7 @@
 Woho! New registration!
 
-Firstname: ${user.firstname}
-Lastname: ${user.lastname}
+Username: ${user.username}
 Email: ${user.email}
-
-Payment product: ${product.name} - ${product.description}
-Payment price: ${product.price} €
-Payment method: ${paymentMethod}
 
 <3
 

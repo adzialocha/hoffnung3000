@@ -5,7 +5,7 @@ import { jwtDecode } from '../utils/jwt'
 
 const initialState = {
   errorMessage: '',
-  firstname: '',
+  username: '',
   id: undefined,
   isActive: false,
   isAdmin: false,
@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
 
     return update(state, {
       errorMessage: { $set: '' },
-      firstname: { $set: user.firstname },
+      username: { $set: user.username },
       id: { $set: user.id },
       isActive: { $set: user.isActive },
       isAdmin: { $set: user.isAdmin },
@@ -46,7 +46,7 @@ export default (state = initialState, action) => {
   case ActionTypes.AUTH_LOGIN_FAILURE:
     return update(state, {
       errorMessage: { $set: '' },
-      firstname: { $set: undefined },
+      username: { $set: undefined },
       id: { $set: undefined },
       isActive: { $set: false },
       isAdmin: { $set: false },

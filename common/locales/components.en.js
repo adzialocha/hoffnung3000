@@ -61,7 +61,7 @@ export default {
     signUpHeader: 'We invite all activists, artists, theoreticians, performers, musicians, hackers and everyone else to register.',
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
-    welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
+    welcomeUser: '<p>Hi {username},</p><p>Big massive welcome to the platform!</p>',
   },
   sidebarRandomMeeting: {
     anytime: 'Anytime',

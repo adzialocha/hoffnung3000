@@ -29,7 +29,7 @@ export function prepareAnimalResponse(animal, isAnonymous = true) {
     const { user } = animal
 
     data.userId = user.id
-    data.userName = `${user.firstname} ${user.lastname}`
+    data.userName = user.username
   }
 
   return data

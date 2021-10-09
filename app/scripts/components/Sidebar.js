@@ -129,7 +129,6 @@ const SignUpVisitorSection = withConfig('isSignUpVisitorEnabled', () => {
 
 class Sidebar extends Component {
   static propTypes = {
-    firstname: PropTypes.string,
     isActive: PropTypes.bool.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
@@ -137,10 +136,11 @@ class Sidebar extends Component {
     isSidebarExpanded: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
     unreadMessagesCount: PropTypes.number.isRequired,
+    username: PropTypes.string,
   }
 
   static defaultProps = {
-    firstname: '',
+    username: '',
   }
 
   renderSidebarBottom() {
@@ -167,7 +167,7 @@ class Sidebar extends Component {
         dangerouslySetInnerHTML={
           {
             __html: translate('components.sidebar.welcomeUser', {
-              firstname: this.props.firstname,
+              username: this.props.username,
             }),
           }
         }

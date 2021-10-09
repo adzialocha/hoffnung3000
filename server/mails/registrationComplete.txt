@@ -1,4 +1,4 @@
-Hello ${user.firstname}!
+Hello ${user.username}!
 
 Welcome to ${config.title}!
 
