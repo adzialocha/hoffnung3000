@@ -10,7 +10,7 @@
 
   border-radius: 50%;
 
-  background-color: $black;
+  background-color: $yellow;
 
   transition: all .2s ease-in-out;
 
@@ -43,7 +43,7 @@
 
   &.sidebar-toggle--notified {
     &::after {
-      background-color: $black;
+      background-color: $green;
     }
   }
 

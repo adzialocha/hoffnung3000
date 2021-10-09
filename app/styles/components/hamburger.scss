@@ -16,7 +16,7 @@ $_hamburger-line-size-mobile: 3px;
 .hamburger__line {
   height: $_hamburger-line-size;
 
-  background-color: $black;
+  background-color: $green;
 
   transition: background .2s ease-in-out;
 }
@@ -29,6 +29,6 @@ $_hamburger-line-size-mobile: 3px;
 
 .hamburger--active {
   .hamburger__line {
-    background-color: $white;
+    background-color: $red;
   }
 }
