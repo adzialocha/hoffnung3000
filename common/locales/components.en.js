@@ -58,7 +58,7 @@ export default {
     randomMeetingDescription: 'Randomly meet other participants at a random place today',
     randomMeetingTitle: 'Random meetings',
     signUpButton: 'Register as participant',
-    signUpHeader: 'We invite all activists, artists, theoreticians, performers, musicians, hackers and everyone else to register.',
+    signUpHeader: 'We invite everyone who wants to organize an event for ACAB to register.',
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
     welcomeUser: '<p>Hi {username},</p><p>Big massive welcome to the platform!</p>',
