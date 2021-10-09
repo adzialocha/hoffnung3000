@@ -3,8 +3,7 @@ module.exports = {
     return queryInterface.bulkInsert('users', [{
       createdAt: new Date,
       updatedAt: new Date,
-      firstname: 'Boo Boo',
-      lastname: 'Bamboo',
+      username: 'Boo Boo',
       password: '$2a$10$Loa5/JpAso9ZpVtL1EYrT.4CrFSkblu2nqtltJYyUF5qBd/E3Deru', // Default: "adminadmin"
       email: 'admin@domain.com',
       isAdmin: true,
