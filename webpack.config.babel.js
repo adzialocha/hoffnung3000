@@ -103,7 +103,7 @@ module.exports = (env, options) => {
         },
         {
           flatten: true,
-          from: getPath(`${PATH_SRC}/styles/fonts/*`),
+          from: getPath(`${PATH_SRC}/fonts/*`),
           to: getPath(PATH_DIST),
         }],
       }),
