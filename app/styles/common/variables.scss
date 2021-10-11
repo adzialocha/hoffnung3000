@@ -14,7 +14,14 @@ $yellow: #e3f748;
 $transparent: rgba($white, 0);
 
 // Font families
+@font-face {
+  font-family: "Parabole-Regular";
+
+  src: url("/static/Parabole-Regular.otf") format("opentype");
+}
+
 $font-family: "Arial", sans-serif;
+$title-font-family: "Parabole-Regular";
 
 // Font sizes
 $font-size-xs: 9px;

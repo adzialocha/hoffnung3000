@@ -100,6 +100,11 @@ module.exports = (env, options) => {
           flatten: true,
           from: getPath(`${PATH_SRC}/images/*`),
           to: getPath(PATH_DIST),
+        },
+        {
+          flatten: true,
+          from: getPath(`${PATH_SRC}/styles/fonts/*`),
+          to: getPath(PATH_DIST),
         }],
       }),
       new MiniCssExtractPlugin({
