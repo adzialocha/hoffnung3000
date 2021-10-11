@@ -115,7 +115,7 @@ export default function asSimpleEventList(WrappedListItemComponent) {
     render() {
       return (
         <div className="simple-list-container__item simple-list-container__item--full">
-          <h1>FESTIVAL SCHEDULE</h1>
+          <h1>SCHEDULE</h1>
           <div className="simple-list-container simple-list-container--half-items">
             { this.renderEventList() }
           </div>
