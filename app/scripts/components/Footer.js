@@ -31,12 +31,6 @@ class Footer extends Component {
               { translate('components.footer.contact') }
             </NavLink>
           </li>
-
-          <li className="inline-navigation__item">
-            <NavLink to="/pages/imprint">
-              { translate('components.footer.imprint') }
-            </NavLink>
-          </li>
         </ul>
       </footer>
     )

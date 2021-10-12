@@ -190,6 +190,7 @@ class Calendar extends Component {
         { this.renderCreateButton() }
         <hr />
         { this.renderMap() }
+        <hr />
         { this.renderItemsList() }
       </section>
     )

@@ -52,7 +52,7 @@ export default {
     gifStreamTitle: '.gif-stream',
     inboxButton: { one: 'Inbox ({count})', zero: 'Inbox', other: 'Inbox ({count})' },
     loginButton: 'Login',
-    loginHeader: 'Already have a login?',
+    loginHeader: 'Enter your login here if you have a participant account to organize events:',
     logoutButton: 'Logout',
     profileButton: 'Profile',
     randomMeetingDescription: 'Randomly meet other participants at a random place today',
