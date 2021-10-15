@@ -169,6 +169,8 @@ class Sidebar extends Component {
     if (!this.props.isAuthenticated) {
       return (
         <section>
+          <p>{ translate('components.sidebar.loginHeader' )}</p>
+
           <div className="button-group">
             <Link className="button" to="/login">
               { translate('components.sidebar.loginButton' )}
