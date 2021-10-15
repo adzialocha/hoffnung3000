@@ -27,6 +27,12 @@ class Footer extends Component {
           </li>
 
           <li className="inline-navigation__item">
+            <NavLink to="/newsletter">
+              { translate('components.footer.newsletter') }
+            </NavLink>
+          </li>
+
+          <li className="inline-navigation__item">
             <NavLink to="/pages/information">
               { translate('components.footer.information') }
             </NavLink>

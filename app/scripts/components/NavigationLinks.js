@@ -13,7 +13,9 @@ const PRIMARY_NAVIGATION = [
 ]
 
 const SECONDARY_NAVIGATION = [
+  { localeKey: 'blog', url: '/pages/blog' },
   { localeKey: 'information', url: '/pages/information' },
+  { localeKey: 'newsletter', url: '/newsletter' },
   { localeKey: 'contact', url: '/pages/contact' },
 ]
 
@@ -38,7 +40,7 @@ const VISITOR_NAVIGATION = [
 ]
 
 const DEFAULT_NAVIGATION = [
-  { localeKey: 'tickets', url: '/tickets', withConfig: 'isSignUpVisitorEnabled' },
+  // { localeKey: 'tickets', url: '/tickets', withConfig: 'isSignUpVisitorEnabled' },
 ]
 
 class NavigationLinks extends Component {

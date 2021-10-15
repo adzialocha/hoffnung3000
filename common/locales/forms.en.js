@@ -128,6 +128,11 @@ export default {
     submit: 'Done. Save it!',
     title: 'Title of your resource',
   },
+  newsletter: {
+    email: 'Deine E-Mail-Adresse',
+    gdpr: 'Bitte schickt mir regelmäßige Informationen und Neuigkeiten von Open Futures',
+    subscribeButton: 'Anmelden',
+  },
   event: {
     errors: {
       descriptionRequired: 'Sorry, your description is missing',

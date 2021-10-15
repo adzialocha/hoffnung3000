@@ -25,6 +25,7 @@ import {
   ForgotPassword,
   Home,
   Login,
+  Newsletter,
   NotFound,
   Page,
   PlacesEdit,
@@ -47,6 +48,7 @@ export default class Routes extends Component {
       <main role="main">
         <Switch>
           <Route component={Home} exact={true} path="/" />
+          <Route component={Newsletter} path="/newsletter" />
           <Route component={shouldNotBeAuthenticated(Login)} path="/login" />
           <Route component={withConfig('isSignUpParticipantEnabled', shouldNotBeAuthenticated(Register))} path="/register" />
           <Route component={withConfig('isSignUpVisitorEnabled', shouldNotBeAuthenticated(Tickets))} path="/tickets" />

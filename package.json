@@ -17,7 +17,7 @@
     "assets:build": "npm run assets:clear && webpack --mode production --progress",
     "assets:clear": "rimraf ./static",
     "assets:watch": "npm run assets:clear && webpack --mode development --watch --progress",
-    "build": "npm run assets:build && npm run server:build",
+    "build": "webpack --mode production && npm run server:build",
     "clear": "npm run assets:clear && npm run server:clear",
     "db:migrate": "sequelize db:migrate",
     "db:migrate:create": "sequelize migration:generate --name untitled",
