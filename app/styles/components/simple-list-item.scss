@@ -1,4 +1,3 @@
-
 .simple-list-item {
   display: flex;
 
@@ -15,6 +14,6 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $gray-lighter;
+    background-color: $green;
   }
 }

@@ -33,7 +33,7 @@ $_list-item-mobile-height: 120px;
   cursor: pointer;
 
   &:hover {
-    background-color: $gray-lighter;
+    background-color: $green;
   }
 }
 
@@ -57,7 +57,7 @@ $_list-item-mobile-height: 120px;
   max-width: $_list-item-height;
   height: $_list-item-height;
 
-  background-color: $gray-light;
+  background-color: $yellow;
   background-position: center;
   background-size: cover;
 

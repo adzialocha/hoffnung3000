@@ -39,7 +39,7 @@
 }
 
 .sidebar-toggle--active {
-  background-color: $white;
+  background-color: $red;
 
   &.sidebar-toggle--notified {
     &::after {
@@ -48,7 +48,7 @@
   }
 
   &.sidebar-toggle--spinning {
-    border-color: $white;
+    border-color: $red;
 
     &.sidebar-toggle--notified {
       &::after {
