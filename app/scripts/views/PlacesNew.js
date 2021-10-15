@@ -24,6 +24,12 @@ class PlacesNew extends Component {
   }
 
   onSubmit(values) {
+    // Prevent nervous fingers to click the button more than once :-)
+    if (this._isPendingRequest) {
+      return
+    }
+    this._isPendingRequest = true
+
     const { accessibilityInfo, capacity, title, description, isPublic, images } = values
     const { slotSize, slots } = values.slots
     const disabledSlots = slots ? getDisabledSlotIndexes(slots) : []

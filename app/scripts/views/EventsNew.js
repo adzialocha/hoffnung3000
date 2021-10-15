@@ -19,6 +19,12 @@ class EventsNew extends Component {
   }
 
   onSubmit(values) {
+    // Prevent nervous fingers to click the button more than once :-)
+    if (this._isPendingRequest) {
+      return
+    }
+    this._isPendingRequest = true
+
     const flash = {
       text: translate('flash.createEventSuccess'),
     }
@@ -88,6 +94,8 @@ class EventsNew extends Component {
 
   constructor(props) {
     super(props)
+
+    this._isPendingRequest = false
 
     this.onSubmit = this.onSubmit.bind(this)
   }
