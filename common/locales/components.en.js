@@ -165,6 +165,7 @@ export default {
   footer: {
     about: 'About',
     contact: 'Contact',
+    calendar: 'Calendar',
     home: 'Home',
     imprint: 'Imprint',
     information: 'Information',
