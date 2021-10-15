@@ -60,5 +60,9 @@
 
 .form__field-error,
 .form__field-warning {
-  color: $red;
+  padding: 5px;
+
+  color: $white;
+
+  background-color: $red;
 }

@@ -83,7 +83,7 @@ button,
 
   &:focus,
   &:hover {
-    background-color: lighten($blue, 25%);
+    background-color: darken($blue, 5%);
   }
 }
 
@@ -92,7 +92,7 @@ button,
 
   &:focus,
   &:hover {
-    background-color: lighten($green, 25%);
+    background-color: darken($green, 5%);
   }
 }
 
@@ -101,7 +101,7 @@ button,
 
   &:focus,
   &:hover {
-    background-color: lighten($red, 25%);
+    background-color: darken($red, 5%);
   }
 }
 

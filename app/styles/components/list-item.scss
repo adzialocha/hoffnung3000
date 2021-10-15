@@ -28,12 +28,10 @@ $_list-item-mobile-height: 120px;
 }
 
 .list-item--clickable {
-  transition: background .2s linear;
-
   cursor: pointer;
 
   &:hover {
-    background-color: $green;
+    background-color: $blue;
   }
 }
 
