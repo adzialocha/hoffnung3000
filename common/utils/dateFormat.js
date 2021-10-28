@@ -4,8 +4,8 @@ const DATE_FORMAT = 'ccc dd.MM.yy'
 const TIME_FORMAT = 'HH:mm'
 
 export function formatEventTime(from, to) {
-  const dateFrom = DateTime.fromISO(from, { zone: 'utc' })
-  const dateTo = DateTime.fromISO(to, { zone: 'utc' })
+  const dateFrom = DateTime.fromISO(from, { zone: 'utc' }).setLocale('de-DE')
+  const dateTo = DateTime.fromISO(to, { zone: 'utc' }).setLocale('de-DE')
 
   const fromDateStr = dateFrom.toFormat(DATE_FORMAT)
   const fromTimeStr = dateFrom.toFormat(TIME_FORMAT)
@@ -25,8 +25,8 @@ export function formatEventTime(from, to) {
 }
 
 export function formatSimpleEventTime(from, to) {
-  const dateFrom = DateTime.fromISO(from, { zone: 'utc' })
-  const dateTo = DateTime.fromISO(to, { zone: 'utc' })
+  const dateFrom = DateTime.fromISO(from, { zone: 'utc' }).setLocale('de-DE')
+  const dateTo = DateTime.fromISO(to, { zone: 'utc' }).setLocale('de-DE')
 
   const fromTimeStr = dateFrom.toFormat(TIME_FORMAT)
   const toTimeStr =  dateTo.toFormat(TIME_FORMAT)

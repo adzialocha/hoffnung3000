@@ -176,8 +176,6 @@ class PlacesShow extends Component {
 
     return (
       <div>
-        { this.renderOwner() }
-        { this.renderPrivacy() }
         { this.renderDescription() }
         { this.renderImageGallery() }
         <hr />
@@ -185,8 +183,6 @@ class PlacesShow extends Component {
         <hr />
         { this.renderAccessibilityInfo() }
         { this.renderCapacity() }
-        <hr />
-        { this.renderSlotSize() }
         <hr />
       </div>
     )
