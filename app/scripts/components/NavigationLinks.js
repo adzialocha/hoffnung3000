@@ -32,7 +32,7 @@ const ADMIN_NAVIGATION = CURATION_NAVIGATION.concat([
 const PARTICIPANT_NAVIGATION = CURATION_NAVIGATION
 
 const PLACES_PUBLIC_NAVIGATION = [
-  { localeKey: 'places', url: '/places' },
+  // { localeKey: 'places', url: '/places' },
 ]
 
 const VISITOR_NAVIGATION = [
