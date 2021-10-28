@@ -1,201 +1,33 @@
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react'
 
 import {
   Drawer,
-  SidebarActivity,
-  SidebarGifStream,
-  SidebarRandomMeeting,
   SidebarToggle,
+  Newsletter,
 } from './'
-
-import { translate } from '../../../common/services/i18n'
 
 import {
   withAuthState,
-  withConfig,
   withDrawerState,
   withUserStatus,
 } from '../containers'
 
-const ActivitySection = withConfig('isActivityStreamEnabled', () => {
-  return (
-    <Fragment>
-      <h5 className="sidebar__title">
-        { translate('components.sidebar.activityTitle') }
-      </h5>
-
-      <SidebarActivity />
-
-      <div className="button-group">
-        <Link className="button" to="/activity">
-          { translate('components.sidebar.activityButton') }
-        </Link>
-      </div>
-    </Fragment>
-  )
-})
-
-const InboxSection = withConfig('isInboxEnabled', props => {
-  return (
-    <Fragment>
-      <div className="button-group">
-        <Link className="button" to="/inbox">
-          {
-            translate('components.sidebar.inboxButton', {
-              count: props.unreadMessagesCount,
-            })
-          }
-        </Link>
-      </div>
-
-      <hr className="separator separator--white" />
-    </Fragment>
-  )
-})
-
-const GifStreamSection = withConfig('gifStreamServerUrl', props => {
-  return (
-    <Fragment>
-      <h5 className="sidebar__title">
-        { translate('components.sidebar.gifStreamTitle') }
-      </h5>
-
-      <p>
-        { translate('components.sidebar.gifStreamDescription' )}
-        &nbsp;
-
-        <Link to="/stream">
-          { translate('components.sidebar.gifStreamLink' )}
-        </Link>
-      </p>
-
-      <SidebarGifStream serverUrl={props.config.gifStreamServerUrl} />
-
-      <hr className="separator separator--white" />
-    </Fragment>
-  )
-})
-
-const RandomMeetingSection = withConfig('isRandomMeetingEnabled', () => {
-  return (
-    <Fragment>
-
-      <h5 className="sidebar__title">
-        { translate('components.sidebar.randomMeetingTitle') }
-      </h5>
-
-      <p>{ translate('components.sidebar.randomMeetingDescription' )}</p>
-
-      <SidebarRandomMeeting />
-
-      <hr className="separator separator--white" />
-    </Fragment>
-  )
-})
-
 class Sidebar extends Component {
   static propTypes = {
-    firstname: PropTypes.string,
-    isActive: PropTypes.bool.isRequired,
-    isAdmin: PropTypes.bool.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired,
-    isParticipant: PropTypes.bool.isRequired,
     isSidebarExpanded: PropTypes.bool.isRequired,
-    logout: PropTypes.func.isRequired,
-    unreadMessagesCount: PropTypes.number.isRequired,
-  }
-
-  static defaultProps = {
-    firstname: '',
-  }
-
-  renderSidebarBottom() {
-    if (!this.props.isAuthenticated) {
-      return null
-    }
-
-    return (
-      <div className="button-group">
-        <Link className="button" to="/profile">
-          { translate('components.sidebar.profileButton' )}
-        </Link>
-
-        <button className="button" onClick={this.props.logout}>
-          { translate('components.sidebar.logoutButton' )}
-        </button>
-      </div>
-    )
-  }
-
-  renderWelcome() {
-    return (
-      <div
-        dangerouslySetInnerHTML={
-          {
-            __html: translate('components.sidebar.welcomeUser', {
-              firstname: this.props.firstname,
-            }),
-          }
-        }
-      />
-    )
-  }
-
-  renderAuthenticatedContent() {
-    const { isActive, isParticipant, isAdmin, unreadMessagesCount } = this.props
-
-    if (isActive && (isParticipant || isAdmin)) {
-      return (
-        <section>
-          <ActivitySection />
-          <br />
-          <InboxSection unreadMessagesCount={unreadMessagesCount} />
-          <GifStreamSection />
-          <RandomMeetingSection />
-        </section>
-      )
-    }
-
-    return (
-      <section>
-        { this.renderWelcome() }
-      </section>
-    )
-  }
-
-  renderSidebarContent() {
-    if (!this.props.isAuthenticated) {
-      return (
-        <section>
-          <div dangerouslySetInnerHTML={
-            { __html: translate('components.sidebar.defaultHeader') }
-          } />
-
-          <br />
-
-          <div className="button-group">
-            <Link className="button" to="/login">
-              { translate('components.sidebar.loginButton' )}
-            </Link>
-          </div>
-        </section>
-      )
-    }
-
-    return this.renderAuthenticatedContent()
   }
 
   renderSidebar() {
     return (
       <div className="sidebar">
         <div className="sidebar__content">
-          { this.renderSidebarContent() }
-        </div>
-
-        <div className="sidebar__bottom">
-          { this.renderSidebarBottom() }
+          <Newsletter />
+          <hr />
+          <small>
+            <p>Open Futures wird deine E-mail-Adresse die du in diesem Formular angibst dazu verwenden, mit dir in Kontakt zu bleiben und dir Updates und Informationen zu übermitteln.</p>
+            <p>Du kannst deine Meinung jederzeit ändern, indem du auf den Abbestellungs-Link klickst, den du in der Fusszeile jeder E-Mail, die du von uns erhältst, finden kannst. Wir verwenden MailChimp als unsere Plattform zur Versendung von Newslettern. Indem du unten zur Absendung dieses Formulars klickst, bestätigst du, dass die von dir angegebenen Informationen an MailChimp zur Verarbeitung in Übereinstimmung mit deren <a href="https://mailchimp.com/legal/" target="_blank">Datenschutzrichtlinien und Bedingungen</a> weitergegeben werden.</p>
+          </small>
         </div>
       </div>
     )

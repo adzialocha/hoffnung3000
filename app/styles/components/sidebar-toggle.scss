@@ -6,11 +6,11 @@
 .sidebar-toggle {
   position: relative;
 
-  height: 100%;
+  left: -100px;
 
-  border-radius: 50%;
+  width: 150px;
 
-  background-color: $black;
+  border-radius: 15px;
 
   transition: all .2s ease-in-out;
 
@@ -26,7 +26,7 @@
 
     margin: 8px;
 
-    border-radius: 50%;
+    border-radius: 15px;
 
     content: "";
 
