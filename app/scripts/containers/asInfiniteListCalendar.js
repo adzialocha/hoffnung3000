@@ -16,7 +16,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       fetchList: PropTypes.func.isRequired,
       fetchResourceList: PropTypes.func.isRequired,
       isLoading: PropTypes.bool,
-      listItems: PropTypes.array,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
       resourceListItems: PropTypes.array,
@@ -202,16 +201,9 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     }
 
     renderEventList() {
-      const paginatedListItems = this.props.listItems
       const allEventsList = this.props.resourceListItems
 
-      if (
-        !this.props.isLoading &&
-        (
-          paginatedListItems.length === 0 ||
-          allEventsList.length === 0
-        )
-      ) {
+      if (!this.props.isLoading && allEventsList.length === 0) {
         return (
           <p className="infinite-list-container__spinner">
             { translate('components.common.emptyList') }
@@ -251,13 +243,13 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
         })
       }
 
+      // show filtered list
       if (filterDates.length !== 0 || filterTags.length !== 0 || filterPlaces.length !== 0 ) {
-        // show filtered list
         return this.renderListItems(filteredListItems)
       }
 
-      // show paginated list
-      return this.renderListItems(paginatedListItems)
+      // show all events
+      return this.renderListItems(allEventsList)
     }
 
     render() {
