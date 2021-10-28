@@ -12,9 +12,13 @@ $_markdown-content-color: $gray;
   padding-right: 15px;
   padding-left: 15px;
 
+  border-radius: 15px;
+
   color: $_markdown-content-color;
 
   background-color: $_markdown-background;
+
+  text-align: justify;
 
   h1,
   h2,
