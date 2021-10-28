@@ -1,6 +1,6 @@
 export default {
   areYouSure: 'Are you sure?',
-  backToOverview: 'Back to overview',
+  backToOverview: 'Zurück zur Übersicht',
   by: 'by',
   deleteButton: 'Delete',
   editButton: 'Edit',
