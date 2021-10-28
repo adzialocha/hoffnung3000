@@ -118,15 +118,14 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
         .sort((a, b) => new Date(a) - new Date(b))
         .filter((v, i, a) => a.indexOf(v) === i)
         .map(date => {return { label: date, value: date }})
+
       return (
         <Fragment>
-
           <TagSelector
             defaultTags={eventDates}
             tagArray={this.state.filterDates}
             onChange={this.onDateFilterChange}
           />
-
         </Fragment>
       )
     }
@@ -264,7 +263,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     render() {
       return (
         <div className="infinite-list-container__item infinite-list-container__item--full">
-          <h4>{ translate('views.events.tagSelectorTitle') }</h4>
+          <h2>{ translate('views.events.tagSelectorTitle') }</h2>
           { this.renderDateSelector() }
           { this.renderPlaceSelector() }
           { this.renderTagSelector() }

@@ -76,7 +76,7 @@ class EventsEdit extends Component {
       this.props.resourceSlug,
       requestParams,
       updateFlash,
-      '/calendar'
+      '/'
     )
   }
 
@@ -93,7 +93,7 @@ class EventsEdit extends Component {
       'events',
       this.props.resourceSlug,
       deleteFlash,
-      '/calendar'
+      '/'
     )
   }
 
@@ -171,7 +171,7 @@ class EventsEdit extends Component {
       <section>
         { this.renderTitle() }
 
-        <Link className="button" to="/calendar">
+        <Link className="button" to="/">
           { translate('common.backToOverview') }
         </Link>
 

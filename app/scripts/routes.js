@@ -23,7 +23,6 @@ import {
   EventsNew,
   EventsShow,
   ForgotPassword,
-  Home,
   Login,
   Newsletter,
   NotFound,
@@ -47,7 +46,7 @@ export default class Routes extends Component {
     return (
       <main role="main">
         <Switch>
-          <Route component={Home} exact={true} path="/" />
+          <Route component={Calendar} exact={true} path="/" />
           <Route component={Newsletter} path="/newsletter" />
           <Route component={shouldNotBeAuthenticated(Login)} path="/login" />
           <Route component={withConfig('isSignUpParticipantEnabled', shouldNotBeAuthenticated(Register))} path="/register" />
@@ -55,7 +54,6 @@ export default class Routes extends Component {
           <Route component={shouldNotBeAuthenticated(ForgotPassword)} path="/forgot" />
           <Route component={shouldNotBeAuthenticated(ResetPassword)} path="/reset/:token" />
           <Route component={Page} path="/pages/:slug" />
-          <Route component={Calendar} path="/calendar" />
           <Route component={isAuthenticated(Profile)} path="/profile" />
           <Route component={withConfig('gifStreamServerUrl', isAuthenticated(Stream))} path="/stream" />
           <Route component={withConfig('isActivityStreamEnabled', isParticipant(Activity))} path="/activity" />
