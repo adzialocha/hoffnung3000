@@ -90,19 +90,16 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     }
 
     renderPlaceSelector() {
-      const uniqueCity = this.props.resourceListItems
+      const places = this.props.resourceListItems
         .map(event => event.place.title)
         .filter((eventTitle, index, events) => events.indexOf(eventTitle) === index)
         .map(location => {return { label: location, value: location }})
-
-      uniqueCity.push({ label: 'online', value: 'virtual' })
-      uniqueCity.push({ label: 'IRL', value: 'irl' })
 
       return (
         <Fragment>
 
           <TagSelector
-            defaultTags={uniqueCity}
+            defaultTags={places}
             tagArray={this.state.filterPlaces}
             onChange={this.onPlaceFilterChange}
           />
