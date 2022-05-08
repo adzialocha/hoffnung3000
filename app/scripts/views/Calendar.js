@@ -1,17 +1,25 @@
+import DatePicker from 'react-date-picker'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { CalendarMap, CuratedEventListItem, StaticPage } from '../components'
+import { CuratedEventListItem, StaticPage } from '../components'
 import { TagSelector } from '../components'
 import { asInfiniteListCalendar } from '../containers'
-import { formatEventTime } from '../../../common/utils/dateFormat'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
-const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem, TagSelector)
+const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
+
+// Select current day or first day of festival when too early
+function defaultDate(festivalDateStart) {
+  return DateTime.now({ zone: 'utc ' }) < DateTime.fromISO(festivalDateStart, { zone: 'utc' })
+    ? festivalDateStart
+    : DateTime.now().toISODate()
+}
 
 class Calendar extends Component {
   static propTypes = {
@@ -21,11 +29,6 @@ class Calendar extends Component {
     isAuthenticated: PropTypes.bool.isRequired,
     isParticipant: PropTypes.bool.isRequired,
     push: PropTypes.func.isRequired,
-    resourceListItems: PropTypes.array.isRequired,
-  }
-
-  static defaultProps = {
-    resourceListItems: [],
   }
 
   onClick(item) {
@@ -40,7 +43,28 @@ class Calendar extends Component {
     this.props.push('/tickets')
   }
 
+  onDateSelected(date) {
+    if (date) {
+      this.setState({
+        selectedDate: DateTime.fromJSDate(date).toISODate(),
+      })
+    } else {
+      this.setState({
+        selectedDate: defaultDate(this.props.config.festivalDateStart),
+      })
+    }
+  }
+
+  onTagFilterChange(selectedTags) {
+    this.setState({
+      selectedTags,
+    })
+  }
+
   renderItemsList() {
+    const from = this.state.selectedDate
+    const to = DateTime.fromISO(from).plus({ day: 1 }).toISODate()
+
     if (
       (
         !this.props.isAuthenticated ||
@@ -49,7 +73,9 @@ class Calendar extends Component {
     ) {
       return (
         <WrappedInfiniteList
+          date={this.state.selectedDate}
           resourceName="preview"
+          tags={this.state.selectedTags}
           onClick={this.onPreviewClick}
         />
       )
@@ -57,7 +83,10 @@ class Calendar extends Component {
 
     return (
       <WrappedInfiniteList
+        from={from}
         resourceName="events"
+        tags={this.state.selectedTags}
+        to={to}
         onClick={this.onClick}
         onEditClick={this.onEditClick}
       />
@@ -94,91 +123,39 @@ class Calendar extends Component {
     return <StaticPage hideTitle={true} slug="calendar" />
   }
 
-  renderMap() {
-    if (
-      (
-        !this.props.isAuthenticated ||
-        !this.props.isActive
-      ) && this.props.config.festivalTicketPrice !== 0
-    ) {
-      return null
-    }
-
-    const allEvents = this.props.resourceListItems
-    if (!allEvents) {
-      return null
-    }
-
-    const uniqueVenues = allEvents
-      .map(event => event.placeId)
-      .map((event, index, final) => final.indexOf(event) === index && index)
-      .filter(event => allEvents[event]).map(event => allEvents[event].place)
-      .filter(place => place.mode !== 'virtual')
-
-    const virtualVenues = allEvents
-      .map(event => event.placeId)
-      .map((event, index, final) => final.indexOf(event) === index && index)
-      .filter(event => allEvents[event]).map(event => allEvents[event].place)
-      .filter(place => place.mode === 'virtual')
-
-    const mapVenuePlots = uniqueVenues.map(venue => {
-      const venueEvents = allEvents.reduce((result, event) => {
-        if (venue.id === event.placeId) {
-          const time = formatEventTime(event.slots[0].from, event.slots[event.slots.length - 1].to)
-
-          result.push({
-            title: event.title,
-            time: time,
-            imageUrl: event.images.length > 0 ? event.images[0].smallImageUrl : null,
-            slug: event.slug,
-          })
-        }
-        return result
-      }, [])
-
-      return {
-        city: venue.city,
-        cityCode: venue.cityCode,
-        country: venue.country,
-        key: venue.id,
-        latitude: venue.latitude,
-        longitude: venue.longitude,
-        mode: venue.mode,
-        street: venue.street,
-        place: venue.title,
-        events: venueEvents,
-      }
-    })
-
-    const virtualEvents = virtualVenues.map(venue => {
-      return allEvents.reduce((result, event) => {
-        if (venue.id === event.placeId) {
-          const time = formatEventTime(event.slots[0].from, event.slots[event.slots.length - 1].to)
-
-          result.push({
-            title: event.title,
-            time,
-            imageUrl: event.images.length > 0 ? event.images[0].smallImageUrl : null,
-            slug: event.slug,
-            place: venue.title,
-          })
-        }
-        return result
-      }, [])
+  renderTagSelector() {
+    const tags = this.props.config.defaultTags.map(tag => {
+      return { label: tag, value: tag }
     })
 
     return (
-      <CalendarMap
-        defaultZoom={this.props.config.defaultZoom}
-        initialCenter={
-          {
-            lat: this.props.config.defaultLatitude,
-            lng: this.props.config.defaultLongitude,
-          }
-        }
-        plots={mapVenuePlots}
-        virtualEvents={virtualEvents}
-      />
+      <Fragment>
+        <h3>{ translate('views.events.tagSelectorTitle') }</h3>
+
+        <TagSelector
+          defaultTags={tags}
+          tagArray={this.state.selectedTags}
+          onChange={this.onTagFilterChange}
+        />
+      </Fragment>
+    )
+  }
+
+  renderDatePicker() {
+    const { festivalDateStart, festivalDateEnd } = this.props.config
+
+    return (
+      <Fragment>
+        <h3>{ translate('views.events.datePickerTitle') }</h3>
+
+        <DatePicker
+          format="dd.MM.y"
+          maxDate={new Date(festivalDateEnd)}
+          minDate={new Date(festivalDateStart)}
+          value={new Date(this.state.selectedDate)}
+          onChange={this.onDateSelected}
+        />
+      </Fragment>
     )
   }
 
@@ -189,7 +166,10 @@ class Calendar extends Component {
         { this.renderText() }
         { this.renderCreateButton() }
         <hr />
-        { this.renderMap() }
+        { this.renderDatePicker() }
+        <hr />
+        { this.renderTagSelector() }
+        <hr />
         { this.renderItemsList() }
       </section>
     )
@@ -198,9 +178,16 @@ class Calendar extends Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      selectedDate: defaultDate(props.config.festivalDateStart),
+      selectedTags: [],
+    }
+
     this.onClick = this.onClick.bind(this)
     this.onEditClick = this.onEditClick.bind(this)
     this.onPreviewClick = this.onPreviewClick.bind(this)
+    this.onDateSelected = this.onDateSelected.bind(this)
+    this.onTagFilterChange = this.onTagFilterChange.bind(this)
   }
 }
 
@@ -209,7 +196,6 @@ function mapStateToProps(state) {
     ...state.auth,
     ...state.user,
     ...state.meta,
-    ...state.resourceList,
   }
 }
 

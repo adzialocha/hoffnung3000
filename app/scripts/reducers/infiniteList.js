@@ -8,7 +8,7 @@ const initialState = {
 
 const initialStateResource = {
   currentPageIndex: 0,
-  isLoading: false,
+  isLoading: true,
   listItems: [],
   totalPageCount: 0,
 }
@@ -23,6 +23,7 @@ export default (state = initialState, action) => {
   case ActionTypes.INFINITE_LIST_REQUEST:
     return update(state, {
       [action.meta.path]: {
+        isLoading: { $set: true },
         currentPageIndex: { $set: action.meta.page },
       },
     })

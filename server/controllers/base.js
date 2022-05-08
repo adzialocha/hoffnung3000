@@ -40,7 +40,7 @@ export function prepareAnimalResponseAll(animals, isAnonymous) {
 }
 
 export function prepareResponse(data, req, isAnonymous) {
-  const response = data.toJSON()
+  const response = 'toJSON' in data ? data.toJSON() : data
 
   // Set owner flag for frontend ui
   if (typeof req.isOwnerMe !== 'undefined') {

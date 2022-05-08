@@ -1,8 +1,7 @@
 import ActionTypes from '../actionTypes'
 import { getRequest } from '../services/api'
 
-export function fetchResourceList(resourceType) {
-  const data = { fetchAll: true }
+export function fetchResourceList(resourceType, data = {}) {
   const meta = {
     resourceType,
     data,

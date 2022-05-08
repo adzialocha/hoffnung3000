@@ -1,5 +1,5 @@
 import httpStatus from 'http-status'
-import { Op } from 'sequelize'
+import Sequelize, { Op } from 'sequelize'
 
 import {
   DEFAULT_LIMIT,
@@ -437,6 +437,7 @@ export default {
           })
       })
   },
+
   destroy: (req, res, next) => {
     return deleteEventsByIds([req.resourceId])
       .then(() => {
@@ -445,58 +446,118 @@ export default {
       .catch(err => next(err))
   },
 
-  findAll: (req, res, next) => {
+  findAll: async(req, res, next) => {
     const {
       limit = DEFAULT_LIMIT,
       offset = DEFAULT_OFFSET,
     } = req.query
 
+    // Do not show owner of place to unauthorized users
     const includeForVisitors = [
       belongsToAnimal,
       belongsToManyResources,
       {
         association: EventBelongsToPlace,
-        required: true,
         where: {
           isPublic: true,
         },
       },
       EventBelongsToManyImage,
-      hasManySlots,
     ]
 
-    return Event.findAndCountAll({
-      ...req.query.fetchAll ? null : { limit, offset },
-      distinct: true,
-      include: req.user.isVisitor ? includeForVisitors : include,
-      order: [
-        [EventHasManySlots, 'from', 'ASC'],
-      ],
-      where: req.user.isVisitor ? { isPublic: true } : {},
-      subQuery: false,
-    })
-      .then(result => {
-        return getConfig('isAnonymizationEnabled').then(config => {
-          res.json({
-            data: prepareResponseAll(
-              result.rows,
-              req,
-              config.isAnonymizationEnabled
-            ),
-            limit: parseInt(limit, 10),
-            offset: parseInt(offset, 10),
-            total: result.count,
-          })
-        })
+    const includeAuthorized = [
+      belongsToAnimal,
+      belongsToManyResources,
+      belongsToPlace,
+      EventBelongsToManyImage,
+    ]
+
+    try {
+      // Get all slots from this date range
+      const slotsFilter = {}
+
+      if (req.query.to) {
+        slotsFilter.from = {
+          [Op.lt]: req.query.to,
+        }
+      }
+
+      if (req.query.from) {
+        slotsFilter.to = {
+          [Op.gt]: req.query.from,
+        }
+      }
+
+      const slots = await Slot.findAll({
+        where: slotsFilter,
+        order: [['from', 'ASC']],
       })
-      .catch(err => next(err))
+
+      // Map event ids to dates
+      const dates = slots.reduce((acc, { eventId, from, to }) => {
+        if (!(eventId in acc)) {
+          acc[eventId] = { from, to }
+        } else {
+          if (acc[eventId].from > from) {
+            acc[eventId].from = from
+          }
+
+          if (acc[eventId].to < to) {
+            acc[eventId].to = to
+          }
+        }
+
+        return acc
+      }, {})
+
+      // Calculate total amount of events we've selected
+      const total = Object.keys(dates).length
+
+      // Get related event ids of filtered slots and "paginate" them
+      const eventIds = Object.keys(dates).splice(offset, limit)
+
+      // Fetch related events
+      const result = await Event.findAndCountAll({
+        include: req.user.isVisitor ? includeForVisitors : includeAuthorized,
+        where: req.user.isVisitor ? { isPublic: true, id: eventIds } : { id: eventIds },
+      })
+
+      // Insert `from` and `to` ISO date string for each event
+      const rows = result.rows.map(raw => {
+        const row = raw.toJSON()
+
+        return {
+          ...row,
+          from: dates[row.id].from,
+          to: dates[row.id].to,
+        }
+      })
+
+      const config = await getConfig('isAnonymizationEnabled')
+
+      res.json({
+        data: prepareResponseAll(
+          rows,
+          req,
+          config.isAnonymizationEnabled
+        ),
+        limit: parseInt(limit, 10),
+        offset: parseInt(offset, 10),
+        total,
+      })
+    } catch (err) {
+      next(err)
+    }
   },
+
   findOneWithSlug: (req, res, next) => {
     return findOneWithSlug(req.params.resourceSlug, req, res, next)
   },
+
   lookup: (req, res, next) => {
     return lookupWithSlug(Event, req, res, next)
   },
+
   update: (req, res, next) => {
     const fields = pick(permittedFields, req.body)
 

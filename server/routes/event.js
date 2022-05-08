@@ -15,6 +15,7 @@ router.route('/')
   .get(
     getUserWhenAuthenticated,
     grantWhenFestivalFree,
+    validate(eventValidation.findAll),
     eventController.findAll
   )
   .post(

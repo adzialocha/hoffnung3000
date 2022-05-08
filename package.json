@@ -119,6 +119,7 @@
     "pug": "^3.0.2",
     "random-animal-name-generator": "^0.1.1",
     "react": "^16.14.0",
+    "react-date-picker": "^8.4.0",
     "react-dom": "^16.14.0",
     "react-leaflet": "^2.8.0",
     "react-modal": "^3.15.1",
