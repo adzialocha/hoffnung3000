@@ -91,7 +91,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     }
 
     renderListItems(listItems) {
-      if (listItems.length === 0) {
+      if (listItems.length === 0 && !this.props.isLoading) {
         return (
           <p className="infinite-list-container__spinner">
             { translate('components.common.emptyList') }
@@ -140,10 +140,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     }
 
     renderEventList() {
-      if (this.props.isLoading) {
-        return null
-      }
-
       // Filter allEventsList by array of tags
       if (this.props.tags.length > 0) {
         const filteredListItems = this.props.listItems.filter(event => {
@@ -161,8 +157,8 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       return (
         <div className="infinite-list-container__item infinite-list-container__item--full">
           <div className="infinite-list-container infinite-list-container--half-items">
-            { this.renderSpinner() }
             { this.renderEventList() }
+            { this.renderSpinner() }
 
             <div className="infinite-list-container__item infinite-list-container__item--full">
               { this.renderLoadMoreButton() }
