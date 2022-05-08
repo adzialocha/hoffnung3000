@@ -1,10 +1,12 @@
+import DatePicker from 'react-date-picker'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import { DateTime } from 'luxon'
+import React, { Component, Fragment } from 'react'
+import { DateTime, Interval } from 'luxon'
 
 import { alert } from '../services/dialog'
 import { SlotEditorItem } from './'
 import { translate } from '../../../common/services/i18n'
+import { withConfig } from '../containers'
 
 function addOrRemoveFromArray(arr, slotIndex, status) {
   if (status) {
@@ -28,6 +30,7 @@ function isInClosedOrder(arr) {
 
 class SlotEditor extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     isBookingMode: PropTypes.bool,
     onSlotDisabledChange: PropTypes.func,
     onSlotSelectionChange: PropTypes.func,
@@ -43,7 +46,27 @@ class SlotEditor extends Component {
     slots: [],
   }
 
+  onDateSelected(date) {
+    if (date) {
+      this.setState({
+        selectedDate: DateTime.fromJSDate(date).toISODate(),
+      })
+    } else {
+      if (this.state.selectedSlotsIndexes.length > 0) {
+        this.setState({
+          selectedDate: this.props.slots[this.state.selectedSlotsIndexes[0]].from.toISODate(),
+        })
+      } else {
+        this.setState({
+          selectedDate: this.props.config.festivalDateStart,
+        })
+      }
+    }
+  }
+
   onToggleAll() {
+    // @TODO: Only for this day
+
     const slots = this.state.slots.reduce((acc, item) => {
       if (!item.eventId) {
         item.isDisabled = !item.isDisabled
@@ -57,6 +80,10 @@ class SlotEditor extends Component {
     })
 
     this.props.onSlotDisabledChange(this.state.slots)
+  }
+
+  onCopy() {
+    // @TODO
   }
 
   onSlotDisabledChange(slot, status) {
@@ -127,8 +154,8 @@ class SlotEditor extends Component {
   renderSlotItemList(item, previousItem, index) {
     if (!previousItem ||
       !DateTime
-        .fromISO(item.from, { zone: 'utc' })
-        .hasSame(DateTime.fromISO(previousItem.from, { zone: 'utc' }), 'day')
+        .fromISO(item.from)
+        .hasSame(DateTime.fromISO(previousItem.from), 'day')
     ) {
       return [
         this.renderSlotDateHeader(item, index),
@@ -139,9 +166,32 @@ class SlotEditor extends Component {
     return this.renderSlotItem(item, index)
   }
 
+  renderDatePicker() {
+    const { festivalDateStart, festivalDateEnd } = this.props.config
+
+    return (
+      <DatePicker
+        format="dd.MM.y"
+        maxDate={new Date(festivalDateEnd)}
+        minDate={new Date(festivalDateStart)}
+        value={new Date(this.state.selectedDate)}
+        onChange={this.onDateSelected}
+      />
+    )
+  }
+
   renderContent() {
-    return this.state.slots.map((item, index) => {
-      const previousItem = index > 0 ? this.state.slots[index - 1] : null
+    const from = DateTime.fromISO(this.state.selectedDate)
+    const to = DateTime.fromISO(from).plus({ day: 1 })
+    const range = Interval.fromDateTimes(from, to)
+
+    const slots = this.state.slots
+      .filter(item => {
+        return range.overlaps(Interval.fromDateTimes(item.from, item.to))
+      })
+
+    return slots.map((item, index) => {
+      const previousItem = index > 0 ? slots[index - 1] : null
       return this.renderSlotItemList(item, previousItem, index)
     })
   }
@@ -149,7 +199,19 @@ class SlotEditor extends Component {
   render() {
     return (
       <div className="slot-editor">
-        <button onClick={this.onToggleAll}>Toggle ALL</button>
+        {!this.props.isBookingMode && (
+          <Fragment>
+            <button onClick={this.onToggleAll}>
+              {translate('components.slotEditor.toggleAllButton')}
+            </button>
+
+            <button onClick={this.onCopy}>
+              {translate('components.slotEditor.copyAllButton')}
+            </button>
+          </Fragment>
+        )}
+
+        { this.renderDatePicker() }
         { this.renderContent() }
       </div>
     )
@@ -161,12 +223,15 @@ class SlotEditor extends Component {
     this.state = {
       selectedSlotsIndexes: props.selectedSlotsIndexes,
       slots: props.slots,
+      selectedDate: props.config.festivalDateStart,
     }
 
     this.onSlotBookedChange = this.onSlotBookedChange.bind(this)
     this.onSlotDisabledChange = this.onSlotDisabledChange.bind(this)
     this.onToggleAll = this.onToggleAll.bind(this)
+    this.onCopy = this.onCopy.bind(this)
+    this.onDateSelected = this.onDateSelected.bind(this)
   }
 }
 
-export default SlotEditor
+export default withConfig(SlotEditor)
