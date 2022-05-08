@@ -62,6 +62,9 @@ class Calendar extends Component {
   }
 
   renderItemsList() {
+    const from = this.state.selectedDate
+    const to = DateTime.fromISO(from).plus({ day: 1 }).toISODate()
+
     if (
       (
         !this.props.isAuthenticated ||
@@ -80,9 +83,10 @@ class Calendar extends Component {
 
     return (
       <WrappedInfiniteList
-        date={this.state.selectedDate}
+        from={from}
         resourceName="events"
         tags={this.state.selectedTags}
+        to={to}
         onClick={this.onClick}
         onEditClick={this.onEditClick}
       />

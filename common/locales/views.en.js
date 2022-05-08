@@ -4,6 +4,8 @@ export default {
   },
   home: {
     videoTitle: 'Platform tutorial',
+    upcomingEventsTitle: 'Upcoming events',
+    goToCalendar: 'Go to calendar',
   },
   login: {
     title: 'Login',

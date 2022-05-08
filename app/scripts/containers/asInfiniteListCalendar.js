@@ -11,14 +11,15 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     static propTypes = {
       clearList: PropTypes.func.isRequired,
       currentPageIndex: PropTypes.number,
-      date: PropTypes.string.isRequired,
       fetchList: PropTypes.func.isRequired,
+      from: PropTypes.string,
       isLoading: PropTypes.bool,
       listItems: PropTypes.array,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
       resourceName: PropTypes.string.isRequired,
       tags: PropTypes.array.isRequired,
+      to: PropTypes.string,
       totalPageCount: PropTypes.number,
     }
 
@@ -26,13 +27,15 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       currentPageIndex: 0,
       isLoading: true,
       listItems: [],
+      from: undefined,
+      to: undefined,
       onClick: undefined,
       onEditClick: undefined,
       totalPageCount: undefined,
     }
 
     componentDidUpdate(prevProps) {
-      if (prevProps.date !== this.props.date) {
+      if (prevProps.from !== this.props.from || prevProps.to !== this.props.to) {
         this.loadEvents()
       }
     }
@@ -176,11 +179,18 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
     }
 
     loadEvents(nextPage = false) {
-      const pageIndex = nextPage ? this.props.currentPageIndex + 1 : 0
-      const from = this.props.date
-      const to = DateTime.fromISO(this.props.date).plus({ day: 1 }).toISODate()
+      const filter = {}
 
-      this.props.fetchList(this.props.resourceName, pageIndex, { from, to })
+      if (this.props.from) {
+        filter.from = this.props.from
+      }
+
+      if (this.props.to) {
+        filter.to = this.props.to
+      }
+
+      const pageIndex = nextPage ? this.props.currentPageIndex + 1 : 0
+      this.props.fetchList(this.props.resourceName, pageIndex, filter)
     }
 
     constructor(props) {
