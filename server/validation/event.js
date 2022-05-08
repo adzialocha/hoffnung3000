@@ -1,6 +1,14 @@
 import { Joi } from 'express-validation'
 
 export default {
+  findAll: {
+    query: Joi.object({
+      from: Joi.string().isoDate(),
+      to: Joi.string().isoDate(),
+      limit: Joi.number(),
+      offset: Joi.number(),
+    }),
+  },
   createEvent: {
     body: Joi.object({
       description: Joi.string().min(20).required(),

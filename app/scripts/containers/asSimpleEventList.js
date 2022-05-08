@@ -57,8 +57,9 @@ export default function asSimpleEventList(WrappedListItemComponent) {
     renderListItems(listItems) {
       return listItems.map((item, index) => {
         const previousItem = index > 0 ? listItems[index - 1] : null
-        const dateA = DateTime.fromISO(item.slots[0].from)
-        const dateB = previousItem && DateTime.fromISO(previousItem.slots[0].from)
+
+        const dateA = DateTime.fromISO(item.from)
+        const dateB = previousItem && DateTime.fromISO(previousItem.from)
         const isSameDay = previousItem ? dateA.hasSame(dateB, 'day') : false
 
         const itemComponent = (
@@ -80,7 +81,7 @@ export default function asSimpleEventList(WrappedListItemComponent) {
             key={`header-${index}`}
           >
             <h2 className="simple-list-container__heading">
-              { DateTime.fromISO(item.slots[0].from).toFormat('dd.MM.yy') }
+              { DateTime.fromISO(item.from).toFormat('dd.MM.yy') }
             </h2>
 
             { index > 0 ? <hr /> : null }
@@ -110,13 +111,13 @@ export default function asSimpleEventList(WrappedListItemComponent) {
     render() {
       return (
         <div className="simple-list-container__item simple-list-container__item--full">
-          <h1>FESTIVAL SCHEDULE</h1>
           <div className="simple-list-container simple-list-container--half-items">
             { this.renderEventList() }
           </div>
         </div>
       )
     }
+
     constructor(props) {
       super(props)
       this.onClick = this.onClick.bind(this)

@@ -35,11 +35,7 @@ class CuratedEventListItem extends Component {
   }
 
   renderEventTime() {
-    const slots = this.props.item.slots
-    const firstSlot = slots[0]
-    const lastSlot = slots[slots.length - 1]
-
-    return formatEventTime(firstSlot.from, lastSlot.to)
+    return formatEventTime(this.props.item.from, this.props.item.to)
   }
 
   render() {

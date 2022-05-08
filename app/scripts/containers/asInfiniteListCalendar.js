@@ -4,22 +4,21 @@ import { DateTime } from 'luxon'
 import { connect } from 'react-redux'
 
 import { fetchList, clearList } from '../actions/infiniteList'
-import { fetchResourceList } from '../actions/resourceList'
 import { translate } from '../../../common/services/i18n'
+import { withConfig } from './'
 
 export default function asInfiniteListCalendar(WrappedListItemComponent, TagSelector) {
   class InfiniteListContainer extends Component {
     static propTypes = {
       clearList: PropTypes.func.isRequired,
+      config: PropTypes.object.isRequired,
       currentPageIndex: PropTypes.number,
       defaultTags: PropTypes.array,
       fetchList: PropTypes.func.isRequired,
-      fetchResourceList: PropTypes.func.isRequired,
       isLoading: PropTypes.bool,
       listItems: PropTypes.array,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
-      resourceListItems: PropTypes.array,
       resourceName: PropTypes.string.isRequired,
       totalPageCount: PropTypes.number,
     }
@@ -31,7 +30,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       listItems: [],
       onClick: undefined,
       onEditClick: undefined,
-      resourceListItems: [],
       totalPageCount: undefined,
     }
 
@@ -48,10 +46,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
 
     onTagFilterChange(selectedTags) {
       return this.setState({ filterTags: selectedTags })
-    }
-
-    onDateFilterChange(selectedDates) {
-      return this.setState({ filterDates: selectedDates })
     }
 
     renderSpinner() {
@@ -92,26 +86,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       )
     }
 
-    renderDateSelector() {
-      const eventDates = this.props.resourceListItems.map(event => DateTime.fromISO(event.slots[0].from)
-        .toFormat('dd-MMM'))
-        .sort((a, b) => new Date(a) - new Date(b))
-        .filter((v, i, a) => a.indexOf(v) === i)
-        .map(date => {return { label: date, value: date }})
-      return (
-        <Fragment>
-
-          <TagSelector
-            defaultTags={eventDates}
-            tagArray={this.state.filterDates}
-            onChange={this.onDateFilterChange}
-          />
-
-          <hr />
-        </Fragment>
-      )
-    }
-
     renderListItemContent(item) {
       return (
         <WrappedListItemComponent
@@ -143,11 +117,19 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     }
 
     renderListItems(listItems) {
+      if (listItems.length === 0) {
+        return (
+          <p className="infinite-list-container__spinner">
+            { translate('components.common.emptyList') }
+          </p>
+        )
+      }
+
       return listItems.map((item, index) => {
         const previousItem = index > 0 ? listItems[index - 1] : null
 
-        const dateA = DateTime.fromISO(item.slots[0].from)
-        const dateB = previousItem && DateTime.fromISO(previousItem.slots[0].from)
+        const dateA = DateTime.fromISO(item.from)
+        const dateB = previousItem && DateTime.fromISO(previousItem.from)
         const isSameDay = previousItem ? dateA.hasSame(dateB, 'day') : false
 
         const itemComponent = (
@@ -169,7 +151,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
             key={`header-${index}`}
           >
             <h2 className="infinite-list-container__heading">
-              { DateTime.fromISO(item.slots[0].from).toFormat('dd.MM.yy') }
+              { DateTime.fromISO(item.from).toFormat('dd.MM.yy') }
             </h2>
 
             { index > 0 ? <hr /> : null }
@@ -184,57 +166,27 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     }
 
     renderEventList() {
-      const paginatedListItems = this.props.listItems
-      const allEventsList = this.props.resourceListItems
-
-      if (
-        !this.props.isLoading &&
-        (
-          paginatedListItems.length === 0 ||
-          allEventsList.length === 0
-        )
-      ) {
-        return (
-          <p className="infinite-list-container__spinner">
-            { translate('components.common.emptyList') }
-          </p>
-        )
+      if (this.props.isLoading) {
+        return null
       }
 
-      const filterDates = this.state.filterDates
-      let filteredListItems = allEventsList
-      if (filterDates.length !== 0) {
-        filteredListItems = filteredListItems.filter(event => {
-          const eventDate = DateTime.fromISO(event.slots[0].from).toFormat('dd-MMM')
-          return filterDates.includes(eventDate)
+      // Filter allEventsList by array of tags
+      if (this.state.filterTags.length > 0) {
+        const filteredListItems = this.props.listItems.filter(event => {
+          return !event.tags.some(tag => this.state.filterTags.includes(tag))
         })
-      }
 
-      // filter allEventsList by array of tags
-      const filterTags = this.state.filterTags
-      if (filterTags.length !== 0) {
-        filteredListItems = filteredListItems.filter(event => {
-          if (event.tags) {
-            return event.tags.some(tag => filterTags.includes(tag))
-          }
-          return null
-        })
-      }
-
-      if (filterDates.length !== 0 || filterTags.length !== 0) {
-        // show filtered list
         return this.renderListItems(filteredListItems)
       }
 
-      // show paginated list
-      return this.renderListItems(paginatedListItems)
+      // Show all events
+      return this.renderListItems(this.props.listItems)
     }
 
     render() {
       return (
         <div className="infinite-list-container__item infinite-list-container__item--full">
           { this.renderTagSelector() }
-          { this.renderDateSelector() }
 
           <div className="infinite-list-container infinite-list-container--half-items">
             { this.renderEventList() }
@@ -251,7 +203,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     /* eslint-disable-next-line camelcase */
     UNSAFE_componentWillMount() {
       this.props.fetchList(this.props.resourceName, 0)
-      this.props.fetchResourceList('events')
     }
 
     constructor(props) {
@@ -259,10 +210,8 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
 
       this.state = {
         filterTags: [],
-        filterDates: [],
       }
 
-      this.onDateFilterChange = this.onDateFilterChange.bind(this)
       this.onTagFilterChange = this.onTagFilterChange.bind(this)
       this.onLoadMoreClick = this.onLoadMoreClick.bind(this)
     }
@@ -271,7 +220,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
   function mapStateToProps(state, props) {
     return {
       ...state.infiniteList[props.resourceName],
-      ...state.resourceList,
       ...state.meta.config,
     }
   }
@@ -280,7 +228,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     mapStateToProps, {
       clearList,
       fetchList,
-      fetchResourceList,
     }
-  )(InfiniteListContainer)
+  )(withConfig(InfiniteListContainer))
 }

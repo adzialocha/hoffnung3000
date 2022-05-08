@@ -18,11 +18,7 @@ class SimpleEventListItem extends Component {
   }
 
   renderEventTime() {
-    const slots = this.props.item.slots
-    const firstSlot = slots[0]
-    const lastSlot = slots[slots.length - 1]
-
-    const eventTime = formatSimpleEventTime(firstSlot.from, lastSlot.to)
+    const eventTime = formatSimpleEventTime(this.props.item.from, this.props.item.to)
     return <div><b>{eventTime}</b></div>
   }
 
