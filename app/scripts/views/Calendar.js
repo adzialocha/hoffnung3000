@@ -1,6 +1,6 @@
 import DatePicker from 'react-date-picker'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -12,7 +12,7 @@ import { asInfiniteListCalendar } from '../containers'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
-const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem, TagSelector)
+const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
 
 // Select current day or first day of festival when too early
 function defaultDate(festivalDateStart) {
@@ -55,6 +55,12 @@ class Calendar extends Component {
     }
   }
 
+  onTagFilterChange(selectedTags) {
+    this.setState({
+      selectedTags,
+    })
+  }
+
   renderItemsList() {
     if (
       (
@@ -66,6 +72,7 @@ class Calendar extends Component {
         <WrappedInfiniteList
           date={this.state.selectedDate}
           resourceName="preview"
+          tags={this.state.selectedTags}
           onClick={this.onPreviewClick}
         />
       )
@@ -75,6 +82,7 @@ class Calendar extends Component {
       <WrappedInfiniteList
         date={this.state.selectedDate}
         resourceName="events"
+        tags={this.state.selectedTags}
         onClick={this.onClick}
         onEditClick={this.onEditClick}
       />
@@ -111,20 +119,53 @@ class Calendar extends Component {
     return <StaticPage hideTitle={true} slug="calendar" />
   }
 
-  render() {
-    const { config } = this.props
+  renderTagSelector() {
+    const tags = this.props.config.defaultTags.map(tag => {
+      return { label: tag, value: tag }
+    })
 
     return (
-      <section>
-        <h1>{ translate('views.events.calendarTitle') }</h1>
+      <Fragment>
+        <h3>{ translate('views.events.tagSelectorTitle') }</h3>
+
+        <TagSelector
+          defaultTags={tags}
+          tagArray={this.state.selectedTags}
+          onChange={this.onTagFilterChange}
+        />
+      </Fragment>
+    )
+  }
+
+  renderDatePicker() {
+    const { festivalDateStart, festivalDateEnd } = this.props.config
+
+    return (
+      <Fragment>
+        <h3>{ translate('views.events.datePickerTitle') }</h3>
+
         <DatePicker
-          maxDate={new Date(config.festivalDateEnd)}
-          minDate={new Date(config.festivalDateStart)}
+          format="dd.MM.y"
+          maxDate={new Date(festivalDateEnd)}
+          minDate={new Date(festivalDateStart)}
           value={new Date(this.state.selectedDate)}
           onChange={this.onDateSelected}
         />
+      </Fragment>
+    )
+  }
+
+  render() {
+    return (
+      <section>
+        <h1>{ translate('views.events.calendarTitle') }</h1>
         { this.renderText() }
         { this.renderCreateButton() }
+        <hr />
+        { this.renderDatePicker() }
+        <hr />
+        { this.renderTagSelector() }
+        <hr />
         { this.renderItemsList() }
       </section>
     )
@@ -135,12 +176,14 @@ class Calendar extends Component {
 
     this.state = {
       selectedDate: defaultDate(props.config.festivalDateStart),
+      selectedTags: [],
     }
 
     this.onClick = this.onClick.bind(this)
     this.onEditClick = this.onEditClick.bind(this)
     this.onPreviewClick = this.onPreviewClick.bind(this)
     this.onDateSelected = this.onDateSelected.bind(this)
+    this.onTagFilterChange = this.onTagFilterChange.bind(this)
   }
 }
 

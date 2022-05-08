@@ -44,7 +44,8 @@ export default {
     createNewTitle: 'Create new event',
     isPrivateEvent: 'This event is not visible to the audience',
     loadMoreEvents: 'Load more events',
-    tagSelectorTitle: 'Filter by tags and date',
+    tagSelectorTitle: 'Filter by tags',
+    datePickerTitle: 'Filter by date',
     titlePlaceholder: 'Event',
   },
   inbox: {

@@ -21,6 +21,7 @@ class TagSelector extends Component {
 
   render() {
     const { defaultTags, tagArray, onChange } = this.props
+
     return (
       <div className="tag-container">
         {this.props.defaultTags.map(({ label, value }) => (

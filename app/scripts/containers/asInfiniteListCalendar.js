@@ -1,30 +1,29 @@
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { DateTime } from 'luxon'
 import { connect } from 'react-redux'
 
 import { fetchList, clearList } from '../actions/infiniteList'
 import { translate } from '../../../common/services/i18n'
 
-export default function asInfiniteListCalendar(WrappedListItemComponent, TagSelector) {
+export default function asInfiniteListCalendar(WrappedListItemComponent) {
   class InfiniteListContainer extends Component {
     static propTypes = {
       clearList: PropTypes.func.isRequired,
       currentPageIndex: PropTypes.number,
       date: PropTypes.string.isRequired,
-      defaultTags: PropTypes.array,
       fetchList: PropTypes.func.isRequired,
       isLoading: PropTypes.bool,
       listItems: PropTypes.array,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
       resourceName: PropTypes.string.isRequired,
+      tags: PropTypes.array.isRequired,
       totalPageCount: PropTypes.number,
     }
 
     static defaultProps = {
       currentPageIndex: 0,
-      defaultTags: [],
       isLoading: true,
       listItems: [],
       onClick: undefined,
@@ -46,10 +45,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       this.loadEvents(true)
     }
 
-    onTagFilterChange(selectedTags) {
-      return this.setState({ filterTags: selectedTags })
-    }
-
     renderSpinner() {
       if (!this.props.isLoading) {
         return null
@@ -59,32 +54,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
         <p className="infinite-list-container__spinner">
           { translate('common.loading') }
         </p>
-      )
-    }
-
-    renderTagSelector() {
-      if (this.props.defaultTags.length === 0) {
-        return null
-      }
-
-      const defaultTags = this.props.defaultTags.map(tag =>{
-        return { label: tag, value: tag }
-      })
-
-      return (
-        <Fragment>
-          <hr />
-
-          <h3>{ translate('views.events.tagSelectorTitle') }</h3>
-
-          <TagSelector
-            defaultTags={defaultTags}
-            tagArray={this.state.filterTags}
-            onChange={this.onTagFilterChange}
-          />
-
-          <hr />
-        </Fragment>
       )
     }
 
@@ -173,9 +142,9 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       }
 
       // Filter allEventsList by array of tags
-      if (this.state.filterTags.length > 0) {
+      if (this.props.tags.length > 0) {
         const filteredListItems = this.props.listItems.filter(event => {
-          return !event.tags.some(tag => this.state.filterTags.includes(tag))
+          return !event.tags.some(tag => this.props.tags.includes(tag))
         })
 
         return this.renderListItems(filteredListItems)
@@ -188,8 +157,6 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     render() {
       return (
         <div className="infinite-list-container__item infinite-list-container__item--full">
-          { this.renderTagSelector() }
-
           <div className="infinite-list-container infinite-list-container--half-items">
             { this.renderSpinner() }
             { this.renderEventList() }
@@ -212,17 +179,13 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       const pageIndex = nextPage ? this.props.currentPageIndex + 1 : 0
       const from = this.props.date
       const to = DateTime.fromISO(this.props.date).plus({ day: 1 }).toISODate()
+
       this.props.fetchList(this.props.resourceName, pageIndex, { from, to })
     }
 
     constructor(props) {
       super(props)
 
-      this.state = {
-        filterTags: [],
-      }
-
-      this.onTagFilterChange = this.onTagFilterChange.bind(this)
       this.onLoadMoreClick = this.onLoadMoreClick.bind(this)
     }
   }
