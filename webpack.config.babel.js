@@ -50,6 +50,14 @@ module.exports = (env, options) => {
           },
         },
         {
+          test: /\.css$/,
+          use: [
+            {
+              loader: 'css-loader',
+            },
+          ],
+        },
+        {
           test: /\.scss$/,
           exclude,
           use: [

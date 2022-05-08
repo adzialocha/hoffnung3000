@@ -5,14 +5,13 @@ import { connect } from 'react-redux'
 
 import { fetchList, clearList } from '../actions/infiniteList'
 import { translate } from '../../../common/services/i18n'
-import { withConfig } from './'
 
 export default function asInfiniteListCalendar(WrappedListItemComponent, TagSelector) {
   class InfiniteListContainer extends Component {
     static propTypes = {
       clearList: PropTypes.func.isRequired,
-      config: PropTypes.object.isRequired,
       currentPageIndex: PropTypes.number,
+      date: PropTypes.string.isRequired,
       defaultTags: PropTypes.array,
       fetchList: PropTypes.func.isRequired,
       isLoading: PropTypes.bool,
@@ -33,15 +32,18 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       totalPageCount: undefined,
     }
 
+    componentDidUpdate(prevProps) {
+      if (prevProps.date !== this.props.date) {
+        this.loadEvents()
+      }
+    }
+
     componentWillUnmount() {
       this.props.clearList(this.props.resourceName)
     }
 
     onLoadMoreClick() {
-      this.props.fetchList(
-        this.props.resourceName,
-        this.props.currentPageIndex + 1
-      )
+      this.loadEvents(true)
     }
 
     onTagFilterChange(selectedTags) {
@@ -189,6 +191,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
           { this.renderTagSelector() }
 
           <div className="infinite-list-container infinite-list-container--half-items">
+            { this.renderSpinner() }
             { this.renderEventList() }
 
             <div className="infinite-list-container__item infinite-list-container__item--full">
@@ -202,7 +205,14 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
     // @TODO: Update to modern React API
     /* eslint-disable-next-line camelcase */
     UNSAFE_componentWillMount() {
-      this.props.fetchList(this.props.resourceName, 0)
+      this.loadEvents()
+    }
+
+    loadEvents(nextPage = false) {
+      const pageIndex = nextPage ? this.props.currentPageIndex + 1 : 0
+      const from = this.props.date
+      const to = DateTime.fromISO(this.props.date).plus({ day: 1 }).toISODate()
+      this.props.fetchList(this.props.resourceName, pageIndex, { from, to })
     }
 
     constructor(props) {
@@ -229,5 +239,5 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, TagSele
       clearList,
       fetchList,
     }
-  )(withConfig(InfiniteListContainer))
+  )(InfiniteListContainer)
 }

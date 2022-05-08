@@ -48,9 +48,7 @@ class Home extends Component {
       <section>
         <StaticPage slug="home" />
         <HomeVideo />
-        <SimpleEventList
-          resourceName="events"
-        />
+        <SimpleEventList resourceName="events" />
       </section>
     )
   }
