@@ -2,8 +2,6 @@ import { DateTime, Interval } from 'luxon'
 
 import { translate } from '../services/i18n'
 
-const TIME_FORMAT = 'HH:mm'
-
 function addSlotDuration(date, slotSize) {
   return date.plus({ minutes: slotSize })
 }
@@ -106,11 +104,9 @@ export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateS
     slotItems.push({
       eventId: existingSlotEventIdStates[slotIndex],
       from,
-      fromTimeStr: from.toFormat(TIME_FORMAT),
       isDisabled: existingSlotDisabledStates[slotIndex] || false,
       slotIndex,
       to,
-      toTimeStr: to.toFormat(TIME_FORMAT),
     })
 
     slotIndex += 1
@@ -118,7 +114,14 @@ export function generateNewSlotItems(slotSize, existingSlots = [], festivalDateS
     to = addSlotDuration(from, slotSize)
   }
 
-  return slotItems
+  return slotItems.map(slot => {
+    // Convert `DateTime` instances to strings before we return
+    return {
+      ...slot,
+      from: slot.from.toISO(),
+      to: slot.to.toISO(),
+    }
+  })
 }
 export function generateNewDisabledSlotItems(slotSize, festivalDateStart, festivalDateEnd) {
   const slotItems = []
@@ -135,11 +138,9 @@ export function generateNewDisabledSlotItems(slotSize, festivalDateStart, festiv
     slotItems.push({
       eventId: null,
       from,
-      fromTimeStr: from.toFormat(TIME_FORMAT),
       isDisabled: true,
       slotIndex,
       to,
-      toTimeStr: to.toFormat(TIME_FORMAT),
     })
 
     slotIndex += 1
@@ -147,17 +148,26 @@ export function generateNewDisabledSlotItems(slotSize, festivalDateStart, festiv
     to = addSlotDuration(from, slotSize)
   }
 
-  return slotItems
+  return slotItems.map(slot => {
+    // Convert `DateTime` instances to strings before we return
+    return {
+      ...slot,
+      from: slot.from.toISO(),
+      to: slot.to.toISO(),
+    }
+  })
 }
 
 export function getSlotTimes(slotSize, slotIndex, festivalDateStart) {
   const from = DateTime
     .fromISO(festivalDateStart, { zone: 'utc' })
     .plus({ minutes: slotSize * slotIndex })
+    .toISO()
 
   const to = DateTime
     .fromISO(festivalDateStart, { zone: 'utc' })
     .plus({ minutes: slotSize * (slotIndex + 1) })
+    .toISO()
 
   return {
     from,

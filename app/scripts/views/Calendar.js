@@ -144,11 +144,7 @@ class Calendar extends Component {
     return (
       <Fragment>
         <h3>{ translate('views.events.datePickerTitle') }</h3>
-
-        <DatePicker
-          value={new Date(this.state.selectedDate)}
-          onChange={this.onDateSelected}
-        />
+        <DatePicker value={this.state.selectedDate} onChange={this.onDateSelected} />
       </Fragment>
     )
   }

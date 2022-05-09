@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { DateTime } from 'luxon'
 
 import { alert } from '../services/dialog'
 import { translate } from '../../../common/services/i18n'
@@ -40,11 +41,12 @@ class SlotEditorItem extends Component {
 
   render() {
     const {
-      fromTimeStr,
-      toTimeStr,
       isDisabled,
       eventId,
     } = this.props.slot
+
+    const from = DateTime.fromISO(this.props.slot.from, { zone: 'utc' }).toFormat('HH:mm')
+    const to = DateTime.fromISO(this.props.slot.to, { zone: 'utc' }).toFormat('HH:mm')
 
     const slotItemClasses = classnames(
       'slot-editor__item', {
@@ -56,7 +58,7 @@ class SlotEditorItem extends Component {
 
     return (
       <div className={slotItemClasses} onClick={this.onClick}>
-        { fromTimeStr } - { toTimeStr }
+        { from } - { to }
       </div>
     )
   }
