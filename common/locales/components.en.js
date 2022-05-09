@@ -78,6 +78,8 @@ export default {
     slotsHaveToBeInClosedOrder: 'Please select your slots in a closed order',
     submitButton: 'Okay',
     title: 'Slot editor',
+    toggleAllButton: 'Toggle all',
+    copyAllButton: 'Copy to all days',
   },
   slotEditorItem: {
     cantDisableBookedSlot: 'Sorry, you can\'t disable a slot which is already booked',

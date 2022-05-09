@@ -438,12 +438,13 @@ export default {
       })
   },
 
-  destroy: (req, res, next) => {
-    return deleteEventsByIds([req.resourceId])
-      .then(() => {
-        res.json({ message: 'ok' })
-      })
-      .catch(err => next(err))
+  destroy: async(req, res, next) => {
+    try {
+      await deleteEventsByIds([req.resourceId])
+      res.json({ message: 'ok' })
+    } catch (err) {
+      next(err)
+    }
   },
 
   findAll: async(req, res, next) => {
@@ -474,7 +475,11 @@ export default {
 
     try {
       // Get all slots from this date range
-      const slotsFilter = {}
+      const slotsFilter = {
+        eventId: {
+          [Op.ne]: null,
+        }
+      }
 
       if (req.query.to) {
         slotsFilter.from = {

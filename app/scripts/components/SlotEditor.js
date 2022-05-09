@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { DateTime } from 'luxon'
 
-import { alert } from '../services/dialog'
+import { DatePicker } from './'
 import { SlotEditorItem } from './'
+import { alert, confirm } from '../services/dialog'
 import { translate } from '../../../common/services/i18n'
+import { withConfig } from '../containers'
 
 function addOrRemoveFromArray(arr, slotIndex, status) {
   if (status) {
@@ -28,6 +30,7 @@ function isInClosedOrder(arr) {
 
 class SlotEditor extends Component {
   static propTypes = {
+    config: PropTypes.object.isRequired,
     isBookingMode: PropTypes.bool,
     onSlotDisabledChange: PropTypes.func,
     onSlotSelectionChange: PropTypes.func,
@@ -43,12 +46,34 @@ class SlotEditor extends Component {
     slots: [],
   }
 
-  onToggleAll() {
-    const slots = this.state.slots.reduce((acc, item) => {
-      if (!item.eventId) {
-        item.isDisabled = !item.isDisabled
+  onDateSelected(selectedDate) {
+    let date
+    if (selectedDate) {
+      date = selectedDate
+    } else {
+      if (this.state.selectedSlotsIndexes.length > 0) {
+        date = this.props.slots[this.state.selectedSlotsIndexes[0]].from
+      } else {
+        date = this.props.config.festivalDateStart
       }
-      acc.push(item)
+    }
+
+    const from = DateTime.fromISO(date, { zone: 'utc' }).toISO()
+    const to = DateTime.fromISO(from, { zone: 'utc' }).plus({ day: 1 }).toISO()
+    this.setState({ from, to })
+  }
+
+  // Toggle `isDisabled` state of all slots of that selected day
+  onToggleAll() {
+    const indexes = this.currentSlots().map(slot => {
+      return slot.slotIndex
+    })
+
+    const slots = this.state.slots.reduce((acc, slot) => {
+      if (!slot.eventId && indexes.includes(slot.slotIndex)) {
+        slot.isDisabled = !slot.isDisabled
+      }
+      acc.push(slot)
       return acc
     }, [])
 
@@ -56,7 +81,32 @@ class SlotEditor extends Component {
       slots,
     })
 
-    this.props.onSlotDisabledChange(this.state.slots)
+    this.props.onSlotDisabledChange(slots)
+  }
+
+  // Copy current day selection to all other days
+  onCopyAll() {
+    if (!confirm(translate('common.areYouSure'))) {
+      return
+    }
+
+    const pattern = this.currentSlots().map(slot => {
+      return slot.isDisabled
+    })
+
+    const slots = this.state.slots.reduce((acc, slot, index) => {
+      if (!slot.eventId) {
+        slot.isDisabled = pattern[index % pattern.length]
+      }
+      acc.push(slot)
+      return acc
+    }, [])
+
+    this.setState({
+      slots,
+    })
+
+    this.props.onSlotDisabledChange(slots)
   }
 
   onSlotDisabledChange(slot, status) {
@@ -72,7 +122,7 @@ class SlotEditor extends Component {
       slots,
     })
 
-    this.props.onSlotDisabledChange(this.state.slots)
+    this.props.onSlotDisabledChange(slots)
   }
 
   onSlotBookedChange(slot, status) {
@@ -94,9 +144,9 @@ class SlotEditor extends Component {
     this.props.onSlotSelectionChange(selectedSlotsIndexes)
   }
 
-  renderSlotDateHeader(item, index) {
+  renderSlotDateHeader(slot, index) {
     const date = DateTime
-      .fromISO(item.from)
+      .fromISO(slot.from)
       .toFormat('ccc dd.MM.yy')
 
     return (
@@ -109,64 +159,97 @@ class SlotEditor extends Component {
     )
   }
 
-  renderSlotItem(item, index) {
+  renderSlotItem(slot, index) {
     return (
       <SlotEditorItem
         isBookingMode={this.props.isBookingMode}
         isSlotBookedByMe={
-          this.state.selectedSlotsIndexes.indexOf(item.slotIndex) > -1
+          this.state.selectedSlotsIndexes.indexOf(slot.slotIndex) > -1
         }
         key={`slot-${index}`}
-        slot={item}
+        slot={slot}
         onChangeBookedByMeStatus={this.onSlotBookedChange}
         onChangeDisabledStatus={this.onSlotDisabledChange}
       />
     )
   }
 
-  renderSlotItemList(item, previousItem, index) {
-    if (!previousItem ||
+  renderSlotItemList(slot, previousSlot, index) {
+    if (!previousSlot ||
       !DateTime
-        .fromISO(item.from, { zone: 'utc' })
-        .hasSame(DateTime.fromISO(previousItem.from, { zone: 'utc' }), 'day')
+        .fromISO(slot.from, { zone: 'utc' })
+        .hasSame(DateTime.fromISO(previousSlot.from, { zone: 'utc' }), 'day')
     ) {
       return [
-        this.renderSlotDateHeader(item, index),
-        this.renderSlotItem(item, index),
+        this.renderSlotDateHeader(slot, index),
+        this.renderSlotItem(slot, index),
       ]
     }
 
-    return this.renderSlotItem(item, index)
+    return this.renderSlotItem(slot, index)
+  }
+
+  renderDatePicker() {
+    return <DatePicker value={this.state.from} onChange={this.onDateSelected} />
   }
 
   renderContent() {
-    return this.state.slots.map((item, index) => {
-      const previousItem = index > 0 ? this.state.slots[index - 1] : null
-      return this.renderSlotItemList(item, previousItem, index)
+    const slots = this.currentSlots()
+
+    return slots.map((slot, index) => {
+      const previousSlot = index > 0 ? slots[index - 1] : null
+      return this.renderSlotItemList(slot, previousSlot, index)
     })
   }
 
   render() {
     return (
       <div className="slot-editor">
-        <button onClick={this.onToggleAll}>Toggle ALL</button>
+        {!this.props.isBookingMode && (
+          <Fragment>
+            <button onClick={this.onToggleAll}>
+              {translate('components.slotEditor.toggleAllButton')}
+            </button>
+
+            <button onClick={this.onCopyAll}>
+              {translate('components.slotEditor.copyAllButton')}
+            </button>
+          </Fragment>
+        )}
+
+        { this.renderDatePicker() }
         { this.renderContent() }
       </div>
     )
   }
 
+  // Returns a list of all slots of that currently selected day
+  currentSlots() {
+    return this.state.slots
+      .filter(slot => {
+        return this.state.from < slot.to && this.state.to > slot.from
+      })
+  }
+
   constructor(props) {
     super(props)
+
+    const from = DateTime.fromISO(props.config.festivalDateStart, { zone: 'utc' })
+    const to = DateTime.fromISO(from, { zone: 'utc' }).plus({ day: 1 })
 
     this.state = {
       selectedSlotsIndexes: props.selectedSlotsIndexes,
       slots: props.slots,
+      from: from.toISO(),
+      to: to.toISO(),
     }
 
     this.onSlotBookedChange = this.onSlotBookedChange.bind(this)
     this.onSlotDisabledChange = this.onSlotDisabledChange.bind(this)
     this.onToggleAll = this.onToggleAll.bind(this)
+    this.onCopyAll = this.onCopyAll.bind(this)
+    this.onDateSelected = this.onDateSelected.bind(this)
   }
 }
 
-export default SlotEditor
+export default withConfig(SlotEditor)
