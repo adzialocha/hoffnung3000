@@ -1,7 +1,10 @@
 .tag {
-  padding: 12px;
   margin-top: -2px;
   margin-left: -2px;
+
+  padding: 12px;
+
+  border: 2px solid $black;
 
   font-weight: $font-weight-bold;
   font-size: $font-size-base;
@@ -9,8 +12,6 @@
   text-transform: uppercase;
 
   cursor: pointer;
-
-  border: 2px solid $black;
 
   &:focus,
   &:hover {
@@ -35,4 +36,3 @@
     background-color: ($green, 25%);
   }
 }
-

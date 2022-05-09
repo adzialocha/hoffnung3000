@@ -1,5 +1,5 @@
 import httpStatus from 'http-status'
-import Sequelize, { Op } from 'sequelize'
+import { Op } from 'sequelize'
 
 import {
   DEFAULT_LIMIT,
@@ -479,7 +479,7 @@ export default {
       const slotsFilter = {
         eventId: {
           [Op.ne]: null,
-        }
+        },
       }
 
       if (req.query.to) {
