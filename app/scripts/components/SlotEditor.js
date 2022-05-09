@@ -1,10 +1,10 @@
-import DatePicker from 'react-date-picker'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { DateTime, Interval } from 'luxon'
 
-import { alert } from '../services/dialog'
+import { DatePicker } from './'
 import { SlotEditorItem } from './'
+import { alert } from '../services/dialog'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
@@ -46,10 +46,10 @@ class SlotEditor extends Component {
     slots: [],
   }
 
-  onDateSelected(date) {
-    if (date) {
+  onDateSelected(selectedDate) {
+    if (selectedDate) {
       this.setState({
-        selectedDate: DateTime.fromJSDate(date).toISODate(),
+        selectedDate,
       })
     } else {
       if (this.state.selectedSlotsIndexes.length > 0) {
@@ -167,13 +167,8 @@ class SlotEditor extends Component {
   }
 
   renderDatePicker() {
-    const { festivalDateStart, festivalDateEnd } = this.props.config
-
     return (
       <DatePicker
-        format="dd.MM.y"
-        maxDate={new Date(festivalDateEnd)}
-        minDate={new Date(festivalDateStart)}
         value={new Date(this.state.selectedDate)}
         onChange={this.onDateSelected}
       />
@@ -181,14 +176,7 @@ class SlotEditor extends Component {
   }
 
   renderContent() {
-    const from = DateTime.fromISO(this.state.selectedDate)
-    const to = DateTime.fromISO(from).plus({ day: 1 })
-    const range = Interval.fromDateTimes(from, to)
-
-    const slots = this.state.slots
-      .filter(item => {
-        return range.overlaps(Interval.fromDateTimes(item.from, item.to))
-      })
+    const slots = this.currentSlots()
 
     return slots.map((item, index) => {
       const previousItem = index > 0 ? slots[index - 1] : null
@@ -215,6 +203,18 @@ class SlotEditor extends Component {
         { this.renderContent() }
       </div>
     )
+  }
+
+  // Returns a list of all slots of that currently selected day
+  currentSlots() {
+    const from = DateTime.fromISO(this.state.selectedDate)
+    const to = DateTime.fromISO(from).plus({ day: 1 })
+    const range = Interval.fromDateTimes(from, to)
+
+    return this.state.slots
+      .filter(item => {
+        return range.overlaps(Interval.fromDateTimes(item.from, item.to))
+      })
   }
 
   constructor(props) {

@@ -1,4 +1,3 @@
-import DatePicker from 'react-date-picker'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { DateTime } from 'luxon'
@@ -6,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { CuratedEventListItem, StaticPage } from '../components'
+import { CuratedEventListItem, StaticPage, DatePicker } from '../components'
 import { TagSelector } from '../components'
 import { asInfiniteListCalendar } from '../containers'
 import { translate } from '../../../common/services/i18n'
@@ -43,10 +42,10 @@ class Calendar extends Component {
     this.props.push('/tickets')
   }
 
-  onDateSelected(date) {
-    if (date) {
+  onDateSelected(selectedDate) {
+    if (selectedDate) {
       this.setState({
-        selectedDate: DateTime.fromJSDate(date).toISODate(),
+        selectedDate,
       })
     } else {
       this.setState({
@@ -142,16 +141,11 @@ class Calendar extends Component {
   }
 
   renderDatePicker() {
-    const { festivalDateStart, festivalDateEnd } = this.props.config
-
     return (
       <Fragment>
         <h3>{ translate('views.events.datePickerTitle') }</h3>
 
         <DatePicker
-          format="dd.MM.y"
-          maxDate={new Date(festivalDateEnd)}
-          minDate={new Date(festivalDateStart)}
           value={new Date(this.state.selectedDate)}
           onChange={this.onDateSelected}
         />
