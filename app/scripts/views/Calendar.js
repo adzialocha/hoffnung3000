@@ -123,6 +123,10 @@ class Calendar extends Component {
   }
 
   renderTagSelector() {
+    if (this.props.config.defaultTags.length === 0) {
+      return null
+    }
+
     const tags = this.props.config.defaultTags.map(tag => {
       return { label: tag, value: tag }
     })
