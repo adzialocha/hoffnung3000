@@ -133,6 +133,7 @@ class Calendar extends Component {
 
     return (
       <Fragment>
+        <hr />
         <h3>{ translate('views.events.tagSelectorTitle') }</h3>
 
         <TagSelector
@@ -147,6 +148,7 @@ class Calendar extends Component {
   renderDatePicker() {
     return (
       <Fragment>
+        <hr />
         <h3>{ translate('views.events.datePickerTitle') }</h3>
         <DatePicker value={this.state.selectedDate} onChange={this.onDateSelected} />
       </Fragment>
@@ -159,9 +161,7 @@ class Calendar extends Component {
         <h1>{ translate('views.events.calendarTitle') }</h1>
         { this.renderText() }
         { this.renderCreateButton() }
-        <hr />
         { this.renderDatePicker() }
-        <hr />
         { this.renderTagSelector() }
         <hr />
         { this.renderItemsList() }
