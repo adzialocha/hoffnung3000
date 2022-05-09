@@ -25,7 +25,7 @@ export function prepareAnimalResponse(animal, isAnonymous = true) {
     name,
   }
 
-  if (!isAnonymous) {
+  if (!isAnonymous && animal.user) {
     const { user } = animal
 
     data.userId = user.id
@@ -39,8 +39,22 @@ export function prepareAnimalResponseAll(animals, isAnonymous) {
   return animals.map(animal => prepareAnimalResponse(animal, isAnonymous))
 }
 
+function filterAnimal(obj, isAnonymous) {
+  if (obj && typeof obj === 'object') {
+    Object.keys(obj).forEach(key => {
+      if (key === 'animal') {
+        obj.animal = prepareAnimalResponse(obj.animal, isAnonymous)
+      } else {
+        obj[key] = filterAnimal(obj[key], isAnonymous)
+      }
+    })
+  }
+
+  return obj
+}
+
 export function prepareResponse(data, req, isAnonymous) {
-  const response = 'toJSON' in data ? data.toJSON() : data
+  let response = 'toJSON' in data ? data.toJSON() : data
 
   // Set owner flag for frontend ui
   if (typeof req.isOwnerMe !== 'undefined') {
@@ -50,9 +64,7 @@ export function prepareResponse(data, req, isAnonymous) {
   }
 
   // Remove userId from animal to stay anonymous
-  if (response.animal) {
-    response.animal = prepareAnimalResponse(response.animal, isAnonymous)
-  }
+  response = filterAnimal(response, isAnonymous)
 
   // Convert markdown to html
   response.descriptionHtml = marked(response.description)

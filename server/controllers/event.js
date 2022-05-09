@@ -61,7 +61,8 @@ const belongsToManyResources = {
   attributes: { exclude: ['createdAt', 'updatedAt'] },
   include: [{
     association: ResourceBelongsToAnimal,
-    attributes: ['name', 'id'],
+    attributes: ['name', 'id', 'userId'],
+    include: AnimalBelongsToUser,
   }],
 }
 
