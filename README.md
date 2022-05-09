@@ -27,7 +27,7 @@ Check out the [Handbook](https://hoffnung3000.de) to get started.
 
 ## Requirements
 
-* Server with NodeJS environment
+* Server with NodeJS environment (`<= 16`)
 * PostgreSQL database
 * Mail-Server (SMTP)
 * PayPal Account for payment (optional)
