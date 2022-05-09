@@ -9,7 +9,6 @@ import dotenv from 'dotenv'
 import express from 'express'
 import fs from 'fs'
 import helmet from 'helmet'
-import marked from 'marked'
 import methodOverride from 'method-override'
 import morgan from 'morgan'
 import path from 'path'
@@ -56,16 +55,6 @@ assets.basePath = ASSETS_FOLDER_NAME
 if (!fs.existsSync(getPath(ASSETS_FOLDER_NAME))) {
   errorAndExit(`Assets folder "${ASSETS_FOLDER_NAME}" does not exist, please bundle assets first`)
 }
-
-// Markdown settings
-const { renderer } = require('./services/marked')
-marked.setOptions({
-  breaks: true,
-  gfm: true,
-  smartypants: true,
-  tables: false,
-})
-marked.use({ renderer })
 
 // Set default timezone
 Settings.defaultZoneName = 'utc'

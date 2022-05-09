@@ -1,8 +1,6 @@
-import marked from 'marked'
-
 import Animal from '../models/animal'
-
 import pick from '../../common/utils/pick'
+import { renderMarkdown } from '../services/marked'
 
 export const DEFAULT_LIMIT = 50
 export const DEFAULT_OFFSET = 0
@@ -67,8 +65,10 @@ export function prepareResponse(data, req, isAnonymous) {
   response = filterAnimal(response, isAnonymous)
 
   // Convert markdown to html
-  response.descriptionHtml = marked(response.description)
-  if (response.additionalInfo) { response.additionalInfoHtml = marked(response.additionalInfo) }
+  response.descriptionHtml = renderMarkdown(response.description)
+  if (response.additionalInfo) {
+    response.additionalInfoHtml = renderMarkdown(response.additionalInfo)
+  }
 
   return response
 }

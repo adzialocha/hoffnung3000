@@ -1,4 +1,3 @@
-import marked from 'marked'
 import { DateTime } from 'luxon'
 
 import {
@@ -15,6 +14,7 @@ import Message from '../models/message'
 import { MessageBelongsToAnimal, AnimalBelongsToUser } from '../database/associations'
 import { addMessageActivity } from '../services/activity'
 import { getConfig } from '../config'
+import { renderMarkdown } from '../services/marked'
 
 const permittedFields = [
   'text',
@@ -36,7 +36,7 @@ function prepareResponse(message, req, isAnonymous) {
     response.isRead = DateTime.fromISO(lastCheckedAt) > DateTime.fromISO(response.createdAt.toISOString())
   }
 
-  response.textHtml = marked(response.text)
+  response.textHtml = renderMarkdown(response.text)
 
   if (response.animal) {
     response.animal = prepareAnimalResponse(response.animal, isAnonymous)

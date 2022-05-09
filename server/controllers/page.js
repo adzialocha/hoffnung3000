@@ -1,6 +1,5 @@
-import marked from 'marked'
-
 import Page from '../models/page'
+import { renderMarkdown } from '../services/marked'
 
 export default {
   findOneWithSlug: (req, res, next) => {
@@ -12,7 +11,7 @@ export default {
     })
       .then(page => {
         const convertedResponse = Object.assign({}, {
-          contentHtml: marked(page.content),
+          contentHtml: renderMarkdown(page.content),
           id: page.id,
           title: page.title,
         })
