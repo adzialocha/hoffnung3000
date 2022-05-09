@@ -143,7 +143,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       // Filter allEventsList by array of tags
       if (this.props.tags.length > 0) {
         const filteredListItems = this.props.listItems.filter(event => {
-          return !event.tags.some(tag => this.props.tags.includes(tag))
+          return event.tags.some(tag => this.props.tags.includes(tag))
         })
 
         return this.renderListItems(filteredListItems)
