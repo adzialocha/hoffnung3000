@@ -28,6 +28,8 @@
   font-size: $font-size-base;
 
   flex-grow: 1;
+
+  pointer-events: none;
 }
 
 .react-date-picker__inputGroup__divider {
@@ -42,7 +44,7 @@
   min-width: .54em;
   height: 100%;
 
-  padding: 0 1px;
+  padding: 0 0;
 
   border: 0;
 
@@ -51,6 +53,8 @@
   font: inherit;
 
   appearance: textfield;
+
+  pointer-events: none;
 
   &:invalid {
     background: $red;
@@ -62,12 +66,6 @@
   margin: 0;
 
   appearance: none;
-}
-
-.react-date-picker__inputGroup__input--hasLeadingZero {
-  margin-left: -.54em;
-
-  padding-left: calc(1px + .54em);
 }
 
 .react-date-picker__button {
