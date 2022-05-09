@@ -49,6 +49,10 @@ export default {
     tagSelectorTitle: 'Filter by tags',
     datePickerTitle: 'Filter by date',
     titlePlaceholder: 'Event',
+    resourcesTitle: 'Resources',
+    resourcesTableItem: 'Item',
+    resourcesTableDescription: 'Description',
+    resourcesTableOwner: 'Owner',
   },
   inbox: {
     backToConversations: 'Back to inbox',

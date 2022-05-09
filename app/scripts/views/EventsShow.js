@@ -13,6 +13,7 @@ class EventsShow extends Component {
   static propTypes = {
     fetchResource: PropTypes.func.isRequired,
     isActive: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
     isError: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isVisitor: PropTypes.bool.isRequired,
@@ -219,6 +220,63 @@ class EventsShow extends Component {
     )
   }
 
+  renderResources() {
+    if (this.props.isLoading) {
+      return null
+    }
+
+    if (!this.props.resourceData.isOwnerMe && !this.props.isAdmin) {
+      return null
+    }
+
+    if (this.props.resourceData.resources.length === 0) {
+      return null
+    }
+
+    return (
+      <div>
+        <hr />
+
+        <strong>
+          { translate('views.events.resourcesTitle') }
+        </strong>
+
+        <table>
+          <thead>
+            <tr>
+              <th>
+                #
+              </th>
+              <th>
+                { translate('views.events.resourcesTableItem') }
+              </th>
+              <th>
+                { translate('views.events.resourcesTableDescription') }
+              </th>
+              <th>
+                { translate('views.events.resourcesTableOwner') }
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.resourceData.resources.map((resource, index) => {
+              return (
+                <tr key={resource.id}>
+                  <td>{index + 1}</td>
+                  <td>{resource.title}</td>
+                  <td>{resource.description}</td>
+                  <td>
+                    <AnimalLink animal={resource.animal} />
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+
   renderContent() {
     if (this.props.isLoading) {
       return <p>{ translate('common.loading') }</p>
@@ -239,6 +297,7 @@ class EventsShow extends Component {
         { this.renderTicketUrl() }
         { this.renderWebsiteUrl() }
         { this.renderAdditionalInfo() }
+        { this.renderResources() }
       </div>
     )
   }
@@ -278,13 +337,14 @@ function mapStateToProps(state, ownProps) {
   const resourceSlug = ownProps.match.params.slug
   const resource = cachedResource('events', resourceSlug)
   const { isLoading, isError, object: resourceData } = resource
-  const { isVisitor, isActive } = state.user
+  const { isVisitor, isActive, isAdmin } = state.user
 
   return {
     isActive,
     isError,
     isLoading,
     isVisitor,
+    isAdmin,
     resourceData,
     resourceSlug,
   }
