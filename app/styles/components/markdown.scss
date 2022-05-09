@@ -6,6 +6,7 @@ $_markdown-content-color: $gray;
   display: inline-block;
 
   width: 100%;
+  max-width: 500px;
 
   margin-top: 15px;
 
@@ -16,6 +17,8 @@ $_markdown-content-color: $gray;
 
   background-color: $_markdown-background;
 
+  text-align: left;
+
   h1,
   h2,
   h3,
@@ -25,6 +28,8 @@ $_markdown-content-color: $gray;
     margin-top: 15px;
 
     font-size: $font-size-base;
+
+    text-align: left;
   }
 
   p {
