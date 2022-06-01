@@ -7,6 +7,7 @@ export default {
       username: Joi.string().min(3).max(30).required(),
       password: Joi.string().min(8).required(),
       paymentMethod: Joi.string().allow('paypal', 'transfer').required(),
+      phone: Joi.string().required(),
     }),
   },
   login: {
