@@ -13,15 +13,10 @@ import { withConfig } from '../containers'
 const totalSteps = 2
 
 const permittedFields = [
-  'city',
-  'cityCode',
-  'country',
   'email',
-  'firstname',
-  'lastname',
+  'username',
   'password',
   'paymentMethod',
-  'street',
 ]
 
 class TicketWizard extends Component {

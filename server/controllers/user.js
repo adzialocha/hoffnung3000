@@ -10,21 +10,16 @@ import { deleteUsersByIds } from '../handlers/user'
 import User from '../models/user'
 
 const permittedFields = [
-  'city',
-  'cityCode',
-  'country',
   'email',
-  'firstname',
+  'username',
   'isActive',
   'isAdmin',
   'isParticipant',
   'isVisitor',
-  'lastname',
   'password',
   'passwordResetAt',
   'passwordResetToken',
   'phone',
-  'street',
 ]
 
 export default {

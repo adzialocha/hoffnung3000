@@ -46,7 +46,7 @@ export default {
     activityButton: 'All activites',
     activityTitle: 'Recent activities',
     comingSoon: 'Coming soon!',
-    defaultHeader: '<p>Welcome dear visitor,</p><p>please <em>register</em> or <em>login</em> below to use the platform.</p>',
+    defaultHeader: '<p>Welcome dear visitor,</p><p>please <em>login</em> below to use the platform.</p>',
     gifStreamDescription: 'Send .gif animations to our stream with your webcam',
     gifStreamLink: 'Go to STREAM',
     gifStreamTitle: '.gif-stream',
@@ -61,7 +61,7 @@ export default {
     signUpHeader: 'We invite all activists, artists, theoreticians, performers, musicians, hackers and everyone else to register.',
     visitorButton: 'Buy an audience ticket',
     visitorHeader: 'Or buy an audience ticket to visit the festival.',
-    welcomeUser: '<p>Hi {firstname},</p><p>Big massive welcome to the platform!</p>',
+    welcomeUser: '<p>Hi {username},</p><p>Big massive welcome to the platform!</p>',
   },
   sidebarRandomMeeting: {
     anytime: 'Anytime',
