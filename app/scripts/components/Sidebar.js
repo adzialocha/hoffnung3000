@@ -95,38 +95,6 @@ const RandomMeetingSection = withConfig('isRandomMeetingEnabled', () => {
   )
 })
 
-const SignUpParticipantSection = withConfig('isSignUpParticipantEnabled', () => {
-  return (
-    <Fragment>
-      <p>{ translate('components.sidebar.signUpHeader' )}</p>
-
-      <div className="button-group">
-        <Link className="button" to="/register">
-          { translate('components.sidebar.signUpButton' )}
-        </Link>
-      </div>
-
-      <hr className="separator separator--white" />
-    </Fragment>
-  )
-})
-
-const SignUpVisitorSection = withConfig('isSignUpVisitorEnabled', () => {
-  return (
-    <Fragment>
-      <p>{ translate('components.sidebar.visitorHeader' )}</p>
-
-      <div className="button-group">
-        <Link className="button" to="/tickets">
-          { translate('components.sidebar.visitorButton' )}
-        </Link>
-      </div>
-
-      <hr className="separator separator--white" />
-    </Fragment>
-  )
-})
-
 class Sidebar extends Component {
   static propTypes = {
     isActive: PropTypes.bool.isRequired,
@@ -206,10 +174,6 @@ class Sidebar extends Component {
           } />
 
           <br />
-          <SignUpParticipantSection />
-          <SignUpVisitorSection />
-
-          <p>{ translate('components.sidebar.loginHeader' )}</p>
 
           <div className="button-group">
             <Link className="button" to="/login">
