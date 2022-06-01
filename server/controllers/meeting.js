@@ -52,7 +52,7 @@ function createConversation(place, from, to, user, isAnonymous) {
         const text = translate('api.meeting.createMessageText', {
           date,
           timezone,
-          name: isAnonymous ? sendingAnimal.name : user.firstname,
+          name: isAnonymous ? sendingAnimal.name : user.username,
           placeTitle,
         })
 
@@ -169,7 +169,7 @@ function joinMeeting(user, conversation, isAnonymous) {
   })
     .then(joiningAnimal => {
       const text = translate('api.meeting.joinMessageText', {
-        name: isAnonymous ? joiningAnimal.name : user.firstname,
+        name: isAnonymous ? joiningAnimal.name : user.username,
       })
 
       return conversation.addAnimal(joiningAnimal)

@@ -10,18 +10,13 @@ import { cachedResource } from '../services/resources'
 import { fetchResource, updateResource } from '../actions/resources'
 
 const permittedFields = [
-  'city',
-  'cityCode',
-  'country',
   'email',
-  'firstname',
+  'username',
   'isAdmin',
   'isActive',
   'isParticipant',
   'isVisitor',
-  'lastname',
   'phone',
-  'street',
 ]
 
 class AdminUsersEditForm extends Component {
@@ -102,13 +97,13 @@ class AdminUsersEditForm extends Component {
   }
 
   title() {
-    const { firstname } = this.props.resourceData
+    const { username } = this.props.resourceData
 
-    if (!(firstname && firstname.length > 0)) {
+    if (!(username && username.length > 0)) {
       return ''
     }
 
-    return `"${this.props.resourceData.firstname}"`
+    return `"${this.props.resourceData.username}"`
   }
 
   constructor(props) {

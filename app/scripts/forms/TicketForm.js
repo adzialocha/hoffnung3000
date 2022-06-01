@@ -13,11 +13,8 @@ const validate = values => {
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,16}$/i.test(values.email)) {
     errors.email = translate('forms.auth.errors.invalidMail')
   }
-  if (!values.firstname) {
-    errors.firstname = translate('forms.auth.errors.firstnameRequired')
-  }
-  if (!values.lastname) {
-    errors.lastname = translate('forms.auth.errors.lastnameRequired')
+  if (!values.username) {
+    errors.username = translate('forms.auth.errors.usernameRequired')
   }
   if (!values.password) {
     errors.password = translate('forms.auth.errors.passwordRequired')
@@ -31,18 +28,6 @@ const validate = values => {
   }
   if (values.passwordRepeat !== values.password) {
     errors.passwordRepeat = translate('forms.auth.errors.passwordMatch')
-  }
-  if (!values.street) {
-    errors.street = translate('forms.auth.errors.streetRequired')
-  }
-  if (!values.cityCode) {
-    errors.cityCode = translate('forms.auth.errors.cityCodeRequired')
-  }
-  if (!values.city) {
-    errors.city = translate('forms.auth.errors.cityRequired')
-  }
-  if (!values.country) {
-    errors.country = translate('forms.auth.errors.countryRequired')
   }
   return errors
 }
@@ -78,15 +63,8 @@ class TicketForm extends Component {
         <Field
           component={FormInput}
           disabled={this.props.isLoading}
-          label={translate('forms.auth.firstname')}
-          name="firstname"
-          type="text"
-        />
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.auth.lastname')}
-          name="lastname"
+          label={translate('forms.auth.username')}
+          name="username"
           type="text"
         />
         <Field
@@ -112,37 +90,6 @@ class TicketForm extends Component {
           name="passwordRepeat"
           type="password"
         />
-        <hr />
-        <h2>{ translate('forms.auth.yourAddress') }</h2>
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.auth.streetAndNumber')}
-          name="street"
-          type="text"
-        />
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.auth.cityCode')}
-          name="cityCode"
-          type="text"
-        />
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.auth.city')}
-          name="city"
-          type="text"
-        />
-        <Field
-          component={FormInput}
-          disabled={this.props.isLoading}
-          label={translate('forms.auth.country')}
-          name="country"
-          type="text"
-        />
-        <small>{ translate('forms.auth.whyAddress') }</small>
         <hr />
         <button
           className="form__submit button button--blue"

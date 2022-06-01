@@ -21,16 +21,11 @@ import {
 const PASSWORD_RESET_EXPIRY = 15 // Minutes
 
 const permittedFields = [
-  'city',
-  'cityCode',
-  'country',
   'email',
-  'firstname',
-  'lastname',
+  'username',
   'password',
   'paymentMethod',
   'phone',
-  'street',
 ]
 
 function getProduct(config) {
