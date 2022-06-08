@@ -9,7 +9,6 @@ import { withConfig } from '../containers'
 const PRIMARY_NAVIGATION = [
   { localeKey: 'home', url: '/' },
   { localeKey: 'about', url: '/pages/about' },
-  { localeKey: 'calendar', url: '/calendar' },
 ]
 
 const SECONDARY_NAVIGATION = [

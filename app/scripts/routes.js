@@ -15,7 +15,6 @@ import { withConfig } from './containers'
 import {
   Activity,
   Admin,
-  Calendar,
   ConversationsIndex,
   ConversationsNew,
   ConversationsShow,
@@ -53,7 +52,6 @@ export default class Routes extends Component {
           <Route component={shouldNotBeAuthenticated(ForgotPassword)} path="/forgot" />
           <Route component={shouldNotBeAuthenticated(ResetPassword)} path="/reset/:token" />
           <Route component={Page} path="/pages/:slug" />
-          <Route component={Calendar} path="/calendar" />
           <Route component={isAuthenticated(Profile)} path="/profile" />
           <Route component={withConfig('gifStreamServerUrl', isAuthenticated(Stream))} path="/stream" />
           <Route component={withConfig('isActivityStreamEnabled', isParticipant(Activity))} path="/activity" />

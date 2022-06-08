@@ -6,10 +6,9 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { StaticPage, CuratedEventListItem } from '../components'
+import { StaticPage, CuratedEventListItem, DatePicker, TagSelector } from '../components'
+import { asInfiniteListCalendar, withConfig } from '../containers'
 import { translate } from '../../../common/services/i18n'
-import { withConfig } from '../containers'
-import { asInfiniteListCalendar } from '../containers'
 
 const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
 
@@ -47,9 +46,20 @@ const HomeVideo = withConfig('videoHomeId', props => {
   )
 })
 
+// Select current day or first day of festival when too early
+function defaultDate(festivalDateStart) {
+  return DateTime.now({ zone: 'utc ' }) < DateTime.fromISO(festivalDateStart, { zone: 'utc' })
+    ? festivalDateStart
+    : DateTime.now().toISODate()
+}
+
 class Home extends Component {
   static propTypes = {
     config: PropTypes.object.isRequired,
+    isActive: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
+    isAuthenticated: PropTypes.bool.isRequired,
+    isParticipant: PropTypes.bool.isRequired,
     push: PropTypes.func.isRequired,
   }
 
@@ -57,34 +67,154 @@ class Home extends Component {
     this.props.push(`/events/${item.slug}`)
   }
 
-  render() {
-    const { festivalDateStart } = this.props.config
-    const today = DateTime.now({ zone: 'utc ' }) < DateTime.fromISO(festivalDateStart, { zone: 'utc' })
-      ? festivalDateStart
-      : DateTime.now().toISODate()
+  onEditClick(item) {
+    this.props.push(`/events/${item.slug}/edit`)
+  }
+
+  onPreviewClick() {
+    this.props.push('/tickets')
+  }
+
+  onDateSelected(selectedDate) {
+    if (selectedDate) {
+      this.setState({
+        selectedDate,
+      })
+    } else {
+      this.setState({
+        selectedDate: defaultDate(this.props.config.festivalDateStart),
+      })
+    }
+  }
+
+  onTagFilterChange(selectedTags) {
+    this.setState({
+      selectedTags,
+    })
+  }
+
+  renderItemsList() {
+    const from = this.state.selectedDate
+    const to = DateTime.fromISO(from).plus({ day: 1 }).toISODate()
+
+    if (
+      (
+        !this.props.isAuthenticated ||
+        !this.props.isActive
+      ) && this.props.config.festivalTicketPrice !== 0
+    ) {
+      return (
+        <WrappedInfiniteList
+          date={this.state.selectedDate}
+          resourceName="preview"
+          tags={this.state.selectedTags}
+          onClick={this.onPreviewClick}
+        />
+      )
+    }
 
     return (
-      <section>
-        <StaticPage slug="home" />
-        <HomeVideo />
+      <WrappedInfiniteList
+        from={from}
+        resourceName="events"
+        tags={this.state.selectedTags}
+        to={to}
+        onClick={this.onClick}
+        onEditClick={this.onEditClick}
+      />
+    )
+  }
+
+  renderCreateButton() {
+    if (
+      !(
+        this.props.isParticipant ||
+        this.props.isAdmin
+      ) || !this.props.isAuthenticated
+    ) {
+      return null
+    }
+
+    return (
+      <Link className="button button--green" to="/new/event">
+        { translate('views.events.createNewButton') }
+      </Link>
+    )
+  }
+
+  renderText() {
+    return <StaticPage hideTitle={true} slug="home" />
+  }
+
+  renderTagSelector() {
+    if (this.props.config.defaultTags.length === 0) {
+      return null
+    }
+
+    const tags = this.props.config.defaultTags.map(tag => {
+      return { label: tag, value: tag }
+    })
+
+    return (
+      <Fragment>
         <hr />
-        <h3>{ translate('views.home.upcomingEventsTitle') }</h3>
-        <WrappedInfiniteList from={today} resourceName="events" tags={[]} onClick={this.onClick} />
-        <Link className="button" to="/calendar">
-          { translate('views.home.goToCalendar') }
-        </Link>
+        <h3>{ translate('views.events.tagSelectorTitle') }</h3>
+
+        <TagSelector
+          defaultTags={tags}
+          tagArray={this.state.selectedTags}
+          onChange={this.onTagFilterChange}
+        />
+      </Fragment>
+    )
+  }
+
+  renderDatePicker() {
+    return (
+      <Fragment>
+        <hr />
+        <h3>{ translate('views.events.datePickerTitle') }</h3>
+        <DatePicker value={this.state.selectedDate} onChange={this.onDateSelected} />
+      </Fragment>
+    )
+  }
+
+  render() {
+    return (
+      <section>
+        { this.renderText() }
+        <HomeVideo />
+        { this.renderCreateButton() }
+        { this.renderDatePicker() }
+        { this.renderTagSelector() }
+        <hr />
+        { this.renderItemsList() }
       </section>
     )
   }
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      selectedDate: defaultDate(props.config.festivalDateStart),
+      selectedTags: [],
+    }
+
     this.onClick = this.onClick.bind(this)
+    this.onEditClick = this.onEditClick.bind(this)
+    this.onPreviewClick = this.onPreviewClick.bind(this)
+    this.onDateSelected = this.onDateSelected.bind(this)
+    this.onTagFilterChange = this.onTagFilterChange.bind(this)
   }
 }
 
 function mapStateToProps(state) {
-  return state
+  return {
+    ...state.auth,
+    ...state.user,
+    ...state.meta,
+  }
 }
 
 export default connect(
