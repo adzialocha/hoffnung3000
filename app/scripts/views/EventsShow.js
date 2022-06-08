@@ -311,7 +311,7 @@ class EventsShow extends Component {
       <section>
         { this.renderTitle() }
 
-        <Link className="button" to="/calendar">
+        <Link className="button" to="/">
           { translate('common.backToOverview') }
         </Link>
 

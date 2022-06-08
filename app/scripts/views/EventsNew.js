@@ -53,7 +53,7 @@ class EventsNew extends Component {
       this.props.nextRandomId,
       requestParams,
       flash,
-      '/calendar'
+      '/'
     )
   }
 
@@ -63,7 +63,7 @@ class EventsNew extends Component {
         <h1>{ translate('views.events.createNewTitle') }</h1>
         <StaticPage hideTitle={true} slug="new-event" />
 
-        <Link className="button" to="/calendar">
+        <Link className="button" to="/">
           { translate('common.backToOverview') }
         </Link>
 
