@@ -1,6 +1,7 @@
-import ReactDatePicker  from 'react-date-picker'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import ReactDatePicker  from 'react-date-picker'
+import classnames from 'classnames'
 import { DateTime } from 'luxon'
 
 import { withConfig } from '../containers'
@@ -8,6 +9,7 @@ import { withConfig } from '../containers'
 class DatePicker extends Component {
   static propTypes = {
     config: PropTypes.object.isRequired,
+    isDefault: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
   }
@@ -25,6 +27,9 @@ class DatePicker extends Component {
 
     return (
       <ReactDatePicker
+        className={classnames({
+          'react-date-picker--user-selected': !this.props.isDefault,
+        })}
         format="dd.MM.y"
         maxDate={new Date(festivalDateEnd)}
         minDate={new Date(festivalDateStart)}
