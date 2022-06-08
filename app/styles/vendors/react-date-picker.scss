@@ -4,6 +4,10 @@
   display: inline-flex;
 }
 
+.react-date-picker--user-selected {
+  background-color: $green;
+}
+
 .react-date-picker--disabled {
   color: $gray-light;
 

@@ -79,10 +79,12 @@ class Home extends Component {
     if (selectedDate) {
       this.setState({
         selectedDate,
+        isDefault: false,
       })
     } else {
       this.setState({
         selectedDate: defaultDate(this.props.config.festivalDateStart),
+        isDefault: true,
       })
     }
   }
@@ -94,8 +96,11 @@ class Home extends Component {
   }
 
   renderItemsList() {
+    // Select all dates when nothing is selected, otherwise filter by day
     const from = this.state.selectedDate
-    const to = DateTime.fromISO(from).plus({ day: 1 }).toISODate()
+    const to = this.state.isDefault
+      ? DateTime.fromISO(this.props.config.festivalDateEnd, { zone: 'utc' })
+      : DateTime.fromISO(from).plus({ day: 1 }).toISODate()
 
     if (
       (
@@ -174,7 +179,12 @@ class Home extends Component {
       <Fragment>
         <hr />
         <h3>{ translate('views.events.datePickerTitle') }</h3>
-        <DatePicker value={this.state.selectedDate} onChange={this.onDateSelected} />
+
+        <DatePicker
+          isDefault={this.state.isDefault}
+          value={this.state.selectedDate}
+          onChange={this.onDateSelected}
+        />
       </Fragment>
     )
   }
@@ -199,6 +209,7 @@ class Home extends Component {
     this.state = {
       selectedDate: defaultDate(props.config.festivalDateStart),
       selectedTags: [],
+      isDefault: true,
     }
 
     this.onClick = this.onClick.bind(this)
