@@ -13,6 +13,8 @@
 
 @include media-breakpoint(xs) {
   .list-item-content {
+    width: 250px;
+
     padding: 10px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -50,7 +52,8 @@
 
 @include media-breakpoint(xs) {
   .list-item-content__description {
-    margin-top: 3px;
+    margin-top: 10px;
+    margin-bottom: 5px;
   }
 }
 

@@ -5,6 +5,14 @@ import { asInfiniteListItem, withAuthState } from '../containers'
 import { formatEventTime } from '../../../common/utils/dateFormat'
 import { translate } from '../../../common/services/i18n'
 
+function truncate(text, len) {
+  if (text.length > len) {
+    return `${text.slice(0, len)} ...`
+  }
+
+  return text
+}
+
 class CuratedEventListItem extends Component {
   static propTypes = {
     config: PropTypes.object.isRequired,
@@ -47,6 +55,10 @@ class CuratedEventListItem extends Component {
 
         <div className="list-item-content__subtitle ellipsis">
           { this.renderEventTime() }
+        </div>
+
+        <div className="list-item-content__description">
+          { truncate(this.props.item.description, 50) }
         </div>
 
         { this.renderPlaceName() }
