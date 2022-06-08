@@ -5,11 +5,9 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { CuratedEventListItem, StaticPage, DatePicker } from '../components'
-import { TagSelector } from '../components'
-import { asInfiniteListCalendar } from '../containers'
+import { CuratedEventListItem, StaticPage, DatePicker, TagSelector } from '../components'
+import { asInfiniteListCalendar, withConfig } from '../containers'
 import { translate } from '../../../common/services/i18n'
-import { withConfig } from '../containers'
 
 const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
 

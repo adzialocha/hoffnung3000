@@ -15,7 +15,6 @@ import { withConfig } from './containers'
 import {
   Activity,
   Admin,
-  Calendar,
   ConversationsIndex,
   ConversationsNew,
   ConversationsShow,
