@@ -37,6 +37,9 @@
 .list-item__cover-image {
   position: relative;
 
+  width: 200px;
+  height: 200px;
+
   background-color: $gray-light;
   background-position: center;
   background-size: cover;
