@@ -58,7 +58,7 @@ class CuratedEventListItem extends Component {
         </div>
 
         <div className="list-item-content__description">
-          { truncate(this.props.item.description, 50) }
+          { truncate(this.props.item.description, 200) }
         </div>
 
         { this.renderPlaceName() }
