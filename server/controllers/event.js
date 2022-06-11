@@ -528,16 +528,24 @@ export default {
         where: req.user.isVisitor ? { isPublic: true, id: eventIds } : { id: eventIds },
       })
 
-      // Insert `from` and `to` ISO date string for each event
-      const rows = result.rows.map(raw => {
-        const row = raw.toJSON()
+      // Insert `from` and `to` ISO date string for each event and sort them
+      const rows = result.rows
+        .map(raw => {
+          const row = raw.toJSON()
 
-        return {
-          ...row,
-          from: dates[row.id].from,
-          to: dates[row.id].to,
-        }
-      })
+          return {
+            ...row,
+            from: dates[row.id].from,
+            to: dates[row.id].to,
+          }
+        }).sort((a, b) => {
+          if (a.from < b.from) {
+            return -1
+          } else if (a.from > b.from) {
+            return 1
+          }
+          return 0
+        })
 
       const config = await getConfig('isAnonymizationEnabled')
 
