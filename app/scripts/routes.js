@@ -15,6 +15,7 @@ import { withConfig } from './containers'
 import {
   Activity,
   Admin,
+  Calendar,
   ConversationsIndex,
   ConversationsNew,
   ConversationsShow,
@@ -23,6 +24,7 @@ import {
   EventsNew,
   EventsShow,
   ForgotPassword,
+  Home,
   Login,
   NotFound,
   Page,
@@ -45,7 +47,7 @@ export default class Routes extends Component {
     return (
       <main role="main">
         <Switch>
-          <Route component={Calendar} exact={true} path="/" />
+          <Route component={Home} exact={true} path="/" />
           <Route component={EventMap} path="/map" />
           <Route component={Calendar} path="/calendar" />
           <Route component={shouldNotBeAuthenticated(Login)} path="/login" />
