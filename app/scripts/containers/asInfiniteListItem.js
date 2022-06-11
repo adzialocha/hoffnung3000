@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import classnames from 'classnames'
 
 import { translate } from '../../../common/services/i18n'
 
 export default function asInfiniteListItem(WrappedListItemComponent) {
-  return class InfiniteListItemContainer extends Component {
+  class InfiniteListItemContainer extends Component {
     static propTypes = {
       className: PropTypes.string,
       input: PropTypes.object,
+      isAdmin: PropTypes.bool.isRequired,
       item: PropTypes.object.isRequired,
       onClick: PropTypes.func,
       onEditClick: PropTypes.func,
@@ -36,7 +38,7 @@ export default function asInfiniteListItem(WrappedListItemComponent) {
     }
 
     renderEditButton() {
-      if (!this.props.item.isOwnerMe || !this.props.onEditClick) {
+      if ((!this.props.item.isOwnerMe && !this.props.isAdmin) || !this.props.onEditClick) {
         return null
       }
 
@@ -99,4 +101,14 @@ export default function asInfiniteListItem(WrappedListItemComponent) {
       this.onEditClick = this.onEditClick.bind(this)
     }
   }
+
+  function mapStateToProps(state) {
+    return {
+      isAdmin: state.user.isAdmin,
+    }
+  }
+
+  return connect(mapStateToProps)(props => {
+    return <InfiniteListItemContainer {...props} />
+  })
 }

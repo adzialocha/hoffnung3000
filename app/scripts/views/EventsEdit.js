@@ -21,6 +21,7 @@ class EventsEdit extends Component {
     errorMessage: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
     flash: PropTypes.func.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     resourceData: PropTypes.object.isRequired,
     resourceSlug: PropTypes.string.isRequired,
@@ -32,7 +33,7 @@ class EventsEdit extends Component {
   }
 
   componentDidUpdate() {
-    if (!this.props.isLoading && !this.props.resourceData.isOwnerMe) {
+    if (!this.props.isLoading && !this.props.resourceData.isOwnerMe && !this.props.isAdmin) {
       this.props.flash({
         redirect: '/',
         text: translate('flash.unauthorizedView'),
@@ -199,10 +200,12 @@ function mapStateToProps(state, ownProps) {
   const { errorMessage } = state.resources
   const resource = cachedResource('events', resourceSlug)
   const { isLoading, object: resourceData } = resource
+  const isAdmin = state.user.isAdmin
 
   return {
     errorMessage,
     isLoading,
+    isAdmin,
     resourceData,
     resourceSlug,
   }
