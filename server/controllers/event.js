@@ -504,11 +504,11 @@ export default {
         if (!(eventId in acc)) {
           acc[eventId] = { from, to }
         } else {
-          if (acc[eventId].from < from) {
+          if (acc[eventId].from > from) {
             acc[eventId].from = from
           }
 
-          if (acc[eventId].to > to) {
+          if (acc[eventId].to < to) {
             acc[eventId].to = to
           }
         }
@@ -516,11 +516,29 @@ export default {
         return acc
       }, {})
 
+      const datesArr = Object
+        .keys(dates)
+        .map(eventId => {
+          return {
+            ...dates[key],
+            eventId,
+          }
+        }).sort((a, b) => {
+          if (a.from < b.from) {
+            return -1
+          } else if (a.from > b.from) {
+            return 1
+          }
+          return 0
+        })
+
       // Calculate total amount of events we've selected
-      const total = Object.keys(dates).length
+      const total = datesArr.length
 
       // Get related event ids of filtered slots and "paginate" them
-      const eventIds = Object.keys(dates).splice(offset, limit)
+      const eventIds = datesArr.splice(offset, limit).map(({ eventId }) => {
+        return eventId
+      })
 
       // Fetch related events
       const result = await Event.findAndCountAll({
@@ -538,13 +556,6 @@ export default {
             from: dates[row.id].from,
             to: dates[row.id].to,
           }
-        }).sort((a, b) => {
-          if (a.from < b.from) {
-            return -1
-          } else if (a.from > b.from) {
-            return 1
-          }
-          return 0
         })
 
       const config = await getConfig('isAnonymizationEnabled')
