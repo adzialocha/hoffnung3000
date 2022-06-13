@@ -504,11 +504,11 @@ export default {
         if (!(eventId in acc)) {
           acc[eventId] = { from, to }
         } else {
-          if (acc[eventId].from > from) {
+          if (acc[eventId].from < from) {
             acc[eventId].from = from
           }
 
-          if (acc[eventId].to < to) {
+          if (acc[eventId].to > to) {
             acc[eventId].to = to
           }
         }
