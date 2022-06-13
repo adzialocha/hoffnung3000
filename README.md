@@ -50,7 +50,7 @@ HOFFNUNG 3000 was developed for a self-curated festival for music, art and theor
 * https://freilauf.camp/ (DIY Bike Camp 2020, Berlin DE)
 * https://www.femmusicgather.org/ (Feminist UdK Course 2020, Berlin DE)
 * https://www.molekuel-festival.de/ (Music festival 2020, Cologne DE)
-* https://kalendar.zukunftsdorf22.org/ (Zukunftsdorf 2022, Documenta fifteen, Kassel DE)
+* https://kalender.zukunftsdorf22.org/ (Zukunftsdorf 2022, Documenta fifteen, Kassel DE)
 
 *🛸 Please note that some of these websites might not be online anymore.*
 
