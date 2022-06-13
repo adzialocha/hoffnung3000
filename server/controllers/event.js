@@ -520,7 +520,7 @@ export default {
         .keys(dates)
         .map(eventId => {
           return {
-            ...dates[key],
+            ...dates[eventId],
             eventId,
           }
         }).sort((a, b) => {
@@ -556,6 +556,13 @@ export default {
             from: dates[row.id].from,
             to: dates[row.id].to,
           }
+        }).sort((a, b) => {
+          if (a.from < b.from) {
+            return -1
+          } else if (a.from > b.from) {
+            return 1
+          }
+          return 0
         })
 
       const config = await getConfig('isAnonymizationEnabled')
