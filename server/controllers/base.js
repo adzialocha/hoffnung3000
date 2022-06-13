@@ -2,7 +2,7 @@ import Animal from '../models/animal'
 import pick from '../../common/utils/pick'
 import { renderMarkdown } from '../services/marked'
 
-export const DEFAULT_LIMIT = 50
+export const DEFAULT_LIMIT = 100
 export const DEFAULT_OFFSET = 0
 
 const include = [{
