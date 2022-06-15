@@ -14,14 +14,14 @@ button,
 
   background-color: $red;
 
+  font-family: 'Roboto Mono', monospace;
   font-weight: $font-weight-bold;
-  font-size: $font-size-base;
+  font-size: 16px;
 
   outline: 0;
 
   text-align: center;
   text-decoration: none;
-  text-transform: uppercase;
 
   transition: background .2s ease-in-out;
 

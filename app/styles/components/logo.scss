@@ -18,5 +18,9 @@
 @include media-breakpoint(xs) {
   .logo {
     font-size: $font-size-md;
+
+    img {
+      max-width: 70px;
+    }
   }
 }

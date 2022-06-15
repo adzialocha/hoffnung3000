@@ -4,6 +4,8 @@
   padding: 0;
 
   list-style: none;
+
+  font-family: 'Roboto Mono', monospace;
 }
 
 .inline-navigation--vertical {
@@ -18,8 +20,6 @@
 
 .inline-navigation__item {
   display: inline-block;
-
-  text-transform: uppercase;
 
   + .inline-navigation__item {
     margin-left: 10px;

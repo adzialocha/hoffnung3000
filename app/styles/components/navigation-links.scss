@@ -26,13 +26,12 @@ $_navigation-links-item-height-mobile: 60px;
 
     color: $white;
 
-    font-weight: $font-weight-bold;
+    font-family: 'Roboto Mono', monospace;
     font-size: $font-size-lg;
 
     line-height: $_navigation-links-item-height;
 
     text-decoration: none;
-    text-transform: uppercase;
 
     &:active,
     &:focus,

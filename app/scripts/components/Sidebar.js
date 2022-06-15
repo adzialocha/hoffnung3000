@@ -22,9 +22,9 @@ import {
 const ActivitySection = withConfig('isActivityStreamEnabled', () => {
   return (
     <Fragment>
-      <h5 className="sidebar__title">
+      <h3 className="sidebar__title">
         { translate('components.sidebar.activityTitle') }
-      </h5>
+      </h3>
 
       <SidebarActivity />
 
@@ -58,9 +58,9 @@ const InboxSection = withConfig('isInboxEnabled', props => {
 const GifStreamSection = withConfig('gifStreamServerUrl', props => {
   return (
     <Fragment>
-      <h5 className="sidebar__title">
+      <h3 className="sidebar__title">
         { translate('components.sidebar.gifStreamTitle') }
-      </h5>
+      </h3>
 
       <p>
         { translate('components.sidebar.gifStreamDescription' )}
@@ -82,9 +82,9 @@ const RandomMeetingSection = withConfig('isRandomMeetingEnabled', () => {
   return (
     <Fragment>
 
-      <h5 className="sidebar__title">
+      <h3 className="sidebar__title">
         { translate('components.sidebar.randomMeetingTitle') }
-      </h5>
+      </h3>
 
       <p>{ translate('components.sidebar.randomMeetingDescription' )}</p>
 

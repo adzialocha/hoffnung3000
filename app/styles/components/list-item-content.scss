@@ -22,20 +22,23 @@
 }
 
 .list-item-content__title {
-  font-weight: $font-weight-bold;
-  font-size: $font-size-lg;
-
   text-transform: uppercase;
+  font-family: 'Nerko One', cursive;
+  font-weight: $font-weight-bold;
+  font-size: 26px;
 }
 
 @include media-breakpoint(xs) {
   .list-item-content__title {
-    font-size: $font-size-base;
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
 
 .list-item-content__subtitle {
   margin-top: 5px;
+  font-family: 'Roboto Mono', monospace;
 }
 
 @include media-breakpoint(xs) {
@@ -47,7 +50,11 @@
 .list-item-content__description {
   margin-top: 15px;
 
-  font-size: $font-size-sm;
+  font-size: 18px;
+
+  @include media-breakpoint(xs) {
+    font-size: 16px;
+  }
 }
 
 @include media-breakpoint(xs) {
