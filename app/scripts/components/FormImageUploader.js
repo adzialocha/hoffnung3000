@@ -179,7 +179,7 @@ class FormImageUploader extends Component {
         />
 
         <button
-          className="button button--green"
+          className="button button--green button--full"
           disabled={
             this.props.disabled ||
             this.props.isLoading ||

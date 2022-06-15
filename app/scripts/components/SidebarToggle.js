@@ -22,8 +22,7 @@ class SidebarToggle extends Component {
     const sidebarToggleClasses = classnames(
       'sidebar-toggle', {
         'sidebar-toggle--active': this.props.isSidebarExpanded,
-        'sidebar-toggle--spinning': this.state.hasPendingRequests,
-        'sidebar-toggle--notified': hasUnreadMessages,
+        'sidebar-toggle--spinning': this.state.hasPendingRequests || hasUnreadMessages,
       }
     )
 
@@ -32,7 +31,7 @@ class SidebarToggle extends Component {
         className="button button--clear navigation__toggle navigation__toggle--right"
         onClick={this.props.toggleSidebar}
       >
-        <div className={sidebarToggleClasses} />
+        {<img className={sidebarToggleClasses} src={this.props.isSidebarExpanded ? '/static/circle-yellow.svg' : '/static/circle.svg'} />}
       </button>
     )
   }

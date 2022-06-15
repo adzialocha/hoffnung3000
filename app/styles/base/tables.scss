@@ -22,11 +22,11 @@ th {
 tbody {
   tr {
     &:nth-child(odd) {
-      background-color: $gray-lighter;
+      background-color: lighten($yellow, 10%);
     }
 
     &:hover {
-      background-color: $gray-light;
+      background-color: $white;
     }
 
     td {

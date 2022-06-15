@@ -141,7 +141,7 @@ class Home extends Component {
     }
 
     return (
-      <Link className="button button--green" to="/new/event">
+      <Link className="button button--red" to="/new/event">
         { translate('views.events.createNewButton') }
       </Link>
     )
@@ -162,7 +162,6 @@ class Home extends Component {
 
     return (
       <Fragment>
-        <hr />
         <h3>{ translate('views.events.tagSelectorTitle') }</h3>
 
         <TagSelector
@@ -193,6 +192,7 @@ class Home extends Component {
     return (
       <section>
         { this.renderText() }
+        <br />
         <HomeVideo />
         { this.renderCreateButton() }
         { this.renderDatePicker() }

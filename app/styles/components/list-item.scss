@@ -30,7 +30,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $gray-lighter;
+    background-color: $white;
   }
 }
 
@@ -40,7 +40,7 @@
   width: 200px;
   height: 200px;
 
-  background-color: $gray-light;
+  background-color: $blue;
   background-position: center;
   background-size: cover;
 }

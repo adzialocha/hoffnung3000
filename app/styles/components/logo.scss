@@ -9,6 +9,10 @@
   a {
     text-decoration: none;
   }
+
+  img {
+    max-width: 200px;
+  }
 }
 
 @include media-breakpoint(xs) {

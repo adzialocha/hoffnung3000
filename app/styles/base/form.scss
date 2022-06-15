@@ -9,11 +9,9 @@ form {
 label {
   display: block;
 
-  font-weight: $font-weight-bold;
   font-size: $font-size-base;
 
   text-align: left;
-  text-transform: uppercase;
 }
 
 %form-base-style {
@@ -33,7 +31,7 @@ label {
   -webkit-appearance: none; // sass-lint:disable-line no-vendor-prefixes
 
   &:focus {
-    background-color: $gray-light;
+    background-color: $blue;
   }
 
   &[disabled] {
@@ -85,14 +83,14 @@ input {
   &:read-only {
     color: $gray;
 
-    background-color: $gray-lighter;
+    background-color: $black;
 
     transition: none;
 
     cursor: not-allowed;
 
     &:focus {
-      background-color: $gray-lighter;
+      background-color: $blue;
     }
   }
 
@@ -111,13 +109,17 @@ input {
 
     cursor: pointer;
 
+    &:focus {
+      background-color: $black;
+    }
+
     &:checked {
       &::after {
         display: block;
 
-        content: "X";
+        content: "👍";
 
-        color: $white;
+        color: $green;
 
         font-size: $_form-checkbox-size;
 

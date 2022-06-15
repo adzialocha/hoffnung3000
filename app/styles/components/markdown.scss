@@ -1,4 +1,4 @@
-$_markdown-background: $gray-lighter;
+$_markdown-background: $white;
 $_markdown-code-font-family: "Courier New", courier, monospace;
 $_markdown-content-color: $gray;
 
@@ -12,6 +12,8 @@ $_markdown-content-color: $gray;
 
   padding-right: 15px;
   padding-left: 15px;
+
+  border-radius: 10px;
 
   color: $_markdown-content-color;
 

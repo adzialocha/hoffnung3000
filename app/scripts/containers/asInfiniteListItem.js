@@ -44,7 +44,7 @@ export default function asInfiniteListItem(WrappedListItemComponent) {
 
       return (
         <button
-          className="list-item__cover-image-button button button--green"
+          className="list-item__cover-image-button button"
           onClick={this.onEditClick}
         >
           { translate('common.editButton') }

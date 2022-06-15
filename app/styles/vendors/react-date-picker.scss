@@ -2,6 +2,10 @@
   position: relative;
 
   display: inline-flex;
+
+  background-color: $blue;
+
+  color: $white;
 }
 
 .react-date-picker--user-selected {
@@ -31,6 +35,8 @@
   font-weight: $font-weight-bold;
   font-size: $font-size-base;
 
+  color: $white;
+
   flex-grow: 1;
 
   pointer-events: none;
@@ -51,6 +57,8 @@
   padding: 0 0;
 
   border: 0;
+
+  color: $white;
 
   background: none;
 
@@ -79,6 +87,8 @@
 
   background: transparent;
 
+  stroke: $white;
+
   &:enabled {
     cursor: pointer;
   }
@@ -94,9 +104,13 @@
   }
 }
 
+.react-date-picker__button__icon {
+  stroke: $white;
+}
+
 .react-date-picker__button:enabled:hover .react-date-picker__button__icon,
 .react-date-picker__button:enabled:focus .react-date-picker__button__icon {
-  stroke: $black;
+  stroke: $white;
 }
 
 .react-date-picker__calendar {
@@ -111,7 +125,7 @@
 
   border: 2px solid $black;
 
-  background-color: $white;
+  background-color: $blue;
 
   transform: translate3d(-50%, 0, 0);
 
@@ -119,6 +133,10 @@
     border-width: thin;
 
     font-size: $font-size-base;
+  }
+
+  .react-calendar__navigation__label {
+    background-color: $blue;
   }
 
   .react-calendar__navigation {
@@ -137,9 +155,9 @@
   }
 
   .react-calendar__tile {
-    color: $black;
+    color: $white;
 
-    background-color: $white;
+    background-color: $blue;
   }
 
   .react-calendar__tile[disabled] {
@@ -149,7 +167,7 @@
   .react-calendar__tile--active {
     color: $white;
 
-    background-color: $black;
+    background-color: $green;
   }
 }
 

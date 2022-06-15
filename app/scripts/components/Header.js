@@ -13,7 +13,9 @@ class Header extends Component {
     return (
       <header role="banner">
         <div className="logo">
-          <Link to="/">{ this.props.config.title }</Link>
+          <Link to="/">
+            <img src="/static/logo.svg" />
+          </Link>
         </div>
       </header>
     )
