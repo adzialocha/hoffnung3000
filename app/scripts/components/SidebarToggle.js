@@ -32,7 +32,7 @@ class SidebarToggle extends Component {
         className="button button--clear navigation__toggle navigation__toggle--right"
         onClick={this.props.toggleSidebar}
       >
-        <div className={sidebarToggleClasses} />
+        <div className={sidebarToggleClasses}>ORGANISE</div>
       </button>
     )
   }
