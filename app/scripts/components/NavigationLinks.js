@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
-
 const PRIMARY_NAVIGATION = [
   { localeKey: 'programme', url: '/' },
 ]
