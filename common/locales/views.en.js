@@ -4,6 +4,8 @@ export default {
   },
   home: {
     videoTitle: 'Platform tutorial',
+    upcomingEventsTitle: 'Upcoming events',
+    goToCalendar: 'Go to calendar',
   },
   login: {
     title: 'Login',
@@ -44,8 +46,13 @@ export default {
     createNewTitle: 'Create new event',
     isPrivateEvent: 'This event is not visible to the audience',
     loadMoreEvents: 'Load more events',
-    tagSelectorTitle: 'Filter by event tags and date',
+    tagSelectorTitle: 'Filter by tags',
+    datePickerTitle: 'Filter by date',
     titlePlaceholder: 'Event',
+    resourcesTitle: 'Resources',
+    resourcesTableItem: 'Item',
+    resourcesTableDescription: 'Description',
+    resourcesTableOwner: 'Owner',
   },
   inbox: {
     backToConversations: 'Back to inbox',

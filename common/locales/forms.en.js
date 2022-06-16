@@ -12,10 +12,7 @@ export default {
   },
   auth: {
     errors: {
-      cityCodeRequired: 'Please enter your city code',
-      cityRequired: 'Please enter your city',
-      countryRequired: 'Please enter your country',
-      firstnameRequired: 'Please enter your first name',
+      usernameRequired: 'Please enter your username',
       invalidMail: 'Invalid email address',
       mailRequired: 'Please enter your email address',
       maxLength: 'This field can\'t be longer than {len} characters',
@@ -30,7 +27,7 @@ export default {
     changePassword: 'Change your password',
     changePasswordButton: 'Update',
     email: 'Your email address',
-    firstname: 'Firstname',
+    username: 'Username',
     forgotPasswordButton: 'Send',
     loginButton: 'Login',
     newPassword: 'New password',
