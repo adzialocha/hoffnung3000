@@ -6,13 +6,13 @@ import { NavLink } from 'react-router-dom'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
+
 const PRIMARY_NAVIGATION = [
-  { localeKey: 'home', url: '/' },
-  { localeKey: 'about', url: '/pages/about' },
-  { localeKey: 'calendar', url: '/calendar' },
+  { localeKey: 'programme', url: '/' },
 ]
 
 const SECONDARY_NAVIGATION = [
+  { localeKey: 'about', url: '/pages/about' },
   { localeKey: 'information', url: '/pages/information' },
   { localeKey: 'contact', url: '/pages/contact' },
 ]
