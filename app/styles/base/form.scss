@@ -75,6 +75,7 @@ textarea[name="additionalInfo"] {
 }
 
 input {
+
   &[type="email"],
   &[type="password"],
   &[type="text"] {
@@ -85,14 +86,14 @@ input {
   &:read-only {
     color: $gray;
 
-    background-color: $gray-lighter;
+    background-color: $green;
 
     transition: none;
 
     cursor: not-allowed;
 
     &:focus {
-      background-color: $gray-lighter;
+      background-color: $green;
     }
   }
 
@@ -117,7 +118,7 @@ input {
 
         content: "X";
 
-        color: $white;
+        color: $black;
 
         font-size: $_form-checkbox-size;
 
