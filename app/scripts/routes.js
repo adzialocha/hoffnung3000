@@ -19,6 +19,7 @@ import {
   ConversationsIndex,
   ConversationsNew,
   ConversationsShow,
+  EventMap,
   EventsEdit,
   EventsNew,
   EventsShow,
@@ -47,6 +48,7 @@ export default class Routes extends Component {
       <main role="main">
         <Switch>
           <Route component={Home} exact={true} path="/" />
+          <Route component={EventMap} path="/map" />
           <Route component={shouldNotBeAuthenticated(Login)} path="/login" />
           <Route component={withConfig('isSignUpParticipantEnabled', shouldNotBeAuthenticated(Register))} path="/register" />
           <Route component={withConfig('isSignUpVisitorEnabled', shouldNotBeAuthenticated(Tickets))} path="/tickets" />
