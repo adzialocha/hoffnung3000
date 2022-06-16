@@ -4,13 +4,20 @@
 }
 
 .sidebar-toggle {
+  background-image: url("/static/explosion.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  
+  padding-top: 30px;
+  text-align: center;
+
+  color: red;
+  
+  border-radius: 50%;
+
   position: relative;
 
   height: 100%;
-
-  border-radius: 50%;
-
-  background-color: $black;
 
   transition: all .2s ease-in-out;
 
@@ -30,7 +37,7 @@
 
     content: "";
 
-    background-color: $white;
+    background-color: $black;
 
     opacity: 0;
 
@@ -38,17 +45,26 @@
   }
 }
 
+@include media-breakpoint(xs) {
+  .sidebar-toggle {
+    margin-top: 5px;
+    padding-top: 12px;
+    font-size: $font-size-sm;
+  }
+}
+
+
 .sidebar-toggle--active {
-  background-color: $white;
+  background-color: $black;
 
   &.sidebar-toggle--notified {
     &::after {
-      background-color: $black;
+      background-color: $white;
     }
   }
 
   &.sidebar-toggle--spinning {
-    border-color: $white;
+    border-color: $black;
 
     &.sidebar-toggle--notified {
       &::after {

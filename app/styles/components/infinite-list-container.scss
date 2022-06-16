@@ -13,11 +13,12 @@ $_modal-header-height: 55px;
   display: flex;
 
   flex-wrap: wrap;
+  
+  flex-direction: row;
 
   .infinite-list-container__item {
-    width: 250px;
-
-    margin: 3px;
+    width: 100%;
+    margin: 0px;
   }
 
   .infinite-list-container__item--full {
@@ -30,7 +31,7 @@ $_modal-header-height: 55px;
 }
 
 .infinite-list-container__heading {
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 
   font-size: $font-size-xl;
 }
@@ -38,8 +39,7 @@ $_modal-header-height: 55px;
 @include media-breakpoint(md) {
   .infinite-list-container--half-items {
     .infinite-list-container__item {
-      width: 250px;
-
+      width: 200px;
       margin: auto;
     }
 

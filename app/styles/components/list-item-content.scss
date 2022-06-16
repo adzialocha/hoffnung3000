@@ -1,5 +1,7 @@
 .list-item-content {
   display: flex;
+  
+  flex-direction: column;
 
   overflow: hidden;
 
@@ -8,7 +10,6 @@
   text-align: left;
 
   flex: 1;
-  flex-direction: column;
 }
 
 @include media-breakpoint(xs) {

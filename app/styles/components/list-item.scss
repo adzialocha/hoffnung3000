@@ -1,4 +1,4 @@
-$_list-item-height: 150px;
+$_list-item-height: 200px;
 $_list-item-mobile-height: 120px;
 
 .list-item {
@@ -17,13 +17,13 @@ $_list-item-mobile-height: 120px;
   flex-wrap: wrap;
 
   .list-item__cover-image {
-    width: 100%;
-    min-width: 100%;
-    max-width: 100%;
+    width: $_list-item-height;
+    min-width: $_list-item-height;
+    max-width: $_list-item-height;
 
-    height: 250px;
+    height: 200px;
 
-    flex: 1 100%;
+    flex: 1 $_list-item-height;
   }
 }
 
@@ -40,6 +40,10 @@ $_list-item-mobile-height: 120px;
 @include media-breakpoint(xs) {
   .list-item--half {
     height: auto;
+    width: $_list-item-height;
+    min-width: $_list-item-height;
+    min-height: $_list-item-height;
+  
 
     padding-bottom: 10px;
 
