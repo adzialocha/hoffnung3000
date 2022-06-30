@@ -48,6 +48,7 @@ export default class Routes extends Component {
         <Switch>
           <Route component={Calendar} exact={true} path="/" />
           <Route component={EventMap} path="/map" />
+          <Route component={Calendar} path="/calendar" />
           <Route component={shouldNotBeAuthenticated(Login)} path="/login" />
           <Route component={withConfig('isSignUpParticipantEnabled', shouldNotBeAuthenticated(Register))} path="/register" />
           <Route component={withConfig('isSignUpVisitorEnabled', shouldNotBeAuthenticated(Tickets))} path="/tickets" />
