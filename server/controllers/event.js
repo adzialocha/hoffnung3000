@@ -484,13 +484,13 @@ export default {
 
       if (req.query.to) {
         slotsFilter.from = {
-          [Op.lt]: req.query.to,
+          [Op.lte]: req.query.to,
         }
       }
 
       if (req.query.from) {
         slotsFilter.to = {
-          [Op.gt]: req.query.from,
+          [Op.gte]: req.query.from,
         }
       }
 
