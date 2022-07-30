@@ -74,11 +74,11 @@ function findAllWithAvailability(req, res, next) {
                   eventId,
                 }, {
                   from: {
-                    [Op.lt]: req.query.to,
+                    [Op.lte]: req.query.to,
                   },
                 }, {
                   to: {
-                    [Op.gt]: req.query.from,
+                    [Op.gte]: req.query.from,
                   },
                 }],
               },
