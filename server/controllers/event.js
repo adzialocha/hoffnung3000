@@ -1,5 +1,6 @@
 import httpStatus from 'http-status'
 import { Op } from 'sequelize'
+import { DateTime } from 'luxon'
 
 import {
   DEFAULT_LIMIT,
@@ -484,13 +485,13 @@ export default {
 
       if (req.query.to) {
         slotsFilter.from = {
-          [Op.lte]: req.query.to,
+          [Op.lte]: DateTime.fromISO(req.query.to, { zone: 'utc' }).toISO(),
         }
       }
 
       if (req.query.from) {
         slotsFilter.to = {
-          [Op.gte]: req.query.from,
+          [Op.gte]: DateTime.fromISO(req.query.from, { zone: 'utc' }).toISO(),
         }
       }
 
@@ -504,11 +505,11 @@ export default {
         if (!(eventId in acc)) {
           acc[eventId] = { from, to }
         } else {
-          if (acc[eventId].from > from) {
+          if (acc[eventId].from >= from) {
             acc[eventId].from = from
           }
 
-          if (acc[eventId].to < to) {
+          if (acc[eventId].to <= to) {
             acc[eventId].to = to
           }
         }
