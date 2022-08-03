@@ -102,8 +102,8 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       return listItems.map((item, index) => {
         const previousItem = index > 0 ? listItems[index - 1] : null
 
-        const dateA = DateTime.fromISO(item.from)
-        const dateB = previousItem && DateTime.fromISO(previousItem.from)
+        const dateA = DateTime.fromISO(item.from, { zone: 'utc' })
+        const dateB = previousItem && DateTime.fromISO(previousItem.from, { zone: 'utc' })
         const isSameDay = previousItem ? dateA.hasSame(dateB, 'day') : false
 
         const itemComponent = (
