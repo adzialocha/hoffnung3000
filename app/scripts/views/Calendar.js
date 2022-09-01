@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { CuratedEventListItem, StaticPage, DatePicker, CalendarMap } from '../components'
+import { CuratedEventListItem, StaticPage, CalendarDatePicker, CalendarMap } from '../components'
 import { TagSelector } from '../components'
 import { asInfiniteListCalendar } from '../containers'
 import { translate } from '../../../common/services/i18n'
@@ -14,7 +14,7 @@ import { withConfig } from '../containers'
 const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem, CalendarMap)
 
 // Select current day or first day of festival when too early
-function defaultDate(festivalDateStart) {
+function defaultStartDate(festivalDateStart) {
   return DateTime.now({ zone: 'utc ' }) < DateTime.fromISO(festivalDateStart, { zone: 'utc' })
     ? festivalDateStart
     : DateTime.now().toISODate()
@@ -42,14 +42,19 @@ class Calendar extends Component {
     this.props.push('/tickets')
   }
 
-  onDateSelected(selectedDate) {
-    if (selectedDate) {
+  onDateSelected(selectedDates) {
+    const from = DateTime.fromJSDate(selectedDates[0]).toISODate()
+    const to = DateTime.fromJSDate(selectedDates[1]).plus({ day: 1 }).toISODate()
+
+    if (selectedDates) {
       this.setState({
-        selectedDate,
+        selectedStartDate: from,
+        selectedEndDate: to,
       })
     } else {
       this.setState({
-        selectedDate: defaultDate(this.props.config.festivalDateStart),
+        selectedStartDate: defaultStartDate(props.config.festivalDateStart),
+        selectedEndDate: props.config.festivalDateEnd,
       })
     }
   }
@@ -61,8 +66,8 @@ class Calendar extends Component {
   }
 
   renderItemsList() {
-    const from = this.state.selectedDate
-    const to = DateTime.fromISO(from).plus({ day: 1 }).toISODate()
+    const from = this.state.selectedStartDate
+    const to = this.state.selectedEndDate
 
     if (
       (
@@ -150,7 +155,7 @@ class Calendar extends Component {
       <Fragment>
         <hr />
         <h3>{ translate('views.events.datePickerTitle') }</h3>
-        <DatePicker value={this.state.selectedDate} onChange={this.onDateSelected} />
+        <CalendarDatePicker onChange={this.onDateSelected} />
       </Fragment>
     )
   }
@@ -174,7 +179,8 @@ class Calendar extends Component {
     super(props)
 
     this.state = {
-      selectedDate: defaultDate(props.config.festivalDateStart),
+      selectedStartDate: defaultStartDate(props.config.festivalDateStart),
+      selectedEndDate: props.config.festivalDateEnd,
       selectedTags: [],
     }
 
