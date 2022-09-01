@@ -154,17 +154,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, Map) {
     }
 
     renderEventList() {
-      // Filter allEventsList by array of tags
-      if (this.props.tags.length > 0) {
-        const filteredListItems = this.props.listItems.filter(event => {
-          return event.tags.some(tag => this.props.tags.includes(tag))
-        })
-
-        return this.renderListItems(filteredListItems)
-      }
-
-      // Show all events
-      return this.renderListItems(this.props.listItems)
+      return this.renderListItems(this.filteredEvents())
     }
 
     render() {
@@ -208,13 +198,30 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, Map) {
       this.props.fetchList(this.props.resourceName, pageIndex, filter)
     }
 
-    virtualEvents() {
-      const allEvents = this.props.listItems
-      if (!allEvents) {
+    filteredEvents() {
+      let events = this.props.listItems
+
+      if (events === null) {
         return null
       }
 
-      return allEvents.reduce((result, event) => {
+      if (this.props.tags.length > 0) {
+        events = events.filter(event => {
+          return event.tags.some(tag => this.props.tags.includes(tag))
+        })
+      }
+
+      return events
+    }
+
+    virtualEvents() {
+      const events = this.filteredEvents()
+
+      if (events === null) {
+        return null
+      }
+
+      return events.reduce((result, event) => {
         if (event.place.mode === 'virtual') {
           const time = formatEventTime(event.from, event.to)
 
@@ -231,19 +238,20 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, Map) {
     }
 
     physicalVenues() {
-      const allEvents = this.props.listItems
-      if (!allEvents) {
+      const events = this.filteredEvents()
+
+      if (events === null) {
         return null
       }
 
-      const uniqueVenues = allEvents
+      const uniqueVenues = events
         .map(event => event.placeId)
         .map((event, index, final) => final.indexOf(event) === index && index)
-        .filter(event => allEvents[event]).map(event => allEvents[event].place)
+        .filter(event => events[event]).map(event => events[event].place)
         .filter(place => place.mode !== 'virtual')
 
       return uniqueVenues.map(venue => {
-        const venueEvents = allEvents.reduce((result, event) => {
+        const venueEvents = events.reduce((result, event) => {
           if (venue.id === event.placeId) {
             const time = formatEventTime(event.from, event.to)
 
