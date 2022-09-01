@@ -148,8 +148,13 @@ class CalendarMap extends Component {
   }
 }
 
-function mapStateToProps() {
-  return {}
+function mapStateToProps(state) {
+  return {
+    initialCenter: {
+      lat: state.meta.config.defaultLatitude,
+      lng: state.meta.config.defaultLongitude,
+    },
+  }
 }
 
 export default connect(

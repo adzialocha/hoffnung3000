@@ -3,10 +3,11 @@ import React, { Component } from 'react'
 import { DateTime } from 'luxon'
 import { connect } from 'react-redux'
 
+import { formatEventTime } from '../../../common/utils/dateFormat'
 import { fetchList, clearList } from '../actions/infiniteList'
 import { translate } from '../../../common/services/i18n'
 
-export default function asInfiniteListCalendar(WrappedListItemComponent) {
+export default function asInfiniteListCalendar(WrappedListItemComponent, Map) {
   class InfiniteListContainer extends Component {
     static propTypes = {
       clearList: PropTypes.func.isRequired,
@@ -139,6 +140,19 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
       })
     }
 
+    renderMap() {
+      return (
+        <div>
+          <Map
+            defaultZoom={10}
+            plots={[]}
+            virtualEvents={this.virtualEvents()}
+          />
+
+        </div>
+      )
+    }
+
     renderEventList() {
       // Filter allEventsList by array of tags
       if (this.props.tags.length > 0) {
@@ -155,16 +169,21 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
 
     render() {
       return (
-        <div className="infinite-list-container__item infinite-list-container__item--full">
-          <div className="infinite-list-container infinite-list-container--half-items">
-            { this.renderEventList() }
-            { this.renderSpinner() }
+        <section>
+          { this.renderMap() }
+          <div className="infinite-list-container__item infinite-list-container__item--full">
+            <div className="infinite-list-container infinite-list-container--half-items">
+              { this.renderEventList() }
+              { this.renderSpinner() }
 
-            <div className="infinite-list-container__item infinite-list-container__item--full">
-              { this.renderLoadMoreButton() }
+              <div className="infinite-list-container__item infinite-list-container__item--full">
+                { this.renderLoadMoreButton() }
+              </div>
             </div>
           </div>
-        </div>
+
+        </section>
+
       )
     }
 
@@ -187,6 +206,28 @@ export default function asInfiniteListCalendar(WrappedListItemComponent) {
 
       const pageIndex = nextPage ? this.props.currentPageIndex + 1 : 0
       this.props.fetchList(this.props.resourceName, pageIndex, filter)
+    }
+
+    virtualEvents() {
+      const allEvents = this.props.listItems
+      if (!allEvents) {
+        return null
+      }
+
+      return allEvents.reduce((result, event) => {
+        if (event.place.mode === 'virtual') {
+          const time = formatEventTime(event.from, event.to)
+
+          result.push({
+            title: event.title,
+            time,
+            imageUrl: event.images.length > 0 ? event.images[0].smallImageUrl : null,
+            slug: event.slug,
+            place: event.place.title,
+          })
+        }
+        return result
+      }, [])
     }
 
     constructor(props) {

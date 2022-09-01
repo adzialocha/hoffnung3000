@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { CuratedEventListItem, StaticPage, DatePicker } from '../components'
+import { CuratedEventListItem, StaticPage, DatePicker, CalendarMap } from '../components'
 import { TagSelector } from '../components'
 import { asInfiniteListCalendar } from '../containers'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
 
-const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem)
+const WrappedInfiniteList = asInfiniteListCalendar(CuratedEventListItem, CalendarMap)
 
 // Select current day or first day of festival when too early
 function defaultDate(festivalDateStart) {
@@ -91,6 +91,18 @@ class Calendar extends Component {
       />
     )
   }
+  //
+  //   renderMap() {
+  //     return (
+  //       <WrappedMap
+  //         lat={this.props.config.defaultLatitude}
+  //         lng={this.props.config.defaultLongitude}
+  //         resourceName="events"
+  //         onClick={this.onClick}
+  //         onEditClick={this.onEditClick}
+  //       />
+  //     )
+  //   }
 
   renderCreateButton() {
     if (
@@ -164,6 +176,7 @@ class Calendar extends Component {
         { this.renderDatePicker() }
         { this.renderTagSelector() }
         <hr />
+        {/* { this.renderMap() } */}
         { this.renderItemsList() }
       </section>
     )
