@@ -91,18 +91,6 @@ class Calendar extends Component {
       />
     )
   }
-  //
-  //   renderMap() {
-  //     return (
-  //       <WrappedMap
-  //         lat={this.props.config.defaultLatitude}
-  //         lng={this.props.config.defaultLongitude}
-  //         resourceName="events"
-  //         onClick={this.onClick}
-  //         onEditClick={this.onEditClick}
-  //       />
-  //     )
-  //   }
 
   renderCreateButton() {
     if (

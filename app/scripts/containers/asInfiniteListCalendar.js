@@ -145,7 +145,7 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, Map) {
         <div>
           <Map
             defaultZoom={10}
-            plots={[]}
+            plots={this.physicalVenues()}
             virtualEvents={this.virtualEvents()}
           />
 
@@ -228,6 +228,48 @@ export default function asInfiniteListCalendar(WrappedListItemComponent, Map) {
         }
         return result
       }, [])
+    }
+
+    physicalVenues() {
+      const allEvents = this.props.listItems
+      if (!allEvents) {
+        return null
+      }
+
+      const uniqueVenues = allEvents
+        .map(event => event.placeId)
+        .map((event, index, final) => final.indexOf(event) === index && index)
+        .filter(event => allEvents[event]).map(event => allEvents[event].place)
+        .filter(place => place.mode !== 'virtual')
+
+      return uniqueVenues.map(venue => {
+        const venueEvents = allEvents.reduce((result, event) => {
+          if (venue.id === event.placeId) {
+            const time = formatEventTime(event.from, event.to)
+
+            result.push({
+              title: event.title,
+              time: time,
+              imageUrl: event.images.length > 0 ? event.images[0].smallImageUrl : null,
+              slug: event.slug,
+            })
+          }
+          return result
+        }, [])
+
+        return {
+          city: venue.city,
+          cityCode: venue.cityCode,
+          country: venue.country,
+          key: venue.id,
+          latitude: venue.latitude,
+          longitude: venue.longitude,
+          mode: venue.mode,
+          street: venue.street,
+          place: venue.title,
+          events: venueEvents,
+        }
+      })
     }
 
     constructor(props) {
