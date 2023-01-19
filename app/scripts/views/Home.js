@@ -31,7 +31,7 @@ const HomeVideo = withConfig('videoHomeId', props => {
   return (
     <Fragment>
       <hr />
-      <h2>{ translate('views.home.videoTitle') }</h2>
+      <h2>{translate('views.home.videoTitle')}</h2>
 
       <div className="form">
         <div className="youtube">
@@ -49,6 +49,7 @@ const HomeVideo = withConfig('videoHomeId', props => {
 // Select current day or first day of festival when too early
 function defaultDate(festivalDateStart) {
   return DateTime.now({ zone: 'utc ' }) < DateTime.fromISO(festivalDateStart, { zone: 'utc' })
+  || DateTime.now({ zone: 'utc ' }) > DateTime.fromISO(festivalDateStart, { zone: 'utc' })
     ? festivalDateStart
     : DateTime.now().toISODate()
 }
@@ -142,7 +143,7 @@ class Home extends Component {
 
     return (
       <Link className="button button--red" to="/new/event">
-        { translate('views.events.createNewButton') }
+        {translate('views.events.createNewButton')}
       </Link>
     )
   }
@@ -162,7 +163,7 @@ class Home extends Component {
 
     return (
       <Fragment>
-        <h3>{ translate('views.events.tagSelectorTitle') }</h3>
+        <h3>{translate('views.events.tagSelectorTitle')}</h3>
 
         <TagSelector
           defaultTags={tags}
@@ -177,7 +178,7 @@ class Home extends Component {
     return (
       <Fragment>
         <hr />
-        <h3>{ translate('views.events.datePickerTitle') }</h3>
+        <h3>{translate('views.events.datePickerTitle')}</h3>
 
         <DatePicker
           isDefault={this.state.isDefault}
@@ -191,14 +192,14 @@ class Home extends Component {
   render() {
     return (
       <section>
-        { this.renderText() }
+        {this.renderText()}
         <br />
         <HomeVideo />
-        { this.renderCreateButton() }
-        { this.renderDatePicker() }
-        { this.renderTagSelector() }
+        {this.renderCreateButton()}
+        {this.renderDatePicker()}
+        {this.renderTagSelector()}
         <hr />
-        { this.renderItemsList() }
+        {this.renderItemsList()}
       </section>
     )
   }
