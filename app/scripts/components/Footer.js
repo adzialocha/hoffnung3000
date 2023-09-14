@@ -10,7 +10,7 @@ class Footer extends Component {
         <ul className="inline-navigation">
           <li className="inline-navigation__item">
             <NavLink to="/">
-              { translate('components.footer.home') }
+              { translate('components.footer.programme') }
             </NavLink>
           </li>
 
