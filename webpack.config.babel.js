@@ -74,7 +74,7 @@ module.exports = (env, options) => {
               loader: 'sass-loader',
               options: {
                 sassOptions: {
-                  outputStyle: isDevelopment ? 'nested' : 'compressed',
+                  outputStyle: 'compressed',
                 },
                 sourceMap: isDevelopment,
               },
