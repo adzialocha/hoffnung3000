@@ -21,6 +21,12 @@ class Footer extends Component {
           </li>
 
           <li className="inline-navigation__item">
+            <NavLink to="/map">
+              { translate('components.footer.map') }
+            </NavLink>
+          </li>
+
+          <li className="inline-navigation__item">
             <NavLink to="/pages/how-to-antiuni">
               { translate('components.footer.information') }
             </NavLink>

@@ -168,6 +168,7 @@ export default {
     about: 'About',
     contact: 'Contact',
     programme: 'Programme',
+    map: 'Map',
     imprint: 'Imprint',
     information: 'Information',
   },
