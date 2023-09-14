@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { CalendarMap, StaticPage } from '../components'
+import { fetchResourceList } from '../actions/resourceList'
 import { formatEventTime } from '../../../common/utils/dateFormat'
 import { translate } from '../../../common/services/i18n'
 import { withConfig } from '../containers'
@@ -11,6 +12,7 @@ import { withConfig } from '../containers'
 class EventMap extends Component {
   static propTypes = {
     config: PropTypes.object.isRequired,
+    fetchResourceList: PropTypes.func.isRequired,
     isActive: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     resourceListItems: PropTypes.array.isRequired,
@@ -63,7 +65,7 @@ class EventMap extends Component {
     const mapVenuePlots = uniqueVenues.map(venue => {
       const venueEvents = allEvents.reduce((result, event) => {
         if (venue.id === event.placeId) {
-          const time = formatEventTime(event.slots[0].from, event.slots[event.slots.length - 1].to)
+          const time = formatEventTime(event.from, event.to)
 
           result.push({
             title: event.title,
@@ -92,7 +94,7 @@ class EventMap extends Component {
     const virtualEvents = virtualVenues.map(venue => {
       return allEvents.reduce((result, event) => {
         if (venue.id === event.placeId) {
-          const time = formatEventTime(event.slots[0].from, event.slots[event.slots.length - 1].to)
+          const time = formatEventTime(event.from, event.to)
 
           result.push({
             title: event.title,
@@ -131,6 +133,12 @@ class EventMap extends Component {
       </section>
     )
   }
+
+  // @TODO: Update to modern React API
+  /* eslint-disable-next-line camelcase */
+  UNSAFE_componentWillMount() {
+    this.props.fetchResourceList('events')
+  }
 }
 
 function mapStateToProps(state) {
@@ -145,5 +153,6 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps, {
     push,
+    fetchResourceList,
   }
 )(withConfig(EventMap))
