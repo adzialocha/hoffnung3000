@@ -10,8 +10,7 @@
   ],
   "license": "AGPL-3.0",
   "engines": {
-    "node": "12 - 16",
-    "npm": ">=6"
+    "node": "12 - 16"
   },
   "scripts": {
     "assets:build": "npm run assets:clear && webpack --mode production --progress",
