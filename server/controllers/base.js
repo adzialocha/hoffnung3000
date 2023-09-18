@@ -54,6 +54,9 @@ function filterAnimal(obj, isAnonymous) {
 export function prepareResponse(data, req, isAnonymous) {
   let response = 'toJSON' in data ? data.toJSON() : data
 
+  // Set isAdmin flag
+  response.isAdmin = req.user.isAdmin
+
   // Set owner flag for frontend ui
   if (typeof req.isOwnerMe !== 'undefined') {
     response.isOwnerMe = req.isOwnerMe

@@ -153,7 +153,7 @@ function findOneWithSlug(slug, req, res, next) {
           config.isAnonymizationEnabled
         )
 
-        if (!response.isOwnerMe) {
+        if (!response.isOwnerMe && !response.isAdmin) {
           delete response.slots
         }
 
